@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0"/>
+    <meta name="apple-mobile-web-app-capable" content="yes"/>
+    <meta name="apple-mobile-web-app-status-bar-style" content="black"/>
+    <meta name="format-detection" content="telephone=no"/>
+    <title>发起支付</title>
+
+    <script src="./js/jquery-1.11.1.min.js" type="text/javascript" charset="utf-8"></script>
+    <script src="./js/layer.js" type="text/javascript" charset="utf-8"></script>
+    <script src="js/default.js"></script>
+    <script type="text/javascript" src="./lib/layer_mobile/layer.js"></script>
+    <style>
+        .pay-box {
+            width: 100%;
+            text-align: center;
+            margin: 44px 0;
+        }
+        .opt {
+            display: none;
+            z-index: 11;
+        }
+        .opt {
+            background: black;
+            opacity: 0.5;
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+        }
+        .pay-box button {
+            width: 50%;
+            height: 44px;
+            background: #00cd00;
+            border: none;
+            border-radius: 9px;
+            color: #fff;
+            font-size: 16px;
+        }
+        .group {
+            text-align: center;
+            padding: 14px 36px;
+            background-color: #fff;
+        }
+        #countMoneyId{
+            color: #FF5722;
+            padding-left: 14px;
+        }
+        .head-img{
+            width: 100px;
+            height: 100px;
+            margin: 0 auto;
+        }
+        .head-img>img{
+            width: 100%;
+        }
+    </style>
+</head>
+<body>
+
+<div class="page-container">
+    <header class="m-header">
+        <!--<a style="top: 14px!important;" class="goback" href="javascript:history.go(-1)"><img src="/dist/mimages/1.png" alt=""></a>-->
+    </header>
+    <div class="group">
+        <div class="head-img"><img src="./img/ad_imgs/head_img.png" alt=""></div>
+        <div class="head-title" id="shopNameId">购一购</div>
+    </div>
+    <div class="group">
+        <div class="group-title">扫码支付金额 :<span id="countMoneyId">0.00</span></div>
+    </div>
+    <div class="pay-box">
+        <!--<h2 style=" height: 88px;line-height: 60px;">去支付</h2>-->
+        <button id="payId">支付宝支付</button>
+    </div>
+</div>
+<div id="aliId"></div>
+</body>
+<script type="text/javascript">
+
+    $(function () {
+        $('#shopNameId').text(localStorage.shopName);
+        $('.head-img img').attr('src',localStorage.shopLogo);
+        $('#countMoneyId').text(localStorage.countMoney);
+        $('#payId').on('click',function(){
+            $(this).attr('disabled','disabled').css({background:'#ccc'});
+            pay();
+        })
+    });
+
+    function alPayReq(r) {
+        $('#aliId').html(r.data.sign); // h5支付
+    }
+    function pay() {
+        var authCode = GetUrlParam('auth_code');
+        var flag = true;
+        var userOpenId = '';
+        var userAliId = '';
+        $.ajax({
+            type: 'POST',
+            async: false,
+            url: ajaxUrl + "/AliLogin/getAliId",
+            data: {authCode : authCode},
+            success: function (res) {
+                if (res.code == 200) {
+                    userAliId = res.AliId;
+                    if(localStorage.noAccount == '1' ) {
+                        $.ajax({
+                            type: 'POST',
+                            async: false,
+                            cache: false,
+                            url: ajaxUrl + '/front/clients/createAccount',
+                            data: { referPhone: localStorage.referPhone, shopId: localStorage.shopId, AliId: userAliId },
+                            success: function (res) {
+                                console.log('data:', res.data);
+                                if (res.code == 300) {
+                                    layer.open({
+                                        content: data.msg
+                                        , skin: 'msg'
+                                        , time: 2 //2秒后自动关闭
+                                    });
+                                    return;
+                                } else if (res.code == 200) {
+                                    localStorage.removeItem('token');
+                                    localStorage.setItem("token", res.data.token);
+                                    localStorage.setItem('notRealAccount', res.data.account);
+                                    localStorage.setItem('notRealPas', res.data.password);
+                                    $.ajax({
+                                        type: "post",
+                                        url: ajaxUrl + "/front/orders/insertOrderbyQrcode",
+                                        async: false,
+                                        traditional: true,
+                                        data: {
+                                            token : localStorage.getItem('token'),
+                                            productId:localStorage.productId,
+                                            shopId:localStorage.shopId,
+                                            number:localStorage.countMoney,
+                                        },
+                                        success: function (res) {
+                                            if (res.code == 200) {
+                                                var orderId = res.data;
+                                                localStorage.setItem('wxOrderId',orderId);
+                                                var token = localStorage.getItem('token');
+                                                getInfo("post", ajaxUrl + "/front/payInfo/aliPayWeb?token=" + token, {
+                                                    money: parseFloat($('#countMoneyId').val()),
+                                                    type: 3,
+                                                    orderId: orderId
+                                                }, alPayReq);
+                                            }else{
+                                                layer.open({
+                                                    content: res.msg
+                                                    ,skin: 'msg'
+                                                    ,time: 2 //2秒后自动关闭
+                                                });
+                                            }
+                                        },
+                                        error:function(err){
+                                            layer.open({
+                                                content: err
+                                                ,skin: 'msg'
+                                                ,time: 2 //2秒后自动关闭
+                                            });
+                                        }
+                                    })
+                                }
+                            }
+                        });
+                    }else {
+                        $.ajax({
+                            type: "post",
+                            url: ajaxUrl + "/front/orders/insertOrderbyQrcode",
+                            async: false,
+                            traditional: true,
+                            data: {
+                                token : localStorage.getItem('token'),
+                                productId:localStorage.productId,
+                                shopId:localStorage.shopId,
+                                number:localStorage.countMoney
+                            },
+                            success: function (res) {
+                                if (res.code == 200) {
+                                    var orderId = res.data;
+                                    localStorage.setItem('wxOrderId',orderId);
+                                    var token = localStorage.getItem('token');
+                                    getInfo("post", ajaxUrl + "/front/payInfo/aliPayWeb?token=" + token, {
+                                        money: parseFloat($('#countMoneyId').val()),
+                                        type: 3,
+                                        orderId: orderId
+                                    }, alPayReq);
+                                }else{
+                                    layer.open({
+                                        content: res.msg
+                                        ,skin: 'msg'
+                                        ,time: 2 //2秒后自动关闭
+                                    });
+                                }
+                            },
+                            error:function(err){
+                                layer.open({
+                                    content: err
+                                    ,skin: 'msg'
+                                    ,time: 2 //2秒后自动关闭
+                                });
+                            }
+                        })
+                    }
+
+                } else {
+                    layer.open({
+                        content: res.msg
+                        , skin: 'msg'
+                        , time: 2 //2秒后自动关闭
+                    });
+                    return;
+                }
+            },
+            error : function(err) {
+                layer.open({
+                    content : '出现错误。请重新支付！',
+                    time : 2,
+                    skin : 'msg'
+                })
+            }
+        });
+    }
+    function GetUrlParam(paraName) {
+        var url = document.location.toString();
+        var arrObj = url.split("?");
+        if (arrObj.length > 1) {
+            var arrPara = arrObj[1].split("&");
+            var arr;
+            for (var i = 0; i < arrPara.length; i++) {
+                arr = arrPara[i].split("=");
+                if (arr != null && arr[0] == paraName) {
+                    return arr[1];
+                }
+            }
+            return "";
+        }
+        else {
+            return "";
+        }
+    }
+
+</script>
+
+</html>
