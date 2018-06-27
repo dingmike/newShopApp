@@ -1,0 +1,260 @@
+﻿
+/* CSS Document */
+
+body,div,dl,dt,dd,ul,ol,li,h1,h2,h3,h4,h5,h6,pre,span,code,form,fieldset,legend,input,button,textarea,blockquote,th,td,p{margin:0;padding:0;font-family:"微软雅黑";  }
+input,button,select,textarea{outline:none;font-family:"微软雅黑";  border:none; appearance:none;-moz-appearance:none;-webkit-appearance:none;}
+textarea{resize:none}
+li{list-style:none}
+body{background:#FFFFFF;}
+img{border:none;max-width:100%;}
+a{text-decoration:none;}
+a:hover,.news-txt div:hover,.col-1 .con div div:hover{text-decoration: underline;}
+
+a{
+    -webkit-tap-highlight-color:rgba(255,0,0,0);
+    text-decoration:none;
+}
+
+/*------------arrow-------------*/
+.arrow{
+    width: 100%;
+    height: 55px;
+    background: #ffffff;
+    position: fixed;
+    top: 0;
+    left: 0;
+}
+
+.arrow img{
+    border: none;
+    max-width: 100%;
+    width: 28px;
+    margin-left: 11px;
+    margin-top: 5px;
+}
+
+.input_box{
+    width: 90%;
+    margin: auto;
+    margin-top: 75px;
+}
+.input_box2{
+    width: 90%;
+    margin: auto;
+    margin-top: 31px;
+}
+.notes-span1{
+    color: #FF5A3A;
+    font-weight: bold;
+    font-size: 16px;
+    letter-spacing: 2px;
+}
+.notes-span1-2{
+    color: #00ACEC;
+}
+.notes-span2{
+    color: #FF5A3A;
+    float: right;
+    margin-top: 5px;
+}
+.notes-span3{
+    float: right;
+    font-size: 9px;
+    color: #909090;
+    margin-top: 6px;
+    font-weight: bold;
+    letter-spacing: 1px;
+}
+.input_box-input{
+    width: 90%;
+    height: 44px;
+    outline: none;
+    margin: 0 auto;
+    display: block;
+    border: none;
+    background: #F8F8F8;
+}
+.input_box-div{
+    background: #F8F8F8;
+    border-radius: 5px;
+    margin-top: 20px;
+}
+.input_box-div input{
+    color: #757575;
+}
+/*-----*/
+.input_box-div2{
+    margin-top: 20px;
+    height:44px;
+    width: 95%;
+}
+.input_box-div3{
+    height: 44px;
+    width: 70%;
+    background: #F8F8F8;
+    float: left;
+    border-radius: 5px;
+}
+.input_box-div4{
+    width: 30%;
+    float: left;
+}
+
+.input_box-input3{
+    border: none;
+    outline: none;
+    background: #F8F8F8;
+    border-radius: 15px;
+    height: 44px;
+    width: 90%;
+    float: left;
+    margin-left: 8%;
+
+}
+.input_box-span{
+    float: left;
+    font-size: 14px;
+    color: #FF6F54;
+    margin-top: 11px;
+    margin-left: 12px;
+}
+/*-----------*/
+.click{
+    width: 80%;
+    margin: auto;
+    height: 42px;
+    margin-top: 28px;
+    border-radius: 15px;
+    background: #FF5A3A;
+}
+.click-span{
+    width: 138px;
+    color: #ffffff;
+    margin: auto;
+    display: block;
+    position: relative;
+    top: 9px;
+    -webkit-tap-highlight-color:rgba(255,0,0,0);
+    text-decoration:none;
+}
+.click-span-reset_password{
+    width: 66px;
+    color: #ffffff;
+    margin: auto;
+    display: block;
+    position: relative;
+    top: 9px;
+}
+.number-click-span{
+    width: 109px;
+    color: #ffffff;
+    margin: auto;
+    display: block;
+    position: relative;
+    top: 9px;
+    letter-spacing: 2px;
+    text-decoration:none;
+}
+/*------------agreement-------------*/
+.agreement{
+    width: 213px;
+    margin: auto;
+    margin-top: 56px;
+    font-size: 13px;
+}
+.agreement span{
+    color: #959595 ;
+}
+.agreement a{
+    color: #39BEF0;
+}
+/*----------------*/
+/*-------eject---------*/
+.eject{
+    height: 100%;
+    background: #FFFFFF;
+    z-index: 9999;
+    position: fixed;
+    top: 0px;
+    display: none;
+    padding: 15px;
+    overflow: auto;
+    padding-top: 21px;
+}
+.arrow-eject{
+    width: 100%;
+    height: 25px;
+    background: #ffffff;
+    position: fixed;
+    top: 0;
+    left: 0;
+}
+.eject-head{
+    width: 100%;
+    height: 50px;
+    position: fixed;
+    top: 0px;
+    left: 0px;
+    background: #ffffff;
+}
+.eject-bottom{
+    width: 100%;
+    height: 52px;
+    border: 1px solid #ffffff;
+    position: fixed;
+    bottom: 0px;
+    left: 0px;
+    background: #ffffff;
+}
+ .eject-bottom-span{
+    height: 42px;
+    width: 80%;
+    margin: 0 auto;
+    display: block;
+    background: #FF5A3A;
+    border-radius: 27px;
+    margin-top: 5px;
+    text-align: center;
+    line-height: 42px;
+    color: #fff;
+
+}
+.click-information{
+    width: 138px;
+}
+.click-span-forget_password{
+    width: 48px;
+    color: #ffffff;
+    margin: auto;
+    display: block;
+    position: relative;
+    top: 9px;
+}
+/*--------background---------*/
+.background{
+    width: 100%;
+    height: 100%;
+    background: #c1c1c1;
+    z-index: 999;
+    position: fixed;
+    background-color: rgba(0,0,0,0.6);
+    top: 0;
+    display: none;
+}
+
+._tiping {
+		    opacity: 0.8;
+		    position: fixed;
+		    color: #fff;
+		    line-height: 70px;
+		    border-radius: 10px;
+		    text-align: center;
+		    font-size: 13px;
+		    z-index: 999;
+		    top: 40%;
+		    padding: 0 10px;
+		    min-width:120px;
+		    background: rgba(0,0,0,0.8) no-repeat;
+		    background-position: center 15px;
+		    background-size: 50px 50px
+			}

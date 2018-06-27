@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8"/>
+    <title>新增收货地址</title>
+    <meta name="renderer" content="webkit">
+    <meta http-equiv="X-UA-Compatible" content="IE=11; IE=10; IE=9; IE=8; IE=7; IE=EDGE,Chrome=1">
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no"/>
+    <link rel="stylesheet" type="text/css" href="css/index.css"/>
+    <link rel="stylesheet" href="css/hp.css"/>
+    <link rel="stylesheet" type="text/css" href="css/mobileSelect.css">
+
+    <script src="js/jquery-1.11.1.min.js" type="text/javascript" charset="utf-8"></script>
+    <script src="js/default.js"></script>
+    <script src="js/template.js"></script>
+    <script src="js/template-helper.js"></script>
+
+    <script src="js/mobileSelect.js" type="text/javascript"></script>
+    <script src="js/regionData.js"></script>
+    <!--<script src="js/LArea.js"></script>-->
+    <style>
+        .site_btn {
+            display: block;
+            width: 92%;
+            height: 44px;
+            line-height: 44px;
+            text-align: center;
+            background-color: #ff5a3a;
+            border-radius: 10px 10px 10px 10px;
+            margin: 20px auto;
+            font-size: 15px;
+            letter-spacing: 0px;
+            color: #ffffff;
+        }
+        .demo1{
+            width: 13rem;!important;
+            margin-left: 1.2rem;float: left; font-size: 12px;
+        }
+    </style>
+</head>
+
+<body>
+<div class="container">
+    <header>
+        <img class="nav-left" src="img/fanhui.png" alt="" onclick="javascript:history.back(-1);"/> 新增收货地址
+    </header>
+    <div class="header_box">
+
+    </div>
+    <div class="site_box">
+        <div class="site_name">
+            姓&emsp;&emsp;名<input type="text" name="site_name" maxlength="8" class="username"/>
+        </div>
+        <div class="site_phone">
+            电&emsp;&emsp;话<input type="text" class="userphone" name="site_phone" maxlength="11" placeholder="输入收货人电话号码"
+                                 onkeyup="this.value=this.value.replace(/\D/g,'')"/>
+        </div>
+        <div class="site_city">
+            <div style="float: left; width: 55px;">省/市/区</div>
+            <div id="trigger3" class="demo1 address" >-请选择-</div>
+            <input id="value1" type="hidden" value=""/>
+        </div>
+
+
+        <div class="site_cont">
+            <span style="display:block;vetical-align:top;float:left;margin-top: 10px;">详细地址</span><textarea rows="4"
+                                                                                                            name="site_cont"></textarea>
+        </div>
+        <button name="Submit" class="site_btn"/>
+        保存</button>
+    </div>
+</div>
+<script type="text/javascript">
+    //聚焦时默认文本消失
+    $(".site_phone input").click(function () {
+        $(".site_phone input").attr("placeholder", "");
+        $(".site_phone input").attr("style", "color: red;text-shadow: 0px 0px 0px #000;-webkit-text-fill-color: transparent;");
+    })
+    //失去焦点判断是否输入
+    $(".site_phone input").blur(function () {
+        if ($(".site_phone input").val() == "") {
+            $(".site_phone input").attr("placeholder", "输入收货人电话号码");
+            $(".site_phone input").attr("style", "");
+        } else {
+        }
+    })
+
+
+    // 省市区联动
+    var mobileSelectCity = new MobileSelect({
+        trigger: '#trigger3',
+        title: '请选择',
+        wheels: [
+            {data:LAreaData}
+        ],
+        transitionEnd:function(indexArr, data){
+//                        console.log('定位的地址:' +data);
+        },
+        callback:function(indexArr, data){
+            var addressStr = '';
+            for(var i=0; i<data.length;i++){
+                addressStr = addressStr + data[i].name + ',';
+            }
+            $('#value1').val(addressStr)
+        }
+    });
+
+
+
+
+    var myreg = /^[1][3,4,5,7,8][0-9]{9}$/;
+
+    $('.site_btn').click(function () {
+        var username = $('.username').val(),
+            userphone = $('.userphone').val(),
+            addrs = $('textarea').val(),
+            are = $("#value1").val(), // 地址名称
+            addr = are.split(','),
+            province = addr[0],
+            city = addr[1],
+            dist = addr[2];
+        if (username == '') {
+            tip.flag('请输入用户名', 'error');
+            return;
+        } else if (userphone == '') {
+            tip.flag('请输入电话号码', 'error');
+            return;
+        } else if (!myreg.test(userphone)) {
+            tip.flag('电话号码格式错误', 'error');
+        } else if (addrs == '') {
+            tip.flag('请输入详细地址', 'error');
+            return;
+        } else if (are == '') {
+            tip.flag('请选择省市区', 'error');
+            return;
+        } else {
+            $.ajax({
+                type: "post",
+                url: ajaxUrl + "/front/clientAddresses/addAddress",
+                data: {
+                    token: token,
+                    uname: username,
+                    phone: userphone,
+                    province: province,
+                    city: city,
+                    dist: dist,
+                    addrs: addrs,
+                    def: 1
+                },
+                async: true,
+                dataType: 'json',
+                success: function (r) {
+                    var str = GetUrlString('sureArr');
+                    var back = GetUrlString('back');
+                    if (str) {
+                        location.href = "confirm_order.html?sureArr=" + GetUrlString('sureArr');
+                    } else {
+
+                        if (back == 'returnOrderPay') {
+                            window.history.go(-1)
+                        } else {
+                            location.href = "map-cheak.html";
+                        }
+                    }
+                }
+            });
+        }
+    });
+
+</script>
+</body>
+
+</html>

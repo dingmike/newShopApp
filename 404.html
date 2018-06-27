@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no" />
+		<link rel="stylesheet" type="text/css" href="css/index.css"/>
+		<link rel="stylesheet" href="css/hp.css" />
+		<title>出错了~</title>
+		<style>
+            .erro-page {
+                background-image: url(./img/404.png);
+                width: 100%;
+                background-size: cover;
+                top: -40px;
+            }
+			.content {
+				-webkit-box-flex: 1;
+				overflow: auto;
+				position: relative;
+				overflow-x: hidden;
+			}
+		</style>
+	</head>
+	<body>
+		<div class="container">
+			<header>
+				<div class="sto-nav-left">
+						<img src="img/fanhui.png"  alt="" onclick="javascript:history.back(-1);"/>
+				</div>
+				<div class="sto-nav-sear">
+					出错了~
+
+				</div>
+			</header>
+			<div class="content erro-page">
+				<p id="errorId" style="margin-top: 75px;"></p>
+			</div>
+		</div>
+
+		<script>
+			window.onload = function () {
+				document.getElementById('errorId').innerHTML = GetUrlParam('msg');
+            }
+            function GetUrlParam(paraName) {
+                var url = document.location.toString();
+                var arrObj = url.split("?");
+
+                if (arrObj.length > 1) {
+                    var arrPara = arrObj[1].split("&");
+                    var arr;
+
+                    for (var i = 0; i < arrPara.length; i++) {
+                        arr = arrPara[i].split("=");
+
+                        if (arr != null && arr[0] == paraName) {
+                            return arr[1];
+                        }
+                    }
+                    return "";
+                }
+                else {
+                    return "";
+                }
+            }
+		</script>
+	</body>
+</html>
