@@ -1,0 +1,280 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="utf-8" />
+		<title>商品收藏</title>
+		<meta name="renderer" content="webkit">
+		<meta content="yes" name="apple-mobile-web-app-capable" content="yes" />
+		<meta content="black" name="apple-mobile-web-app-status-bar-style" />
+		<meta content="telephone=no" name="format-detection"/>
+		<meta http-equiv="X-UA-Compatible" content="IE=11; IE=10; IE=9; IE=8; IE=7; IE=EDGE,Chrome=1">
+		<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no" />
+		<link rel="stylesheet" type="text/css" href="css/index.css" />
+		<link rel="stylesheet" href="css/hp.css" />
+		<script src="js/jquery-1.11.1.min.js" type="text/javascript" charset="utf-8"></script>
+		<script src="js/default.js"></script>
+		<script src="js/template.js"></script>
+		<script src="js/template-helper.js"></script>
+		<style>
+
+		
+		</style>
+	</head>
+
+	<body>
+		<div class="container">
+			<header>
+				<img class="nav-left" src="img/fanhui.png" alt="" onclick="javascript:history.back(-1);"/>商品收藏
+			</header>
+			<div class="content">
+				<div class="dpsc-list">
+					<ul class="no-lost"></ul>
+					<script type="text/template" id="no-lost">
+						{{each Product as k i}}
+							{{if k.productCredit==1}}
+								<li>
+									<div class="dpsc-left">
+										<label for="ax">
+											<div class="ax dellike" data-id="{{ k.id }}">
+												<img src="img/icon-like.png" />
+											</div>
+										</label>
+									</div>
+									<div class="dpsc-center">
+										<a href="sto-detail.html?id={{ k.productId }}">
+											<img src="{{k.productImg}}" />
+										</a>
+									</div>
+									<div class="dpsc-right">
+										<div class="dp-rg-top">
+											<span>{{k.productName}}</span>
+										</div>
+										<div class="dp-rg-cen">
+											送{{k.productEdian*k.fxparam}}个广告金
+										</div>
+										<div class="dp-rg-bom dp-rg-bom-mtp">
+											<span>¥{{k.sellPrice}}</span>
+											<span>¥{{k.marketPrice}}</span>
+										</div>
+									</div>
+								</li>
+							{{/if}}
+						<!--{{if k.productCredit==2}}
+							<li>
+								<div class="dpsc-left">
+									<label for="ax">
+										<div class="ax">
+											<img src="img/icon-pass.png" />
+										</div>
+										
+									</label>
+							
+								</div>
+								<div class="dpsc-center">
+									<div class="sx">已失效</div>
+									<img src="{{k.productImg}}" />
+								</div>
+								<div class="dpsc-right">
+									<div class="dp-rg-top">
+										<span>{{k.productName}}</span>
+									</div>
+									<div class="dp-rg-cen">
+										送{{k.productEdian}}点
+									</div>
+									<div class="dp-rg-bom dp-rg-bom-mtp">
+										<span>¥{{k.sellPrice}}</span>
+										<span>¥{{k.marketPrice}}</span>
+										<input type="button" value="删除" />
+									</div>
+								</div>
+							</li>
+							{{/if}}-->
+						{{/each}}
+					</script>
+					<ul class="has-lost"></ul>
+					<script type="text/template" id="has-lost">
+						{{each Product as k i}}
+							{{if k.productCredit==2}}
+							<li>
+								<div class="dpsc-left">
+									<label for="ax">
+										<div class="ax">
+											<img src="img/icon-pass.png" />
+										</div>
+										
+									</label>
+							
+								</div>
+								<div class="dpsc-center">
+									<div class="sx">已失效</div>
+									<img src="{{k.productImg}}" />
+								</div>
+								<div class="dpsc-right">
+									<div class="dp-rg-top">
+										<span>{{k.productName}}</span>
+									</div>
+									<div class="dp-rg-cen">
+										送{{k.productEdian*k}}个广告金
+									</div>
+									<div class="dp-rg-bom dp-rg-bom-mtp">
+										<span>¥{{k.sellPrice}}</span>
+										<span>¥{{k.marketPrice}}</span>
+										<!--<input type="button" value="删除" />-->
+										<button>删除</button>
+									</div>
+								</div>
+							</li>
+							{{/if}}
+						{{/each}}
+					</script>
+				</div>
+				<!--<div class="no-more">
+					<img src="img/icon-jiazaipng.png" />
+					<p>别扯了。没有更多了！！！</p>
+				</div>-->
+			</div>
+
+		</div>
+		
+		<script>
+			$(function(){
+
+
+                // 获取分销ID和值
+                var fxIdData;
+                getFxId(function(res){
+                    fxIdData = res;
+                });
+
+                var listparam={
+					token:token,
+					pageNo:0,
+					pageSize:8,
+				};
+				
+					getList('.no-lost','post',ajaxUrl+'/front/clientProductLikes/userLikes',listparam,getListdata);
+					getList('.has-lost','post',ajaxUrl+'/front/clientProductLikes/userLikes',listparam,getListdata2);
+					
+					$('.content').scroll(function () {
+				        totleHeight = parseFloat($('.content').height()) + parseFloat($('.content').scrollTop());
+				        if (($(".content")[0].scrollHeight == totleHeight) && !listLoading) {
+				            ++currentpage;
+				            listparam.pageNo=currentpage;
+				           // setclcik();
+				            $('.sort-list div').click(function(){
+								$(this).css('color','#ff5a3a').siblings().css('color','#9b9b9b');
+							});
+				            getList('.no-lost','post',ajaxUrl+'/front/clientProductLikes/userLikes',listparam,getListdata);
+							getList('.has-lost','post',ajaxUrl+'/front/clientProductLikes/userLikes',listparam,getListdata2);
+				        }
+				   });
+				    
+				     //页面渲染    
+				    function getListdata(obj,r){
+				    	var length = r.Product.length;
+				    	if (length === 0 && currentpage === 1) {
+	                        $(obj).html('<div class="_nodata">暂无数据</div>');
+	                    } else if (length !== 0) {
+
+                            // 显示广告金
+                            for(var i=0; i<r.Product.length; i++){
+                                for(var j = 0; j< fxIdData.length; j++){
+                                    if(r.Product[i].fxparam == fxIdData[j].id){
+                                        r.Product[i].fxparam =fxIdData[j].mine;
+                                    }
+                                }
+
+                            }
+
+
+	                        var html= template('no-lost', r);
+	                        if (currentpage === 1) {
+	                            $(obj).html(html);
+	                        } else {
+	                            $(obj).append(html);
+	                        }
+	                        
+	                    } else {
+	                        listLoadingLock = true;
+	                       // alert(0)
+	                        $(obj).append('<div class="_nomore">已经没有更多了</div>');
+	                    }
+	                    
+	                    //				    删除收藏
+						  $(".dellike").click(function(){
+						  	var dataid = $(this).data('id');
+						  	$.post(ajaxUrl + '/front/clientProductLikes/deleteLikes', {
+								Lid: dataid,
+								token: token
+							}, function(r) {
+								if(r.code == 300){
+									tip.flag(r.msg, 'error');
+								}else{
+									tip.flag(r.msg, 'success');
+									setTimeout(function(){
+										location.href = "goods-collection.html";
+									},1500);
+								}
+							});
+						  	
+						  });
+	                    
+			    	}
+				    
+				    function getListdata2(obj,r){
+				    	var length = r.Product.length;
+				    	if (length === 0 && currentpage === 1) {
+	                        $(obj).html('<div class="_nodata">暂无数据</div>');
+	                    } else if (length !== 0) {
+
+                            // 显示广告金
+                            for(var i=0; i<r.Product.length; i++){
+                                for(var j = 0; j< fxIdData.length; j++){
+                                    if(r.Product[i].fxparam == fxIdData[j].id){
+                                        r.Product[i].fxparam =fxIdData[j].mine;
+                                    }
+                                }
+
+                            }
+
+
+
+                            var html= template('has-lost', r);
+	                        if (currentpage === 1) {
+	                            $(obj).html(html);
+	                        } else {
+	                            $(obj).append(html);
+	                        }
+	                        
+	                    } else {
+	                        listLoadingLock = true;
+	                       // alert(0)
+	                        $(obj).append('<div class="_nomore">已经没有更多了</div>');
+	                    }
+	                    
+	                    //				    删除收藏
+						  $(".dellike").click(function(){
+						  	var dataid = $(this).data('id');
+						  	$.post(ajaxUrl + '/front/clientProductLikes/deleteLikes', {
+								Lid: dataid,
+								token: token
+							}, function(r) {
+								if(r.code == 300){
+									tip.flag(r.msg, 'error');
+								}else{
+									tip.flag(r.msg, 'success');
+									setTimeout(function(){
+										location.href = "goods-collection.html";
+									},1500);
+								}
+							});
+						  	
+						  });
+						  
+			    	}
+			});
+		</script>
+	</body>
+
+</html>

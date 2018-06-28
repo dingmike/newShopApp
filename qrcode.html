@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no"/>
+    <title>扫描二维码</title>
+    <link rel="stylesheet" type="text/css" href="css/reset.css">
+    <script src="js/jquery-1.11.1.min.js" type="text/javascript" charset="utf-8"></script>
+    <script src="./js/layer.js" type="text/javascript" charset="utf-8"></script>
+    <script src="./js/default.js"></script>
+    <style>
+        body{
+            background-color: #dfdfdf;
+        }
+        .head{
+            background-color: orangered;
+            height: 40px;
+            line-height:40px;
+            text-align: center;
+            color: #fff;
+        }
+        .main-content{
+            margin: 20px;
+            height: 400px;
+            background-color: #fff;
+        }
+        .qrcode-img{
+            text-align: center;
+        }
+        .qrcode-img img{
+            width: 200px;
+            margin:12px 0 4px;
+        }
+        .head-title{
+            text-align: center;
+        }
+        .icon-img{
+            vertical-align: middle;
+            width: 24px;
+        }
+        .controls .txt{
+            height: 50px;
+            width:200px;
+            line-height:50px;
+            padding-left: 8px;
+            outline: none;
+            -webkit-appearance: none;
+            border-radius: 0;
+            background:none;
+            border:none;
+            font-size: 22px;
+        }
+        .group{
+            padding: 84px 36px;
+        }
+        .bottom-content{
+            position: relative;
+            bottom: -26px;
+            left: 50%;
+            margin-left: -126px;
+            width: 252px;
+            height: 38px;
+            line-height: 38px;
+            background-color: orangered;
+            border-radius: 20px;
+            text-align: center;
+            color: #fff;
+        }
+    </style>
+</head>
+<body>
+<div class="head">店铺二维码</div>
+<div class="main-content">
+    <div class="group">
+        <div class="qrcode-img"><img id="qrcodeId" src="./img/adds.png" alt=""></div>
+        <div class="head-title">按住识别二维码</div>
+    </div>
+</div>
+<script>
+    $(function(){
+        $.post(ajaxUrl + '/front/shop/qrcode', {token: token}, function (res) {
+            if(res.code == 200){
+                $('#qrcodeId').attr('src',res.qrcode)
+            }else{
+                layer.open({
+                    content: res.msg
+                    ,skin: 'msg'
+                    ,time: 2 //2秒后自动关闭
+                });
+            }
+        })
+    })
+</script>
+</body>
+</html>

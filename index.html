@@ -1,0 +1,1825 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="renderer" content="webkit">
+    <meta http-equiv="Pragma" content="no-cache">
+    <meta http-equiv="Cache-Control" content="no-cache">
+    <meta http-equiv="Expires" content="0">
+    <meta content="yes" name="apple-mobile-web-app-capable"/>
+    <meta content="black" name="apple-mobile-web-app-status-bar-style"/>
+    <meta content="telephone=no" name="format-detection"/>
+    <meta http-equiv="X-UA-Compatible" content="IE=11; IE=10; IE=9; IE=8; IE=7; IE=EDGE,Chrome=1">
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no"/>
+    <link rel="stylesheet" type="text/css" href="css/index.css"/>
+    <link rel="stylesheet" type="text/css" href="css/hp.css"/>
+    <link rel="stylesheet" type="text/css" href="css/animator.css"/>
+    <link rel="stylesheet" type="text/css" href="css/carrousel.css"/>
+    <link rel="stylesheet" href="./lib/layer_mobile/need/layer.css"/>
+    <link rel="stylesheet" href="./css/hongbao.css"/>
+    <script type="text/javascript" src="https://res.wx.qq.com/open/js/jweixin-1.3.2.js"></script>
+    <script src="js/flexible.js" type="text/javascript"></script>
+    <!--fastclickjs easy-to-use library for eliminating the 300ms delay between a physical tap and the firing of a click event on mobile browsers-->
+    <script src="js/fastclick.js" type="text/javascript"></script>
+    <script src="js/jquery-1.11.1.min.js" type="text/javascript" charset="utf-8"></script>
+    <!--<script src="js/gister/jgestures.js" type="text/javascript" charset="utf-8"></script>-->
+    <script src="js/monoevent.js" type="text/javascript" charset="utf-8"></script>
+    <!--<script type="text/javascript" src="lib/layer/2.4/layer.js"></script>-->
+    <script type="text/javascript" src="js/jquery.downCount.js"></script>
+    <script src="js/carrousel.js" type="text/javascript" charset="utf-8"></script>
+    <script src="js/modernizr-custom-v2.7.1.min.js" type="text/javascript"></script>
+    <script src="js/jquery-finger-v0.1.0.min.js" type="text/javascript"></script>
+    <script src="js/flickerplate.min.js" type="text/javascript"></script>
+    <script src="js/default.js"></script>
+    <script src="js/template.js"></script>
+    <script src="js/template-helper.js"></script>
+    <script src="js/caifu.js"></script>
+    <script type="text/javascript" src="./lib/layer_mobile/layer.js"></script>
+    <script type="text/javascript" src="./js/hb.js"></script>
+
+    <title>首页</title>
+    <style>
+        .sto-img img {
+            height: 138px;
+            border-radius: 7px;
+            margin-bottom: 15px;
+        }
+
+        .bro-sto-nam {
+            line-height: 0.53333rem;
+            height: 0.5333rem;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            display: box;
+            display: -webkit-box;
+            line-clamp: 2;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+            margin: 2px 0 5px 6%;
+            letter-spacing: 1px;
+        }
+
+        .rem-nam {
+            overflow: hidden;
+            text-overflow: ellipsis;
+            display: box;
+            display: -webkit-box;
+            line-clamp: 2;
+            -webkit-line-clamp: 1;
+            -webkit-box-orient: vertical;
+            margin: 10px 11% 5px 12%;
+            word-break: break-all;
+            display: block;
+        }
+
+        .rem-wp {
+            width: 34%;
+        }
+
+        .rem-box {
+            width: auto;
+            overflow-x: scroll;
+            overflow-y: hidden;
+            white-space: nowrap;
+            padding: 5px 10px;
+        }
+
+        .hp-fot div a {
+            display: block;
+            width: 45%;
+            height: 102%;
+            margin: 0 26%;
+        }
+
+        .ad-content {
+            height: 13.013333rem;
+            /*background: url(./img/ad_imgs/xianshangbeijingtu.jpg) no-repeat cadetblue;*/
+            background-color: #eae9e9;
+            background-size: 100%;
+            background-position: center;
+        }
+
+        /*ad cards --start---*/
+
+        .dg-ad-head {
+            background-color: #ffffff;
+        }
+
+        .ad-head-title {
+            position: relative;
+            width: 2.667rem;
+            margin: 0 auto;
+            font-size: 0.3734rem;
+            padding: 0.2667rem;
+            line-height: 0.4rem;
+            height: 0.4rem;
+            color: #b161ed;
+        }
+
+        .ad-head-title:before {
+            content: " ";
+            position: absolute;
+            bottom: 0.42rem;
+            width: 1rem;
+            left: -1.1rem;
+            background-color: #b66aee;
+            border-bottom: 1px solid #b66aee;
+        }
+
+        .ad-head-title:after {
+            content: " ";
+            position: absolute;
+            bottom: 0.42rem;
+            width: 1rem;
+            right: -1.1rem;
+            background-color: #b66aee;
+            border-bottom: 1px solid #b66aee;
+        }
+
+        .dg-ad-pic {
+            height: 8.4rem;
+        }
+
+        .dg-ad-pic .ad-pic {
+            /*width: 287px;*/
+            height: 7.65334rem;
+            padding: 0 0.53333rem;
+        }
+
+        .ad-pic .ad-picture {
+            width: 100%;
+        }
+
+        .ad-content-title {
+            overflow: hidden;
+            text-align: left;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+            font-size: 0.32rem;
+            height: 0.8rem;
+            line-height: 0.8rem;
+
+        }
+
+        .dg-ad-coins {
+            padding: 0 0.5333rem;
+            margin-bottom: 0.1rem;
+        }
+
+        .dg-ad-coins .ad-coins-l {
+            float: left;
+            width: 3.36rem;
+            color: #000;
+        }
+
+        .dg-ad-coins .ad-coins-r {
+            float: left;
+            width: 4rem;
+            color: #000;
+            font-size: 0.42666rem;
+        }
+
+        .coins-l-l {
+            float: left;
+            /*background: url(./img/ad_imgs/Label02.png) no-repeat center;*/
+            background-color: #FF9800;
+            height: 0.55667rem;
+            padding: 0 0.05333rem;
+            display: inline-block;
+            line-height: 0.55667rem;
+            width: 1.6rem;
+            margin-right: 0.8rem;
+            background-size: 100%;
+            /*font-size: 0.16667rem;*/
+            font-size: 0.34rem;
+            color: #fff;
+        }
+
+        .ad-head-box{
+            width: 300px;
+            height: 24px;
+            margin-top: 7px;
+        }
+        .no-reward {
+            /*background: url("./img/ad_imgs/Label01.png") center 100% no-repeat;!important;*/
+            float: left;
+            margin-right: 32px;
+            /*background: url(./img/ad_imgs/Label01.png) no-repeat center;*/
+            background-color: #ccc;
+            height: 0.55667rem;
+            padding: 0 0.05333rem;
+            display: inline-block;
+            line-height: 0.55667rem;
+            width: 1.6rem;
+            background-size: 100%;
+            /* font-size: 0.16667rem; */
+            font-size: 0.34rem;
+            color: #fff;
+        }
+
+        .coins-font {
+            font-size: 0.32rem;
+            display: inline-block;
+            /* text-align: left; */
+            float: left;
+            padding-left: 0.31rem;
+        }
+
+        .coins-bottom-font {
+            display: inline-block;
+            font-size: 0.26666rem;
+            color: #888181;
+            float: left;
+            padding-left: 0.278rem;
+            transform: scale(0.9);
+            -webkit-transform: scale(0.9);
+        }
+
+        .dg-bottom-box {
+            height: 1.54rem;
+            background-color: #fff;
+        }
+
+        .price-bottom-l span{
+            padding: 0 10px;
+        }
+       /* .dg-bottom-box {
+            display: flex;
+            display: -webkit-flex; !* Safari *!
+            flex-direction: row;
+            justify-content: center;
+        }*/
+
+        .dg-bottom-box .price-bottom-r {
+            position: absolute;
+            right: 0.8533rem;
+            bottom: -11px;
+        }
+
+        .dg-bottom-box .price-bottom-l {
+            width: 90%;
+            padding: 3px 16px;
+            height: 20px;
+            line-height: 24px;
+        }
+
+        .dg-bottom-box {
+            font-size: 0.37333rem;
+            /*color: #fff;*/
+            padding: 0 0.22rem;
+            margin-top: 0.58rem;
+        }
+
+        .price-bottom-l {
+            /*padding: 0.05333rem;*/
+        }
+
+        .price-b-l-first {
+            display: inherit;
+            text-align: left;
+            font-size: 0.62rem;
+        }
+
+        .price-b-l-sencond {
+            float: left;
+            font-size: 0.32rem;
+            padding-left: 0.16rem;
+        }
+
+        .own-mm {
+            float: left;
+            font-size: 0.32rem;
+            padding-left: 0 !important;
+        }
+
+        .price-bottom-m {
+            /*width: 40% !important;*/
+            padding: 0.19rem 0;
+        }
+
+        .price-bottom-m {
+            font-size: 0.26667rem;
+            color: #ffeb00;
+        }
+
+        .price-b-l-sencond .price-logo {
+            background-color: #ffccc6;
+            color: #ff5a3a;
+            width: 0.8rem;
+            height: 0.29333rem;
+            border-radius: 0.10666rem;
+            padding: 0.0266666rem 0.053333rem;
+        }
+
+        .price-time {
+            width: 100%;
+            height: 0.48rem;
+            line-height: 0.48rem;
+            padding: 0 0.266667rem;
+            transform: scale(1);
+        }
+
+        .price-time .countdown-title {
+            float: left;
+        }
+
+        .price-time-loading {
+            margin-left: 0.16rem;
+            margin-top: 0.0666667rem;
+        }
+
+        /*loading--start--*/
+        .status-bar[data-v-5d44c782] {
+            position: relative;
+            box-sizing: border-box;
+            width: 4.4rem;
+            /* float: left; */
+            height: 0.3733333rem;
+            line-height: 0.3733333rem;
+            border-radius: 0.186666667rem;
+            color: red;
+            border: 1px solid red;
+            /* background: url(./img/ad_imgs/beijing.png) repeat-x; */
+            background-color: #fff;
+            background-size: contain;
+            text-align: center;
+            overflow: hidden;
+            margin-left: 0.24rem;
+        }
+
+        .status-progress[data-v-5d44c782] {
+            border-radius: 0.186666667rem;
+            position: absolute;
+            top: 0;
+            left: 0;
+            height: 100%;
+            min-width: .13rem;
+            /* background: url(/img/ad_imgs/jindu.png) repeat-x; */
+            background-size: contain;
+        }
+
+        .status-num[data-v-5d44c782] {
+            font-size: 0.32rem;
+            position: absolute;
+            left: 0.8rem;
+        }
+
+        .status-soldrate[data-v-5d44c782] {
+            font-size: 0.34rem;
+            position: absolute;
+            left: 1.3333rem;
+        }
+
+        .status-msg {
+            position: relative;
+            text-indent: 2.2rem;
+            width: 4.4rem;
+        }
+
+        .status-msg:before {
+            content: attr(text);
+            line-height: 0.3733333rem;
+            height: 0.3733333rem;
+            position: absolute;
+            left: 0;
+            font-size: 0.3rem;
+            vertical-align: middle;
+        }
+
+        .status-msg:after {
+            content: attr(text);
+            position: absolute;
+            left: 0;
+            /* width: 100%; */
+            /* height: 38px; */
+            height: 0.3733333rem;
+            line-height: 0.3733333rem;
+            white-space: nowrap;
+            overflow: hidden;
+            transition: width 1s ease;
+            width: 0%;
+            color: red;
+            font-size: 0.3rem;
+            vertical-align: middle;
+            /* background: #0BF; */
+            background: url(./img/ad_imgs/jindu.png) repeat-x;
+        }
+
+        .pin-tuan {
+            font-weight: 500;
+            width: 1.4rem;
+            height: 0.6rem;
+            /* margin-top: 0.37333rem; */
+            border-radius: 4px;
+            margin-left: 0.2666rem;
+            color: white;
+            text-align: center;
+            background-color: #ff4500;
+        }
+
+        .own-margin-left {
+            padding-left: 0.4rem;
+        }
+
+        /*loading--end--*/
+
+        /*countdown--start--*/
+        ul.countdown {
+            list-style: none;
+            /*width: 3.6266667rem;*/
+        }
+
+        ul.countdown li {
+            display: inline-block;
+        }
+
+        ul.countdown li span {
+            /*font-size: 80px;*/
+            /*font-weight: 300;*/
+            /*line-height: 80px;*/
+        }
+
+        ul.countdown li.seperator {
+            /*font-size: 80px;*/
+            /*line-height: 70px;*/
+            /*vertical-align: top;*/
+        }
+
+        ul.countdown li p {
+            color: #a7abb1;
+            font-size: 14px;
+        }
+
+        .source {
+            width: 405px;
+            margin: 0 auto;
+            background: #4f5861;
+            color: #a7abb1;
+            font-weight: bold;
+            display: block;
+            white-space: pre;
+            -webkit-border-radius: 3px;
+            -moz-border-radius: 3px;
+            border-radius: 3px;
+        }
+
+        .bg-wihite {
+            background-color: #fff !important;
+        }
+
+        /*countdown--end--*/
+
+        .price-bottom-l-n {
+            width: 50%;
+            /*padding: 0.07333rem;*/
+        }
+
+        .dg-bottom-box-n {
+            display: flex;
+            display: -webkit-flex;
+            flex-direction: row;
+            justify-content: left;
+            padding: 0rem 0.32rem 0.1rem 0.32rem;
+            margin-top: 0.586rem;
+        }
+
+        .bro-sto-num-n {
+            color: #F44336;
+            font-size: 0.48rem;
+        }
+
+        .price-real {
+            text-align: left;
+            height: 0.533333rem;
+            padding-left: 0.1066667rem;
+            line-height: 0.533333rem;
+        }
+
+        .bro-sto-yj-n {
+            color: #a5a5a5;
+            font-size: 0.32rem;
+            transform: scale(0.9);
+            line-height: 0.53333rem;
+        }
+
+        .pin-tuan-n {
+            font-weight: 500;
+            width: 1.4rem;
+            height: 0.6rem;
+            /* margin-top: 0.37333rem; */
+            border-radius: 4px;
+            margin-left: 2.2rem;
+            color: white;
+            text-align: center;
+            background-color: #ff4500;
+        }
+
+        .ad-pd-price, .ad-dm-price{
+            font-size:14px;
+        }
+        .ad-pd-price span{
+            color: #ff5a3a;
+            font-size: 0.48rem;
+            /*font-weight: 600;*/
+        }
+        .ad-dm-price span{
+            font-size: 0.48rem;
+            /*font-weight: 600;*/
+        }
+        /*ad cards --end---*/
+        .bro-sto-e-n {
+            overflow: hidden;
+            text-align: left;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+            font-size: 0.32rem;
+            height: 0.8rem;
+            line-height: 0.8rem;
+            padding-left: 0.26667rem;
+            color: #a59d9d;
+        }
+
+        .express-free {
+            /*margin-left: 1.2rem;*/
+            /* background-color: #ccc; */
+            border: 1px solid #d2a775;
+            border-radius: 0.1066667rem;
+            color: #d2a775;
+            padding: 0 0.13333rem;
+        }
+
+        /*new hot product--start--*/
+        .pt-bottom-box-h {
+            /*display: flex;*/
+            /*display: -webkit-flex; !* Safari *!*/
+            /*flex-direction: row;*/
+            /*justify-content: center;*/
+            background: orangered;
+            color: #fff;
+            height: 1.4rem;
+        }
+
+        .price-bottom-m-h {
+            display: flex;
+            display: -webkit-flex; /* Safari */
+            flex-direction: row;
+            justify-content: center;
+        }
+
+        .price-bottom-l-h {
+            /*padding: 0.05333rem;*/
+            height: 0.8rem;
+            display: flex;
+            display: -webkit-flex; /* Safari */
+            flex-direction: row;
+            justify-content: center;
+        }
+
+        .price-b-l-first-h {
+            font-size: 0.45rem;
+            height: 0.8rem;
+            line-height: 0.8rem;
+            margin-left: 0.266667rem;
+        }
+
+        .price-b-l-sencond-h {
+            float: left;
+            font-size: 0.266667rem;
+        }
+
+        .price-bottom-m {
+            /*font-size: 0.26667rem;*/
+        }
+
+        .price-b-l-sencond-h .price-logo {
+            background-color: #ffccc6;
+            color: #ff5a3a;
+            width: 0.8rem;
+            height: 0.29333rem;
+            border-radius: 0.10666rem;
+            padding: 0.0266666rem 0.053333rem;
+        }
+
+        ul.countdown-h {
+            list-style: none;
+            width: 3.5rem !important;
+            /*transform: scale(0.8) !important;*/
+        }
+
+        .price-time-h {
+            font-size: 0.12rem;
+            /*transform: scale(0.9);*/
+            height: 0.93rem;
+            line-height: 0.93rem;
+            margin-left: 0.2rem;
+        }
+
+        .price-time-loading-h {
+            margin-top: 0.06rem;
+        }
+
+        /*loading--start--*/
+        .status-bar-h[data-v-5d44c782] {
+            position: relative;
+            box-sizing: border-box;
+            width: 2.35rem;
+            height: 0.36rem;
+            /* transform: scale(0.75); */
+            line-height: 0.3733333rem;
+            border-radius: 0.186666667rem;
+            color: #fff;
+            background: url(./img/ad_imgs/beijing.png) repeat-x;
+            background-size: contain;
+            text-align: center;
+            overflow: hidden;
+        }
+
+        .status-progress-h[data-v-5d44c782] {
+            border-radius: 0.186666667rem;
+            position: absolute;
+            top: 0;
+            left: 0;
+            height: 100%;
+            min-width: .13rem;
+            /* background: url(/img/ad_imgs/jindu.png) repeat-x; */
+            background-size: contain;
+        }
+
+        .status-num[data-v-5d44c782] {
+            font-size: 0.32rem;
+            position: absolute;
+            left: 0.8rem;
+        }
+
+        .status-soldrate[data-v-5d44c782] {
+            font-size: 0.34rem;
+            position: absolute;
+            left: 1.3333rem;
+        }
+
+        .status-msg-h {
+            position: relative;
+            text-indent: 1.10rem;
+            width: 2.32rem;
+        }
+
+        .status-msg-h:before {
+            content: attr(text);
+            line-height: 0.3733333rem;
+            height: 0.333333rem;
+            position: absolute;
+            left: 0;
+            font-size: 0.3rem;
+        }
+
+        .status-msg-h:after {
+            content: attr(text);
+            position: absolute;
+            left: 0;
+            /* width: 100%; */
+            /* height: 38px; */
+            height: 0.3733333rem;
+            line-height: 0.3733333rem;
+            white-space: nowrap;
+            overflow: hidden;
+            transition: width 1s ease;
+            width: 57%;
+            color: red;
+            font-size: 0.3rem;
+            /* transform: scale(0.75); */
+            /* background: #0BF; */
+            background: url(./img/ad_imgs/jindu.png) repeat-x;
+        }
+
+        .pin-tuan-h {
+            background-color: #ffffff;
+            width: 1.6rem;
+            height: 0.52rem;
+            line-height: 0.52rem;
+            /* margin-top: 0.37333rem; */
+            border-radius: 4px;
+            margin-left: 0.2666rem;
+            font-size: 0.3733333rem;
+            color: orangered;
+            font-weight: 600;
+        }
+
+        ul.countdown-h li {
+            display: inline-block;
+        }
+
+        /*new hot product--end--*/
+
+        .bro-sto-e-h {
+            display: block;
+            float: right;
+            color: #9c9797;
+            font-size: 0.32rem;
+            transform: scale(0.8);
+            /* background-color: #f1f1f1; */
+            border-radius: 2px;
+            text-align: center;
+            /* padding: 1px 4px 1px 4px; */
+            /* width: 61px; */
+
+        }
+
+        /*caifu --start--*/
+        .item1 {
+            position: relative;
+            top: 7.4666667rem;
+            left: 3.96rem;
+            z-index: 1200;
+        }
+
+        .kodai {
+
+            position: absolute;
+
+            bottom: 0;
+
+            cursor: pointer;
+
+        }
+
+        .kodai .full {
+
+            display: block;
+            width: 50%;
+
+        }
+
+        .kodai .empty {
+
+            display: none;
+            width: 50%;
+
+        }
+
+        .clipped-box {
+
+            display: none;
+
+            position: absolute;
+            bottom: 1.066667rem;
+            left: 0.8rem;
+            height: 14.4rem;
+            width: 26.1333rem;
+
+        }
+
+        .clipped-box img {
+
+            position: absolute;
+
+            top: auto;
+
+            left: 0;
+
+            bottom: 0;
+
+            -webkit-transition: -webkit-transform 1.4s ease-in, background 0.3s ease-in;
+
+            transition: transform 1.4s ease-in;
+
+        }
+
+        /*caifu --end--*/
+
+        .sc-img-shouchang {
+            width: 0.6rem;
+            height: 0.6rem;
+            position: absolute;
+            top: 1.173rem;
+            right: 0.746rem;
+        }
+
+        .sc-img-shouchang img {
+            width: 100%;
+        }
+
+
+        /*气泡弹出--start--*/
+
+        .bubbly-button {
+            font-family: 'Helvetica', 'Arial', sans-serif;
+            display: inline-block;
+            font-size: 1em;
+            padding: 1em 2em;
+            margin-top: 100px;
+            margin-bottom: 60px;
+            -webkit-appearance: none;
+            appearance: none;
+            background-color: #ff0081;
+            color: #fff;
+            border-radius: 4px;
+            border: none;
+            cursor: pointer;
+            position: relative;
+            transition: transform ease-in 0.1s, box-shadow ease-in 0.25s;
+            box-shadow: 0 2px 25px rgba(255, 0, 130, 0.5);
+        }
+        .bubbly-button:focus {
+            outline: 0;
+        }
+        .bubbly-button:before, .bubbly-button:after {
+            position: absolute;
+            content: '';
+            display: block;
+            width: 140%;
+            height: 100%;
+            left: -20%;
+            z-index: -1000;
+            transition: all ease-in-out 0.5s;
+            background-repeat: no-repeat;
+        }
+        .bubbly-button:before {
+            display: none;
+            top: -75%;
+            background-image: radial-gradient(circle, #ff0081 20%, transparent 20%), radial-gradient(circle, transparent 20%, #ff0081 20%, transparent 30%), radial-gradient(circle, #ff0081 20%, transparent 20%), radial-gradient(circle, #ff0081 20%, transparent 20%), radial-gradient(circle, transparent 10%, #ff0081 15%, transparent 20%), radial-gradient(circle, #ff0081 20%, transparent 20%), radial-gradient(circle, #ff0081 20%, transparent 20%), radial-gradient(circle, #ff0081 20%, transparent 20%), radial-gradient(circle, #ff0081 20%, transparent 20%);
+            background-size: 10% 10%, 20% 20%, 15% 15%, 20% 20%, 18% 18%, 10% 10%, 15% 15%, 10% 10%, 18% 18%;
+        }
+        .bubbly-button:after {
+            display: none;
+            bottom: -75%;
+            background-image: radial-gradient(circle, #ff0081 20%, transparent 20%), radial-gradient(circle, #ff0081 20%, transparent 20%), radial-gradient(circle, transparent 10%, #ff0081 15%, transparent 20%), radial-gradient(circle, #ff0081 20%, transparent 20%), radial-gradient(circle, #ff0081 20%, transparent 20%), radial-gradient(circle, #ff0081 20%, transparent 20%), radial-gradient(circle, #ff0081 20%, transparent 20%);
+            background-size: 15% 15%, 20% 20%, 18% 18%, 20% 20%, 15% 15%, 10% 10%, 20% 20%;
+        }
+        .bubbly-button:active {
+            transform: scale(0.9);
+            background-color: #e60074;
+            box-shadow: 0 2px 25px rgba(255, 0, 130, 0.2);
+        }
+        .bubbly-button.animate:before {
+            display: block;
+            animation: topBubbles ease-in-out 0.75s forwards;
+        }
+        .bubbly-button.animate:after {
+            display: block;
+            animation: bottomBubbles ease-in-out 0.75s forwards;
+        }
+
+        @keyframes topBubbles {
+            0% {
+                background-position: 5% 90%, 10% 90%, 10% 90%, 15% 90%, 25% 90%, 25% 90%, 40% 90%, 55% 90%, 70% 90%;
+            }
+            50% {
+                background-position: 0% 80%, 0% 20%, 10% 40%, 20% 0%, 30% 30%, 22% 50%, 50% 50%, 65% 20%, 90% 30%;
+            }
+            100% {
+                background-position: 0% 70%, 0% 10%, 10% 30%, 20% -10%, 30% 20%, 22% 40%, 50% 40%, 65% 10%, 90% 20%;
+                background-size: 0% 0%, 0% 0%,  0% 0%,  0% 0%,  0% 0%,  0% 0%;
+            }
+        }
+        @keyframes bottomBubbles {
+            0% {
+                background-position: 10% -10%, 30% 10%, 55% -10%, 70% -10%, 85% -10%, 70% -10%, 70% 0%;
+            }
+            50% {
+                background-position: 0% 80%, 20% 80%, 45% 60%, 60% 100%, 75% 70%, 95% 60%, 105% 0%;
+            }
+            100% {
+                background-position: 0% 90%, 20% 90%, 45% 70%, 60% 110%, 75% 80%, 95% 70%, 110% 10%;
+                background-size: 0% 0%, 0% 0%,  0% 0%,  0% 0%,  0% 0%,  0% 0%;
+            }
+        }
+
+        /*气泡弹出--end--*/
+
+        .new-nav-box{
+            display: flex;
+            display: -webkit-flex; /* Safari */
+            justify-content: space-between;
+        }
+        .icon-list .icon {
+            display: inline-block;
+            box-sizing: border-box;
+            width: 24%;
+            text-align: center;
+            margin-top: 10px;
+        }
+        .icon-list .new-icon-circle {
+            display: block;
+            margin: auto;
+            width: 1.2rem;
+            height: 1.2rem;
+        }
+        .icon-list .icon-desc {
+            text-align: center;
+            font-size: .32rem;
+            color: #666;
+            height: 26px;
+            line-height: 26px;
+        }
+        .ad-jing-box{
+            padding: 6px 12px;
+        }
+        .title-ad-box{
+            height: 32px;
+            line-height: 32px;
+            width: 100%;
+            text-align: center;
+            font-size: 14px;
+        }
+    </style>
+</head>
+
+<body>
+<div class="container">
+    <header>
+        <div class="nav-sear">
+            <a href="search.html">
+                <input type="text" placeholder="购一购自营商品"/>
+            </a>
+            <img alt="" src="img/sera.png"/>
+        </div>
+        <div class="nav-car">
+            <img alt="" src="img/gouwuche.png"/>
+            <div class="nav-car-num"></div>
+        </div>
+    </header>
+    <div class="content">
+        <div id="petalbox"></div>
+        <div class="hp-rk">
+            <div class="flicker-example aa" data-block-text="false">
+                <ul>
+
+                </ul>
+            </div>
+            <div class="new-nav-box icon-list ">
+                <div class="icon">
+                    <a style="display:block" href="weal.html">
+                        <img class="new-icon-circle iconfont meishi" src="./img/rexiao.png" alt="">
+                        <span class="icon-desc">热销产品</span></a>
+                </div>
+                <div class="icon">
+                    <a style="display:block" href="weal.html">
+                        <img class="new-icon-circle iconfont meishi" src="./img/shangxin.png" alt="">
+                        <span class="icon-desc">新品上架</span></a>
+                </div>
+                <div class="icon">
+                    <a style="display:block" href="shop_details.html?id=20">
+                        <img class="new-icon-circle iconfont meishi" src="./img/yanxuan.png" alt="">
+                        <span class="icon-desc">网易严选</span></a>
+                </div>
+                <div class="icon">
+                    <a style="display:block" href="shop_details.html?id=86">
+                        <img class="new-icon-circle iconfont meishi" src="./img/qingse.png" alt="">
+                        <span class="icon-desc">全球购物</span></a>
+                </div>
+            </div>
+            <!--广告金入口--start-->
+            <div class="ad-jing-box">
+                <a href="guangGao.html">
+                    <img src="./img/guanggaojin.png" alt="">
+                </a>
+
+            </div>
+            <div>
+                 <div class="title-ad-box">
+              网易严选
+                 </div>
+                <div class="ad-jing-box">
+                    <a href="shop_details.html?id=20">
+                        <img src="./img/wangyiyanxuan.png" alt="">
+                    </a>
+                </div>
+            </div>
+            
+           <!-- <div class="rukou top20">
+                <div class="rukou-img">
+                    <a href="weal.html">
+                        <img alt="" src="./img/indexImg/xpsj.png"/>
+                        &lt;!&ndash;<div class="rk-nam">
+                            <span class="rk-tit">新品专区</span>
+                            <span class="rk-eng">Welfare zone</span>
+                        </div>&ndash;&gt;
+                    </a>
+                </div>
+                <div class="rukou-img">
+                    <a href="weal.html">
+                        <img alt="" class="rk-two" src="./img/indexImg/rxcp.png"/>
+                        &lt;!&ndash;<div class="rk-nam">
+                            <span class="rk-tit">限时抢购</span>
+                            <span class="rk-xs">Flash sale</span>
+                        </div>&ndash;&gt;
+                    </a>
+
+                </div>
+            </div>
+            <div class="rukou top10">
+                <div class="rukou-img">
+                    <a href="shop_details.html?id=20">
+                        <img src="img/indexImg/wyyy.png"/>
+                        &lt;!&ndash; <div class="rk-nam">
+                             <span class="rk-tit">热销商品</span>
+                             <span class="rk-rx">Hot product</span>
+                         </div>&ndash;&gt;
+                    </a>
+                </div>
+                <div class="rukou-img">
+                    <a href="weal.html">
+                        <img class="rk-two" src="img/indexImg/hkzq.png"/>
+                        &lt;!&ndash; <div class="rk-nam">
+                             <span class="rk-tit">京东入口</span>
+                             <span class="rk-jd">JD.COM>>></span>
+                         </div>&ndash;&gt;
+                    </a>
+                </div>
+            </div>-->
+        </div>
+
+<!--        <div class="hp-rem ad-content">
+            <div class="rem-tit">
+                好物推荐
+            </div>
+            &lt;!&ndash;koudai&#45;&#45;start&ndash;&gt;
+            <div class="item1" id="getConinsNow" style="display: none;">
+                <div class="kodai">
+                    <img src="img/caifu/kd2.png" class="full"/>
+                    <img src="img/caifu/kd1.png" class="empty"/>
+                </div>
+                <div class="clipped-box">
+                    <img class="clipped" src="./img/caifu/jb1.png">
+                    <img class="clipped" src="./img/caifu/jb2.png">
+                    <img class="clipped" src="./img/caifu/jb3.png">
+                    <img class="clipped" src="./img/caifu/jb4.png">
+                    <img class="clipped" src="./img/caifu/jb5.png">
+                    <img class="clipped" src="./img/caifu/jb2.png">
+                    <img class="clipped" src="./img/caifu/jb3.png">
+                    <img class="clipped" src="./img/caifu/jb4.png">
+                    <img class="clipped" src="./img/caifu/jb5.png">
+                    <img class="clipped" src="./img/caifu/jb2.png">
+                    <img class="clipped" src="./img/caifu/jb3.png">
+                    <img class="clipped" src="./img/caifu/jb4.png">
+                    <img class="clipped" src="./img/caifu/jb5.png">
+                    <img class="clipped" src="./img/caifu/jb2.png">
+                    <img class="clipped" src="./img/caifu/jb3.png">
+                    <img class="clipped" src="./img/caifu/jb4.png">
+                    <img class="clipped" src="./img/caifu/jb5.png">
+                    <img class="clipped" src="./img/caifu/jb2.png">
+                    <img class="clipped" src="./img/caifu/jb3.png">
+                    <img class="clipped" src="./img/caifu/jb4.png">
+                    <img class="clipped" src="./img/caifu/jb5.png">
+                    <img class="clipped" src="./img/caifu/jb2.png">
+                    <img class="clipped" src="./img/caifu/jb3.png">
+                    <img class="clipped" src="./img/caifu/jb4.png">
+                    <img class="clipped" src="./img/caifu/jb5.png">
+                </div>
+            </div>
+            &lt;!&ndash;<p id="html"></p>&ndash;&gt;
+            &lt;!&ndash;koudai&#45;&#45;end&ndash;&gt;
+            &lt;!&ndash;广告专区&#45;&#45;start&ndash;&gt;
+
+            &lt;!&ndash;   <ul class="rem-box">
+               </ul>&ndash;&gt;
+            <div class="banner" id="adBannerId">
+
+            </div>
+            <script type="text/template" id="dgAdTemplate">
+
+                <section id="dg-container" class="dg-container">
+                    <div class="dg-wrapper">
+                        {{each adProducts as product index}}
+                        <div class="dg-a-box"
+                             onclick="goAdDetail('{{product.type2==2?'sto-detail-pd.html':'sto-detail.html'}}?id={{product.productId}}')"
+                             data-index="{{product.id-1}}" style="display: block">
+                            <input type="hidden" id="productRes{{product.productId}}" value="{{product.id}}">
+                            &lt;!&ndash;<img src="img/ad_imgs/adicon.jpg">&ndash;&gt;
+                            <div class="dg-ad-head">
+                                <div class="ad-head-title">赏金专区</div>
+                            </div>
+                            <div class="dg-ad-pic">
+                                <div class="ad-pic">
+                                    <div class="sc-img-shouchang" onclick="scEvent('{{product.productId}}',this)">
+                                        <img class="det-nav-shouchang" id="sc" data-se="1"
+                                             src="./img/ad_imgs/collection01.png">
+                                    </div>
+                                    <img class="ad-picture" src="{{product.img}}" alt="">
+                                    <div class="ad-head-box">
+                                        <span class="{{product.reward==0?'no-reward':'coins-l-l'}}">广告赏金</span>
+                                        <span class="{{product.shopReward==0?'no-reward':'coins-l-l'}}">店家打赏</span>
+                                    </div>
+                                    <input type="hidden" value="{{product.reward}}">
+                                    <div class="ad-content-title">{{product.productName}}</div>
+                                </div>
+                            </div>
+                         &lt;!&ndash;   <div class="dg-ad-coins">
+                                <div class="ad-coins-l">
+                                    <span class="{{product.reward==0?'no-reward':'coins-l-l'}}">￥<span>{{product.reward}}</span></span>
+                                    <span class="coins-l-r">
+                                    <span class="coins-font">广告赏金</span>
+                                    <span class="coins-bottom-font">分享有赏</span>
+                                </span>
+                                </div>
+                                <div class="ad-coins-r">
+                                    <span class="{{product.shopReward==0?'no-reward':'coins-l-l'}}">￥<span>{{product.shopReward}}</span></span>
+                                    <span class="coins-l-r">
+                                    <span class="coins-font own-margin-left">店家打赏</span>
+                                    <span class="coins-bottom-font">围观商品详情有赏</span>
+                                </span>
+                                </div>
+                                <div style="clear: both"></div>
+                            </div>&ndash;&gt;
+
+                            &lt;!&ndash;2：拼单&ndash;&gt;
+                            {{if product.type2==2}}
+                            <div class="dg-bottom-box">
+                                <div class="price-bottom-l">
+                                    <span class="ad-pd-price">拼单价 <span>￥{{product.pdPrice}}</span></span>
+                                    <span class="ad-dm-price">单买价 <span>￥{{product.price}}</span></span>
+                                </div>
+                                &lt;!&ndash;进度条&#45;&#45;start&ndash;&gt;
+                                <div class="price-bottom-m">
+                                    &lt;!&ndash;<div class="price-time"><span class="countdown-title">距结束：</span>
+                                        {{if product.fightAloneTime!==null}}
+                                        <ul class="countdown countdown{{product.productId}}" data-clock="{{product.fightAloneTime}}">
+                                            <li style="display: none;">
+                                                <span class="days">00</span>
+                                            </li>
+                                            <li class="seperator" style="display: none;">.</li>
+                                            <li><span class="hours">00</span>
+                                            </li>
+                                            <li class="seperator">:</li>
+                                            <li><span class="minutes">00</span>
+                                            </li>
+                                            <li class="seperator">:</li>
+                                            <li><span class="seconds">00</span>
+                                            </li>
+                                        </ul>
+                                        {{/if}}
+                                    </div>&ndash;&gt;
+                                    <div class="price-time-loading">
+                                        <div data-v-5d44c782="" class="status-bar">
+                                            <div data-v-5d44c782="" class="status-progress"></div>
+                                            <div data-v-5d44c782="" class="status-msg"
+                                                 data-total="{{product.fightAloneNumber}}"
+                                                 data-last="{{product.areadFightAlone}}"
+                                                 id="myStatusLoading{{product.id}}"
+                                                 text="{{product.areadFightAlone}}/{{product.fightAloneNumber}}">
+                                                &lt;!&ndash; <div data-v-5d44c782="" class="status-num">10</div>
+                                                 <span data-v-5d44c782="" class="status-soldrate">200</span>&ndash;&gt;
+                                            </div>
+                                        </div>
+
+                                        <div class="price-bottom-r">
+                                            <button class="pin-tuan" data-productId="{{product.productId}}"
+                                                    onclick="goBuyPd('{{product.productId}}')">马上拼
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                                &lt;!&ndash;进度条&#45;&#45;end&ndash;&gt;
+                               &lt;!&ndash; <div class="price-bottom-r">
+                                    <button class="pin-tuan" data-productId="{{product.productId}}"
+                                            onclick="goBuyPd('{{product.productId}}')">马上拼
+                                    </button>
+                                </div>&ndash;&gt;
+                            </div>
+                            {{else}}
+                            <div class="dg-bottom-box-n bg-wihite">
+                                <div class="price-bottom-l-n">
+                                    <div class="price-real">
+                                        <span class="bro-sto-num-n">￥{{product.price}}</span>
+                                        <span class="bro-sto-yj-n"><s>￥{{product.bjPrice}}</s></span>
+                                    </div>
+                                    <div class="bro-sto-e-n">{{product.productName}}</div>
+
+                                </div>
+                                &lt;!&ndash;进度条&#45;&#45;start&ndash;&gt;
+                                &lt;!&ndash;<div class="price-bottom-m">
+                                    <div class="price-time"><span class="countdown-title">距结束：</span>
+                                        <ul class="countdown" data-clock="{{product.fightAloneTime}}">
+                                            <li> <span class="days">00</span>
+                                            </li>
+                                            <li class="seperator">.</li>
+                                            <li> <span class="hours">00</span>
+                                            </li>
+                                            <li class="seperator">:</li>
+                                            <li> <span class="minutes">00</span>
+                                            </li>
+                                            <li class="seperator">:</li>
+                                            <li> <span class="seconds">00</span>
+                                            </li>
+                                        </ul></div>
+                                    <div class="price-time-loading">
+                                        <div data-v-5d44c782="" class="status-bar">
+                                            <div data-v-5d44c782="" class="status-progress"></div>
+                                            <div data-v-5d44c782="" class="status-msg" text="10/200">
+                                                &lt;!&ndash; <div data-v-5d44c782="" class="status-num">10</div>
+                                                 <span data-v-5d44c782="" class="status-soldrate">200</span>&ndash;&gt;
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>&ndash;&gt;
+                                &lt;!&ndash;进度条&#45;&#45;end&ndash;&gt;
+                                <div class="price-bottom-r">
+                                    <button class="pin-tuan-n" data-productId="{{product.productId}}"
+                                            onclick="goBuying('{{product.productId}}')">马上买
+                                    </button>
+                                </div>
+                            </div>
+                            {{/if}}
+
+                        </div>
+                        {{/each}}
+                    </div>
+                    <ol class="button" id="lightButton" style="display: none">
+                        <li index="0">
+                        <li index="1">
+                        <li index="2">
+                        <li index="3">
+                        <li index="4">
+                    </ol>
+                    <nav>
+                        <span class="dg-prev"></span>
+                        <span class="dg-next"></span>
+                    </nav>
+                </section>
+
+
+            </script>
+            &lt;!&ndash;广告专区&#45;&#45;end&ndash;&gt;
+        </div>
+
+        <div class="topic-box">
+            <div class="topic-tit">
+                精选专题
+            </div>
+            <div class="tic-sto-box">
+            </div>
+        </div>-->
+
+        <div class="rec-bro">
+            <div class="bro-tit">猜你喜欢</div>
+            <div class="bro-sto-box"></div>
+            <script type="text/template" id="bro-sto-box">
+
+                {{each Products as k i}} {{if i
+                <4}}
+                <div class="bro-sto-left">
+                    <div class="bro-img">
+                        <a href="{{k.fightAloneTime !==null?'sto-detail-pd.html':'sto-detail.html'}}?id={{k.productId}}">
+                            <img src="{{k.productImg}}"/>
+                        </a>
+                    </div>
+                    <span class="bro-sto-nam">{{k.productName}}</span>
+                    <div class="bro-num-box">
+                        <span class="bro-sto-num">￥{{k.sellPrice}}</span>
+                        <span class="bro-sto-yj"><s>￥{{k.marketPrice}}</s></span>
+                        <span class="bro-sto-e"><big></big>广告金<span class="e-st">{{k.productEdian*k.fxparam}}</span></span>
+                    </div>
+                    {{if k.fightAloneTime !==null}}
+                    <div class="pt-bottom-box-h">
+                        <div class="price-bottom-l-h">
+                            <div class="price-b-l-first-h">￥<span>{{k.collagePrice}}</span></div>
+                            <div class="price-time-h"><span style="float: left;">距结束：</span>
+                                {{if k.fightAloneTime!==null}}
+                                <ul class="countdown-h countdown{{k.productId}}" data-clock="{{k.fightAloneTime}}">
+                                    <li style="display: none;">
+                                        <span class="days">00</span>
+                                    </li>
+                                    <li class="seperator" style="display: none;">.</li>
+                                    <li><span class="hours">00</span>
+                                    </li>
+                                    <li class="seperator">:</li>
+                                    <li><span class="minutes">00</span>
+                                    </li>
+                                    <li class="seperator">:</li>
+                                    <li><span class="seconds">00</span>
+                                    </li>
+                                </ul>
+                                {{/if}}
+                            </div>
+                        </div>
+                        <div class="price-bottom-m-h">
+                            <div class="price-time-loading-h">
+                                <div data-v-5d44c782="" class="status-bar-h">
+                                    <div data-v-5d44c782="" class="status-progress-h"></div>
+                                    <div data-v-5d44c782="" class="status-msg-h" data-total="{{k.fightAloneNumber}}"
+                                         data-last="{{k.areadFightAlone}}" id="myStatusLoading{{k.productId}}"
+                                         text="{{k.areadFightAlone}}/{{k.fightAloneNumber}}">
+                                        <!-- <div data-v-5d44c782="" class="status-num">10</div>
+                                         <span data-v-5d44c782="" class="status-soldrate">200</span>-->
+                                    </div>
+                                </div>
+                            </div>
+                            <button class="pin-tuan-h" data-productId="{{k.productId}}">马上拼</button>
+                        </div>
+                    </div>
+                    {{else}}
+                    <div class="bro-zy-box">
+                        {{if k.typed == 1}}
+                        <span class="bro-zy-num">自营</span>
+                        {{/if}}
+
+                        {{if k.shopName}}
+                        <span class="bro-zy-num-h">{{k.shopName}}</span>
+                        {{/if}}
+                        {{if k.productEdian!=0}}
+                        <span class="bro-sto-e-h"><span>{{k.productSales}}人付款</span></span>
+                        {{/if}}
+                    </div>
+                    {{/if}}
+                </div>
+                {{/if}} {{/each}}
+            </script>
+        </div>
+
+
+        <!--koudai--start-->
+        <!-- <div class="item1">
+             <div class="kodai">
+                 <img src="img/caifu/kd2.png" class="full"/>
+                 <img src="img/caifu/kd1.png" class="empty"/>
+             </div>
+             <div class="clipped-box">
+                 <img class="clipped" src="./img/caifu/jb1.png">
+                 <img class="clipped" src="./img/caifu/jb2.png">
+                 <img class="clipped" src="./img/caifu/jb3.png">
+                 <img class="clipped" src="./img/caifu/jb4.png">
+                 <img class="clipped" src="./img/caifu/jb5.png">
+                 <img class="clipped" src="./img/caifu/jb2.png">
+                 <img class="clipped" src="./img/caifu/jb3.png">
+                 <img class="clipped" src="./img/caifu/jb4.png">
+                 <img class="clipped" src="./img/caifu/jb5.png">
+                 <img class="clipped" src="./img/caifu/jb2.png">
+                 <img class="clipped" src="./img/caifu/jb3.png">
+                 <img class="clipped" src="./img/caifu/jb4.png">
+                 <img class="clipped" src="./img/caifu/jb5.png">
+                 <img class="clipped" src="./img/caifu/jb2.png">
+                 <img class="clipped" src="./img/caifu/jb3.png">
+                 <img class="clipped" src="./img/caifu/jb4.png">
+                 <img class="clipped" src="./img/caifu/jb5.png">
+                 <img class="clipped" src="./img/caifu/jb2.png">
+                 <img class="clipped" src="./img/caifu/jb3.png">
+                 <img class="clipped" src="./img/caifu/jb4.png">
+                 <img class="clipped" src="./img/caifu/jb5.png">
+                 <img class="clipped" src="./img/caifu/jb2.png">
+                 <img class="clipped" src="./img/caifu/jb3.png">
+                 <img class="clipped" src="./img/caifu/jb4.png">
+                 <img class="clipped" src="./img/caifu/jb5.png">
+
+             </div>
+         </div>-->
+        <!--<p id="html"></p>-->
+
+        <!--koudai--end-->
+
+    </div>
+    <footer>
+        <div class="hp-fot bor-top">
+            <div>
+                <img src="img/shouye-x.png" data-img="shouye"/>
+                <span class="hp-fot-st fot-cor">首页</span>
+            </div>
+            <div>
+                <a href="classify.html">
+                    <img src="img/fenlei.png" data-img="fenlei"/>
+                    <span class="hp-fot-st">分类</span>
+                </a>
+            </div>
+            <div>
+                <a href="off_line.html">
+                    <img src="img/fuli.png" data-img="xianxia"/>
+                    <span class="hp-fot-st">线下</span>
+                </a>
+
+            </div>
+            <div>
+                <a class="news">
+                    <img src="img/news.png" data-img="news"/>
+                    <span class="hp-fot-st">消息</span>
+                </a>
+
+            </div>
+            <!--<div>
+                <a class="weal-q">
+                    <img src="img/fuli.png" data-img="fuli" />
+                    <span class="hp-fot-st">福利</span>
+                </a>
+            </div>-->
+            <div>
+                <a class="my-center">
+                    <img src="img/wode.png" data-img="wode"/>
+                    <span class="hp-fot-st">我的</span>
+                </a>
+            </div>
+        </div>
+    </footer>
+</div>
+<script type="text/javascript">
+    !function ($$, b, i, s) {
+        b = $$('button');
+        i = b.length;
+        s = $$('style')[1];
+        while (i--)b[i].onclick = function () {
+            s.innerHTML = '.status-msg:after{width:' + this.innerHTML + '}';
+        };
+    }(function (i) {
+        return document.querySelectorAll(i)
+    });
+
+    function GetUrlParam2(paraName) {
+        var reg = new RegExp("(^|&)" + paraName + "=([^&]*)(&|$)", "i");
+        var r = window.location.search.substr(1).match(reg);
+        if (r != null) {
+            return decodeURIComponent(r[2]);
+//            alert('hehe' + decodeURIComponent(r[2]))
+        }
+        return null;
+    }
+
+    wx.miniProgram.getEnv(function(res) {
+        if(GetUrlParam2('openId')){
+//            alert('openID:' + GetUrlParam2('openId') + GetUrlParam('unionId'))
+            console.log('token:' + GetUrlParam('token'))
+            window.localStorage.setItem('token',GetUrlParam2('token'));
+            window.localStorage.setItem('zfopenid',GetUrlParam2('openId'));
+        }/*else{
+            debugger
+//            layer.msg('no---- openID')
+            var path = '/pages/index/index';
+            //通过JSSDK的api使小程序跳转到指定的小程序页面
+            wx.miniProgram.navigateTo({url: path});
+        }*/
+
+    })
+
+
+    $(function () {
+        // 获取分销ID和值
+        var fxIdData;
+         getFxId(function(res){
+          fxIdData = res;
+        });
+       /* var pageNoIndex = 1;
+        getAdsContent(pageNoIndex, 10);
+        var hbPouple = new hongbao(50,'petalbox');
+        //  获取广告
+        function getAdsContent(pageNoIndex, pageSize) {
+            //广告轮播数据
+            var params = {
+                token: localStorage.token,
+                pageNo: 1,
+                pageSize: pageSize
+            };
+            $.post(ajaxUrl + '/front/advertising/query', params, function (res) {
+                if (res.code == 200) {
+
+
+                    var html = template('dgAdTemplate', {adProducts: res.data});
+                    $('#adBannerId').html(html);
+
+                    var countDownArr=[];
+                    var timeRes = res.data;
+                    $.each(res.data, function (key, val) {
+                        countDownArr.push('countdown' + val.productId);
+                    });
+                    //倒计时
+                    countDownEventAd(countDownArr);
+                    // 广告图片
+                    $('#dg-container').carrousel({
+                        current: 0,
+                        autoplay: false,
+                        interval: 3000,
+                        timeOut: res.data[0].residenceTime,
+                        timeRangFetch: function () {
+                        },
+                        swiperCallback: function (timeOut, index, adObj, timer) {
+
+                            $('#petalbox').empty();
+                        console.log('index:  ' + index);
+                            if(index == 9){
+                            var pageNo = ++pageNoIndex;
+                                getAdsContent(pageNo,10);
+                            }
+                            var reward =$(adObj).find('.ad-head-box').next('input').val();
+                            var hasAdCoins = $(adObj).find('.ad-head-box').children().first().hasClass('coins-l-l');
+                            var currentAdId = adObj.find('input[type=hidden]').val();
+                            //用户开始滑动广告，且当用户停留在一个广告页面时，且超过60秒 才能发起请求获取广告费
+                            // 用户只要滑动广告就清除上一个定时器，启动下一个定时器，即刷新定时器
+                            // 用户切换广告块，停留超过规定时间60s 发起请求获取广告收入
+                            // 有赏金才可等待获取赏金
+                            if (hasAdCoins) {
+
+                                var timer = setTimeout(function () {
+                                    //获取广告赏金
+                                    $.post(ajaxUrl + '/front/advertising/success', {
+                                        token: localStorage.token,
+                                        id: currentAdId
+                                    }, function (res) {
+                                        if (res.code === 200) {
+                                            adObj.find('.coins-l-l').addClass('no-reward'); // 以获取赏金
+//                                            $('#getConinsNow').show();
+                                            // 成功获取赏金
+//                                            $('.item1 div.kodai').click();
+//                                            var hongbao = new hongbao(40,'petalbox');
+                                            hbPouple.init();
+                                            layer.open({
+                                                content: '获取赏金:' + reward
+                                                , skin: 'msg'
+                                                , time: 2 //2秒后自动关闭
+                                            });
+                                            // 调用原生播放声音
+                                            setupWebViewJavascriptBridge(function (bridge) {
+                                                bridge.callHandler('loadMusic', {}, function (resp) {
+
+                                                });
+                                            });
+                                        }else if(res.code == 300){
+//                                            $('.item1 div.kodai').click();
+
+                                        }else if(res.code == 201){
+
+                                        }
+                                    })
+                                }, timeRes[index].residenceTime * 1000);
+                                return timer;
+                            }
+                        }
+                    });
+
+                }
+            });
+
+        }*/
+        //判断用户登录过没有
+
+        //猜你喜欢
+        $.get(ajaxUrl + '/productsInfo/hotProduct', function (r) {
+            // 显示广告金
+            debugger
+            for(var i=0; i<r.Products.length; i++){
+                for(var j = 0; j< fxIdData.length; j++){
+                    if(r.Products[i].fxparam == fxIdData[j].id){
+                        r.Products[i].fxparam =fxIdData[j].mine;
+                    }
+                }
+
+            }
+            var html = template('bro-sto-box', r);
+            $('.bro-sto-box').html(html);
+            $('.bro-tit').show();
+
+            // 加载计时器
+            var countDownArr = [];
+            $.each(r.Products, function (key, val) {
+                countDownArr.push('countdown' + val.productId);
+            });
+            countDownEvent(countDownArr);
+
+        });
+        if (!localStorage.token) {
+            $('.nav-car-num').css('display', 'none');
+        } else {
+
+
+            //猜你喜欢
+            $.post(ajaxUrl + '/productsInfo/hotProduct', {
+                token: localStorage.token
+            },
+            function (r) {
+                for(var i=0; i<r.Products.length; i++){
+                    for(var j = 0; j< fxIdData.length; j++){
+                        if(r.Products[i].fxparam == fxIdData[j].id){
+                            r.Products[i].fxparam =fxIdData[j].mine;
+                        }
+                    }
+
+                }
+                var html = template('bro-sto-box', r);
+                $('.bro-sto-box').html(html);
+                $('.bro-tit').show();
+
+                // 加载计时器
+                var countDownArr = [];
+                $.each(r.Products, function (key, val) {
+                    countDownArr.push('countdown' + val.productId);
+                });
+
+                countDownEvent(countDownArr);
+
+            }
+
+        )
+            ;
+
+            //个人的购物数量
+            getInfo('post', ajaxUrl + '/productsInfo/cartCount?token=' + localStorage.token, {}, setcartCountHtml);
+
+            function setcartCountHtml(r) {
+                $('.nav-car-num').text(r.count);
+            };
+
+
+        }
+        //  m没有登录请求登录去
+        $('.nav-car img').click(function () {
+            if (!localStorage.token) {
+                location.href = 'login.html';
+            } else {
+                location.href = 'store.html';
+            }
+        });
+
+        function footClick(obj) {
+            $(obj).click(function () {
+                if (!localStorage.token) {
+                    $(this).attr('href', 'login.html');
+                } else {
+                    switch (obj) {
+                        case '.news':
+                            $(this).attr('href', 'news.html');
+                            break;
+                        case '.weal-q':
+                            $(this).attr('href', 'weal-q.html');
+                            break;
+                        case '.my-center':
+                            $(this).attr('href', 'my_center.html');
+                            break;
+                        default:
+                            break;
+                    }
+
+                }
+            });
+        }
+
+        footClick('.news');
+        footClick('.weal-q');
+        footClick('.my-center');
+
+        //轮播数据请求
+        getInfo('post', ajaxUrl + '/front/productSow/sowInfo', {
+            type: '1',
+            webType: 1
+        }, setCarouselHtml);
+
+        function setCarouselHtml(r) {
+            var html = '';
+            $.each(r.ProductSow, function (n, val) {
+//                html+='<li data-background=' + val.imgUrl + ' onclick="go + val.jumpUrl + "></li>';
+                html+='<li data-url='+val.jumpUrl+'  data-background=' + val.imgUrl + ' onclick="goNext(this)"></li>';
+//                html += "<li data-background=" + val.imgUrl + "></li>";
+            });
+            $('.hp-rk .aa ul').html(html);
+            $('.flicker-example').flicker();
+            /*轮播*/
+        }
+
+        //好物推荐
+        getInfo('post', ajaxUrl + '/productsInfo/goodProduct', {}, setGoodsRecomHtml);
+
+        function setGoodsRecomHtml(r) {
+            var html = '';
+            //console.log(r)
+            //
+            $.each(r.ProductsInfo, function (n, val) {
+                html += '<li class="rem-wp">' +
+                    '<div class="rem-img">' +
+                    '<a href=sto-detail.html?id=' + val.productId + '>' +
+                    '<img src="' + val.productImg + '"/></a>' +
+                    '</div>' +
+                    '<span class="rem-nam">' + val.productName + '</span>' +
+                    '<span class="rem-pay">' + '¥' + val.sellPrice + '</span>' +
+                    '</li>'
+            });
+            $('.rem-box').html(html);
+        }
+
+        //精选专题
+        getInfo('post', ajaxUrl + '/front/productSow/sowInfo', {
+            type: '2',
+            webType: 1
+        }, setSpecialHtml);
+
+        function setSpecialHtml(r) {
+            var html = '';
+            //					console.log('精选专题')
+            //					console.log(r)
+            $.each(r.ProductSow, function (n, val) {
+                html += '<a href=' + val.jumpUrl + '>' + '<div class="sto-img">' +
+                    '<img src=' + val.imgUrl + '>' +
+                    '</div></a>'
+            });
+            $('.tic-sto-box').html(html);
+        }
+
+        function toPercent(data) {
+            var strData = parseFloat(data) * 100;
+            var ret = strData.toString() + "%";
+            return ret;
+        }
+
+
+    });
+    //拼单购买
+    function goBuyPd(productId) {
+        window.location.href = "sto-detail-pd.html?id=" + productId;
+    }
+    //普通购买
+    function goBuying(productId) {
+        window.location.href = "sto-detail.html?id=" + productId;
+    }
+    function goAdDetail(url) {
+        window.location.href = url;
+    }
+    // 收藏
+
+    function scEvent(product_id, eventObj) {
+//            e.stopPropagation();//阻止事件冒泡到父元素
+
+        cancelBubble(eventObj);
+
+        if (!localStorage.token) {
+            location.href = 'login.html';
+        } else {
+            if ($(this).attr('data-se') == '1') {
+                $.post(ajaxUrl + '/front/clientProductLikes/addLikes', {
+                    productId: product_id,
+                    token: localStorage.token
+                }, function (r) {
+                    tip.flag(r.msg, 'success')
+                });
+                $('#sc').attr({
+                    'src': 'img/shouchang1.png',
+                    'data-se': '2'
+                });
+            } else {
+                $.post(ajaxUrl + '/front/clientProductLikes/deleteLikes', {
+                    Lid: product_id,
+                    token: localStorage.token
+                }, function (r) {
+                    tip.flag(r.msg, 'success')
+                });
+                $('#sc').attr({
+                    'src': 'img/shouchang.png',
+                    'data-se': '1'
+                });
+            }
+
+        }
+
+    }
+
+    function cancelBubble(eventObj) {
+        var evt = eventObj ? eventObj : window.event;
+        if (evt.stopPropagation) {        //W3C
+            evt.stopPropagation();
+        } else {       //IE
+            evt.cancelBubble = true;
+        }
+    }
+
+    // 倒计时
+    function countDownEventAd(countDownArr) {
+        for (var i = 0; i < countDownArr.length; i++) {
+
+            $('.' + countDownArr[i]).downCount({
+//                    date: '3/15/2018 00:00:00',
+                offset: +10,
+                loadingAdTiao: true
+            }, function () {
+                // alert('倒计时结束!');
+            });
+        }
+
+    }
+
+    // 倒计时
+    function countDownEvent(countDownArr) {
+
+        for (var i = 0; i < countDownArr.length; i++) {
+
+            $('.' + countDownArr[i]).downCount({
+//                    date: '3/15/2018 00:00:00',
+                offset: +10,
+                loadingTiao: true
+            }, function () {
+                // alert('倒计时结束!');
+            });
+        }
+
+    }
+    function animateButton(e) {
+
+        e.preventDefault;
+        //reset animation
+        e.target.classList.remove('animate');
+
+        e.target.classList.add('animate');
+        setTimeout(function(){
+            e.target.classList.remove('animate');
+        },700);
+    }
+
+    // 轮播图跳转
+    function goNext(obj) {
+        location.href=obj.getAttribute('data-url');
+    }
+</script>
+</body>
+
+</html>

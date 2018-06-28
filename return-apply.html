@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no" />
+		<title>退货申请</title>
+		<link rel="stylesheet" type="text/css" href="css/index.css" />
+		<link rel="stylesheet" type="text/css" href="css/hp.css" />
+		<script type="text/javascript" src="js/jquery-1.11.1.min.js"></script>
+		<script type="text/javascript" src="js/default.js"></script>
+		<style type="text/css">
+			.store-img {
+				margin-left: 10px;
+			}
+			
+			.store-rgt {
+				width: 66%;
+			}
+		</style>
+	</head>
+
+	<body>
+		<div class="container">
+			<header>
+				<div class="sto-nav-left">
+					<img src="img/fanhui.png" onclick="javascript:history.back(-1);" />
+				</div>
+				<div class="sto-nav-sear">
+					退换申请
+				</div>
+			</header>
+			<div class="content apl-pad-bot" id="detail-list" style="padding-bottom: 10px;">
+			</div>
+			<footer>
+				<input type="button" class="apl-btn" id="confirmRetreat" value="确定申请" />
+			</footer>
+		</div>
+		<script type="text/template" id="detail-list-con">
+
+			<div class="car-box">
+				<div class="store-box" data-shop="{{shop.shopId}}">
+					<div class="store-tit head-st">
+						<span class="store-nc">{{shop.shopName}}</span>
+					</div>
+					<ul class="head-st">
+						{{each orderProduct as list i}}
+						{{if list.detailId==selectPro}}
+						<li>
+							<div class="product-no">
+								<div class="store-img">
+									<a href="sto-detail.html?id={{list.productId}}">
+										<img src="{{list.productImg}}" />
+									</a>
+
+								</div>
+								<div class="store-rgt">
+									<p class="store-sp">{{list.productName}}</p>
+									<span class="store-cs" style="margin-top: 5px;">参数:{{each list.productSpecName as listA i}}
+										{{listA}}
+										{{/each}}
+									</span>
+
+									<div class="store-jg" style="margin-top: 2px;">
+										<span class="store-s">送</span>
+										<span class="store-s edian" id="productEdian">{{list.productEdian}}</span>
+										<span class="store-s">广告金</span>
+										<span class="store-zhi unit">￥</span><span class="store-zhi unit" id="productPrice">{{list.productPrice}}</span>
+									</div>
+									<div class="store-jia">
+										<input type="button" value="-" class="jian count" />
+										<input type="button" value="{{list.productCount-list.returnNumber}}" id="productCount" readonly="readonly" />
+										<input type="button" value="+" class="jia count" />
+									</div>
+								</div>
+							</div>
+						</li>
+						{{/if}}
+						{{/each}}
+					</ul>
+					<div class="order_tit">快递邮费 {{if order.orderExpfee==0}}
+						<div class="postage">卖家包邮</div>
+						{{else}}
+						<div class="postage">{{order.orderExpfee}}</div>
+						{{/if}}
+					</div>
+					<div class="store-tit head-st">
+						<span class="store-nc">店铺优惠</span>
+						<span class="apl-rgt apl-cora">¥{{order.orderDiscounted}}</span>
+					</div>
+					<div class="store-tit head-st">
+						<span class="store-nc">实付款</span>
+						<span class="apl-rgt apl-cora" id="orderMoney">¥0</span>
+					</div>
+					<div class="store-tit head-st">
+						<span class="store-nc">赠送广告金</span>
+						<span class="apl-rgt apl-cor" id="orderEdian">0</span>
+					</div>
+				</div>
+			</div>
+
+			<div class="store-tit bac-cor top10">
+				<span class="store-nc apl-cora">*退货说明</span>
+				<span class="bac-mon">预计退款：<span id="lessMoney">0</span></span>
+				<span class="sd-e">退还广告金：<span id="lessEdian">0</span></span>
+			</div>
+
+			<div class="store-box top10">
+				<div class="store-tit head-st">
+					<span class="store-nc">退换货操作:</span>
+					<select name="returnType" class="bac-sel" style="font-size: 14px;">
+						<option value="1">退货</option>
+						<option value="2">换货</option>
+					</select>
+				</div>
+				<div class="yc-reason">
+					<div class="res-left" style="font-size: 14px;">
+						退换原因：
+					</div>
+					<textarea class="res-rgt" maxlength="150" id="rebackReason"></textarea>
+				</div>
+			</div>
+
+			</div>
+		</script>
+		<script type="text/javascript" src="js/template.js"></script>
+		<script type="text/javascript" src="js/template-helper.js"></script>
+		<script>
+			var retreat = {
+				orderNo: GetUrlString('orderId'),
+				detailId: GetUrlString('detailId'),
+				number: '',
+				cause: ''
+			}
+			var commodity = {
+				eNum: "",
+				money: "",
+				count: ""
+			}
+			var params = {
+				orderId: retreat.orderNo
+			}
+			var datailId = retreat.detailId;
+			//页面初始化
+			$(function() {
+				getInfo("post", ajaxUrl + "/front/orders/orderDetails?token=" + token, params, detailReq);
+			});
+
+			function detailReq(r) { //初始化函数
+				r.data.selectPro=retreat.detailId;
+				var html = template("detail-list-con", r.data);
+				$("#detail-list").html(html);
+				for(var i = 0, max = r.data.orderProduct.length; i < max; i++) {
+					if(r.data.orderProduct[i].detailId == datailId) {
+						commodity.eNum = r.data.orderProduct[i].productEdian;
+						commodity.money = r.data.orderProduct[i].productPrice;
+						commodity.count = r.data.orderProduct[i].productCount - r.data.orderProduct[i].returnNumber;
+					}
+				}
+				$("#orderMoney").text("¥" + commodity.money * commodity.count);
+				$("#orderEdian").text(commodity.eNum * commodity.count);
+				$("#lessMoney").text("¥" + commodity.money * commodity.count);
+				$("#lessEdian").text(commodity.eNum * commodity.count);
+				$(".count").click(function() {
+					var showCount = $("#productCount");
+					var extant = parseInt(showCount.val());
+
+					var nowCount;
+					if(extant != 0) {
+
+						if($(this).hasClass("jia")) {
+							extant += 1;
+							nowCount = proving(commodity.count, extant);
+						} else if($(this).hasClass("jian")) {
+							extant -= 1;
+							nowCount = proving(commodity.count, extant);
+						}
+
+						showCount.val(nowCount);
+					}
+					else{
+						tip.flag('没有可退的了！', 'error');
+					}
+					$("#lessMoney").text("¥" + commodity.money * nowCount);
+					$("#lessEdian").text(commodity.eNum * nowCount);
+				});
+			}
+
+			function proving(total, extant) {
+				if(extant < 1) {
+					return 1;
+				} else if(extant > total) {
+					return total;
+				} else {
+					return extant;
+				}
+			}
+
+			$("#confirmRetreat").click(function() {
+				retreat.cause = $("#rebackReason").val().trim();
+				retreat.number = $("#productCount").val();
+				var type = $("select[name=returnType]").val();
+				if(retreat.cause == "") {
+					tip.flag('请填写退换原因！', 'error');
+				} else {
+					if(type == 1) {
+						getInfo("post", ajaxUrl + "/front/returnGoods/insertReturnGoods?token=" + token, retreat, backReq);
+					} else if(type == 2) {
+						getInfo("post", ajaxUrl + "/front/returnGoods/insertExchangeGoods?token=" + token, retreat, backReq);
+					}
+				}
+			});
+
+			function backReq(r) {
+				tip.flag('退换申请成功!', 'success');
+				setTimeout(function() {
+					window.location.href = "order-details.html?id=" + params.orderId;
+				}, 1000)
+			}
+		</script>
+	</body>
+
+</html>

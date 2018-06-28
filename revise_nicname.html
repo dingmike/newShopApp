@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>修改昵称</title>
+	<meta name="renderer" content="webkit">
+	<meta http-equiv="X-UA-Compatible" content="IE=11; IE=10; IE=9; IE=8; IE=7; IE=EDGE,Chrome=1">
+	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no" />
+	<link rel="stylesheet" href="css/login2.css">
+	<script src="js/jquery-1.11.1.min.js" type="text/javascript" charset="utf-8"></script>
+	<script src="js/default.js"></script>
+	<script src="js/template.js"></script>
+	<script src="js/template-helper.js"></script>
+	<style>
+		.input_box-span{background: none;}
+		.input_box-div3{width: 60%;}
+	</style>
+
+</head>
+<body>
+
+	<div class="arrow">
+	    <img src="img/Arrow.png" onclick="history.go(-1)">
+	</div>
+
+		<!--忘记密码-->
+		<div class="input_box">
+				<span class="notes-span1">
+		      		昵称修改
+		    </span>
+		    <div class="input_box-div">
+		        <input class="input_box-input setwer" type="text" size="22" />
+		    </div>
+			
+		</div>
+	    <div class="click">
+	        <span class="click-span-forget_password">保存</span>
+	    </div>
+	<script>
+		$(function(){
+			var arul = location.search;
+			var user =decodeURI(arul.split('=')[1]); 
+			$('.setwer').val(user);
+			console.log(user)
+			$('.click').click(function(){
+				var user = $('.setwer').val();
+				$.post(ajaxUrl+'/front/clients/ModifyUserInfo',{token:token,niceName:user},function(r){
+					tip.flag(r.msg,'success');
+					setTimeout(function(){
+						location.href='personal-data.html';
+					},1000)
+				})
+			});
+			
+		});
+	</script>
+</body>
+</html>

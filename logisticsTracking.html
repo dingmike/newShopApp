@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<meta name="renderer" content="webkit">
+		<meta content="yes" name="apple-mobile-web-app-capable"/>
+		<meta content="black" name="apple-mobile-web-app-status-bar-style" />
+		<meta content="telephone=no" name="format-detection"/>
+		<meta http-equiv="X-UA-Compatible" content="IE=11; IE=10; IE=9; IE=8; IE=7; IE=EDGE,Chrome=1">
+		<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no" />
+		<link rel="stylesheet" type="text/css" href="css/index.css"/>
+		<link rel="stylesheet" type="text/css" href="css/hp.css"/>
+		<script src="js/jquery-1.11.1.min.js" type="text/javascript" charset="utf-8"></script>
+		<script src="js/default.js"></script>
+		<script src="js/template.js"></script>
+		<script src="js/template-helper.js"></script>
+		<title></title>
+		<style type="text/css">
+			.flow-ul li{
+				height: auto;margin-top: 25px;
+			}
+		</style>
+
+	</head>
+	<body>
+		<div class="container">
+			<header class="head-st">
+				<div class="sto-nav-left">
+					<img src="img/fanhui.png" onclick="javascript:history.back(-1);"/>
+				</div>
+				<div class="sto-nav-sear">
+					物流详情
+				</div>
+			</header>
+			<div class="content">
+				<div class="logisti-tit head-st bac-cor">
+					详情
+				</div>
+				<div class="merchandise no-bom bac-cor"></div>
+				<script type="text/template" id="merchandise">
+					<div class="wddd_img order_img">
+						<img src="{{Img}}" alt="" />
+					</div>
+					<div class="logist-rig">
+						<span class="see-lc">物流状态：运输中</span>
+						<span class="see-lc">运单编号：{{date.showapi_res_body.mailNo}}</span>
+						<span class="see-lc">承运公司：{{date.showapi_res_body.expTextName}}</span>
+					</div>
+				</script>
+				<script type="text/template" id="merchandise2">
+					<!--<div class="wddd_img order_img">
+						<img src="{{Img}}" alt="" />
+					</div>-->
+					<div class="logist-rig">
+						<span class="see-lc">物流状态：运输中</span>
+						<span class="see-lc">运单编号：{{number}}</span>
+						<span class="see-lc">承运公司：{{company}}</span>
+					</div>
+				</script>
+
+
+				<div class="flow-xian"></div>
+				<ul class="flow-ul"></ul>
+
+			</div>
+		</div>
+		<script>
+			$(function(){
+				var orderId=GetUrlString('orderId');
+				// 判断是否是网易严选订单，物流不同
+				if(/^YX/.test(orderId)){
+                    YanxuanExpress();
+				}else{
+                    normalExpress();
+				}
+
+				function normalExpress(){
+                    var detailId=GetUrlString('detailId');
+                    $.post(ajaxUrl+'/front/returnGoods/Express',{token:token,orderId:orderId,detailId:detailId},function(r){
+                        var html = template('merchandise',r);
+                        $('.merchandise').html(html);
+                        var html2='';
+                        for(var i=r.date.showapi_res_body.data.length-1;i>=0;i--){
+                            html2+='<li><div class="flow-dian"></div><p class="ot-ku">'+
+                                r.date.showapi_res_body.data[i].context+'</p><p class="ot-tim">'+r.date.showapi_res_body.data[i].time+
+                                '</p></li>';
+                        }
+
+                        $('.flow-ul').html(html2);
+                        $(".flow-xian").height($('.flow-ul').height());
+                    },'json')
+				}
+
+				function YanxuanExpress() {
+                    var detailId=GetUrlString('detailId');
+                    $.post(ajaxUrl+'/channel/api/expressGet',{token:token,orderId:orderId,detailId:detailId},function(r){
+                       var result = JSON.parse(r.result)
+                        var html = template('merchandise2',result);
+                        $('.merchandise').html(html);
+                        var html2='';
+                        for(var i=result.content.length-1;i>=0;i--){
+                            html2+='<li><div class="flow-dian"></div><p class="ot-ku">'+
+                                result.content[i].desc+'</p><p class="ot-tim">'+result.content[i].time+
+                                '</p></li>';
+                        }
+                        $('.flow-ul').html(html2);
+                        $(".flow-xian").height($('.flow-ul').height());
+                    },'json')
+                }
+
+			});
+		</script>
+	</body>
+</html>

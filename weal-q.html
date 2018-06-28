@@ -1,0 +1,348 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no"/>
+    <link rel="stylesheet" type="text/css" href="css/index.css"/>
+    <link rel="stylesheet" type="text/css" href="css/hp.css"/>
+    <script type="text/javascript" src="js/jquery-1.11.1.min.js"></script>
+    <script type="text/javascript" src="js/default.js"></script>
+    <title></title>
+    <style type="text/css">
+        .wel-xq {
+            height: 22px;
+            width: 22px;
+            position: absolute;
+            top: 11px;
+            left: 12px;
+        }
+
+        .hq-num-box {
+            padding: 20px 14px;
+            display: flex;
+            background-color: white;
+        }
+
+        .hq-num-box div {
+            flex: 1;
+        }
+
+        .hq-num-box div span {
+            display: block;
+        }
+
+        .dj-sp {
+            font-size: 36px;
+            color: #ff5a3a;
+            text-indent: 5px;
+        }
+
+        .dj-ft {
+            color: #8e8e8e;
+            letter-spacing: 1.3px;
+            font-size: 13px;
+            text-indent: 5px;
+        }
+
+        .fl-ft {
+            letter-spacing: 1.8px;
+            color: #2b2b2b;
+            font-size: 18px;
+            line-height: 47px;
+        }
+
+        .fl-num {
+            letter-spacing: -0.8px;
+            color: #fe684b;
+            font-size: 10px;
+            line-height: 17px;
+        }
+
+        .item {
+            display: none;
+        }
+
+        .show {
+            display: block;
+        }
+
+        .current {
+            border-bottom: 2px solid #ff5c3b !important;
+        }
+
+        .own-tab {
+            border-bottom: 2px solid #fff;
+        }
+
+        .own-btn-mini {
+            width: 50px;
+            height: 29px;
+            margin: -8px 0;
+            background-color: #ff623c;
+            color: #fff;
+            font-weight: 500;
+            border-radius: 6px;
+        }
+
+        .own-team-tit {
+            margin-left: 10px;
+            color: #414141;
+            font-size: 14px;
+        }
+
+        .own-mg-l-un {
+            margin-left: 135px;
+            color: #ff623c;
+            font-weight: 600;
+        }
+
+        .own-mg-l {
+            margin-left: 100px;
+            color: #ff623c;
+            font-weight: 600;
+        }
+    </style>
+</head>
+<script type="text/javascript" src="js/ichart.js"></script>
+<script type='text/javascript'>
+
+</script>
+<body>
+<div class="container">
+    <div class="content">
+        <div class=" welfare-head">
+            <div class="welfare-tit">我的福利券/份:</div>
+            <div id="fuli-con">
+
+            </div>
+        </div>
+        <div class="change" id="ownTabs">
+            <input type="button" class="changein own-tab current" style="border-bottom: 2px solid #fff;"
+                   id="onlineWelfareId" title="tab1" value="线上福利券"/>
+            <input type="button" class="changeout own-tab" style="border-bottom: 2px solid #fff;" id="offlineWelfareId"
+                   title="tab2" value="线下福利券"/>
+            <!--		<input type="button" class="changein" id="changein" value="兑换" />
+                    <input type="button" class="changeout" id="changeout" value="兑出" />-->
+        </div>
+
+        <div id="ownContentId">
+            <!--线上福利券-->
+            <div id="tab1" class="own-tab-content">
+                <div class="back-w">
+                    <div class="form-tit">
+                        <img class="wel-xq" src="img/weal-xq.png"/>
+                        <span class="team-tit">福利券行情</span>
+                    </div>
+                </div>
+                <div class="hq-num-box">
+                    <div class="">
+                        <span class="dj-sp" id="currentValue">0</span>
+                        <span class="dj-ft">当前单价/元</span>
+                    </div>
+                    <div class="">
+                        <span class="fl-ft">福利券总量</span>
+                        <span class="fl-num" id="totalNum">0份</span>
+                    </div>
+                </div>
+            </div>
+
+            <div id="tab2" class="item own-tab-content">
+                <div class="back-w">
+                    <div class="form-tit">
+                        <img class="wel-xq" src="img/weal-xq.png"/>
+                        <span class="team-tit">福利券行情</span>
+                    </div>
+                </div>
+                <div class="hq-num-box">
+                    <div class="">
+                        <span class="dj-sp" id="currentValue2">0</span>
+                        <span class="dj-ft">当前单价/元</span>
+                    </div>
+                    <div class="">
+                        <span class="fl-ft">福利券总量</span>
+                        <span class="fl-num" id="totalNum2">0份</span>
+                    </div>
+                </div>
+            </div>
+
+            <!--线下福利券-->
+        </div>
+
+        <div class="back-w">
+            <div class="form-tit">
+                <span class="own-team-tit">我的e点</span>
+                <span class="own-mg-l-un" id="use-ePoint">303.00点</span>
+                <button class="rgt-img own-btn-mini" id="changein">兑换</button>
+            </div>
+            <div class="form-tit">
+                <span class="own-team-tit">建议兑出份数</span>
+                <span class="own-mg-l" id="myEFundNum">3132113份</span>
+                <button class="rgt-img own-btn-mini" id="changeout">兑出</button>
+            </div>
+        </div>
+
+        <div class="chang-go">
+            <div class="chang-go-tit">
+                <img class="chang-img" src="img/chang-img.png"/>
+                <span class="chang-tit-tex">本轮兑现</span>
+                <span class="chang-sy" id="nowCh-total">150份(约15元)</span>
+            </div>
+            <ul id="nowChange-list">
+
+            </ul>
+        </div>
+
+
+    </div>
+
+    <footer>
+        <div class="hp-fot bor-top">
+            <div>
+                <a href="index.html">
+                    <img src="img/shouye.png" data-img="shouye"/>
+                    <span class="hp-fot-st ">首页</span>
+                </a>
+
+            </div>
+            <div>
+                <a href="classify.html">
+                    <img src="img/fenlei.png" data-img="fenlei"/>
+                    <span class="hp-fot-st">分类</span>
+                </a>
+            </div>
+
+            <div>
+                <a href="news.html">
+                    <img src="img/news.png" data-img="news"/>
+                    <span class="hp-fot-st">消息</span>
+                </a>
+
+            </div>
+            <!--<div>
+                <a href="weal-q.html">
+                    <img src="img/fuli-x.png" data-img="fuli"/>
+                    <span class="hp-fot-st  fot-cor">福利</span>
+                </a>
+
+            </div>-->
+            <div>
+                <a href="my_center.html">
+                    <img src="img/wode.png" data-img="wode"/>
+                    <span class="hp-fot-st">我的</span>
+                </a>
+
+            </div>
+        </div>
+    </footer>
+</div>
+<script type="text/template" id="nowChange-con">
+    {{each data.buys as list i}}
+    <li>
+        <div class="chang-go-left">
+            <div class="chang-state">
+                状态：{{list.des}}
+            </div>
+            <span class="chang-time">时间：{{list.beginTime}}</span>
+        </div>
+        <div class="chang-go-rgt">
+            <div class="chang-one">
+                {{list.sellFundNum}}份 {{list.value}}元/份
+            </div>
+            <span class="chang-time">合计金额：{{list.totalValue}}元</span>
+        </div>
+    </li>
+    {{/each}}
+</script>
+<script type="text/template" id="fuli-con-detail">
+    <div class="welfare-remain">
+        {{myEFundNum||0}}
+    </div>
+    <div class="his-change">
+        <div class="change-in-num">
+            累计兑换: {{buyEFundNum || 0}}点
+        </div>
+        <div class="change-out-num">
+            累计兑出: {{sellMoney||0}}元
+        </div>
+    </div>
+</script>
+<script type="text/javascript" src="js/template.js"></script>
+<script type="text/javascript" src="js/template-helper.js"></script>
+<script>
+    var userId;
+    $(function () {
+        //初始化
+        getInfo("post", ajaxUrl + "/front/token/getUserId?token=" + token, {}, userIdReq);
+        $('.own-tab').click(function (e) {
+            e.preventDefault();
+            $('#ownTabs input').removeClass("current").removeClass("hoverItem");
+            $(this).addClass("current");
+            $("#ownContentId .own-tab-content").removeClass("show").addClass('item');
+            $('#' + $(this).attr('title')).addClass('show').removeClass('item');
+        });
+    });
+    function changeBenReq(obj, r) { //本轮兑出
+        var html = "<div class='footer_box detail' style='height: 135px;'>";
+        html += "<div class = 'no-more' >"
+        html += "<img src = 'img/icon-jiazaipng.png' />";
+        html += "<p > 没有了！！！ </p>";
+        html += "</div> </div>";
+        var length = r.data.buys.length;
+        if (length != 0) {
+            var html1 = template("nowChange-con", r);
+            $(obj).html(html1);
+        } else if (length == 0) {
+            $(obj).html(html);
+        }
+    }
+    function userIdReq(r) {
+        var userId = r.userId;
+        var params = {};
+        params.userId = userId;
+        params.id = userId;
+        getInfo("post", root + "/user/getBasePram", {userId: userId}, fuliReq);
+        getInfo("post", root + "/user/transParam", {userId: userId}, eReq);
+        getList("#nowChange-list", "post", root + "/user/selling", params, changeBenReq); //获取本轮兑出
+        getInfo("post", root + "/user/transParam", {
+            userId: userId
+        }, fuliReq);// e点基础数据
+    }
+
+    function fuliReq(r) {
+        var html = template("fuli-con-detail", r.data);
+        $("#fuli-con").html(html);
+        var Ecount = r.data.myEPoint;
+        var myEFundNum = r.data.myEFundNum
+        if (r.data.myEPoint == null || '' || undefined) {
+            Ecount = 0;
+            $("#use-ePoint").text(Ecount + ' 点');
+        } else {
+            $("#use-ePoint").text(Ecount + ' 点');
+        }
+        if (r.data.myEFundNum == null || '' || undefined) {
+            myEFundNum = 0;
+            $("#myEFundNum").text(myEFundNum + ' 份');
+        } else {
+            $("#myEFundNum").text(myEFundNum + ' 份');
+        }
+
+
+    }
+    function eReq(r) {
+        $("#currentValue").text(r.data.currentValue);
+        $("#totalNum").text(r.data.totalNum + "份（约" + r.data.totalNum * 0.3 + '元）');
+    }
+    $("#changein").click(function () {
+        location.href = "chang.html";
+    })
+    $("#changeout").click(function () {
+        location.href = "chang-out.html";
+    })
+
+
+</script>
+</body>
+
+</html>

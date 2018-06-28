@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no" />
+	<link rel="stylesheet" type="text/css" href="css/index.css" />
+	<!--<link rel="stylesheet" type="text/css" href="css/sto-sear.css"/>
+    <link rel="stylesheet" type="text/css" href="css/shp-car.css"/>
+    <link rel="stylesheet" type="text/css" href="css/cet.css"/>-->
+	<link rel="stylesheet" href="css/hp.css" />
+	<script src="js/jquery-1.11.1.min.js" type="text/javascript" charset="utf-8"></script>
+	<script type="text/javascript" src="js/default.js"></script>
+	<title></title>
+	<style type="text/css">
+
+	</style>
+
+</head>
+
+<body>
+<div class="container">
+	<header class="head-st">
+		<div class="sto-nav-left">
+			<img src="img/fanhui.png" onclick="location.href='my_center.html'" />
+		</div>
+		<div class="sto-nav-sear">
+			e点
+		</div>
+		<div class="nav-right" id="detailAll">
+			明细
+		</div>
+	</header>
+	<div class="content bac-cor">
+		<div class="chang-out-box">
+			<div class="curr-box">
+				<div class="curr-left">
+					<span class="curr-tit">可用e点：</span>
+					<span class="curr-num">0</span>
+					<input type="button" id="transfer" value="转账" />
+				</div>
+				<!--<div class="curr-right">
+					<span class="curr-tit">冻结e点：</span>
+					<span class="add-num">0</span>
+					<input type="button" id="eAsset" value="解锁" />
+				</div>-->
+			</div>
+		</div>
+		<a href="chang.html">
+            <div class="duihuan-box">
+                <img src="img/zic1.png" />
+                <span class="duihuan-p">e点转广告金</span>
+                <span class="duihuan-span">当前兑换比例1:10</span>
+            </div>
+        </a>
+	<!--	<a href="e-money.html">
+			<div class="duihuan-box">
+				<img src="img/zic.png" />
+				<span class="duihuan-p">余额兑换</span>
+				<span class="duihuan-span">当前兑换比例1:1</span>
+			</div>
+		</a>-->
+		<!--<div class="duihuan-box">
+            <img src="img/zic2.png" />
+            <span class="duihuan-p">消费积分兑换</span>
+            <span class="duihuan-span">当前兑换比例1:1</span>
+        </div>-->
+
+	</div>
+</div>
+<script type="text/javascript">
+    $(function() {
+        getInfo("post", ajaxUrl+"/front/clients/selectAssets?token=" + token, {
+            type: 1
+        }, getDetail)
+    });
+
+    function getDetail(r) {
+        $(".curr-num").text(r.edian);
+        $(".add-num").text(r.freezeAmount);
+    }
+
+    $("#detailAll").click(function(){
+        location.href="detail-all.html?type=1";
+    });
+
+    $("#transfer").click(function(){
+        location.href="transfer.html?type=1";
+    });
+
+    $("#eAsset").click(function(){
+        location.href="e-assets.html";
+    })
+</script>
+</body>
+
+</html>

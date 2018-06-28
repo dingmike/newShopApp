@@ -1,0 +1,903 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<meta name="renderer" content="webkit">
+		<meta http-equiv="X-UA-Compatible" content="IE=11; IE=10; IE=9; IE=8; IE=7; IE=EDGE,Chrome=1">
+		<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no" />
+		<link rel="stylesheet" type="text/css" href="css/index.css" />
+		<link rel="stylesheet" type="text/css" href="css/hp.css" />
+		<script src="js/jquery-1.11.1.min.js" type="text/javascript" charset="utf-8"></script>
+		<script src="js/default.js"></script>
+		<script src="js/template.js"></script>
+		<script src="js/template-helper.js"></script>
+		<title></title>
+		<style type="text/css">
+			.bod-top {
+				border-top: 1px solid #e5e5e5;
+			}
+			
+			.ret-sch-box {
+				overflow: hidden;
+				padding-bottom: 30px;
+			}
+			
+			.sch-lc-box {
+				overflow: hidden;
+				position: relative;
+				padding-top: 20px;
+			}
+			
+			.sch-lc-rgt {
+				overflow: hidden;
+				margin-left: 40px;
+				width: 260px;
+				background-color: white;
+				margin-top: 4px;
+			}
+			
+			.lc-tit {
+				height: 44px;
+				line-height: 44px;
+				text-align: center;
+				color: #595959;
+				font-size: 15px;
+				position: relative;
+			}
+			
+			.lc-nr {
+				padding: 15px;
+				overflow: hidden;
+				font-size: 12px;
+				color: #9b9b9b;
+			}
+			
+			.tel-num {
+				margin-top: 10px;
+			}
+			
+			.jh-map-tit {
+				display: block;
+				float: left;
+			}
+			
+			.jh-map {
+				display: block;
+				float: right;
+				width: 170px;
+			}
+			
+			.sta-tim {
+				color: #90a4ae;
+				font-size: 15px;
+				text-align: center;
+				line-height: 35px;
+			}
+			
+			.track {
+				position: absolute;
+				right: 15px;
+				border: 1px solid #ff5a3a;
+				color: #ff5a3a;
+				font-size: 10px;
+				height: 20px;
+				line-height: 20px;
+				padding: 0 5px;
+				border-radius: 12px;
+				top: 12px;
+			}
+			
+			.dan-num {
+				margin-top: 23px;
+			}
+			
+			.th-suc {
+				height: 44px;
+				line-height: 44px;
+				font-size: 15px;
+				text-align: center;
+				color: #29cf30;
+			}
+			
+			.sch-tim-box {
+				width: 50px;
+				position: absolute;
+				top: 15px;
+				left: 28px;
+			}
+			
+			.sch-tim-box img {
+				width: 100%;
+			}
+			
+			.lc-dian {
+				width: 5px;
+				height: 5px;
+				background-color: #90a4ae;
+				border-radius: 10px;
+				left: 18px;
+				position: absolute;
+				top: 21px;
+			}
+			
+			.lc-tip-tim {
+				display: block;
+				position: absolute;
+				font-size: 16px;
+				top: -3px;
+				right: -3px;
+				color: white;
+				transform: scale(0.5);
+			}
+		</style>
+		<script type="text/javascript">
+			$(function() {
+
+			});
+		</script>
+	</head>
+
+	<body>
+		<div class="container">
+			<header class="head-st">
+				<div class="sto-nav-left">
+					<img src="img/fanhui.png" onclick="javascript:history.back(-1);" />
+				</div>
+				<div class="sto-nav-sear">
+					换货进度
+				</div>
+			</header>
+			<div class="content">
+				<div class="logisti-tit head-st bac-cor">
+					换货详情
+				</div>
+				<div class="merchandise no-bom bac-cor"></div>
+				<script type="text/template" id="merchandise">
+					<div class="wddd_img order_img">
+						<img src="{{data.productImg}}" alt="" />
+					</div>
+					<div class="order_cot wddd-cot bod-no">
+						<div class="pro_tit">
+							{{data.productName}}
+						</div>
+						<div class="pro_par">
+							参数:{{each data.productSpecName as k i}} {{k}} {{/each}}
+						</div>
+						<div class="e_dian wddd-dian">
+							送{{data.productEdian}}e点
+						</div>
+						<div class="pro_price wddd-price">
+							<span>¥{{data.productPrice}}</span>
+							<span>x{{{{data.exchangeGoods.productCount}}</span>
+						</div>
+					</div>
+				</script>
+
+				<div class="logisti-tit bac-cor bod-top">
+					换货进度
+				</div>
+				<div class="flow-xian-h"></div>
+				<div class="ret-sch-box"></div>
+				<script type="text/template" id="ret-sch-box">
+
+					<!--审核-->
+					{{if data.exchangeGoods.type==1}}
+					<div class="sch-lc-box">
+						<div class="sch-tim-box">
+							<img src="img/tuihuo.png" />
+							<span class="lc-tip-tim">{{data.exchangeGoods.cTime2}}</span>
+						</div>
+						<div class="lc-dian"></div>
+						<div class="sch-lc-rgt">
+							<div class="lc-tit head-st">卖家审核中。。。</div>
+						</div>
+					</div>
+					<p class="sta-tim">{{data.exchangeGoods.cTime1}}</p>
+					{{/if}}
+					<!--审核-->
+					<!--同意-->
+					{{if data.exchangeGoods.type==2}}
+					<div class="sch-lc-box">
+						<div class="sch-tim-box">
+							<img src="img/tuihuo.png" />
+							<span class="lc-tip-tim">{{data.exchangeGoods.cTime2}}</span>
+						</div>
+						<div class="lc-dian"></div>
+						<div class="sch-lc-rgt">
+							<div class="lc-tit head-st">卖家审核中。。。</div>
+						</div>
+					</div>
+					<p class="sta-tim">{{data.exchangeGoods.cTime1}}</p>
+
+					<div class="sch-lc-box">
+						<div class="sch-tim-box">
+							<img src="img/tuihuo.png" />
+							<span class="lc-tip-tim">{{data.exchangeGoods.aTime2}}</span>
+						</div>
+						<div class="lc-dian"></div>
+						<div class="sch-lc-rgt">
+							<div class="lc-tit head-st">
+								卖家同意
+							</div>
+							<div class="lc-nr">
+								<p>收货人:{{data.exchangeGoods.peopleName}}</p>
+								<p class="tel-num">收货电话:{{data.exchangeGoods.peoplePhone}}</p>
+								<div class="tel-num">
+									<span class="jh-map-tit">收货地址:{{data.exchangeGoods.peopleAddress}}</span>
+
+								</div>
+								<div class="clear"></div>
+								<p class="tel-num">备注:{{data.exchangeGoods.peopleOther}}</p>
+							</div>
+						</div>
+					</div>
+					<p class="sta-tim">{{data.exchangeGoods.aTime1}}</p>
+
+					<div class="sch-lc-box">
+						<div class="sch-tim-box">
+							<img src="img/tuihuo.png" />
+							<span class="lc-tip-tim">{{data.exchangeGoods.aTime2}}</span>
+						</div>
+						<div class="lc-dian"></div>
+						<div class="sch-lc-rgt">
+							<div class="lc-tit head-st">
+								买家寄货
+								<a href="#" onclick="jihuo('{{data.exchangeGoods.id}}')">
+									<div class="track">确定添加</div>
+								</a>
+							</div>
+							<div class="lc-nr">
+
+								<div>
+									<span class="jh-map-tit">快递单号：</span>
+									<span class="jh-map">
+										<input type="number" id="expressNumber" placeholder="请填写寄送的物流单号"/>
+									</span>
+								</div>
+								<div class="dan-num" style="margin-top:28px ;">
+									<span class="jh-map-tit">快递名称：</span>
+									<span class="jh-map">
+										<select id="expressName" style="font-size: 12px;" maxlength="15" placeholder="请填写寄送的物流公司">
+											<option value="0">选择物流公司</option>
+										</select>
+									</span>
+								</div>
+							</div>
+						</div>
+					</div>
+					<p class="sta-tim">{{data.exchangeGoods.aTime1}}</p>
+					{{/if}}
+					<!--同意-->
+
+					<!--拒绝-->
+					{{if data.exchangeGoods.type==3}}
+					<div class="sch-lc-box">
+						<div class="sch-tim-box">
+							<img src="img/tuihuo.png" />
+							<span class="lc-tip-tim">{{data.exchangeGoods.cTime2}}</span>
+						</div>
+						<div class="lc-dian"></div>
+						<div class="sch-lc-rgt">
+							<div class="lc-tit head-st">卖家审核中。。。</div>
+						</div>
+					</div>
+					<p class="sta-tim">{{data.exchangeGoods.cTime1}}</p>
+
+					<div class="sch-lc-box">
+						<div class="sch-tim-box">
+							<img src="img/tuihuo.png" />
+							<span class="lc-tip-tim">{{data.exchangeGoods.aTime2}}</span>
+						</div>
+						<div class="lc-dian"></div>
+						<div class="sch-lc-rgt">
+							<div class="lc-tit head-st">卖家拒绝退货。。。</div>
+							<div class="lc-nr">
+								<span>拒绝原因：</span>
+								<span>{{data.exchangeGoods.refuseRemake}}   </span>
+							</div>
+						</div>
+					</div>
+					<p class="sta-tim">{{data.exchangeGoods.eTime1}}</p>
+					{{/if}}
+					<!--拒绝-->
+					<!--用户寄货-->
+					{{if data.exchangeGoods.type==4}}
+					<div class="sch-lc-box">
+						<div class="sch-tim-box">
+							<img src="img/tuihuo.png" />
+							<span class="lc-tip-tim">{{data.exchangeGoods.cTime2}}</span>
+						</div>
+						<div class="lc-dian"></div>
+						<div class="sch-lc-rgt">
+							<div class="lc-tit head-st">卖家审核中。。。</div>
+						</div>
+					</div>
+					<p class="sta-tim">{{data.exchangeGoods.cTime1}}</p>
+
+					<div class="sch-lc-box">
+						<div class="sch-tim-box">
+							<img src="img/tuihuo.png" />
+							<span class="lc-tip-tim">{{data.exchangeGoods.aTime2}}</span>
+						</div>
+						<div class="lc-dian"></div>
+						<div class="sch-lc-rgt">
+							<div class="lc-tit head-st">
+								卖家同意
+							</div>
+							<div class="lc-nr">
+								<p>收货人:{{data.exchangeGoods.peopleName}}</p>
+								<p class="tel-num">收货电话:{{data.exchangeGoods.peoplePhone}}</p>
+								<div class="tel-num">
+									<span class="jh-map-tit">收货地址:{{data.exchangeGoods.peopleAddress}}</span>
+
+								</div>
+								<div class="clear"></div>
+								<p class="tel-num">备注:{{data.exchangeGoods.peopleOther}}</p>
+							</div>
+						</div>
+					</div>
+					<p class="sta-tim">{{data.exchangeGoods.aTime1}}</p>
+
+					<div class="sch-lc-box">
+						<div class="sch-tim-box">
+							<img src="img/tuihuo.png" />
+							<span class="lc-tip-tim">{{data.exchangeGoods.clientExpressTime2}}</span>
+						</div>
+						<div class="lc-dian"></div>
+						<div class="sch-lc-rgt">
+							<div class="lc-tit head-st">
+								买家寄货
+								<a href="logisticsTracking.html?orderId={{data.exchangeGoods.orderId}}">
+									<div class="track">物流追踪</div>
+								</a>
+							</div>
+							<div class="lc-nr">
+								<div class="">
+									<span class="jh-map-tit">快递名称：</span>
+									<span class="jh-map">
+											{{data.exchangeGoods.clientExpressName}}
+										</span>
+								</div>
+								<div class="dan-num">
+									<span class="jh-map-tit">快递单号：</span>
+									<span class="jh-map">
+											{{data.exchangeGoods.clientExpressNumber}}
+										</span>
+								</div>
+							</div>
+						</div>
+					</div>
+					<p class="sta-tim">{{data.exchangeGoods.clientExpressTime1}}</p>
+					{{/if}}
+					<!--用户寄货-->
+
+					<!--店铺收货-->
+					{{if data.exchangeGoods.type==5}}
+					<div class="sch-lc-box">
+						<div class="sch-tim-box">
+							<img src="img/tuihuo.png" />
+							<span class="lc-tip-tim">{{data.exchangeGoods.cTime2}}</span>
+						</div>
+						<div class="lc-dian"></div>
+						<div class="sch-lc-rgt">
+							<div class="lc-tit head-st">卖家审核中。。。</div>
+						</div>
+					</div>
+					<p class="sta-tim">{{data.exchangeGoods.cTime1}}</p>
+
+					<div class="sch-lc-box">
+						<div class="sch-tim-box">
+							<img src="img/tuihuo.png" />
+							<span class="lc-tip-tim">{{data.exchangeGoods.aTime2}}</span>
+						</div>
+						<div class="lc-dian"></div>
+						<div class="sch-lc-rgt">
+							<div class="lc-tit head-st">
+								卖家同意
+							</div>
+							<div class="lc-nr">
+								<p>收货人:{{data.exchangeGoods.peopleName}}</p>
+								<p class="tel-num">收货电话:{{data.exchangeGoods.peoplePhone}}</p>
+								<div class="tel-num">
+									<span class="jh-map-tit">收货地址:{{data.exchangeGoods.peopleAddress}}</span>
+
+								</div>
+								<div class="clear"></div>
+								<p class="tel-num">备注:{{data.exchangeGoods.peopleOther}}</p>
+							</div>
+						</div>
+					</div>
+					<p class="sta-tim">{{data.exchangeGoods.aTime1}}</p>
+
+					<div class="sch-lc-box">
+						<div class="sch-tim-box">
+							<img src="img/tuihuo.png" />
+							<span class="lc-tip-tim">{{data.exchangeGoods.clientExpressTime2}}</span>
+						</div>
+						<div class="lc-dian"></div>
+						<div class="sch-lc-rgt">
+							<div class="lc-tit head-st">
+								买家寄货
+								<a href="logisticsTracking.html?orderId={{data.exchangeGoods.orderId}}">
+									<div class="track">物流追踪</div>
+								</a>
+
+							</div>
+							<div class="lc-nr">
+								<div class="">
+									<span class="jh-map-tit">快递名称：</span>
+									<span class="jh-map">
+											{{data.exchangeGoods.clientExpressName}}
+										</span>
+								</div>
+								<div class="dan-num">
+									<span class="jh-map-tit">快递单号：</span>
+									<span class="jh-map">
+											{{data.exchangeGoods.clientExpressNumber}}
+										</span>
+								</div>
+							</div>
+						</div>
+					</div>
+					<p class="sta-tim">{{data.exchangeGoods.clientExpressTime1}}</p>
+
+					<div class="sch-lc-box">
+						<div class="sch-tim-box">
+							<img src="img/tuihuo.png" />
+							<span class="lc-tip-tim">{{data.exchangeGoods.shopReceivedTime2}}</span>
+						</div>
+						<div class="lc-dian"></div>
+						<div class="sch-lc-rgt">
+							<div class="lc-tit head-st">
+								卖家确认-已收货
+							</div>
+						</div>
+					</div>
+					<p class="sta-tim">{{data.exchangeGoods.shopReceivedTime1}}</p>
+					{{/if}}
+					<!--店铺收货-->
+
+					<!--店铺发货-->
+					{{if data.exchangeGoods.type==6}}
+					<div class="sch-lc-box">
+						<div class="sch-tim-box">
+							<img src="img/tuihuo.png" />
+							<span class="lc-tip-tim">{{data.exchangeGoods.cTime2}}</span>
+						</div>
+						<div class="lc-dian"></div>
+						<div class="sch-lc-rgt">
+							<div class="lc-tit head-st">卖家审核中。。。</div>
+						</div>
+					</div>
+					<p class="sta-tim">{{data.exchangeGoods.cTime1}}</p>
+
+					<div class="sch-lc-box">
+						<div class="sch-tim-box">
+							<img src="img/tuihuo.png" />
+							<span class="lc-tip-tim">{{data.exchangeGoods.aTime2}}</span>
+						</div>
+						<div class="lc-dian"></div>
+						<div class="sch-lc-rgt">
+							<div class="lc-tit head-st">
+								卖家同意
+							</div>
+							<div class="lc-nr">
+								<p>收货人:{{data.exchangeGoods.peopleName}}</p>
+								<p class="tel-num">收货电话:{{data.exchangeGoods.peoplePhone}}</p>
+								<div class="tel-num">
+									<span class="jh-map-tit">收货地址:{{data.exchangeGoods.peopleAddress}}</span>
+
+								</div>
+								<div class="clear"></div>
+								<p class="tel-num">备注:{{data.exchangeGoods.peopleOther}}</p>
+							</div>
+						</div>
+					</div>
+					<p class="sta-tim">{{data.exchangeGoods.aTime1}}</p>
+
+					<div class="sch-lc-box">
+						<div class="sch-tim-box">
+							<img src="img/tuihuo.png" />
+							<span class="lc-tip-tim">{{data.exchangeGoods.clientExpressTime2}}</span>
+						</div>
+						<div class="lc-dian"></div>
+						<div class="sch-lc-rgt">
+							<div class="lc-tit head-st">
+								买家寄货
+								<a href="logisticsTracking.html?orderId={{data.exchangeGoods.orderId}}">
+									<div class="track">物流追踪</div>
+								</a>
+
+							</div>
+							<div class="lc-nr">
+								<div class="">
+									<span class="jh-map-tit">快递名称：</span>
+									<span class="jh-map">
+											{{data.exchangeGoods.clientExpressName}}
+										</span>
+								</div>
+								<div class="dan-num">
+									<span class="jh-map-tit">快递单号：</span>
+									<span class="jh-map">
+											{{data.exchangeGoods.clientExpressNumber}}
+										</span>
+								</div>
+							</div>
+						</div>
+					</div>
+					<p class="sta-tim">{{data.exchangeGoods.clientExpressTime1}}</p>
+
+					<div class="sch-lc-box">
+						<div class="sch-tim-box">
+							<img src="img/tuihuo.png" />
+							<span class="lc-tip-tim">{{data.exchangeGoods.shopReceivedTime2}}</span>
+						</div>
+						<div class="lc-dian"></div>
+						<div class="sch-lc-rgt">
+							<div class="lc-tit head-st">
+								卖家确认-已收货
+							</div>
+						</div>
+					</div>
+					<p class="sta-tim">{{data.exchangeGoods.shopReceivedTime1}}</p>
+
+					<div class="sch-lc-box">
+						<div class="sch-tim-box">
+							<img src="img/tuihuo.png" />
+							<span class="lc-tip-tim">{{data.exchangeGoods.shopExpressTime2}}</span>
+						</div>
+						<div class="lc-dian"></div>
+						<div class="sch-lc-rgt">
+							<div class="lc-tit head-st">
+								卖家寄货
+								<a href="logisticsTracking.html?orderId={{data.exchangeGoods.orderId}}">
+									<div class="track">物流追踪</div>
+								</a>
+
+							</div>
+							<div class="lc-nr">
+								<div class="">
+									<span class="jh-map-tit">快递名称：</span>
+									<span class="jh-map">
+											{{data.exchangeGoods.shopExpressName}}
+										</span>
+								</div>
+								<div class="dan-num">
+									<span class="jh-map-tit">快递单号：</span>
+									<span class="jh-map">
+											{{data.exchangeGoods.shopExpressNumber}}
+										</span>
+								</div>
+							</div>
+						</div>
+					</div>
+					<p class="sta-tim">{{data.exchangeGoods.shopExpressTime1}}</p>
+					<div class="sch-lc-box">
+						<div class="sch-tim-box">
+							<img src="img/tuihuo.png" />
+							<span class="lc-tip-tim">{{data.exchangeGoods.clientReceivedTime2}}</span>
+						</div>
+						<div class="lc-dian"></div>
+						<div class="sch-lc-rgt">
+							<div class="lc-tit head-st">
+								买家确认收货
+							</div>
+							<div class="lc-nr">
+								<div style="width: 100%;">
+									<a href="#" style="text-align: center;" onclick="shouHuo('{{data.exchangeGoods.orderId}}')">
+										<div class="track" style="width:60px;position: relative;right: 0;top: 0;margin: 0 auto;">确定收货</div>
+									</a>
+								</div>
+							</div>
+						</div>
+					</div>
+					<p class="sta-tim">{{data.exchangeGoods.clientReceivedTime1}}</p>
+					{{/if}}
+					<!--店铺发货-->
+
+					<!--买家收货完成-->
+					{{if data.exchangeGoods.type==7}}
+					<div class="sch-lc-box">
+						<div class="sch-tim-box">
+							<img src="img/tuihuo.png" />
+							<span class="lc-tip-tim">{{data.exchangeGoods.cTime2}}</span>
+						</div>
+						<div class="lc-dian"></div>
+						<div class="sch-lc-rgt">
+							<div class="lc-tit head-st">卖家审核中。。。</div>
+						</div>
+					</div>
+					<p class="sta-tim">{{data.exchangeGoods.cTime1}}</p>
+
+					<div class="sch-lc-box">
+						<div class="sch-tim-box">
+							<img src="img/tuihuo.png" />
+							<span class="lc-tip-tim">{{data.exchangeGoods.aTime2}}</span>
+						</div>
+						<div class="lc-dian"></div>
+						<div class="sch-lc-rgt">
+							<div class="lc-tit head-st">
+								卖家同意
+							</div>
+							<div class="lc-nr">
+								<p>收货人:{{data.exchangeGoods.peopleName}}</p>
+								<p class="tel-num">收货电话:{{data.exchangeGoods.peoplePhone}}</p>
+								<div class="tel-num">
+									<span class="jh-map-tit">收货地址:{{data.exchangeGoods.peopleAddress}}</span>
+
+								</div>
+								<div class="clear"></div>
+								<p class="tel-num">备注:{{data.exchangeGoods.peopleOther}}</p>
+							</div>
+						</div>
+					</div>
+					<p class="sta-tim">{{data.exchangeGoods.aTime1}}</p>
+
+					<div class="sch-lc-box">
+						<div class="sch-tim-box">
+							<img src="img/tuihuo.png" />
+							<span class="lc-tip-tim">{{data.exchangeGoods.clientExpressTime2}}</span>
+						</div>
+						<div class="lc-dian"></div>
+						<div class="sch-lc-rgt">
+							<div class="lc-tit head-st">
+								买家寄货
+								<a href="logisticsTracking.html?orderId={{data.exchangeGoods.orderId}}">
+									<div class="track">物流追踪</div>
+								</a>
+
+							</div>
+							<div class="lc-nr">
+								<div class="">
+									<span class="jh-map-tit">快递名称：</span>
+									<span class="jh-map">
+											{{data.exchangeGoods.clientExpressName}}
+										</span>
+								</div>
+								<div class="dan-num">
+									<span class="jh-map-tit">快递单号：</span>
+									<span class="jh-map">
+											{{data.exchangeGoods.clientExpressNumber}}
+										</span>
+								</div>
+							</div>
+						</div>
+					</div>
+					<p class="sta-tim">{{data.exchangeGoods.clientExpressTime1}}</p>
+
+					<div class="sch-lc-box">
+						<div class="sch-tim-box">
+							<img src="img/tuihuo.png" />
+							<span class="lc-tip-tim">{{data.exchangeGoods.shopReceivedTime2}}</span>
+						</div>
+						<div class="lc-dian"></div>
+						<div class="sch-lc-rgt">
+							<div class="lc-tit head-st">
+								卖家确认-已收货
+							</div>
+						</div>
+					</div>
+					<p class="sta-tim">{{data.exchangeGoods.shopReceivedTime1}}</p>
+
+					<div class="sch-lc-box">
+						<div class="sch-tim-box">
+							<img src="img/tuihuo.png" />
+							<span class="lc-tip-tim">{{data.exchangeGoods.shopExpressTime2}}</span>
+						</div>
+						<div class="lc-dian"></div>
+						<div class="sch-lc-rgt">
+							<div class="lc-tit head-st">
+								卖家寄货
+								<a href="logisticsTracking.html?orderId={{data.exchangeGoods.orderId}}">
+									<div class="track">物流追踪</div>
+								</a>
+
+							</div>
+							<div class="lc-nr">
+								<div class="">
+									<span class="jh-map-tit">快递名称：</span>
+									<span class="jh-map">
+											{{data.exchangeGoods.shopExpressName}}
+										</span>
+								</div>
+								<div class="dan-num">
+									<span class="jh-map-tit">快递单号：</span>
+									<span class="jh-map">
+											{{data.exchangeGoods.shopExpressNumber}}
+										</span>
+								</div>
+							</div>
+						</div>
+					</div>
+					<p class="sta-tim">{{data.exchangeGoods.shopExpressTime1}}</p>
+
+					<div class="sch-lc-box">
+						<div class="sch-tim-box">
+							<img src="img/tuihuo.png" />
+							<span class="lc-tip-tim">{{data.exchangeGoods.clientReceivedTime2}}</span>
+						</div>
+						<div class="lc-dian"></div>
+						<div class="sch-lc-rgt">
+							<div class="lc-tit head-st">
+								买家确认-已收货
+							</div>
+						</div>
+					</div>
+					<p class="sta-tim">{{data.exchangeGoods.clientReceivedTime1}}</p>
+
+					<div class="sch-lc-box">
+						<div class="sch-tim-box">
+							<img src="img/tuihuo.png" />
+							<span class="lc-tip-tim">{{data.exchangeGoods.eTime2}}</span>
+						</div>
+						<div class="lc-dian"></div>
+						<div class="sch-lc-rgt">
+							<div class="lc-tit head-st">
+								订单完成-赠送E点到账
+							</div>
+							<div class="lc-nr">
+								<p>赠送E点：{{data.productEdian}}</p>
+								<div class="">
+									<span class="jh-map-tit">到账时间：</span>
+									<span class="jh-map">
+										{{data.exchangeGoods.eTime1}}
+										</span>
+								</div>
+								<div class="clear"></div>
+							</div>
+						</div>
+					</div>
+
+					<div class="sch-lc-box">
+						<div class="sch-tim-box">
+							<img src="img/tuihuo.png" />
+							<span class="lc-tip-tim">{{data.exchangeGoods.eTime2}}</span>
+						</div>
+						<div class="lc-dian"></div>
+						<div class="sch-lc-rgt th-suc">
+							换货成功
+						</div>
+					</div>
+					<p class="sta-tim">{{data.exchangeGoods.eTime1}}</p>
+					{{/if}}
+					<!--完成-->
+				</script>
+			</div>
+		</div>
+		<script>
+			$(function() {
+				var id = GetUrlString('id');
+
+				function formatDateTime1(date) {
+					var y = date.getFullYear();
+					var m = date.getMonth() + 1;
+					m = m < 10 ? ('0' + m) : m;
+					var d = date.getDate();
+					d = d < 10 ? ('0' + d) : d;
+					var h = date.getHours();
+					h = h < 10 ? ('0' + h) : h;
+					var minute = date.getMinutes();
+					minute = minute < 10 ? ('0' + minute) : minute;
+					var second = date.getSeconds();
+					second = second < 10 ? ('0' + second) : second;
+					return y + '/' + m + '/' + d; //+ ' ' + h + ':' + minute
+				}
+
+				function formatDateTime2(date) {
+					var y = date.getFullYear();
+					var m = date.getMonth() + 1;
+					m = m < 10 ? ('0' + m) : m;
+					var d = date.getDate();
+					d = d < 10 ? ('0' + d) : d;
+					var h = date.getHours();
+					h = h < 10 ? ('0' + h) : h;
+					var minute = date.getMinutes();
+					minute = minute < 10 ? ('0' + minute) : minute;
+					var second = date.getSeconds();
+					second = second < 10 ? ('0' + second) : second;
+					return h + ':' + minute;
+				}
+				$.post(ajaxUrl + '/front/returnGoods/progressExchangeGoods', {
+					token: token,
+					id: id
+				}, function(r) {
+					console.log(r)
+
+					r.data.exchangeGoods.cTime1 = formatDateTime1(new Date(r.data.exchangeGoods.createTime));
+					r.data.exchangeGoods.cTime2 = formatDateTime2(new Date(r.data.exchangeGoods.createTime));
+
+					r.data.exchangeGoods.aTime1 = formatDateTime1(new Date(r.data.exchangeGoods.agreedTime));
+					r.data.exchangeGoods.aTime2 = formatDateTime2(new Date(r.data.exchangeGoods.agreedTime));
+
+					r.data.exchangeGoods.eTime1 = formatDateTime1(new Date(r.data.exchangeGoods.endTime));
+					r.data.exchangeGoods.eTime2 = formatDateTime2(new Date(r.data.exchangeGoods.endTime));
+
+					r.data.exchangeGoods.expressTime1 = formatDateTime1(new Date(r.data.exchangeGoods.expressTime));
+					r.data.exchangeGoods.expressTime2 = formatDateTime2(new Date(r.data.exchangeGoods.expressTime));
+
+					//用户寄货时间
+					r.data.exchangeGoods.clientExpressTime1 = formatDateTime1(new Date(r.data.exchangeGoods.clientExpressTime));
+					r.data.exchangeGoods.clientExpressTime2 = formatDateTime2(new Date(r.data.exchangeGoods.clientExpressTime));
+
+					//店家收货时间
+					r.data.exchangeGoods.shopReceivedTime1 = formatDateTime1(new Date(r.data.exchangeGoods.shopReceivedTime));
+					r.data.exchangeGoods.shopReceivedTime2 = formatDateTime2(new Date(r.data.exchangeGoods.shopReceivedTime));
+
+					//店家寄货时间
+					r.data.exchangeGoods.shopExpressTime1 = formatDateTime1(new Date(r.data.exchangeGoods.shopExpressTime));
+					r.data.exchangeGoods.shopExpressTime2 = formatDateTime2(new Date(r.data.exchangeGoods.shopExpressTime));
+
+					//买家收货时间
+					r.data.exchangeGoods.clientReceivedTime1 = formatDateTime1(new Date(r.data.exchangeGoods.clientReceivedTime));
+					r.data.exchangeGoods.clientReceivedTime2 = formatDateTime2(new Date(r.data.exchangeGoods.clientReceivedTime));
+					if(r.data.exchangeGoods.shopAddress!=null){
+						var shopAddress = r.data.exchangeGoods.shopAddress.split(';')
+						r.data.exchangeGoods.peopleName = shopAddress[1];
+						r.data.exchangeGoods.peoplePhone = shopAddress[2];
+						r.data.exchangeGoods.peopleAddress = shopAddress[3] + shopAddress[0];
+						r.data.exchangeGoods.peopleOther = shopAddress[4];
+					}
+					
+
+					var html1 = template('merchandise', r);
+					$('.merchandise').html(html1);
+					var html2 = template('ret-sch-box', r);
+					$('.ret-sch-box').html(html2);
+					$(".flow-xian-h").height($('.ret-sch-box').height());
+					
+					$("#expressNumber").blur(function() { //发货运单显示快递公司
+						getInfo("post", ajaxUrl + "/orders/fetchCom", {
+							nu: $(this).val()
+						}, function(r) {
+							r.fetchCom = JSON.parse(r.fetchCom);
+							$("#expressName").html("");
+							for(var i = 0, max = r.fetchCom.showapi_res_body.data.length; i < max; i++) {
+
+								$("#expressName").append("<option value='" + r.fetchCom.showapi_res_body.data[i].expName + "'>" + r.fetchCom.showapi_res_body.data[i].expName + "</option>");
+							}
+						});
+					})
+				}, 'json')
+			});
+
+			function jihuo(id) {
+				var expressName = $("#expressName").val().trim();
+				var expressNumber = $("#expressNumber").val().trim();
+				if(expressName == "") {
+					tip.flag('请填写快递公司！', 'error');
+					return
+				} else if(expressNumber == "") {
+					tip.flag('请填写快递单号！', 'error');
+					return
+				} else {
+					var params = {
+						expressName: expressName,
+						expressNumber: expressNumber,
+						id: id
+					}
+					getInfo("post", ajaxUrl + "/front/returnGoods/mailExchangeGoods?token=" + token, params, jihuoReq)
+				}
+			}
+			
+			
+
+			function jihuoReq(r) {
+				tip.flag('寄货成功！', 'success');
+				setTimeout(function() {
+					location.reload();
+				}, 1000)
+			}
+			
+			function shouHuo(id){
+				getInfo("post", ajaxUrl + "/front/orders/Receive?token=" + token, {orderId:id}, function(r){
+					tip.flag('收货成功！', 'success');
+					setTimeout(function() {
+					location.reload();
+				}, 1000)
+				})
+			}
+		</script>
+	</body>
+
+</html>

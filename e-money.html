@@ -1,0 +1,270 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport"
+		  content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no"/>
+	<link rel="stylesheet" type="text/css" href="css/index.css"/>
+	<link rel="stylesheet" type="text/css" href="css/hp.css"/>
+	<link rel="stylesheet" href="css/yddemo.css"/>
+	<link rel="stylesheet" href="css/ydui.css"/>
+	<script src="js/jquery-1.11.1.min.js" type="text/javascript" charset="utf-8"></script>
+	<script type="text/javascript" src="js/default.js"></script>
+	<script type="text/javascript" src="js/ydui.js"></script>
+	<script type="text/javascript" src="js/ydui.flexible.js"></script>
+	<title></title>
+	<style type="text/css">
+		.ma-hen {
+			width: calc(100% - 20px);
+			margin: auto;
+			border-bottom: 1px solid #E5E5E5;
+		}
+
+		.quan-hen {
+			width: 100%;
+			border-bottom: 1px solid #E5E5E5;
+		}
+
+		.cge-tip {
+			display: none;
+		}
+
+		/*safe input*/
+
+		.box-password {
+			font-size: 16px;
+		}
+
+		.second-cge {
+			width: 210px;
+		}
+
+		.second-sto {
+			width: 100%;
+			float: none;
+		}
+
+		.g-scrollview {
+			display: none;
+			height: auto;
+		}
+
+		.m-loading {
+			border-radius: 4px;
+			color: #FFF;
+			background-color: rgba(40, 40, 40, 0.8);
+			-webkit-animation: zoomIn .1s ease forwards;
+			animation: zoomIn .1s ease forwards;
+			display: -webkit-box;
+			display: -webkit-flex;
+			display: -ms-flexbox;
+			display: flex;
+			-webkit-box-align: center;
+			-webkit-align-items: center;
+			-ms-flex-align: center;
+			align-items: center;
+			padding: 0 23px 0 24px;
+			height: 48px;
+			width: 50%;
+			position: absolute;
+			left: 24%;
+			top: 42px;
+			display: none;
+		}
+
+		.m-loading .loading-icon {
+			width: 28px;
+			height: 28px;
+			background: url(img/scroll.png) no-repeat;
+			background-size: 28px 28px;
+			-webkit-animation: rotate-loading 0.45s linear forwards infinite;
+			animation: rotate-loading 0.45s linear forwards infinite;
+			margin-right: 10px;
+		}
+
+		.m-loading .loading-txt {
+			font-size: 15px;
+			color: #FFF;
+			max-width: 140px;
+			overflow: hidden;
+			white-space: nowrap;
+			text-overflow: ellipsis;
+		}
+	</style>
+</head>
+<body>
+<div class="container">
+	<header class="bod-show">
+		<img class="nav-left" src="img/fanhui.png" onclick="javascript:history.back(-1)"/>
+		e点转余额
+	</header>
+
+	<div class="content">
+		<div class="change-mon ma-top">
+			<div class="sur">
+				<span class="sur-left">剩余e点：<span id="sy-e">0</span></span>
+				<span class="sur-rgt">全部兑换</span>
+			</div>
+			<div class="quan-hen"></div>
+			<p class="use-tit">使用e点：</p>
+			<input type="text" placeholder="0.00" autocomplete="off" class="e-num ipt"/>
+			<div class="ma-hen"></div>
+			<div class="sur">
+				<span class="sur-left">当前兑换比率：<span class="blue">1:1</span></span>
+			</div>
+		</div>
+		<p class="cge-tip">剩余e点不足，无法兑换</p>
+		<div class="qr-btn">
+			<button class="qr-cge">确认兑换</button>
+		</div>
+
+	</div>
+	<!--输入密码-->
+	<section class="g-scrollview">
+
+		<!--<aside class="demo-tip">
+                <p>该插件暂不支持Data API方式调用，Javascript API方式包含下列方法和事件：</p>
+                <p>1. [open]：打开键盘方法</p>
+                <p>2. [close]：关闭键盘方法</p>
+                <p>3. [done.ydui.keyboard]：六位密码输入完毕后执行</p>
+            </aside>-->
+
+		<!--<div class="m-button demo-pitch">
+                <a href="javascript:;" class="btn-block btn-primary" id="J_OpenKeyBoard">打开</a>
+            </div>-->
+
+		<div class="m-keyboard" id="J_KeyBoard">
+			<div class="m-loading">
+				<div class="loading-icon">
+				</div>
+				<div class="loading-txt">验证支付密码</div>
+			</div>
+
+			<!-- 自定义内容区域 -->
+			<div style="text-align: right;padding: .15rem .8rem 0;">
+				<a href="" style="color: #666;font-size: .24rem;">忘记密码</a>
+			</div>
+			<!-- 自定义内容区域 -->
+		</div>
+	</section>
+</div>
+
+<script type="text/javascript">
+    //个人资料
+
+    $(document).ready(function () {
+        var totalEpoint = 0;
+        var status = setTimeout('getvalue()', 0);
+		/*当输入框大于1的时候*/
+
+        $.post(ajaxUrl + '/front/clients/userInfo', {token: token}, function (r) {
+            console.log(r);
+            $("#sy-e").html(r.user.ePoint);
+            totalEpoint = r.user.ePoint;
+        });
+
+
+        !function ($, ydui) {
+            //密码支付
+            var dialog = ydui.dialog;
+            var $keyboard = $('#J_KeyBoard');
+            // 初始化参数
+            $keyboard.keyBoard({
+                disorder: false, // 是否打乱数字顺序
+                title: '帆恒安全键盘' // 显示标题
+            });
+            //输入密码  成功后的操作
+            function payInputPassWord() {
+                $('.g-scrollview').css('display', 'block');
+                $keyboard.keyBoard('open');
+                // 六位密码输入完毕后执行
+                $keyboard.on('done.ydui.keyboard', function (ret) {
+                    var data = {
+                        token: token,
+                        ePoint: $('.e-num').val(),
+                        payPassword: ret.password
+                    };
+                    $.post(ajaxUrl + '/front/XtUserInfo/updateEpoint', data, function (data) {
+                        $('.m-loading').css('display', 'flex');
+                        if (data.code == 300) {
+                            // 模拟AJAX校验密码
+                            setTimeout(function () {
+                                // 关闭请求中提示框
+                                $('.m-loading').css('display', 'none');
+                                // 显示错误信息
+                                $keyboard.keyBoard('error', r.msg);
+                            }, 1500);
+                            // 关闭键盘
+                            // $keyboard.keyBoard('close');
+                        } else {
+                            setTimeout(function() {
+                                // 关闭请求中提示框
+                                $('.m-loading').css('display', 'none');
+                                // 显示错误信息
+                                confirmTransferReq();
+                            }, 1500);
+                        }
+                    });
+                });
+            }
+
+            // 打开键盘
+            $(".qr-cge").click(function () {
+                payInputPassWord();
+            });
+
+        }(jQuery, YDUI);
+
+		/*      $(".qr-cge").click(function () {
+		 console.log(token);
+		 var value = $('.e-num').val();
+
+		 var data = {
+		 token: token,
+		 ePoint: value
+		 };
+
+		 $.post(ajaxUrl + '/front/XtUserInfo/updateEpoint', data, function (data) {
+		 if (data.code == 300) {
+		 //						tip.flag(""+data.msg+"", 'error');
+		 $(".cge-tip").css("display", "block");
+		 $(".cge-tip").html("" + data.msg + "");
+		 } else {
+		 tip.flag("" + data.msg + "", 'success');
+		 setTimeout(function () {
+		 window.location.href = 'e-num.html';
+		 }, 2000);
+		 }
+		 });
+		 });*/
+
+        // 全部兑换
+        $('.sur-rgt').click(function () {
+            $('.e-num').val(totalEpoint);
+        })
+    });
+    function confirmTransferReq(r) {
+        tip.flag('转换成功！', 'success');
+        setTimeout(function () {
+            javascript:history.back(-1);
+        }, 1000)
+    }
+    function getvalue() {
+        var value = $('.e-num').val();
+        status = setTimeout('getvalue()', 0);
+
+        if (value >= 1) {
+            $(document).ready(function () {
+                $('.qr-cge').css('background-color', '#ff5a3a');
+            });
+        } else if (value <= 0) {
+            $(document).ready(function () {
+                $('.qr-cge').css('background-color', '#D4D4D4');
+            });
+        }
+    }
+
+</script>
+
+</body>
+</html>

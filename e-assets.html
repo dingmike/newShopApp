@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<meta name="renderer" content="webkit">
+		<meta http-equiv="X-UA-Compatible" content="IE=11; IE=10; IE=9; IE=8; IE=7; IE=EDGE,Chrome=1">
+		<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no" />
+		<link rel="stylesheet" type="text/css" href="css/index.css"/>
+		<link rel="stylesheet" type="text/css" href="css/hp.css"/>
+		<script src="js/jquery-1.11.1.min.js" type="text/javascript" charset="utf-8"></script>
+		<script src="js/modernizr-custom-v2.7.1.min.js" type="text/javascript"></script>
+		<script src="js/jquery-finger-v0.1.0.min.js" type="text/javascript"></script>
+		<script src="js/flickerplate.min.js" type="text/javascript"></script>
+		<script src="js/default.js"></script>
+		<script src="js/template.js"></script>
+		<script src="js/template-helper.js"></script>
+		<title>e点解冻</title>
+		<style type="text/css">
+			.opt{z-index: 0;}
+		</style>
+
+	</head>
+	<body>
+		<div class="container">
+			<header>
+				<div class="sto-nav-left">
+					<a href="javascript:0">
+						<img src="img/fanhui.png" onclick="javascript:history.back(-1)"/>
+					</a>
+					
+				</div>
+				<div class="vip-nav-cet">
+					e点解冻
+				</div>
+			</header>
+			<div class="content bac-cor">
+				<div class="assets-img">
+					<img src="img/ejiedong.png"/>
+				</div>
+				<div class="chang-out-box">
+					<div class="curr-box">
+						<div class="curr-left">
+							<span class="curr-tit">当前冻结e点:</span>
+							<span class="curr-num"></span>
+						</div>
+						<div class="curr-right">
+							<span class="curr-tit">当前会员积分：</span>
+							<span class="add-num">1.020.00</span>
+						</div>
+					</div>
+					<div class="cge-num">
+						<span class="dhsl">兑换数量</span>
+						<input type="text" class="sr-jd-num" placeholder="可解冻666e点" name="" id="" value="" />
+					</div>
+					<button class="sure-bd">确认兑换</button>
+					
+				</div>
+			</div>
+			<div class="opt"></div>
+			<div class="jd-e-tc">
+				<span class="js-tips">解锁e点成功</span>
+				<img class="sucs-img" src="img/sus.png"/>
+				<div class="sucs-btn">
+					确认
+				</div>
+			</div>
+		</div>
+			<script type="text/javascript">
+				$(function(){
+					$.post(ajaxUrl+'/front/clients/thawEPoint',{token:token},function(r){
+							$('.curr-num').html(r.ePoint);
+							$('.add-num').html(r.consumPoint);
+							var canJD = parseInt(r.ePoint)>parseInt(r.consumPoint)?r.ePoint:r.consumPoint;
+							$('.sr-jd-num').attr('placeholder','可解冻'+canJD+'e点');
+					},'json')
+					
+					$('.sure-bd').click(function(){
+						var ePoint = $('.sr-jd-num').val();
+						if(!ePoint){
+							tip.flag('请填写兑换e点数','error');
+						}else{
+							$.post(ajaxUrl+'/front/clients/confirmThawEPoint',{token:token,ePoint:ePoint},function(r){
+									$('.opt,.jd-e-tc').show();
+							},'json')
+						}
+					})
+					$('.sucs-btn').click(function(){
+						$('.opt,.jd-e-tc').hide()
+					})
+				})
+		</script>
+	</body>
+</html>

@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no" />
+		<title>e点解冻</title>
+		<link rel="stylesheet" type="text/css" href="css/hp.css"/>
+		<link rel="stylesheet" type="text/css" href="css/index.css"/>
+		<script src="js/jquery-1.11.1.min.js" type="text/javascript" charset="utf-8"></script>
+		<style type="text/css">
+			
+		</style>
+		<script type="text/javascript">
+			$(function(){
+				$('.sur-cge-btn').click(function(){
+					$('.opt,.luck-tc').show()
+				})
+				$('.luck-rgt-btn').click(function(){
+					$('.opt,.luck-tc').hide()
+				})
+			})
+		</script>
+	</head>
+	<body>
+		<div class="container">
+			<header>
+				<div class="sto-nav-left">
+					<img src="img/fanhui.png" onclick="javascript:history.back(-1);"/>
+				</div>
+				<div class="vip-nav-cet">
+					幸运大轮盘
+				</div>
+			</header>
+			<div class="content bac-cor">
+				<div class="assets-img">
+					<img src="img/luck.png"/>
+				</div>
+				<div class="ned-num-box">
+					<span class="ned-vip">需会员积分：200.00</span>
+					<div class="sur-cge">
+						<input type="button" class="sur-cge-btn" name="" id="" value="确定兑换" />
+					</div>
+				</div>
+			</div>
+			<div class="opt" style="z-index: 0;"></div>
+			<div class="luck-tc">
+				<div class="luck-cge-tip">确定兑换-幸运大轮盘</div>
+				<div class="luck-cge-btns">
+					<input type="button" class="luck-left-btn" id="" value="取消" />
+					<input type="button" class="luck-rgt-btn" id="" value="确定" />
+				</div>
+			</div>
+		</div>
+	</body>
+</html>

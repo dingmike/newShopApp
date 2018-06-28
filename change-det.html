@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no" />
+		<link rel="stylesheet" type="text/css" href="css/index.css"/>
+		<link rel="stylesheet" href="css/hp.css" />
+		<script src="js/jquery-1.11.1.min.js" type="text/javascript" charset="utf-8"></script>
+		<script type="text/javascript" src="js/default.js" ></script>
+		<title></title>
+		<style type="text/css">
+			.pad-zero{
+				padding: 0 !important;
+			}
+			.wj-left{
+				margin-left: 14px;
+			}
+		</style>
+		
+	</head>
+	<body>
+		<div class="container">
+			<header class="head-st">
+				<div class="sto-nav-left">
+					<img src="img/fanhui.png" onclick="javascript:history.back(-1)"/>
+				</div>
+				<div class="sto-nav-sear">
+					<div class="cge-tit">
+						<span class="det-tit-left " data-type = "1" data-click = "1">兑换明细</span>
+						<span class="det-tit-rgt" data-type = "2" data-click = "1">兑出明细</span>
+					</div>
+				</div>
+			</header>
+			<div class="content bac-cor">
+				<div class="chang-go ma-zero pad-zero">
+					<ul  id="change-list" data-changType = "1" class="changType">
+							
+					</ul>
+					
+					<ul  id="changOut-list" data-changType = "2" class="changType">
+						
+					</ul>
+				</div>
+			</div>
+		</div>
+		<script type="text/template" id="change-list-con">
+			{{each data.buys as list i}}
+			<li>
+				<div class="chang-go-left ma-zero wj-left">
+					<div class="chang-state">
+						状态：兑换成功
+					</div>
+					<span class="chang-time">时间：{{list.time}}</span>
+				</div>
+				<div class="chang-go-rgt">
+					<div class="chang-one">
+						-{{list.ePoint}} e点
+					</div>
+					<span class="chang-time">兑换{{list.eFundNum}}份</span>
+				</div>
+			</li>
+			{{/each}}
+		</script>
+		<script type="text/template" id="changOut-list-con">
+			{{each data.sells as list i}}
+			<li>
+				<div class="chang-go-left ma-zero wj-left">
+					<div class="chang-state">
+						状态：兑现成功
+					</div>
+					<span class="chang-time">时间：{{list.time}}</span>
+				</div>
+				<div class="chang-go-rgt">
+					<div class="chang-one">
+						{{list.eFundNum}}份 &nbsp;{{list.unitValue}}元/份
+					</div>
+					<span class="chang-time">合计金额:{{list.value}}元</span>
+				</div>
+			</li>
+			{{/each}}
+		</script>
+		<script type="text/javascript" src="js/template.js" ></script>
+		<script type="text/javascript" src="js/template-helper.js" ></script>
+		<script type="text/javascript">
+			var type=GetUrlString("type");
+			var params={
+				pageNo:1,
+				pageSize:10
+			}
+			var pageArr=[];
+			$(function(){
+				$('.cge-tit span').each(function(i){
+					pageArr.push(1);
+					if($(this).data("type")==type){
+						$(this).data("click","2");
+						$(this).addClass("on").siblings().css('color','#b7b7b7');;
+					}
+				});				
+				getInfo("post", ajaxUrl+"/front/token/getUserId?token=" + token, {}, userIdReq);
+			});
+			
+			function userIdReq(r) {//获取userId
+				params.userId= r.userId;
+				switch (type){
+					case "1":
+						getList("#change-list","post", root + "/user/buyDetail",params, changeReq);
+						break;
+					case "2":
+						getList("#changOut-list","post", root + "/user/sellDetail", params, changeOutReq);
+						break;
+					default:
+						break;
+				}
+			}
+			
+				//滚动加载数据
+			$(".content").scroll(function() {
+				if(pageArr[type-1] != 0) {
+					totleHeight = $(".content").height() + $(".content").scrollTop();
+					if(($(".content")[0].scrollHeight == totleHeight) && !listLoading) {
+						pageArr[type-1] += 1;
+						params.pageNo = pageArr[type-1];
+						if(type==1){
+							getList("#change-list","post", root + "/user/buyDetail",params, changeReq);
+						}else if(type==2){
+							getList("#changOut-list","post", root + "/user/sellDetail", params, changeOutReq);
+						}
+						connectDisplay(".changType","data-changType",type);
+					}
+				}
+			});
+			//兑换e点
+			function changeReq(obj,r){
+				var html = "<div class='footer_box detail' style='height: 135 px;' typeid=" + type + ">";
+				html += "<div class = 'no-more' >"
+				html += "<img src = 'img/icon-jiazaipng.png' />";
+				html += "<p > 没有更多了！！！ </p>";
+				html += "</div> </div>";
+				var length = r.data.buys.length;
+				if(length != 0) {
+					var html1 = template("change-list-con", r);
+					$(obj).append(html1);
+				} else if(length == 0 && pageArr[type-1] == 1) {
+					$(obj).append(html);
+				} else {
+					listLoadingLock = true;
+					pageArr[type-1] = 0;
+					$(obj).append(html);
+				}
+			}
+			
+			//兑出e点
+			function changeOutReq(obj,r){
+				var html = "<div class='footer_box detail' style='height: 135 px;' typeid=" + type + ">";
+				html += "<div class = 'no-more' >"
+				html += "<img src = 'img/icon-jiazaipng.png' />";
+				html += "<p > 没有更多了！！！ </p>";
+				html += "</div> </div>";
+				var length = r.data.sells.length;
+				if(length != 0) {
+					var html1 = template("changOut-list-con", r);
+					$(obj).append(html1);
+				} else if(length == 0 && pageArr[type-1] == 1) {
+					$(obj).append(html);
+				} else {
+					listLoadingLock = true;
+					pageArr[type-1] = 0;
+					$(obj).append(html);
+				}
+			}
+			
+			
+			$('.cge-tit span').click(function(){	/*兑换明细页面*/
+				type=$(this).data("type");
+				listLoadingLock = false;
+				params.pageNo=pageArr[type-1];
+				if($(this).data("click")==1)
+				if(type==1){
+						getList("#change-list","post", root + "/user/buyDetail",params, changeReq);
+				}else if(type==2){
+						getList("#changOut-list","post", root + "/user/sellDetail", params, changeOutReq);
+				}
+				$(this).data("click","2");
+				$(this).addClass('on').siblings().removeClass('on');
+				$(this).css('color','#ff5a3a').siblings().css('color','#b7b7b7');
+				connectDisplay(".changType","data-changType",type);
+			});
+		</script>
+	</body>
+</html>

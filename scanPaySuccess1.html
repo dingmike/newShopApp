@@ -1,0 +1,332 @@
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no"/>
+    <title>免注册支付成功</title>
+    <link rel="stylesheet" type="text/css" href="css/reset.css">
+    <link rel="stylesheet" type="text/css" href="css/index.css"/>
+    <link rel="stylesheet" href="lib/layer/2.4/skin/layer.css"/>
+    <!--flex 布局-->
+    <script src="js/flexible.js" type="text/javascript"></script>
+    <script src="js/jquery-1.11.1.min.js" type="text/javascript" charset="utf-8"></script>
+    <script src="./js/layer.js" type="text/javascript" charset="utf-8"></script>
+    <script src="./js/default.js"></script>
+    <script type="text/javascript" src="./lib/layer_mobile/layer.js"></script>
+    <!--<script src="http://res.wx.qq.com/connect/zh_CN/htmledition/js/wxLogin.js" type="text/javascript"></script>-->
+    <style>
+        body {
+            font-size: 14px;
+        }
+
+        .head {
+            background-color: orangered;
+            height: 1.06667rem;
+            line-height: 1.066667rem;
+            text-align: center;
+            color: #fff;
+        }
+
+        .head-content {
+            font-size: 0.37333rem;
+            height: 8.0160667rem;
+            color: #fff;
+        }
+
+        .center-img {
+            position: relative;
+        }
+
+        #price-ad {
+            position: absolute;
+            top: 3.14666rem;
+            font-size: 1rem;
+            left: 3.9rem;
+        }
+
+        .center-img img {
+            width: 100%;
+            height: 100%;
+        }
+
+        .login-content {
+            padding: 0.5333rem;
+            position: absolute;
+            height: 258px;
+        }
+
+        .login-content ul li {
+            display: inline-block;
+        }
+
+        .controls .txt {
+            height: 1.3333rem;
+            line-height: 1.3333rem;
+            padding-left: 0.21333rem;
+            outline: none;
+            -webkit-appearance: none;
+            border-radius: 0;
+            background: none;
+            border: none;
+            font-size: 0.426667rem
+        }
+
+        .btn-small {
+            width: 2.293333rem;
+            height: 0.8rem;
+            margin-left: 0.32rem;
+            border: 1px solid #ccc;
+            border-radius: 0.37333rem;
+        }
+
+        .bottom-content {
+            position: relative;
+            bottom: -0.69333rem;
+            left: 50%;
+            margin-left: -3.36rem;
+            width: 6.72rem;
+            height: 1.013333rem;
+            line-height: 1.013333rem;
+            background-color: orangered;
+            border-radius: 0.5333rem;
+            text-align: center;
+            color: #fff;
+            font-size: 0.37333rem;
+        }
+
+        .icon-img {
+            vertical-align: middle;
+            width: 18px;
+        }
+
+        .wbd {
+            float: right;
+            margin: 72px 40px;
+            background: none;
+            color: #FF5A3A;
+        }
+
+        .wechat {
+            width: 18%;
+            margin: auto;
+            margin-top: 53px;
+            margin-bottom: 20px;
+        }
+
+        .wechat-img {
+            width: 49px;
+            display: block;
+            margin: auto;
+        }
+
+        .wechat-span {
+            color: #3BE676;
+            position: relative;
+            font-size: 13px;
+            letter-spacing: 1px;
+            display: block;
+            text-align: center;
+        }
+
+        /*item-table  --start--*/
+        .item-tab li {
+            position: relative;
+            float: left;
+            width: 50%;
+            text-align: center;
+            height: 1.29667rem;
+            line-height: 1.29667rem;
+        }
+
+        .tri-up {
+            font-size: 18px;
+        }
+
+        .tri-up:after, .tri-up:before {
+            border: solid transparent;
+            content: ' ';
+            height: 0;
+            top: 0.8rem;
+            position: absolute;
+            width: 0;
+        }
+
+        .tri-up:after {
+            border-width: 0.26667rem;
+            border-bottom-color: #fff;
+            left: 2.24rem;
+        }
+
+        /*.tri-up{width: 0;height:0;border-left:20px solid transparent;border-right: 20px solid transparent;border-bottom: 20px solid #ffffff;  }*/
+        /*item-table  --end--*/
+
+        #tri-two ul {
+            padding: 0.1066rem 1.76667rem;
+        }
+        #tri-two ul li {
+            padding: 10px;
+        }
+        .down-app {
+            top: 14.2rem;
+            font-size: 0.4rem;
+            text-align: center;
+            text-decoration: underline;
+            color: #00a0e9;
+            position: absolute;
+            bottom: 3.6rem;
+            left: 1.8rem;
+        }
+        .go-head{
+            top: 14.2rem;
+            font-size: 0.4rem;
+            text-align: center;
+            text-decoration: underline;
+            color: #00a0e9;
+            position: absolute;
+            bottom: 3.6rem;
+            left: 6.23rem;
+        }
+    </style>
+</head>
+<body>
+
+<div class="main-content">
+
+    <div class="head-content">
+        <!--<div class="head">登 录</div>-->
+        <div align="center" class="center-img">
+            <img src="./img/off_line/ad_fees.png" alt="">
+            <span id="price-ad">0</span>
+        </div>
+    </div>
+    <div class="login-content" id="tri-one">
+
+        <div class="no-show" style="font-size: 0.4rem; text-align: center">请记住您的临时账户和密码</div>
+        <ul class="ulist no-show">
+            <li class="group">
+                <div class="controls">
+                    <label for="phone"><img class="icon-img" src="img/icon_phone.png" alt=""></label>
+                    <input type="text" id="phone" class="txt" value="60000000001" style="color: red" disabled>
+                </div>
+            </li>
+            <li class="group">
+                <div class="controls">
+                    <label for="code"><img class="icon-img" src="img/icon_code.png" alt=""></label>
+                    <input type="text" id="code" class="txt" value="123456" style="color: red;" disabled>
+                </div>
+            </li>
+        </ul>
+        <div class="no-show" style="font-size: 0.4rem; text-align: center;height: 0;">绑定手机号即可提现</div>
+        <button  class="bottom-content no-show" id="gobangding">立即绑定</button>
+
+    </div>
+    <a class="down-app" href="https://www.pgyer.com/aWGX">APP下载</a>
+    <a class="go-head" href="https://www.goego.cn">进入商城</a>
+</div>
+
+</body>
+
+<script>
+
+    $(function () {
+
+//        localStorage.setItem('noAccount','1')
+//        localStorage.setItem('wxOrderId','1dsafasdfasdfasdf')
+        if (is_weixin()) {
+            surePaySuccess();
+        } else {
+            //surePaySuccess();
+            if(GetUrlParam('type')==1){
+                layer.open({
+                    content: '支付状态'
+                    ,btn: ['已完成支付', '支付失败']
+                    ,yes: function(index){
+//                   location.reload();
+                        // 已完成支付去查单确认是否支付成功
+                        if(localStorage.hasAccountPay==1){ // 已有账号支付成功去首页
+                            location.href = 'index.html';
+                            localStorage.removeItem('hasAccountPay');
+                        }else{
+                            surePaySuccess()
+                        }
+
+                    }
+                });
+            }
+        }
+
+        function surePaySuccess(){
+            $.post(ajaxUrl + '/front/orders/queryOrderZf', {OrderS: localStorage.wxOrderId}, function (res) {
+
+                if(res.code ==200){
+//                 location.href = 'scanPaySuccess.html?adFees=' + res.ed*10;
+                   $('#price-ad').text(res.ed*10);
+
+                }else{
+                    layer.closeAll();
+                    layer.open({
+                        content: '支付失败！'
+                        ,btn: '确定'
+                    });
+                }
+            })
+        }
+
+
+        /*获取验证码*/
+        var isPhone = 1;
+        localStorage.setItem("shopId", GetUrlParam('shopId'));
+        localStorage.setItem("shopLogo", GetUrlParam('logo'));
+        localStorage.setItem("productId", GetUrlParam('product'));
+
+        if(localStorage.notRealAccount&&localStorage.notRealPas){
+            $('#phone').val(localStorage.notRealAccount);
+            $('#code').val(localStorage.notRealPas);
+        }
+
+//        $('#price-ad').text(GetUrlParam('adFees'));
+
+        // 无账号支付
+        if(localStorage.noAccount == '1'){
+            $('.no-show').hide();
+            $('.down-app, .go-head').css({top: '10rem',botton:'0'});
+//            $('.go-head').css({top: '10rem',botton:'0'});
+        }
+
+        // 去绑定手机号
+        $('#gobangding').click(function () {
+            location.href = 'scanBindPhone.html';
+        })
+    });
+    //判断是否是在微信app内部
+    function is_weixin() {
+        var ua = navigator.userAgent.toLowerCase();
+        if (ua.match(/MicroMessenger/i) == "micromessenger") {
+            return true;
+        } else {
+            return false;
+        }
+    }
+    function GetUrlParam(paraName) {
+        var url = document.location.toString();
+        var arrObj = url.split("?");
+
+        if (arrObj.length > 1) {
+            var arrPara = arrObj[1].split("&");
+            var arr;
+
+            for (var i = 0; i < arrPara.length; i++) {
+                arr = arrPara[i].split("=");
+
+                if (arr != null && arr[0] == paraName) {
+                    return arr[1];
+                }
+            }
+            return "";
+        }
+        else {
+            return "";
+        }
+    }
+</script>
+</html>

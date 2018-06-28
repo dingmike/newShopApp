@@ -1,0 +1,1151 @@
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="renderer" content="webkit">
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no"/>
+    <link rel="stylesheet" type="text/css" href="css/index.css"/>
+    <link rel="stylesheet" href="css/hp.css"/>
+    <link rel="stylesheet" href="css/yddemo.css" />
+    <link rel="stylesheet" href="css/ydui.css" />
+    <link rel="stylesheet" href="lib/layer/2.4/skin/layer.css"/>
+    <script type="text/javascript" src="js/jquery-1.11.1.min.js"></script>
+    <script type="text/javascript" src="./lib/layer_mobile/layer.js"></script>
+    <script type="text/javascript" src="js/default.js"></script>
+    <script src="js/template.js"></script>
+    <script src="js/template-helper.js"></script>
+    <script type="text/javascript" src="js/ydui.js"></script>
+    <script type="text/javascript" src="js/ydui.flexible.js"></script>
+    <title></title>
+    <style type="text/css">
+        .xian-logo {
+            height: 20px;
+            width: 20px;
+            position: absolute;
+            left: 10px;
+            top: 15px;
+        }
+
+        .sur span {
+            font-size: 13px;
+            margin-top: 13px;
+            margin-left: 14px;
+        }
+
+        .pay_mode {
+            height: 350px;
+            top: 187px;
+            left: 100%;
+            width: 85%;
+            height: 214px;
+            border-radius: 10px;
+        }
+
+        .account-box ul li {
+            display: none;
+        }
+
+        .zhifu-p {
+            line-height: 19px;
+        }
+
+        .canSent {
+            background-color: #ff5a3a !important;
+        }
+
+        .opt {
+            z-index: 0 !important;
+        }
+
+        .confirmPassword {
+            width: 300px;
+            height: 180px;
+            background-color: white;
+            position: absolute;
+            left: 0;
+            right: 0;
+            margin: auto;
+            top: -70px;
+            bottom: 0;
+            border-radius: 10px;
+            display: none;
+            z-index: 12;
+        }
+
+        .password-num {
+            border: 1px solid #cac7c7;
+            height: 52px;
+            margin: 0px 14px;
+            width: 270px;
+        }
+
+        .password-num span {
+            display: inline-block;
+            width: 75px;
+            margin-top: 10px;
+            height: 32px;
+            margin-left: 10px;
+            line-height: 32px;
+            border-right: 1px solid #cac7c7;
+        }
+
+        .change-tc-fot button {
+            flex: 1;
+            outline: none;
+            background-color: white;
+            font-size: 17px;
+        }
+
+        .box-password {
+            font-size: 16px;
+        }
+
+        .second-cge {
+            width: 210px;
+        }
+
+        .second-sto {
+            width: 100%;
+            float: none;
+        }
+        .g-scrollview {
+            display: none;
+            height: auto;
+        }
+
+        .m-loading {
+            border-radius: 4px;
+            color: #FFF;
+            background-color: rgba(40, 40, 40, 0.8);
+            -webkit-animation: zoomIn .1s ease forwards;
+            animation: zoomIn .1s ease forwards;
+            display: -webkit-box;
+            display: -webkit-flex;
+            display: -ms-flexbox;
+            display: flex;
+            -webkit-box-align: center;
+            -webkit-align-items: center;
+            -ms-flex-align: center;
+            align-items: center;
+            padding: 0 23px 0 24px;
+            height: 48px;
+            width: 50%;
+            position: absolute;
+            left: 24%;
+            top: 42px;
+            display: none;
+        }
+
+        .m-loading .loading-icon {
+            width: 28px;
+            height: 28px;
+            background: url(img/scroll.png) no-repeat;
+            background-size: 28px 28px;
+            -webkit-animation: rotate-loading 0.45s linear forwards infinite;
+            animation: rotate-loading 0.45s linear forwards infinite;
+            margin-right: 10px;
+        }
+
+        .m-loading .loading-txt {
+            font-size: 15px;
+            color: #FFF;
+            max-width: 140px;
+            overflow: hidden;
+            white-space: nowrap;
+            text-overflow: ellipsis;
+        }
+        .order_details{
+            margin-bottom: 50px;
+        }
+        .no-more img {
+            margin: 0 auto;
+        }
+    </style>
+
+</head>
+<body>
+<div class="container">
+    <header class="head-st">
+        <div class="sto-nav-left">
+            <img src="img/fanhui.png" onclick="javascript:history.back(-1)"/>
+        </div>
+        <div class="sto-nav-sear">
+            <div class="cge-tit" id="firstTabTitle">
+                <span class="det-tit det-tit-left first-det-left on" id="buyTab" data-type="0">买入余额</span>
+                <span class="det-tit det-tit-rgt first-det-rgt" id="sellTab" data-type="1">卖出余额</span>
+            </div>
+        </div>
+    </header>
+    <div class="content">
+
+        <!--买入-->
+        <div class="mai-in-box">
+            <div class="change-mon pad-bot">
+                <p class="use-tit">买入余额/元：</p>
+                <img class="wen-img" src="img/yiwen.png"/>
+                <input type="number" class="e-num ipt" maxlength="9" autocomplete="off" name="" id="buyMoney"
+                       placeholder="0.00" value=""/>
+                <div class="bottom"></div>
+                <div class="sur bod-no">
+							<span class="sur-left">
+								实付款：<span class="yel" id="buyRadtio">0.00</span>元
+							</span>
+                </div>
+                <div class="qr-btn ma-top">
+                    <button class="qr-cge" id="buyConfirm" disabled>确认买入</button>
+                </div>
+            </div>
+
+
+            <div class="contentBuy bac-cor">
+                <div class="all-mixi ma-zero" id="con-list">
+                    <!--买入-->
+                    <div id="buyOverId">
+                        <div class="sto-nav-sear second-sto">
+                            <div class="cge-tit second-cge">
+                                <span class="det-tit-left on" id="buying" data-type="0">买入匹配中</span>
+                                <span class="det-tit-rgt" id="buyingOver" data-type="1">买入完成</span>
+                            </div>
+                        </div>
+                        <ul class="jl" data-type="0" id="buying-list">
+
+                        </ul>
+
+                        <ul class="jl" data-type="0" id="buyingOver-list">
+
+                        </ul>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <!--卖出-->
+        <div class="mai-out-box">
+            <div class="account-box">
+                <ul>
+                    <li data-sure="yes" class="zfb" data-type="1">
+                        <img class="zhifu-img" src="img/zhifubaozhifu.png"/>
+                        <div class="zhifu-cet">
+                            <p class="zhifu-p">支付宝</p>
+                            <p class="zfb_id"></p>
+                        </div>
+                    </li>
+                    <li class="wx" data-type="2">
+                        <img class="zhifu-img" src="img/bd-yh.png"/>
+
+                        <div class="zhifu-cet">
+                            <p class="zhifu-p">银行卡</p>
+                            <p class="wx_id"></p>
+                        </div>
+                    </li>
+                    <!--<li class="yzf">
+                        <img class="zhifu-img" src="img/yizhifu.png"/>
+                        <div class="zhifu-cet">
+                            <p class="zhifu-p">翼支付</p>
+                            <p class="yzf_id"></p>
+                        </div>
+                    </li>-->
+                </ul>
+                <div class="sk-rgt">
+                    选择收款方式
+                    <img class="sk-rtu" src="img/rtu.png"/>
+                </div>
+
+            </div>
+            <div class="change-mon pad-bot">
+                <p class="use-tit">卖出余额/元：</p>
+                <img class="wen-img" src="img/yiwen.png"/>
+                <input type="number" class="e-num ipt" maxlength="9" autocomplete="off" name="" id="sellMoney"
+                       placeholder="0.00" value=""/>
+                <div class="bottom"></div>
+                <div class="sur bod-no">
+							<span class="sur-left">
+								账户扣款：<span class="yel" id="sellRadtio">0.00</span>元
+							</span>
+                    <span class="sur-left">
+								实收款：<span class="yel" id="getRadtio">0.00</span>元
+							</span>
+                </div>
+                <div class="qr-btn ma-top">
+                    <!--<input type="button" class="qr-cge" value="确认卖出"/>-->
+                    <button class="qr-cge" id="sellOutId" disabled>确认卖出</button>
+                </div>
+            </div>
+
+            <div class="contentSell bac-cor">
+                <div class="all-mixi ma-zero" id="con-list-sell">
+                    <!--卖出-->
+                    <div id='sellOverId'>
+                        <div class="sto-nav-sear second-sto">
+                            <div class="cge-tit second-cge second-sell">
+                                <span class="det-tit-left on" id="selling" data-type="0">卖出匹配中</span>
+                                <span class="det-tit-rgt" id="sellingOver" data-type="1">卖出完成</span>
+                            </div>
+                        </div>
+                        <ul class="jl" data-type="1" id="selling-list">
+
+                        </ul>
+                        <ul class="jl" data-type="1" id="sellingOver-list">
+
+                        </ul>
+                    </div>
+
+                </div>
+            </div>
+
+
+            <!-- <div class="pay-in-box">
+                 <div class="pay-tit-tip">
+                     <img src="img/chang-img.png" class="xian-logo"/>
+                     卖出处理中
+                 </div>
+                 <div class="pay-yue">
+                     <div class="pay-in">
+                         买入余额：100.00
+                     </div>
+                     <div class="fukuan">
+                         应付款：200.00
+                     </div>
+                 </div>
+                 <div class="user-meg">
+                     <p>对方银行账户：中国银行-四川绵阳涪城区买买提小区支行</p>
+                     <p>卡号具体信息：6217 **** **** **** 003 刘德华</p>
+                 </div>
+                 <div class="pay-yue">
+                     <div class="pay-in">
+                         <span class="blue">匹配中</span>
+                     </div>
+                     <div class="fukuan">
+                         <span class="del-sq">撤销申请</span>
+                     </div>
+                 </div>
+             </div>
+             <div class="pay-in-box">
+                 <div class="pay-yue">
+                     <div class="pay-in">
+                         买入余额：100.00
+                     </div>
+                     <div class="fukuan">
+                         应付款：200.00
+                     </div>
+                 </div>
+                 <div class="user-meg">
+                     <p>对方银行账户：中国银行-四川绵阳涪城区买买提小区支行</p>
+                     <p>卡号具体信息：6217 **** **** **** 003 刘德华</p>
+                     <p>买方信息：156 7764 2259 我是一个兵</p>
+                 </div>
+                 <div class="pay-yue">
+                     <div class="pay-in">
+                         <span class="or">买家-待付款</span>
+                     </div>
+                     <div class="fukuan">
+                         <span class="del-sq">确认付款</span>
+                     </div>
+                 </div>
+             </div>
+             <div class="pay-in-box">
+                 <div class="pay-yue">
+                     <div class="pay-in">
+                         买入余额：100.00
+                     </div>
+                     <div class="fukuan">
+                         应付款：200.00
+                     </div>
+                 </div>
+                 <div class="user-meg">
+                     <p>对方银行账户：中国银行-四川绵阳涪城区买买提小区支行</p>
+                     <p>卡号具体信息：6217 **** **** **** 003 刘德华</p>
+                     <p>买方信息：156 7764 2259 我是一个兵</p>
+                 </div>
+                 <div class="pay-yue">
+                     <div class="pay-in">
+                         <span class="lv-cor">卖家-待确认收款</span>
+                     </div>
+                     <div class="fukuan">
+                         <span class="del-sq">确认收款</span>
+                     </div>
+                 </div>
+             </div>-->
+        </div>
+
+        <!--支付密码-->
+        <div class="confirmPassword" id="confirmPassword">
+            <div class="change-tc-tit">
+                <p class="tc-tit-p">输入支付密码</p>
+            </div>
+            <div class="change-tc-body">
+                <div class="password-num">
+                    <span>输入密码</span>
+                    <input type="password" style="display:none">
+                    <input type="password" class="box-password" autocomplete="off" name="password" maxlength="6"/>
+                </div>
+            </div>
+            <div class="change-tc-fot">
+                <!--<input type="button" class="tc-fot-left" id="" value="取消"/>-->
+                <button class="tc-fot-left">取消</button>
+                <!--<input type="button" class="tc-fot-rgt" id="" value="确认" data-type="1"/>-->
+                <button class="tc-fot-rgt">确认</button>
+            </div>
+        </div>
+    </div>
+    <div class="pay_mode_bg">
+    </div>
+    <div class="pay_mode">
+        <div class="pay_mode_tit">
+            选择收款方式<img src="img/guanbi.png" alt=""/>
+        </div>
+        <div class="pay_ways">
+
+            <div class="order_line margin10 pitchon">
+                <img src="img/zhifubaozhifu.png" alt=""/>支付宝
+            </div>
+
+            <div class="order_line">
+                <img src="img/bd-yh.png" alt=""/>银行卡
+            </div>
+            <!-- <div class="order_line">
+                 <img src="img/yizhifu.png" alt="" />翼支付
+             </div>-->
+        </div>
+
+        <!--<button class="pay_yes" id="J_OpenKeyBoard">确定支付</button>-->
+    </div>
+
+    <!--输入密码-->
+    <section class="g-scrollview">
+
+        <!--<aside class="demo-tip">
+                <p>该插件暂不支持Data API方式调用，Javascript API方式包含下列方法和事件：</p>
+                <p>1. [open]：打开键盘方法</p>
+                <p>2. [close]：关闭键盘方法</p>
+                <p>3. [done.ydui.keyboard]：六位密码输入完毕后执行</p>
+            </aside>-->
+
+        <!--<div class="m-button demo-pitch">
+                <a href="javascript:;" class="btn-block btn-primary" id="J_OpenKeyBoard">打开</a>
+            </div>-->
+
+        <div class="m-keyboard" id="J_KeyBoard">
+            <div class="m-loading">
+                <div class="loading-icon">
+                </div>
+                <div class="loading-txt">验证支付密码</div>
+            </div>
+
+            <!-- 自定义内容区域 -->
+            <div style="text-align: right;padding: .15rem .8rem 0;">
+                <a href="/fanghengNew/reset_pay_password.html" style="color: #666;font-size: .24rem;">忘记密码</a>
+            </div>
+            <!-- 自定义内容区域 -->
+        </div>
+    </section>
+</div>
+
+<!--detailSellingId-->
+<script type="text/template" id="detailBuyingId">
+    {{each buymoneys as list i}}
+    <li>
+        <div class="pay-in-box">
+            <div class="pay-tit-tip">
+                <img src="img/chang-img.png" class="xian-logo"/>
+                买入处理中
+            </div>
+            <div class="pay-yue">
+                <div class="pay-in">
+                    买入余额：{{list.money}}
+                    &nbsp;&nbsp;
+                </div>
+                <div class="fukuan">
+                    剩余金额：{{list.turnMoney}}
+                </div>
+            </div>
+            <div class="pay-yue">
+                <div class="pay-in">
+                    <span class="blue">匹配中</span>
+                </div>
+                <div class="fukuan">
+                    <span class="del-sq" id="cexiaoBuy{{i}}" onclick="cancelApplyBuy({{list.id}}, this, 1)">撤销申请</span>
+                </div>
+            </div>
+        </div>
+    </li>
+    {{/each}}
+</script>
+<script type="text/template" id="detailSellingId">
+    {{each sellmoneys as list i}}
+    <li>
+        <div class="pay-in-box">
+            <div class="pay-tit-tip">
+                <img src="img/chang-img.png" class="xian-logo"/>
+                卖出处理中
+            </div>
+            <div class="pay-yue">
+                <div class="pay-in">
+                    卖出余额：{{list.money}}
+                </div>
+                <div class="fukuan">
+                    剩余金额：{{list.moneySurpuls}}
+                </div>
+            </div>
+            <div class="pay-yue">
+                <div class="pay-in">
+                    <span class="blue">匹配中</span>
+                </div>
+                <div class="fukuan">
+                    <span class="del-sq" id="cexiaoSell{{i}}" onclick="cancelApplyBuy({{list.id}}, this, 0)">撤销申请</span>
+                </div>
+            </div>
+        </div>
+    </li>
+    {{/each}}
+</script>
+
+<script type="text/template" id="buyingOverId">
+    {{each tranMatchings as list i}}
+    <li>
+
+        <div class="pay-in-box">
+            <div class="pay-yue">
+                <div class="pay-in">
+                    买入余额：{{list.money}} &nbsp;&nbsp;
+                    剩余金额：{{list.turnMoney}}
+                </div>
+                <div class="fukuan">
+                    应付款：{{list.paymoney}}
+                </div>
+            </div>
+            <div class="user-meg">
+                <p>对方银行账户：{{list.bankAddress}}</p>
+                <p>卡号：{{list.bankNo}} <span>姓名：</span>{{list.sellName}}</p>
+            </div>
+            <div class="pay-yue">
+                <div class="pay-in">
+                    <span class="or">卖家-待收款</span>
+                </div>
+                <div class="fukuan">
+                    <span class="del-sq" id="surePay{{i}}" onclick="tipWithdraw({{list.sellId}}, this, 0)">确认付款</span>
+                </div>
+            </div>
+        </div>
+    </li>
+    {{/each}}
+</script>
+
+<script type="text/template" id="sellingOverId">
+    {{each tranMatchings as list i}}
+    <li>
+        <div class="pay-in-box">
+            <div class="pay-yue">
+                <div class="pay-in">
+                    卖出余额：{{list.money}}
+                </div>
+                <div class="fukuan">
+                    应收款：{{list.paymoney}}
+                </div>
+            </div>
+            <div class="user-meg">
+                <p>对方银行账户：{{list.bankAddress}}</p>
+                <p>卡号：{{list.bankNo}} <span>姓名：</span>{{list.buyName}}</p>
+            </div>
+            <div class="pay-yue">
+                <div class="pay-in">
+                    <span class="or">买家-待付款</span>
+                </div>
+                <div class="fukuan">
+                    <input type="hidden" value="{{list.buyId}}">
+                    <span class="del-sq" id="remindPay{{i}}" onclick="tipPay({{list.buyId}}, this, 1)">提醒付款</span>
+                </div>
+            </div>
+        </div>
+    </li>
+    {{/each}}
+</script>
+
+<script type="text/javascript">
+    var params = {};
+    var radtio = {};
+    var paramsell = {};
+    var buySellParams = {
+        type: 0,
+        payPassword: ''
+    };
+    var show = {
+        dataType: '',
+        typeId: '',
+        page: []
+    };
+
+    var buyingParams = {
+        pageSize: 15,
+        pageNo: 1
+    };
+
+    var sellingParams = {
+        pageSize: 15,
+        pageNo: 1
+    };
+
+    var buyDetailparams = {
+        type: 1,
+        pageSize: 15,
+        pageNo: 1
+    };
+    var sellDetailparams = {
+        type: 0,
+        pageSize: 15,
+        pageNo: 1
+    };
+
+    $(function () {
+        getInfo("post", ajaxUrl + "/front/XtUserInfo/queryProportion?token=" + token, {}, getRadtio);
+        //买入匹配初始化
+        getList("#buying-list", "post", ajaxUrl + "/front/XtUserInfo/selectBuyBalance?token=" + token, buyingParams, getBuyingList);  // 买入处理中的
+        function getRadtio(r) {
+            console.log(r);
+            radtio = r.data
+        }
+
+        $('.cge-tit .det-tit').click(function () {                /*买入、卖出头部效果*/
+            $('#J_KeyBoard').keyBoard('close');
+
+
+            $('#buyMoney').val('');
+            $('#sellMoney').val('');
+            $('#sellOutId').removeClass('canSent');
+            $('#buyConfirm').removeClass('canSent');
+
+            $(this).addClass('on').siblings().removeClass('on');
+            $(this).css('color', '#ff5a3a').siblings().css('color', '#b7b7b7');
+
+            show.dataType = $(this).data('type');
+            listLoadingLock = false; //初始化页面没有被锁定，，可以滚动
+            if (show.page[show.dataType] == 0) {
+                connectDisplay(".jl", "data-type", show.dataType);
+                return false;
+            }
+            $("#con-list ul").each(function () {
+                if ($(this).data("type") == show.dataType) {
+                    show.typeId = $(this).attr("id");
+                }
+            });
+
+            $("#con-list-over ul").each(function () {
+                if ($(this).data("type") == show.dataType) {
+                    show.typeId = $(this).attr("id");
+                }
+            });
+
+            params.type = $(this).attr('data-type');
+            params.pageNo = show.page[show.dataType];
+
+            if (show.typeId === 'sellDetail-list-over') {
+                buyDetailparams.type = 1; //卖出匹配中
+            } else {
+                buyDetailparams.type = 0; //买入匹配中
+            }
+
+
+            // 卖出处理中的
+            function getSellingList(r) {
+                var html = "<div class='footer_box detail' style='height: 135px;'>";
+                html += "<div class = 'no-more' >";
+                html += "<img src = 'img/icon-jiazaipng.png' />";
+                html += "<p > 没有了！！！ </p>";
+                html += "</div> </div>";
+                if (r.code == 200) {
+                    var length = r.tranMatchings.length;
+                    if (length != 0 && show.page[show.dataType] == 1) {
+                        var html1 = template("detail-selling", r);
+                        $(obj).html(html1);
+                    } else if (length != 0 && show.page[show.dataType] != 1) {
+                        var html1 = template("detail-selling", r);
+                        $(obj).append(html1);
+                    } else if (length == 0 && show.page[show.dataType] == 1) {
+                        $(obj).append(html);
+                        show.page[show.dataType] = 0;
+                    } else {
+                        listLoadingLock = true;
+                        show.page[show.dataType] = 0;
+                        $(obj).append(html);
+                    }
+                }
+            }
+
+        });
+
+        //卖出区域
+        $('.first-det-rgt').click(function () {
+            $('.mai-out-box').show();
+            $('.mai-in-box').hide();
+            $('#buying-list').empty();
+            $('#buyingOver-list').empty();
+            //卖出匹配中
+            getList("#selling-list", "post", ajaxUrl + "/front/XtUserInfo/selectSellBalance?token=" + token, sellingParams, getSellingList);  // 卖出处理中的
+
+        });
+
+
+        //买入区域
+        $('.first-det-left').click(function () {
+            $('.mai-out-box').hide();
+            $('.mai-in-box').show();
+
+            $('#selling-list').empty();
+            $('#sellingOver-list').empty();
+            //买入匹配
+            getList("#buying-list", "post", ajaxUrl + "/front/XtUserInfo/selectBuyBalance?token=" + token, buyingParams, getBuyingList);  // 买入处理中的
+
+            // 买入完成的
+            getList("#buyingOver-list", "post", ajaxUrl + "/front/XtUserInfo/selectTranMatching?token=" + token, buyDetailparams, getBuyingOverList);  // 买入完成的
+
+        });
+
+        $('#buying').click(function () {
+            $(this).addClass('on').siblings().removeClass('on');
+            $(this).css('color', '#ff5a3a').siblings().css('color', '#b7b7b7');
+            $('#buying-list').show();
+            $('#buyingOver-list').hide();
+        });
+        $('#buyingOver').click(function () {
+            $(this).addClass('on').siblings().removeClass('on');
+            $(this).css('color', '#ff5a3a').siblings().css('color', '#b7b7b7');
+            $('#buying-list').hide();
+            $('#buyingOver-list').show();
+        });
+
+
+        $('#selling').click(function () {
+            $(this).addClass('on').siblings().removeClass('on');
+            $(this).css('color', '#ff5a3a').siblings().css('color', '#b7b7b7');
+            $('#selling-list').show();
+            $('#sellingOver-list').hide();
+            //卖出匹配中
+            getList("#selling-list", "post", ajaxUrl + "/front/XtUserInfo/selectSellBalance?token=" + token, sellingParams, getSellingList);  // 卖出处理中的
+
+        });
+        $('#sellingOver').click(function () {
+            $(this).addClass('on').siblings().removeClass('on');
+            $(this).css('color', '#ff5a3a').siblings().css('color', '#b7b7b7');
+            $('#selling-list').hide();
+            $('#sellingOver-list').show();
+            // 卖出完成的
+            getList("#sellingOver-list", "post", ajaxUrl + "/front/XtUserInfo/selectTranMatching?token=" + token, sellDetailparams, getSellingOverList);  // 卖出完成的
+
+        });
+
+
+        $('.sk-rgt').click(function () {
+            $(".pay_mode_bg").attr("style", "display:block");
+            $(".pay_mode").css({
+                'left': '7%',
+                'transition': 'left 0.5s'
+            });
+        });
+        $(".pay_mode_bg,.pay_mode_tit img").click(function () {
+            $(".pay_mode_bg").attr("style", "display:none");
+            $(".pay_mode").css({
+                'left': '100%',
+                'transition': 'left 0.5s'
+            });
+        });
+        //支付方式选择
+        $('.account-box ul li').eq(0).css('display', 'block');
+        $(".pay_ways .order_line").click(function () {
+            var index = $(this).index();
+            $(this).addClass("pitchon").siblings().removeClass("pitchon");
+            $('.account-box ul li').eq(index).attr('data-sure', 'yes').css('display', 'block').siblings().attr('data-sure', 'no').css('display', 'none');
+
+        });
+
+        //初始化付款
+        $.post(ajaxUrl + '/front/XtWithdrawControllerFront/withdraw', {token: token}, function (r) {
+            var zfbValue = r.zfb||'还没绑定支付宝';
+            $('.zfb_id').text(zfbValue);
+            $('.wx_id').text(r.bank);
+            params.canUse = r.balance;
+            paramsell.canUse = r.balance;
+        }, 'json');
+
+
+        // 初始化渲染明细列表
+        $('.cge-tit .det-tit').each(function () { //初始化显示
+            show.page.push(1);
+            if ($(this).hasClass("on")) {
+                show.dataType = $(this).data('type');
+                $("#con-list ul").each(function () {
+                    if ($(this).data("type") == show.dataType) {
+                        show.typeId = $(this).attr("id");
+                    }
+                });
+                $("#con-list-over ul").each(function () {
+                    if ($(this).data("type") == show.dataType) {
+                        show.typeId = $(this).attr("id");
+                    }
+                });
+                params.type = $(this).attr('data-type'); // 买入0 卖出1
+                buyDetailparams.pageNo = show.page[show.dataType];
+                //getList("#buyDetail-list-over", "post", ajaxUrl + "/front/XtUserInfo/selectTranMatching?token=" + token, buyDetailparams, detailReq); // 买入处理完成的记录
+                getList("#buyDetail-list", "post", ajaxUrl + "/front/XtUserInfo/selectBuyBalance?token=" + token, buyDetailparams, getBuyingList);  // 买入处理中的
+
+            }
+        });
+
+        var status = setTimeout('getvalue()', 0);
+        var textArea = document.getElementById("buyMoney"); //买入数量
+        textArea.oninput = function () {
+            if (textArea.value.length > 9) {
+                textArea.value = textArea.value.slice(0, 9)
+            }
+            textArea.value = parseFloat(textArea.value);
+            var num = parseFloat(textArea.value);
+            if (num === '') {
+                $('#buyConfirm').removeClass('canSent').attr('disabled', true);
+                $('#buyRadtio').html(0);
+            } else if (num % 100 !== 0) {
+//                tip.flag('只能输入100的倍数！', 'error');
+                layer.open({
+                    content: '只能输入100的倍数!'
+                    , skin: 'msg'
+                    , time: 2 //2秒后自动关闭
+                });
+                $('#buyConfirm').removeClass('canSent').attr('disabled', true);
+                $('#buyRadtio').html(0);
+            } else {
+                $('#buyRadtio').html(num * radtio.receivables);
+                $('#buyConfirm').addClass('canSent').attr('disabled', false);
+            }
+
+            buySellParams.amount = num;
+            buySellParams.type = 0;
+            getvalue();
+        };
+
+        // 卖出余额 sellOutId
+        var statusSell = setTimeout('getvalueSell()', 0);
+        var textAreaSell = document.getElementById("sellMoney"); //卖出数量
+        textAreaSell.oninput = function () {
+            if (textAreaSell.value.length > 9) {
+                textAreaSell.value = textAreaSell.value.slice(0, 9)
+            }
+            textAreaSell.value = parseFloat(textAreaSell.value);
+            var num = parseFloat(textAreaSell.value);
+            if (num > paramsell.canUse) {
+                layer.open({
+                    content: '没有更多余额了!'
+                    , skin: 'msg'
+                    , time: 2 //2秒后自动关闭
+                });
+                textAreaSell.value = "";
+                $('#sellOutId').removeClass('canSent').attr('disabled', true);
+                $('#sellRadtio').html(0);
+            } else if (num === '') {
+                $('#sellOutId').removeClass('canSent').attr('disabled', true);
+                $('#sellRadtio').html(0);
+            } else if (num % 100 !== 0) {
+                layer.open({
+                    content: '只能输入100的倍数!'
+                    , skin: 'msg'
+                    , time: 2 //2秒后自动关闭
+                });
+                $('#sellOutId').removeClass('canSent').attr('disabled', true);
+                $('#sellRadtio').html(0);
+            } else {
+                $('#sellRadtio').html(num * radtio.sellMoeny); // 账户扣款
+                $('#getRadtio').html(num * radtio.receivables); //实际收款
+                $('#sellOutId').addClass('canSent').attr('disabled', false);
+            }
+            buySellParams.amount = num;
+            buySellParams.type = 1;
+            getvalueSell();
+        };
+
+
+
+    });
+
+    !function($, ydui) {
+        //密码支付
+        var dialog = ydui.dialog;
+
+        var $keyboard = $('#J_KeyBoard');
+
+        // 初始化参数
+        $keyboard.keyBoard({
+            disorder: false, // 是否打乱数字顺序
+            title: '帆恒安全键盘' // 显示标题
+        });
+        //输入密码  成功后的操作
+        function payInputPassWord() {
+            $('.g-scrollview').css('display', 'block');
+            $keyboard.keyBoard('open');
+
+            // 六位密码输入完毕后执行
+            $keyboard.on('done.ydui.keyboard', function(ret) {
+                buySellParams.payPassword =ret.password;
+                var str = '';
+                $('#firstTabTitle span').each(function (index, obj) {
+                    if ($(obj).hasClass('on')) {
+                        buySellParams.type = parseInt($(obj).attr('data-type'));
+                    }
+                });
+                if (buySellParams.type == 0) { // 0买入
+                    str = '/front/XtUserInfo/buyBalance';
+                    delete buySellParams.type;
+                } else {  // 1卖出
+                    str = '/front/XtUserInfo/sellBalance';
+                    // 收款方式
+                    $('.account-box ul li').each(function (index, obj) {
+                        if ($(obj).css('display') === 'block') {
+                            buySellParams.type = parseInt($(obj).attr('data-type'));
+                        }
+                    })
+
+                }
+
+                $.post(ajaxUrl + str + "?token=" + token, buySellParams, function(r) {
+                    $('.m-loading').css('display', 'flex');
+                    if(r.code == 300) {
+                        // 模拟AJAX校验密码
+                        setTimeout(function() {
+                            // 关闭请求中提示框
+                            $('.m-loading').css('display', 'none');
+                            // 显示错误信息
+                            $keyboard.keyBoard('error', r.msg);
+                            buySellParams.type = 0;// 恢复默认值
+                        }, 1500);
+
+
+                    } else {
+                        setTimeout(function() {
+                            // 关闭请求中提示框
+                            $('.m-loading').css('display', 'none');
+                            // 显示错误信息
+                            confirmBuyMoneyferReq();
+                        }, 1500);
+
+                    }
+                }, 'json')
+
+            });
+        };
+        // 打开键盘
+        $('#buyConfirm').on('click', function() {
+            payInputPassWord();
+        });
+        $('#sellOutId').on('click', function() {
+            payInputPassWord();
+        });
+
+    }(jQuery, YDUI);
+
+    //买入余额回掉
+    function confirmBuyMoneyferReq(r) {
+        tip.flag('交易成功！', 'success');
+        buySellParams.type = 0;// 恢复默认值
+        setTimeout(function () {
+            javascript:history.back(-1);
+        }, 1500)
+    }
+
+    function getvalue() {
+        var value = $('#buyMoney').val();
+    }
+
+    function getvalueSell() {
+        var value = $('#sellMoney').val();
+    }
+
+    //滚动加载买入明细数据
+
+    $(".content").scroll(function () {
+        if (show.page[show.dataType] != 0) {
+            totleHeight = $(".content").height() + $(".content").scrollTop();
+            if (($(".content")[0].scrollHeight == totleHeight) && !listLoading) {
+                show.page[show.dataType] += 1;
+                buyDetailparams.pageNo = show.page[show.dataType];
+                getList("#buying-list", "post", ajaxUrl + "/front/XtUserInfo/selectBuyBalance?token=" + token, buyingParams, getBuyingList);  // 买入处理中的
+                getList("#buyingOver-list", "post", ajaxUrl + "/front/XtUserInfo/selectTranMatching?token=" + token, buyDetailparams, getBuyingOverList);  // 买入完成的
+                getList("#selling-list", "post", ajaxUrl + "/front/XtUserInfo/selectSellBalance?token=" + token, sellingParams, getSellingList);  // 卖出处理中的
+                getList("#sellingOver-list", "post", ajaxUrl + "/front/XtUserInfo/selectTranMatching?token=" + token, sellDetailparams, getSellingOverList);  // 卖出完成的
+
+            }
+        }
+    });
+    //滚动加载买入明细数据
+    /* $(".content").scroll(function () {
+     if (show.page[show.dataType] != 0) {
+     totleHeight = $(".content").height() + $(".content").scrollTop();
+     if (($(".content")[0].scrollHeight == totleHeight) && !listLoading) {
+     show.page[show.dataType] += 1;
+     buyDetailparams.pageNo = show.page[show.dataType];
+     getList("#selling-list", "post", ajaxUrl + "/front/XtUserInfo/selectSellBalance?token=" + token, sellingParams, getSellingList);  // 卖出处理中的
+     getList("#sellingOver-list", "post", ajaxUrl + "/front/XtUserInfo/selectTranMatching?token=" + token, sellDetailparams, getSellingOverList);  // 卖出完成的
+     }
+     }
+     });*/
+
+    // 提醒付款
+    function tipPay(buyId, that, type) {
+        var paramters = {type: type, id : buyId}; //收款type0   付款 type1
+        $.post(ajaxUrl + "/front/XtUserInfo/updateStatus?token=" + token, paramters, function (res) {
+            if(res.code ==  200){
+                tip.flag(res.msg,'success');
+                $(that).text('已提醒付款');
+            }else if(res.code == 201){
+                tip.flag('请先登录', 'error');
+                setTimeout(function () {
+                    location.href = '/login.html';
+                }, 2000);
+            }else {
+                tip.flag(res.msg, 'error');
+            }
+        })
+    }
+
+    // 确认收款
+    function tipWithdraw(sellId, that) {
+        var paramters = {type: 0, id : sellId}; //收款type0   付款 type1
+        $.post(ajaxUrl + "/front/XtUserInfo/updateStatus?token=" + token, paramters, function (res) {
+            if(res.code ==  200){
+                tip.flag(res.msg,'success');
+                $(that).text('已付款');
+            }else if(res.code == 201){
+                tip.flag('请先登录', 'error');
+                setTimeout(function () {
+                    location.href = '/login.html';
+                }, 2000);
+            }else {
+                tip.flag(res.msg, 'error');
+            }
+        })
+    }
+
+    //撤销买入申请
+    function cancelApplyBuy(id, that, type){
+        var paramters = {type: type, id : id}; //买type1   卖 type0
+        $.post(ajaxUrl + "/front/XtUserInfo/cancelBuyOrSell?token=" + token, paramters, function (res) {
+            if(res.code ==  200){
+                tip.flag(res.msg,'success');
+                $(that).text('已撤销');
+            }else if(res.code == 201){
+                tip.flag('请先登录', 'error');
+                setTimeout(function () {
+                    location.href = '/login.html';
+                }, 2000);
+            }else {
+                tip.flag(res.msg, 'error');
+            }
+        })
+    }
+
+    // 买入匹配中的
+    function getBuyingList(obj, r) {
+        var html = "<div class='footer_box detail' style='height: 135px;'>";
+        html += "<div class = 'no-more' >"
+        html += "<img src = 'img/icon-jiazaipng.png' />";
+        html += "<p > 没有了！！！ </p>";
+        html += "</div> </div>";
+        if (r.code == 200) {
+            var length = r.buymoneys.length;
+            if (length != 0 && show.page[show.dataType] == 1) {
+                var html1 = template("detailBuyingId", r);
+                $(obj).html(html1);
+            } else if (length != 0 && show.page[show.dataType] != 1) {
+                var html1 = template("detailBuyingId", r);
+                $(obj).append(html1);
+            } else if (length == 0 && show.page[show.dataType] == 1) {
+                $(obj).append(html);
+                show.page[show.dataType] = 0;
+            } else {
+                listLoadingLock = true;
+                show.page[show.dataType] = 0;
+                $(obj).append(html);
+            }
+        }
+    }
+
+    //买入完成的
+    function getBuyingOverList(obj, r) {
+        var html = "<div class='footer_box detail' style='height: 135px;'>";
+        html += "<div class = 'no-more' >";
+        html += "<img src = 'img/icon-jiazaipng.png' />";
+        html += "<p > 没有了！！！ </p>";
+        html += "</div> </div>";
+        if (r.code == 200) {
+            var length = r.tranMatchings.length;
+            if (length != 0 && show.page[show.dataType] == 1) {
+                var html1 = template("buyingOverId", r);
+                $(obj).html(html1);
+            } else if (length != 0 && show.page[show.dataType] != 1) {
+                var html1 = template("buyingOverId", r);
+                $(obj).append(html1);
+            } else if (length == 0 && show.page[show.dataType] == 1) {
+                $(obj).append(html);
+                show.page[show.dataType] = 0;
+            } else {
+                listLoadingLock = true;
+                show.page[show.dataType] = 0;
+                $(obj).append(html);
+            }
+        }
+    }
+    // 买入匹配中的
+    function getSellingList(obj, r) {
+        var html = "<div class='footer_box detail' style='height: 135px;'>";
+        html += "<div class = 'no-more' >"
+        html += "<img src = 'img/icon-jiazaipng.png' />";
+        html += "<p > 没有了！！！ </p>";
+        html += "</div> </div>";
+        if (r.code == 200) {
+            var length = r.sellmoneys.length;
+            if (length != 0 && show.page[show.dataType] == 1) {
+                var html1 = template("detailSellingId", r);
+                $(obj).html(html1);
+            } else if (length != 0 && show.page[show.dataType] != 1) {
+                var html1 = template("detailSellingId", r);
+                $(obj).append(html1);
+            } else if (length == 0 && show.page[show.dataType] == 1) {
+                $(obj).append(html);
+                show.page[show.dataType] = 0;
+            } else {
+                listLoadingLock = true;
+                show.page[show.dataType] = 0;
+                $(obj).append(html);
+            }
+        }
+    }
+
+    // 卖出完成的
+    function getSellingOverList(obj, r) {
+        var html = "<div class='footer_box detail' style='height: 135px;'>";
+        html += "<div class = 'no-more' >"
+        html += "<img src = 'img/icon-jiazaipng.png' />";
+        html += "<p > 没有了！！！ </p>";
+        html += "</div> </div>";
+        if (r.code == 200) {
+            var length = r.tranMatchings.length;
+            if (length != 0 && show.page[show.dataType] == 1) {
+                var html1 = template("sellingOverId", r);
+                $(obj).html(html1);
+            } else if (length != 0 && show.page[show.dataType] != 1) {
+                var html1 = template("sellingOverId", r);
+                $(obj).append(html1);
+            } else if (length == 0 && show.page[show.dataType] == 1) {
+                $(obj).append(html);
+                show.page[show.dataType] = 0;
+            } else {
+                listLoadingLock = true;
+                show.page[show.dataType] = 0;
+                $(obj).append(html);
+            }
+        }
+    }
+
+</script>
+</body>
+</html>

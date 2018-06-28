@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<meta name="renderer" content="webkit">
+		<meta http-equiv="X-UA-Compatible" content="IE=11; IE=10; IE=9; IE=8; IE=7; IE=EDGE,Chrome=1">
+		<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no" />
+		<link rel="stylesheet" type="text/css" href="css/index.css" />
+		<link rel="stylesheet" href="css/hp.css" />
+		<script src="js/jquery-1.11.1.min.js" type="text/javascript" charset="utf-8"></script>
+		<script type="text/javascript" src="js/default.js"></script>
+		<title></title>
+		<style type="text/css">
+			.cheak-th {
+				overflow: hidden;
+				background-color: white;
+			}
+			
+			.state-gb {
+				margin: auto;
+				height: 44px;
+				width: 150px;
+				display: flex;
+			}
+			
+			.state-gb span {
+				display: block;
+				line-height: 44px;
+				flex: 1;
+				text-align: center;
+			}
+			
+			.back-suc {
+				float: right;
+				font-size: 12px;
+				color: #63d200
+			}
+			
+			.ch-num {
+				color: black;
+			}
+			
+			.all-dingd-box {
+				display: block;
+			}
+			
+			.zc-btn {
+				width: 84px;
+				height: 20px;
+				border-radius: 10px;
+				border: solid 1px #9d9d9d;
+				background: none;
+				margin-top: -10px;
+				float: right;
+				font-size: 12px;
+				color: #8a8a8a;
+				margin-right: 15px;
+			}
+			
+			.order_img {
+				width: 24%;
+			}
+			
+			.wddd-all {
+				border-bottom: 1px solid #DCDCDC;
+			}
+		</style>
+	</head>
+
+	<body>
+		<div class="container">
+			<header class="head-st">
+				<div class="sto-nav-left">
+					<img src="img/fanhui.png" onclick="javascript:history.back(-1);" />
+				</div>
+				<div class="sto-nav-sear">
+					我的退换
+				</div>
+			</header>
+			<div class="content">
+				<div class="cheak-th">
+					<div class="state-gb">
+						<span class="det-tit-left on" type="1" count="2">处理中</span>
+						<span class="det-tit-rgt" type="2" count="1">已完成</span>
+					</div>
+				</div>
+				<!--
+                	处理中
+                -->
+				<div class="all-dingd-box" id="back-list">
+
+				</div>
+
+				<div class="no-more">
+					<img src="img/icon-jiazaipng.png" />
+					<p>别扯了。没有更多了！！！</p>
+				</div>
+			</div>
+		</div>
+
+		<script type="text/template" id="back-list-con">
+			{{each data as listA i}}
+			<div class="order_details" typeid="{{listA.type}}">
+				<div class="order_tit clearfix">
+					<span class="wddd-name" onclick="shop({{listA.shopId}})">{{listA.shopName}}</span>
+					<span class="triangle-right"></span> {{if listA.type==1}}
+					<span class="hasdon">退货中</span> {{else}}
+					<span class="back-suc">退货完成</span> {{/if}}
+				</div>
+				{{each listA.returnGoodsList as listB i}}
+				<div class="merchandise no-bom">
+					<div class="order_img">
+						<img src="{{listB.productImg}}" alt="" />
+					</div>
+					<div class="order_cot wddd-cot" onclick="location.href='tui-schedule.html?id={{listB.returnGoods.id}}'">
+						<div class="pro_tit">
+							{{listB.productName}}
+						</div>
+						<div class="pro_par">
+							参数:{{each listB.productSpecName as listC i}}
+							<span>{{listC}}</span> {{/each}}
+						</div>
+						<div class="e_dian wddd-dian">
+							送{{listB.productEdian}}e点
+						</div>
+						<div class="pro_price wddd-price">
+							<span>¥{{listB.productPrice}}</span>
+							<span class="ch-num">x{{listB.productCount}}</span>
+						</div>
+					</div>
+				</div>
+				<div class="wddd-all">
+					<div class="clear"></div>
+					<div class="zt-btns" style="margin-top: 20px;">
+						<a href="logisticsTracking.html?orderId={{listB.returnGoods.orderId}}&detailId={{listB.returnGoods.detailId}}">
+							<input type="button" id="sur-sh" class="zc-btn" value="物流查看" />
+						</a>
+
+					</div>
+				</div>
+				{{/each}}
+
+			</div>
+			{{/each}}
+		</script>
+
+		<script type="text/template" id="change-list-con">
+			{{each data as listA i}}
+			<div class="order_details" typeid="{{listA.type}}">
+				<div class="order_tit clearfix">
+					<span class="wddd-name">{{listA.shopName}}</span>
+					<span class="triangle-right"></span> {{if listA.type==1}}
+					<span class="hasdon">换货中</span> {{else}}
+					<span class="back-suc">换货完成</span> {{/if}}
+				</div>
+				{{each listA.returnGoodsList as listB i}}
+				<div class="merchandise no-bom">
+					<div class="wddd_img order_img">
+						<img src="{{listB.productImg}}" alt="" />
+					</div>
+					<div class="order_cot wddd-cot" onclick="location.href='huan-schedule.html?id={{listB.exchangeGoods.id}}'">
+						<div class="pro_tit">
+							{{listB.productName}}
+						</div>
+						<div class="pro_par">
+							参数:{{each listB.productSpecName as listC i}}
+							<span>{{listC}}</span> {{/each}}
+						</div>
+						<div class="e_dian wddd-dian">
+							送{{listB.productEdian}}e点
+						</div>
+						<div class="pro_price wddd-price">
+							<span>¥{{listB.productPrice}}</span>
+							<span class="ch-num">x{{listB.productCount}}</span>
+						</div>
+					</div>
+				</div>
+				<div class="wddd-all">
+					<div class="clear"></div>
+					<div class="zt-btns" style="margin-top: 20px;">
+						<a href="logisticsTracking.html?orderId={{listB.exchangeGoods.orderId}}">
+							<input type="button" id="sur-sh" class="zc-btn" value="物流查看" />
+						</a>
+					</div>
+				</div>
+				{{/each}}
+
+			</div>
+			{{/each}}
+		</script>
+		<script type="text/javascript" src="js/template.js"></script>
+		<script type="text/javascript" src="js/template-helper.js"></script>
+		<script type="text/javascript">
+			var params = {};
+			$(function() {
+				//初始化
+				params.type = 1;
+				getList("#back-list", 'post', ajaxUrl+'/front/returnGoods/listReturnGoods?token=' + token, params, backReq);
+				getList("#back-list", 'post', ajaxUrl+'/front/returnGoods/listExchangeGoods?token=' + token, params, changeReq);
+			});
+
+			//退货数据处理
+			function backReq(obj, r) {
+				var html1 = template('back-list-con', r);
+				$(obj).append(html1);
+			}
+			//换货数据处理
+			function changeReq(obj, r) {
+				var html1 = template('change-list-con', r);
+				$(obj).append(html1);
+			}
+
+			//导航栏切换
+			$(".state-gb span").bind('click', function() {
+				$(this).addClass('on').siblings().removeClass('on');
+				$(this).css('color', '#ff5a3a').siblings().css('color', '#8a8a8a');
+				params.type = $(this).attr('type');
+				if($(this).attr('count') == 1) {
+					$(this).attr('count', 2);
+					getList("#back-list", 'post', ajaxUrl+'/front/returnGoods/listReturnGoods?token=' + token, params, backReq);
+					getList("#back-list", 'post', ajaxUrl+'/front/returnGoods/listExchangeGoods?token=' + token, params, changeReq);
+					connectDisplay(".order_details", "typeid", params.type);
+				} else {
+					connectDisplay(".order_details", "typeid", params.type);
+				}
+			});
+
+			//店铺跳转
+			function shop(id) {
+				window.location.href = "shop_details.html?id=" + id;
+			}
+		</script>
+	</body>
+
+</html>

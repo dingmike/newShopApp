@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8" />
+		<title>搜索</title>
+		<meta name="renderer" content="webkit">
+		<meta http-equiv="X-UA-Compatible" content="IE=11; IE=10; IE=9; IE=8; IE=7; IE=EDGE,Chrome=1">
+		<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no" />
+		<link rel="stylesheet" type="text/css" href="css/index.css"/>
+		<link rel="stylesheet" type="text/css" href="css/hp.css"/>
+		<script src="js/jquery-1.11.1.min.js" type="text/javascript" charset="utf-8"></script>
+		<script src="js/default.js"></script>
+		<script src="js/template.js"></script>
+		<script src="js/template-helper.js"></script>
+	</head>
+	<body>
+		<div class="container serchs">
+			<header>
+				<img class="nav-left" src="img/fanhui.png" alt="" onclick="javascript:history.back(-1);">
+				<div class="select1" data-type="2">商品</div>
+				<form>
+					<input type="text" name="" id="o" />
+				</form>
+					<div class="cancel">
+						<a class="search-a">搜索</a>
+					</div>
+				
+			</header>
+			
+			<div class="select2">
+				<div class="return"></div>
+				<div class="nr" >店铺</div>
+				<ul>
+					<li data-type="1">
+						<i>店铺</i>
+						<span></span>
+					</li>
+					<li data-type="2">
+						<i>商品</i>
+						<span></span>
+					</li>
+				</ul>
+			</div>
+
+			<div class="content">
+					<div class="se-list tp1">
+						<ul>
+							<li>
+								<strong>Mac</strong>
+								<span>Pro 2017</span>
+							</li>
+							<li>
+								<strong>Mac</strong>
+								<span>Pro</span>
+							</li>
+							<li>
+								<strong>Mac</strong>
+								<span>Book 13寸</span>
+							</li>
+							<li>
+								<strong>Mac</strong>
+							</li>
+							<li>
+								<strong>Mac</strong>
+							</li>
+						</ul>
+					</div>
+				<div class="history-serch">
+					<div class="his-top">
+						<span>历史搜索</span>
+						<img src="img/clear.png" />
+					</div>
+					<div class="his-res">
+						<ul>
+						<li>还没有搜索过</li>
+						</ul>
+					</div>
+				</div>
+			</div>
+		</div>
+				
+
+		<script>
+ 			
+			$(function(){
+				
+				
+				//历史搜索
+				var arrx =JSON.parse(localStorage.getItem("arr"));
+				var html='';
+				var html2='';
+				for(var i in arrx){
+					if(arrx[i].type=='1'){
+						html+='<li>'+'<a href=shopSearchResult.html?type='+arrx[i].type+'&search='+encodeURI(arrx[i].search)+'>'+arrx[i].search+'</a>'+'</li>';
+					}else{
+						html2+='<li>'+'<a href=goodsSearchResult.html?type='+arrx[i].type+'&search='+encodeURI(arrx[i].search)+'>'+arrx[i].search+'</a>'+'</li>';
+					}
+				}
+				$('.his-res ul').html(html);
+				$('.his-res ul').append(html2);
+				
+				$('.cancel').click(function(){
+					
+						var search = $('#o').val(),//s搜索关键字
+					    select1 = $('.select1').attr('data-type') ,
+					    type=1;
+						
+					    
+						if(search==''){
+							tip.flag('你还没有输入','error');
+							return ;
+						}
+						 if(select1=='1'){//店铺
+					    	type=1;
+					   		$('.search-a').attr('href','shopSearchResult.html?type='+type+'&search='+encodeURI(search));
+					    }else if(select1=='2'){//商品
+					    	type=2;
+					    	$('.search-a').attr('href','goodsSearchResult.html?type='+type+'&search='+encodeURI(search));
+					    }
+					    
+						 var arr = JSON.parse(localStorage.getItem("arr"))||[];
+					   	arr.push({'search':search,'type':type})
+					    localStorage.setItem("arr", JSON.stringify(arr))
+					
+				});
+				
+				
+			$('.his-top img').click(function(){
+				$('.his-res').css('display','none');
+				localStorage.removeItem("arr");
+			});
+				
+				//选择店铺
+				$('.select1').click(function(){
+					
+					$('header').css('display','none');
+					$('.select2').css('display','block');
+	
+				});
+				
+				//下拉框选择
+				$('.select2 ul li').click(function(){
+					$(this).find('span').css('opacity','1').parent().siblings().find('span').css('opacity','0');
+					var htm = $(this).text(),
+					type = $(this).attr('data-type');
+					$('.nr').text(htm);
+					$('.select1').text(htm);
+					$('.select1').attr('data-type',type);
+					$('header').css('display','block');
+					$('.select2').css('display','none');
+				});
+				
+				//返回
+				$('.return').click(function(){
+					$('header').css('display','block');
+					$('.select2').css('display','none');
+				});
+			});
+			
+		</script>
+	</body>
+</html>

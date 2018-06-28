@@ -1,0 +1,400 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0"/>
+    <meta name="apple-mobile-web-app-capable" content="yes"/>
+    <meta name="apple-mobile-web-app-status-bar-style" content="black"/>
+    <meta name="format-detection" content="telephone=no"/>
+    <title>发起支付</title>
+    <script src="https://res.wx.qq.com/open/js/jweixin-1.3.2.js" type="text/javascript"></script>
+    <script src="./js/jquery-1.11.1.min.js" type="text/javascript" charset="utf-8"></script>
+    <script src="./js/layer.js" type="text/javascript" charset="utf-8"></script>
+    <script src="js/default.js"></script>
+    <script type="text/javascript" src="./lib/layer_mobile/layer.js"></script>
+    <style>
+        .pay-box {
+            width: 100%;
+            text-align: center;
+            margin: 44px 0;
+        }
+
+        .opt {
+            display: none;
+            z-index: 11;
+        }
+
+        .opt {
+            background: black;
+            opacity: 0.5;
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+        }
+
+        .pay-box button {
+            width: 50%;
+            height: 44px;
+            background: #00cd00;
+            border: none;
+            border-radius: 9px;
+            color: #fff;
+            font-size: 16px;
+        }
+
+        .group {
+            text-align: center;
+            padding: 14px 36px;
+            background-color: #fff;
+        }
+
+        #countMoneyId {
+            color: #FF5722;
+            padding-left: 14px;
+        }
+        .head-img{
+            width: 100px;
+            height: 100px;
+            margin: 0 auto;
+        }
+        .head-img>img{
+            width: 100%;
+        }
+    </style>
+</head>
+<body>
+
+<div class="page-container">
+    <header class="m-header">
+    </header>
+    <div class="group">
+        <div class="head-img"><img src="./img/ad_imgs/head_img.png" alt=""></div>
+        <div class="head-title" id="shopNameId">购一购</div>
+    </div>
+    <div class="group">
+        <div class="group-title">扫码支付金额 :<span id="countMoneyId">0.00</span></div>
+    </div>
+    <div class="pay-box">
+        <button id="payId">微信支付</button>
+    </div>
+</div>
+<div class="opt"></div>
+</body>
+<script type="text/javascript">
+    $(function () {
+        $('#shopNameId').text(localStorage.shopName);
+        $('.head-img img').attr('src', localStorage.shopLogo);
+        $('#countMoneyId').text(localStorage.countMoney);
+        $('#payId').on('click', function () {
+            $(this).attr('disabled', 'disabled').css({background: '#ccc'});
+            pay();
+        })
+    });
+    //去支付
+    var appId;
+    var timestamp;
+    var nonce_str;
+    var prepay_id;
+    var signType;
+    var paySign;
+    function pay() {
+        var code = GetUrlParam('code');
+        var flag = true;
+        var userOpenId = '';
+        var userUnionId = '';
+        var orderId = localStorage.wxOrderId;
+        $.ajax({
+            type: 'POST',
+            async: false,
+            url: ajaxUrl + '/WxGzh/getOpenId',
+            data: {code: code},
+            success: function (res) {
+                if (res.code == 200) {
+                    userOpenId = res.data.openId;
+                    userUnionId = res.data.unionId;
+                } else {
+                    layer.open({
+                        content: res.msg
+                        , skin: 'msg'
+                        , time: 2 //2秒后自动关闭
+                    });
+                    return;
+                }
+            }
+        });
+
+        //创建账号
+        if (localStorage.noAccount == '1') {
+            $.ajax({
+                type: 'POST',
+                async: false,
+                cache: false,
+                url: ajaxUrl + '/front/clients/createAccount',
+                data: {referPhone: localStorage.referPhone, shopId: localStorage.shopId, unionId: userUnionId},
+                success: function (res) {
+                    console.log('data:', res.data);
+                    if (res.code == 300) {
+                        layer.open({
+                            content: data.msg
+                            , skin: 'msg'
+                            , time: 2 //2秒后自动关闭
+                        });
+                        return;
+
+                    } else if (res.code == 200) {
+                        localStorage.removeItem('token');
+                        localStorage.setItem("token", res.data.token);
+                        localStorage.setItem('notRealAccount', res.data.account);
+                        localStorage.setItem('notRealPas', res.data.password);
+
+
+                    }
+
+                }
+            });
+
+            var params = {};
+            params.productId = localStorage.productId;
+            params.shopId = localStorage.shopId;
+
+            params.token = localStorage.token;
+            params.number = localStorage.payCount;
+            $.ajax({
+                type: "post",
+                url: ajaxUrl + "/front/orders/insertOrderbyQrcode",
+                async: false,
+                data: params,
+                success: function (res) {
+                    //alert('orderId' + res.data)
+                    if (res.code == 200) {
+                        console.log(res.data);
+                        orderId = res.data;
+                        localStorage.setItem('wxOrderId', orderId);
+                        $.ajax({
+                            type: 'POST',
+                            async: false,
+                            url: ajaxUrl + '/WxGzh/pay',
+                            data: {openId: userOpenId, orderId: localStorage.wxOrderId},
+                            success: function (res) {
+                                if (res.code == 200) {
+                                    appId = res.data.appId;
+                                    timestamp = res.data.timeStamp + '';
+                                    nonce_str = res.data.nonceStr;
+                                    prepay_id = res.data.prepay_id;
+                                    signType = res.data.signType;
+                                    paySign = res.data.sign;
+                                } else {
+                                    layer.open({
+                                        content: res.msg
+                                        , skin: 'msg'
+                                        , time: 2 //2秒后自动关闭
+                                    });
+                                    return;
+                                }
+
+                            }
+                        });
+
+                        if (typeof WeixinJSBridge == "undefined") {
+                            if (document.addEventListener) {
+                                document.addEventListener('WeixinJSBridgeReady', onBridgeReady, false);
+                            } else if (document.attachEvent) {
+                                document.attachEvent('WeixinJSBridgeReady', onBridgeReady);
+                                document.attachEvent('onWeixinJSBridgeReady', onBridgeReady);
+                            }
+                        } else {
+                            wx.config({
+                                debug: false, // 开启调试模式,调用的所有api的返回值会在客户端alert出来，若要查看传入的参数，可以在pc端打开，参数信息会通过log打出，仅在pc端时才会打印。
+                                appId: appId, // 必填，公众号的唯一标识
+                                timestamp: timestamp, // 必填，生成签名的时间戳
+                                nonceStr: nonce_str, // 必填，生成签名的随机串
+                                signature: paySign,// 必填，签名
+                                jsApiList: ['chooseWXPay'] // 必填，需要使用的JS接口列表
+                            });
+
+                            // 调起微信支付
+                            wx.ready(function () {　　　　// 调用支付函数
+                                layer.closeAll();
+                                $('.opt').hide();
+                                wx.chooseWXPay({
+                                    timestamp: timestamp, // 支付签名时间戳，注意微信jssdk中的所有使用timestamp字段均为小写。但最新版的支付后台生成签名使用的timeStamp字段名需大写其中的S字符
+                                    nonceStr: nonce_str, // 支付签名随机串，不长于 32 位
+                                    package: "prepay_id=" + prepay_id, // 统一支付接口返回的prepay_id参数值，提交格式如：prepay_id=***）
+                                    signType: 'MD5', // 签名方式，默认为'SHA1'，使用新版支付需传入'MD5'
+                                    paySign: paySign, // 支付签名
+                                    success: function (res) {
+                                        localStorage.removeItem('payCount');
+                                        // 支付成功后的回调函数
+                                        window.location.href = 'scanPaySuccess.html';
+
+                                    },
+                                    cancel: function (res) {　　　　　　　　　　　　// 支付取消回调函数
+
+                                        localStorage.removeItem('payCount');
+                                        if (localStorage.noAccount == 1) {
+                                            window.location.href = 'scanPayNoAccount.html';
+                                        } else {
+                                            window.location.href = 'scanPay.html';
+                                        }
+
+                                    },
+                                    fail: function (res) {
+                                        localStorage.removeItem('payCount');　　　　　　　　　　　　// 支付失败回调函数
+                                        if (localStorage.noAccount == 1) {
+                                            window.location.href = 'scanPayNoAccount.html';
+                                        } else {
+                                            window.location.href = 'scanPay.html';
+                                        }
+                                    }
+                                });
+                            });// js-sdk调用异常回调函数
+                            wx.error(function (res) {
+                                localStorage.removeItem('payCount');
+                                layer.open({
+                                    content: res.err_msg
+                                    , skin: 'msg'
+                                    , time: 2 //2秒后自动关闭
+                                });
+
+                                window.location.href = 'scanPay.html';
+                            });
+                        }
+
+
+                    } else {
+
+                        layer.open({
+                            content: res.msg
+                            , skin: 'msg'
+                            , time: 3 //2秒后自动关闭
+                        });
+                        setTimeout(function () {
+                            layer.closeAll();
+                            location.href = 'scanPayNoAccount.html'
+                        }, 3000)
+                    }
+                }
+            });
+        } else {
+            $.ajax({
+                type: 'POST',
+                async: false,
+                url: ajaxUrl + '/WxGzh/pay',
+                data: {openId: userOpenId, orderId: localStorage.wxOrderId},
+                success: function (res) {
+                    if (res.code == 200) {
+                        appId = res.data.appId;
+                        timestamp = res.data.timeStamp + '';
+                        nonce_str = res.data.nonceStr;
+                        prepay_id = res.data.prepay_id;
+                        signType = res.data.signType;
+                        paySign = res.data.sign;
+                    } else {
+                        layer.open({
+                            content: res.msg
+                            , skin: 'msg'
+                            , time: 2 //2秒后自动关闭
+                        });
+                        return;
+                    }
+
+                }
+            });
+
+            if (typeof WeixinJSBridge == "undefined") {
+                if (document.addEventListener) {
+                    document.addEventListener('WeixinJSBridgeReady', onBridgeReady, false);
+                } else if (document.attachEvent) {
+                    document.attachEvent('WeixinJSBridgeReady', onBridgeReady);
+                    document.attachEvent('onWeixinJSBridgeReady', onBridgeReady);
+                }
+            } else {
+                wx.config({
+                    debug: false, // 开启调试模式,调用的所有api的返回值会在客户端alert出来，若要查看传入的参数，可以在pc端打开，参数信息会通过log打出，仅在pc端时才会打印。
+                    appId: appId, // 必填，公众号的唯一标识
+                    timestamp: timestamp, // 必填，生成签名的时间戳
+                    nonceStr: nonce_str, // 必填，生成签名的随机串
+                    signature: paySign,// 必填，签名
+                    jsApiList: ['chooseWXPay'] // 必填，需要使用的JS接口列表
+                });
+
+                // 调起微信支付
+                wx.ready(function () {　　　　// 调用支付函数
+                    layer.closeAll();
+                    wx.chooseWXPay({
+                        timestamp: timestamp, // 支付签名时间戳，注意微信jssdk中的所有使用timestamp字段均为小写。但最新版的支付后台生成签名使用的timeStamp字段名需大写其中的S字符
+                        nonceStr: nonce_str, // 支付签名随机串，不长于 32 位
+                        package: "prepay_id=" + prepay_id, // 统一支付接口返回的prepay_id参数值，提交格式如：prepay_id=***）
+                        signType: 'MD5', // 签名方式，默认为'SHA1'，使用新版支付需传入'MD5'
+                        paySign: paySign, // 支付签名
+                        success: function (res) {
+                            localStorage.removeItem('payCount');
+                            // 支付成功后的回调函数
+                            window.location.href = 'scanPaySuccess.html';
+//                        alert('pay success');
+                        },
+                        cancel: function (res) {　　　　　　　　　　　　// 支付取消回调函数
+                            localStorage.removeItem('payCount');
+                            if (localStorage.noAccount == 1) {
+                                window.location.href = 'scanLogin.html';
+//                                window.location.href = 'scanPayNoAccount.html';
+                            } else {
+//                                window.location.href = 'scanPay.html';
+                                window.location.href = 'scanLogin.html';
+                            }
+
+                        },
+                        fail: function (res) {
+                            localStorage.removeItem('payCount');　　　　　　　　　　　　// 支付失败回调函数
+                            if (localStorage.noAccount == 1) {
+//                                window.location.href = 'scanPayNoAccount.html';
+                                window.location.href = 'scanLogin.html';
+                            } else {
+//                                window.location.href = 'scanPay.html';
+                                window.location.href = 'scanLogin.html';
+                            }
+                        }
+                    });
+                });// js-sdk调用异常回调函数
+                wx.error(function (res) {
+                    localStorage.removeItem('payCount');
+                    layer.open({
+                        content: res.err_msg
+                        , skin: 'msg'
+                        , time: 2 //2秒后自动关闭
+                    });
+//                alert('Innel error: ' + res.err_msg);
+//                    window.location.href = 'scanPay.html';
+                    window.location.href = 'scanLogin.html';
+                });
+            }
+
+        }
+
+
+    }
+
+    function GetUrlParam(paraName) {
+        var url = document.location.toString();
+        var arrObj = url.split("?");
+        if (arrObj.length > 1) {
+            var arrPara = arrObj[1].split("&");
+            var arr;
+            for (var i = 0; i < arrPara.length; i++) {
+                arr = arrPara[i].split("=");
+                if (arr != null && arr[0] == paraName) {
+                    return arr[1];
+                }
+            }
+            return "";
+        }
+        else {
+            return "";
+        }
+    }
+
+</script>
+
+</html>

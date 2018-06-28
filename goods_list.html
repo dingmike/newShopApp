@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<meta name="renderer" content="webkit">
+		<meta http-equiv="X-UA-Compatible" content="IE=11; IE=10; IE=9; IE=8; IE=7; IE=EDGE,Chrome=1">
+		<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no" />
+		<link rel="stylesheet" type="text/css" href="css/index.css"/>
+		<link rel="stylesheet" type="text/css" href="css/hp.css"/>
+		<script src="js/jquery-1.11.1.min.js" type="text/javascript" charset="utf-8"></script>
+		<script src="js/default.js"></script>
+		<script src="js/template.js"></script>
+		<script src="js/template-helper.js"></script>
+		
+		<title>好物推荐</title>
+		<style type="text/css">
+			 .rec-bro a:nth-of-type(even) { margin-left: 2.5%;}
+			 .rec-bro{padding-bottom: 0;}
+			 .buy-load{height: 60px;}
+		</style>
+	</head>
+	<body>
+		<div class="container">
+			<header>
+				<div class="sto-nav-left">
+					<img src="img/fanhui.png" alt="" onclick="javascript:history.back(-1);"/>
+				</div>
+				<div class="sto-nav-sear">
+					好物推荐
+				</div>
+				<div class="sto-nav-right">
+						<img src="img/gouwuche.png"/>
+					<div class="nav-car-num">
+						3
+					</div>
+				</div>
+			</header>
+			<div class="content">
+				<div class="sort-box bod-show"></div>
+				<script type="text/template" id="sort-box">
+					<ul>
+						<li class="on">全部商品</li>
+						{{each data as k i}}
+							{{if k.catParent==0}}
+								<li data-id="{{k.catId}}">{{k.catName}}</li>
+							{{/if}}
+						{{/each}}
+					</ul>
+				</script>
+				
+				
+				<div class="sort-list">
+					<div class="sort-st">综合排序</div>
+					<div class="sort-cor" data-sort='1'>
+						销量优先
+					</div>
+					<div class="sort-cor" data-sort='2'>
+						e点优先
+					</div>
+					<div class="sort-cor xdui" data-sort=''>
+						价格
+						<div class="sanjiao-box">
+							<span class="sanjiao-down"></span>
+   	 						<span class="sanjiao-up"></span>
+						</div>
+					</div>
+				</div>
+				
+				<div class="rec-bro top10"></div>
+				<script type="text/template" id="rec-bro">
+					{{each data as k i}}
+							
+								<div class="bro-sto-left">
+									<a href="sto-detail.html?id={{k.productId}}">
+										<div class="bro-img">
+											<img src={{k.productImg}}>
+										</div>
+										<span class="bro-sto-nam">{{k.productName}}</span>
+										<div class="bro-num-box">
+											<span class="bro-sto-num">￥{{k.sellPrice}}</span>
+											<span class="bro-sto-yj"><s>￥{{k.supplyPrice}}</s></span>
+										</div>
+										<div class="bro-zy-box">
+											
+											{{if typed==1}}
+												<span class="bro-zy-num">自营</span>
+											{{/if}}
+											{{if k.productExpfee==0}}
+												<span class="bro-by-num">包邮</span>
+											{{/if}}
+											{{if k.productEdian!=0}}
+												<span class="bro-sto-e">e点:<span class="e-st">{{k.productEdian}}</span></span>
+											{{/if}}
+										</div>
+									</a>
+								</div>
+							
+					{{/each}}
+				</script>
+			</div>
+		</div>
+		<script type="text/javascript">
+			$(function(){
+				var catId='',sort='',time=0//点击次数;
+				//分页  初始化
+ 				listparamUL={
+					cat_id:catId,
+					sort:sort,
+					productType:4,//1 代表福利专区  2代表限时抢购 3代表
+					pageNo:currentpage,
+					pageSize:8,
+				};
+			
+			
+								//判断用户登录过没有
+				if(!token){
+					$('.nav-car-num').css('display','none');
+				}else{
+						//个人的购物数量		
+					getInfo('post', ajaxUrl+'/productsInfo/cartCount?token=' + token, {}, setcartCountHtml);
+					function setcartCountHtml(r) {
+						$('.nav-car-num').text(r.count);
+					};
+				}
+				
+				//  m没有登录请求登录去
+				$('.sto-nav-right img').click(function(){
+					if(!token){
+						location.href='login.html';
+					}else{
+						location.href='store.html';
+					}
+				});
+			
+			
+			
+				
+			
+			
+				//页面进来的时候初始化数据
+				getList('.rec-bro','post',ajaxUrl+'/productsInfo/boon/productlist',listparamUL,getListdata);
+				
+				$('.content').scroll(function () {
+			        totleHeight = parseFloat($('.content').height()) + parseFloat($('.content').scrollTop());
+			        if (($(".content")[0].scrollHeight == totleHeight) && !listLoading) {
+			            ++currentpage;
+			            listparamUL.pageNo=currentpage;
+			            setclcik();
+			            $('.sort-list div').click(function(){
+							$(this).css('color','#ff5a3a').siblings().css('color','#9b9b9b');
+						});
+			            getList('.rec-bro','post',ajaxUrl+'/productsInfo/boon/productlist',listparamUL,getListdata);
+
+			        }
+			    });
+			    
+			    //页面渲染    
+			    function getListdata(obj,r){
+			    	if (r.data.length === 0 && currentpage === 1) {
+                        $(obj).html('<div class="_nodata">暂无数据</div>');
+                    } else if (r.data.length !== 0) {
+                        var html= template('rec-bro', r);
+                        if (currentpage === 1) {
+                            $(obj).html(html);
+                        } else {
+                            $(obj).append(html);
+                        }
+                    } else {
+                        listLoadingLock = true;
+                      $(obj).append('<div class="buy-load"><img class="load-img" src="img/load.png"><span class="load-tips">没有更多了~</span></div>');
+                    }
+                    
+			    }
+				//头部导航渲染    全部商品
+				getInfo('post',ajaxUrl+'/productsInfo/boon/productType',{},setSpecialHtml);
+				function setSpecialHtml(r){
+					console.log(r)
+					var html = template('sort-box', r);
+					
+					$('.sort-box').html(html);
+
+					$(".sort-box ul li").eq(0).addClass('on');
+//						
+//						//点击不同的导航请求不同的数据
+					$(".sort-box ul li").click(function(){
+						listLoading = false;
+						listLoadingLock = false;   //初始化页面没有被锁定，，可以滚动
+						currentpage=0;
+						listparamUL.pageNo = currentpage;
+						catId=$(this).attr('data-id');
+						listparamUL.cat_id=catId;
+						
+						$(this).addClass('on').siblings().removeClass('on');
+						$(this).css('color','#ff5a3a').siblings().css('color','#8a8a8a');
+						
+						getList('.rec-bro','post',ajaxUrl+'/productsInfo/boon/productlist',listparamUL,getListdata);
+						
+					});
+					
+				};
+				//筛选
+				setclcik();
+				function setclcik(){
+					$('.sort-cor').unbind('click').click(function(){
+						console.log($(this).index())
+						listLoading = false;
+						listLoadingLock = false;
+						currentpage=0;
+						listparamUL.pageNo = currentpage;
+						if($(this).index()!=3){
+							sort=$(this).attr('data-sort');
+						}else{
+							time++;
+							if(time%2==0){
+								sort=4;
+							}else{
+								sort=3;
+							}
+						}
+						listparamUL.sort=sort;
+						getList('.rec-bro','post',ajaxUrl+'/productsInfo/boon/productlist',listparamUL,getListdata);
+						
+					});
+				}
+				$('.sort-list div').click(function(){
+					$(this).css('color','#ff5a3a').siblings().css('color','#9b9b9b');
+				});
+				
+				
+				
+			})
+		</script>
+	</body>
+</html>

@@ -1,0 +1,678 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="renderer" content="webkit">
+    <meta http-equiv="X-UA-Compatible" content="IE=11; IE=10; IE=9; IE=8; IE=7; IE=EDGE,Chrome=1">
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no"/>
+    <link rel="stylesheet" type="text/css" href="css/index.css"/>
+    <link rel="stylesheet" type="text/css" href="css/hp.css"/>
+    <link rel="stylesheet" href="./lib/layer_mobile/need/layer.css"/>
+    <script src="js/jquery-1.11.1.min.js" type="text/javascript" charset="utf-8"></script>
+    <script src="js/default.js"></script>
+    <script type="text/javascript" src="js/jquery.form.js"></script>
+    <script src="js/template.js"></script>
+    <script src="js/template-helper.js"></script>
+    <script type="text/javascript" src="./lib/layer_mobile/layer.js"></script>
+    <title></title>
+    <style type="text/css">
+        .data-hed-box {
+            display: flex;
+        }
+
+        .hed-fl {
+            flex: 1;
+        }
+
+        .hed-fr {
+            flex: 4;
+        }
+
+        .bg {
+            width: 100%;
+            height: 100%;
+            position: absolute;
+            background: #000;
+            z-index: 50;
+            display: none;
+        }
+
+        form {
+            position: absolute;
+            width: 69%;
+            height: 12%;
+            display: block;
+        }
+
+        .file {
+            width: 100%;
+            height: 100%;
+            opacity: 0;
+        }
+
+        .bd-nr {
+            left: 8px;
+        }
+
+        .tureName {
+            left: 35px;
+        }
+
+        .wbdxx {
+            display: none;
+        }
+
+        .logout-btn {
+            background-color: #ff5a3a;
+            width: 100%;
+            font-size: 15px;
+            height: 40px;
+            color: white;
+        }
+        .wechat-img-data {
+            /* width: 49px; */
+            display: block;
+            margin: auto;
+        }
+    </style>
+</head>
+
+<body>
+<div class="container">
+    <div class="bg"></div>
+    <header class="head-st">
+        <div class="sto-nav-left">
+            <a href="my_center.html">
+                <img src="img/fanhui.png"/>
+            </a>
+
+        </div>
+        <div class="sto-nav-sear">
+            个人资料
+        </div>
+
+    </header>
+    <div class="content">
+        <div class="data-hed-box">
+            <div class="hed-fl">
+                <img class="data-tx" src="./img/ad_imgs/head_img.png" id="imgPhoto"/>
+            </div>
+            <div class="hed-fr" id="changHimg">
+                <form id="my_head" enctype="multipart/form-data" onsubmit="return false;" method="post">
+                    <input type="hidden" class="file" name="imgStr"/>
+                    <input type="hidden" name='token' value=""/>
+                </form>
+                <span class="data-nam">头像</span>
+                <img class="data-rgt" src="img/rtu.png"/>
+            </div>
+        </div>
+        <div class="data-cet-box">
+            <div class="data-zl nickname">
+                <p class="data-zl-tit">昵称</p>
+                <span class="data-zl-nam nick"></span>
+                <img class="data-det" src="img/rtu.png"/>
+            </div>
+            <!--vip-cet.html-->
+            <a href="#">
+                <div class="data-zl">
+                    <p class="data-zl-tit">等级</p>
+                    <span class="data-zl-nam huiyuan"></span>
+                    <img class="data-det" src="img/rtu.png"/>
+                </div>
+            </a>
+
+            <a href="bindPhone.html">
+                <div class="data-zl">
+                    <p class="data-zl-tit">会员账号</p>
+                    <span class="data-zl-nam" id="parterId">绑定手机号</span>
+                    <img class="data-det" src="img/rtu.png"/>
+                </div>
+            </a>
+            <!--<a href="bindPhone.html">
+                <div class="set-box">
+							<span class="set-nam">
+								绑定手机号
+							</span>
+                    <span class="set-rtn">
+								<img src="img/rtu.png"/>
+							</span>
+                </div>
+            </a>-->
+            <!--<div class="data-zl">
+                <p class="data-zl-tit">微信</p>
+                <span class="data-zl-nam">心里笑嘻嘻</span>
+                <img class="data-det" src="img/rtu.png" />
+            </div>-->
+
+            <div class="data-bd-box wbdxx">
+                <div class="data-bd">
+                    <div class="bd-box">
+
+                        <a href="bank-card.html">
+                            <div class="data-bd-hide" id="shenfen">
+                                <img class="no-bd-img" src="img/no-gr.png"/>
+                                <span class="no-bd-gn">认证身份信息</span>
+                            </div>
+                        </a>
+                    </div>
+                    <div class="bd-box">
+
+                        <a href="bind_zfb.html">
+                            <div class="data-bd-hide float-rgt" id="zhifu">
+                                <img class="no-bd-img" src="img/no-z.png"/>
+                                <span class="no-bd-gn">绑定支付宝账号</span>
+                            </div>
+                        </a>
+
+                    </div>
+                </div>
+
+                <div class="data-bd ma-top">
+                    <div class="bd-box">
+
+                        <a href="bank-card.html">
+                            <div class="data-bd-hide" id="yinhang">
+                                <img class="no-bd-img" src="img/bd-yh.png"/>
+                                <span class="no-bd-gn">绑定银行账号</span>
+                            </div>
+                        </a>
+                    </div>
+                    <!--<div class="bd-box">
+                        <a href="yizhifu.html">
+                            <div class="data-bd-hide float-rgt" id="yizhi">
+                                <img class="no-bd-img" src="img/no-y.png" />
+                                <span class="no-bd-gn">绑定翼支付账号</span>
+                            </div>
+                        </a>
+                    </div>-->
+                </div>
+            </div>
+            <div class="data-bd-box">
+
+            </div>
+            <script type="text/template" id="data-bd-box">
+
+                <div class="data-bd">
+
+                    <div class="bd-box">
+
+                        {{if user.userBank!=null}}
+                        <a href="hasbd-bank-card.html">
+                            <div class="data-yh-let">
+                                <img class="bd-img" src="img/bd-yh.png"/>
+                                <span class="bd-tit">绑定银行卡</span>
+                                <img class="bd-rtu-img" src="img/bd-rt.png"/>
+                                <span class="bd-nr bankID"></span>
+                            </div>
+                        </a>
+                        {{/if}} {{if user.userBank==null}}
+                        <a href="bank-card.html">
+                            <div class="data-bd-hide" id="yinhang">
+                                <img class="no-bd-img" src="img/bd-yh.png"/>
+                                <span class="no-bd-gn">绑定银行账号</span>
+                            </div>
+                        </a>
+
+                        {{/if}}
+
+                    </div>
+                    <div class="bd-box">
+                        {{if user.unionId!=null&& user.unionId!=null}}
+                        <div class="data-yz-rgt wechat-img-data" style="background-color: green;">
+                            <img class="bd-img" src="img/weixin.png" />
+                            <span class="bd-tit" id="wxBinged">已绑定微信账号</span>
+                            <span class="bd-nr"></span>
+                        </div>
+                        {{/if}} {{if user.unionId==null&& user.unionId==null}}
+                        <div>
+                            <div class="data-bd-hide float-rgt" onclick="goBindWx()">
+                                <img class="no-bd-img" src="img/weixin.png" />
+                                <span class="no-bd-gn">绑定微信账号</span>
+                            </div>
+                        </div>
+                        {{/if}}
+                    </div>
+                    <!--<div class="bd-box">
+                        <div class="data-yz-rgt">
+                            <img class="bd-img" src="img/bd-z.png" />
+                            <span class="bd-tit">翼支付绑定</span>
+                            <img class="bd-rtu-img" src="img/bd-y.png" />
+                            <span class="bd-nr">6217****003</span>
+                        </div>
+                        <a href="yizhifu.html">
+                            <div class="data-bd-hide float-rgt" id="yizhi">
+                                <img class="no-bd-img" src="img/no-y.png" />
+                                <span class="no-bd-gn">绑定翼支付账号</span>
+                            </div>
+                        </a>
+                    </div>-->
+                </div>
+
+                <div class="data-bd ma-top">
+                  <!--  <div class="bd-box">
+
+                        {{if user.idCard!=null}}
+                        <a href="attestation.html">
+                            <div class="data-bd-let">
+                                <img class="bd-img" src="img/bd-zl.png"/>
+                                <span class="bd-tit">实名认证</span>
+                                <span class="bd-nr tureName"></span>
+                            </div>
+                        </a>
+                        {{/if}} {{if user.idCard==null}}
+                        <a href="bank-card.html">
+                            <div class="data-bd-hide" id="shenfen">
+                                <img class="no-bd-img" src="img/no-gr.png"/>
+                                <span class="no-bd-gn">认证身份信息</span>
+                            </div>
+                        </a>
+                        {{/if}}
+                    </div>-->
+                    <div class="bd-box">
+
+                        {{if user.aliId!=null}}
+
+                            <div class="data-bd-rgt">
+                                <img class="bd-img" src="img/bd-z.png"/>
+                                <span class="bd-tit">已绑定支付宝账号</span>
+                                <img class="bd-rtu-img" src="img/bd-rt.png"/>
+                                <span class="bd-nr zfbId"></span>
+                            </div>
+
+                        {{/if}} {{if user.aliId==null}}
+
+                            <div class="data-bd-hide float-rgt" id="aliBInd" onclick="goBindAli()">
+                                <img class="no-bd-img" src="img/no-z.png"/>
+                                <span class="no-bd-gn">绑定支付宝账号</span>
+                            </div>
+
+                        {{/if}}
+                    </div>
+
+                    <div class="bd-box">
+
+                        {{if user.payNum!=null}}
+                        <a href="has_bind_zfb.html">
+                            <div class="data-bd-rgt">
+                                <img class="bd-img" src="img/bd-z.png"/>
+                                <span class="bd-tit">提现的支付宝</span>
+                                <img class="bd-rtu-img" src="img/bd-rt.png"/>
+                                <span class="bd-nr zfbId"></span>
+                            </div>
+                        </a>
+
+                        {{/if}} {{if user.payNum==null}}
+                        <a href="bind_zfb.html">
+                            <div class="data-bd-hide float-rgt" id="zhifu">
+                                <img class="no-bd-img" src="img/no-z.png"/>
+                                <span class="no-bd-gn">填写支付宝账号</span>
+                            </div>
+                        </a>
+                        {{/if}}
+                    </div>
+                </div>
+
+
+            </script>
+        </div>
+
+        <div class="data-set-box">
+            <a href="reset_pay_password.html">
+                <div class="set-box">
+							<span class="set-nam">
+								支付密码修改
+							</span>
+                    <span class="set-rtn">
+								<img src="img/rtu.png"/>
+							</span>
+                </div>
+            </a>
+            <a href="find_pay_password.html">
+                <div class="set-box">
+							<span class="set-nam">
+								支付密码重置
+							</span>
+                    <span class="set-rtn">
+								<img src="img/rtu.png"/>
+							</span>
+                </div>
+            </a>
+            <a href="reset_login_password.html">
+                <div class="set-box">
+							<span class="set-nam">
+								登陆密码
+							</span>
+                    <span class="set-rtn">
+								<img src="img/rtu.png"/>
+							</span>
+                </div>
+            </a>
+
+            <div class="set-box" onclick="location.href='map-cheak.html'">
+                <span class="set-nam">收货地址</span>
+                <span class="set-rtn ">
+							<span class="SHDZ"></span>
+						<img src="img/rtu.png"/>
+						</span>
+            </div>
+
+
+        </div>
+    </div>
+    <footer>
+        <!--<input type="button" class="data-out" id="" value="退出登录" />-->
+        <button class="data-out logout-btn" id="">退出登录</button>
+    </footer>
+</div>
+
+<script>
+    $(function () {
+
+        //收货地址个数
+        $.post(ajaxUrl + '/front/clientAddresses/getAddress', {
+            token: token
+        }, function (r) {
+            if (r.code == 300) {
+                $('.SHDZ').html(0);
+            } else {
+                $('.SHDZ').html(r.Address.length);
+            }
+
+        }, 'json');
+
+        //个人资料
+        $.post(ajaxUrl + '/front/clients/userInfo', {
+            token: token
+        }, function (r) {
+            if (r.code == 300) {
+                $('.wbdxx').css('display', 'block');
+            } else {
+                $('.nick').html(r.user.niceName);
+                $('.huiyuan').html(r.user.memberName);
+                if(r.user.account.length==11){
+                    $('#parterId').text(r.user.account).parent().parent().attr('href','javascript:;');
+                }else{
+                    $('#parterId').text('去绑定手机号').parent().parent().attr('href','bindPhone.html');
+                }
+
+
+                if (!r.user.headImg) {
+                    $('.data-tx').attr('src', './img/ad_imgs/head_img.png');
+                } else {
+                    $('.data-tx').attr('src', r.user.headImg);
+                }
+                var html = template('data-bd-box', r);
+                $('.data-bd-box').html(html);
+
+                if (r.user.relName != null) {
+                    $('.tureName').html('**' + r.user.relName.substr(1)); //姓名
+                }
+                if (r.user.userBank != null) {
+                    $('.bankID').html(r.user.userBank.substr(0, 5) + '****' + r.user.userBank.substr(13, 5)); //姓名
+                }
+                if (r.user.payNum != null) {
+                    $('.zfbId').html(r.user.payNum.substr(0, 3) + '****' + r.user.payNum.substr(8, 4)); //姓名
+                }
+            }
+
+        });
+
+        $('.nickname').click(function () {
+            var name = $(this).find('.data-zl-nam').text();
+            location.href = 'revise_nicname.html?name=' + encodeURI(name);
+        });
+
+        //点击头像放大
+/*        $('body').click(function (e) {
+            debugger
+            //console.log(e.target.className)
+            if ($('.bg').css('display') === 'block') {
+                if (e.target.className == 'data-tx') {
+
+                    $('.hed-fl').find('img').css({
+                        'transform': 'scale(1)',
+                        'position': 'inherit',
+                        'margin': 'auto'
+                    });
+                    $('.bg').css('display', 'none')
+                }
+            } else {
+
+                if (e.target.className == 'data-tx') {
+                    $('.bg').css('display', 'block');
+                    $('.hed-fl').find('img').css({
+                        'transform': 'scale(4)',
+                        'position': 'absolute',
+                        'top': 0,
+                        'left': 0,
+                        'right': 0,
+                        'bottom': 0,
+                        'margin': 'auto',
+                        'transition': '0.2s',
+                        'z-index': 80
+                    });
+                }
+            }
+
+
+            if (e.target.className == 'bg') {
+                $('.hed-fl').find('img').css({
+                    'transform': 'scale(1)',
+                    'position': 'inherit',
+                    'margin': 'auto'
+                });
+                $('.bg').css('display', 'none')
+            }
+        });*/
+
+        //退出登录
+        $('.data-out').click(function () {
+            localStorage.clear();
+            location.href = 'login.html';
+        });
+
+        //上传图片
+        //			$(".file").change(function() {
+        //				var $file = $(this);
+        //				var objUrl = $file[0].files[0];
+        //				//获得一个http格式的url路径:mozilla(firefox)||webkit or chrome
+        //				var windowURL = window.URL || window.webkitURL;
+        //				//createObjectURL创建一个指向该参数对象(图片)的URL
+        //				var dataURL;
+        //				dataURL = windowURL.createObjectURL(objUrl);
+        //				console.log(objUrl)
+        //				// $('img').attr("src",dataURL);
+        //				//  console.log($(this).siblings())
+        //				$('#imgPhoto').attr("src", dataURL);
+        //				var headImg = $('#imgPhoto').attr("src");
+        //				$.post(ajaxUrl+'/front/clients/ModifyUserInfo',{token:token,headImg:objUrl},function(r){
+        //
+        //				},'json')
+        //
+        //			});
+        $("#changHimg").on("click", function () {
+            //调用原生
+            setupWebViewJavascriptBridge(function (bridge) {
+                bridge.callHandler('loadPicture', {
+                    'type': 'Photo'
+                }, function (resp) {
+                    setbaseImg(JSON.parse(resp));
+                });
+            })
+        });
+        //选取图片回调函数
+        //obj:点击出发对象
+        function setbaseImg(resp) {
+            console.log(resp.ret_msg.data);
+            if (resp.ret_code == '1') {
+                $('input[name=token]').val(token);
+                $('input[name=imgStr]').val(resp.ret_msg.data);
+                $('#my_head').ajaxSubmit({
+                    url: ajaxUrl + '/front/clients/ModifyUserInfo',
+                    type: 'post',
+                    success: function (data) {
+                        if (data.code == 200) {
+                            window.location.href = 'personal-data.html';
+                        }
+                        else {
+                            tip.flag("图片选取失败", 'error');
+                        }
+                    }
+                });
+            } else {
+                tip.flag("图片选取失败", 'error');
+            }
+        }
+
+
+    });
+
+    //  支付宝授权登录
+    function goBindAli() {
+        $.ajax({
+            type: "POST",
+            url: ajaxUrl + '/AliLogin/JumpLink',
+            async: false,
+            success: function (response) {
+                if (response.code == 200) {
+                    //调用原生
+                    setupWebViewJavascriptBridge(function(bridge) {
+                        bridge.callHandler('loadThreeLogin', {
+                            type: 'Ali',
+                            data: response.json4
+                        }, function(r) {
+                            var res = JSON.parse(r);
+                            if(res.code == 0) {
+                                var auth_code = GetQueryString2('auth_code', res.data);
+                                // var datasObj = {access_token: res.data.access_token, openId: res.data.openid};
+
+                                /*
+                                 $.post(ajaxUrl+'/front/clients/weiXinSign?access_token=' + res.data.access_token+'&openId=' + res.data.openid, function( response ){
+                                 // layer.msg(r.msg)
+                                 if(response.code == 200){
+                                 localStorage.setItem("token", response.token);
+                                 layer.msg(response.msg);
+                                 setTimeout(function(){
+                                 window.location.href='index.html';
+                                 },1000);
+                                 }else{
+                                 layer.msg(response.msg)
+                                 }
+                                 });
+                                 */
+                                $.ajax({
+                                    type: "POST",
+                                    url: ajaxUrl + '/AliLogin/GetToken?authCode=' + auth_code + '&token=' + token,
+                                    async: true,
+                                    success: function (response) {
+                                        if (response.code == 200) {
+                                            layer.open({
+                                                content: response.msg
+                                                ,skin: 'msg'
+                                                ,time: 3 //2秒后自动关闭
+                                            });
+                                        } else {
+                                            layer.open({
+                                                content: response.msg
+                                                ,skin: 'msg'
+                                                ,time: 3 //2秒后自动关闭
+                                            });
+                                        }
+                                    }
+                                });
+
+                            } else {
+//                                layer.msg(r.msg)
+                                layer.open({
+                                    content: '绑定失败！'
+                                    ,skin: 'msg'
+                                    ,time: 3 //2秒后自动关闭
+                                });
+                            }
+                        });
+                    });
+
+                } else {
+                    layer.open({
+                        content: response.msg
+                        ,skin: 'msg'
+                        ,time: 3 //2秒后自动关闭
+                    });
+                }
+            }
+        });
+
+
+    }
+    //微信绑定
+    function goBindWx(){
+        //调用原生
+        setupWebViewJavascriptBridge(function(bridge) {
+            bridge.callHandler('loadThreeLogin', {
+                type: 'WeChat'
+            }, function(r) {
+                var res = JSON.parse(r);
+                if(res.code == 0) {
+                    // var datasObj = {access_token: res.data.access_token, openId: res.data.openid};
+
+                    /*
+                     $.post(ajaxUrl+'/front/clients/weiXinSign?access_token=' + res.data.access_token+'&openId=' + res.data.openid, function( response ){
+                     // layer.msg(r.msg)
+                     if(response.code == 200){
+                     localStorage.setItem("token", response.token);
+                     layer.msg(response.msg);
+                     setTimeout(function(){
+                     window.location.href='index.html';
+                     },1000);
+                     }else{
+                     layer.msg(response.msg)
+                     }
+                     });
+                     */
+                    $.ajax({
+                        type: "POST",
+                        url: ajaxUrl + '/front/clients/weiXinBinding?&openId=' + res.data.openid + '&unionId=' + res.data.unionid +'&token=' + token,
+                        async: true,
+                        success: function (response) {
+                            if (response.code == 200) {
+                                layer.open({
+                                    content: response.msg
+                                    ,skin: 'msg'
+                                    ,time: 3 //2秒后自动关闭
+                                });
+                            } else {
+                                layer.open({
+                                    content: response.msg
+                                    ,skin: 'msg'
+                                    ,time: 3 //2秒后自动关闭
+                                });
+                            }
+                        }
+                    });
+
+                } else {
+//                                layer.msg(r.msg)
+                    layer.open({
+                        content: '绑定失败！'
+                        ,skin: 'msg'
+                        ,time: 3 //2秒后自动关闭
+                    });
+                }
+            });
+        });
+
+    }
+
+    function GetQueryString2(name, url)
+    {
+        var reg = new RegExp("(^|&)"+ name +"=([^&]*)(&|$)");
+        // var url = decodeURIComponent(window.location);
+        var r = url.substr(1).match(reg);
+        if(r!=null)return  unescape(r[2]); return null;
+    }
+</script>
+</body>
+
+</html>

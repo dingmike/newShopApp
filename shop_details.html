@@ -1,0 +1,824 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="utf-8" />
+		<title>店铺详情</title>
+		<meta name="renderer" content="webkit">
+		<meta content="yes" name="apple-mobile-web-app-capable"/>
+		<meta content="black" name="apple-mobile-web-app-status-bar-style"/>
+		<meta content="telephone=no" name="format-detection"/>
+		<meta http-equiv="X-UA-Compatible" content="IE=11; IE=10; IE=9; IE=8; IE=7; IE=EDGE,Chrome=1">
+		<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no" />
+		<link rel="stylesheet" type="text/css" href="css/index.css"/>
+		<link rel="stylesheet" type="text/css" href="css/public.css" />
+		<link rel="stylesheet" href="css/hp.css" />
+		<!--flex 布局-->
+		<script src="js/flexible.js" type="text/javascript"></script>
+		<script src="js/jquery-1.11.1.min.js" type="text/javascript" charset="utf-8"></script>
+		<script type="text/javascript" src="lib/layer/2.4/layer.js"></script>
+		<script type="text/javascript" src="js/jquery.downCount.js"></script>
+		<script src="js/default.js"></script>
+		<script src="js/template.js"></script>
+		<script src="js/template-helper.js"></script>
+		<style>
+
+
+			.shop_nav {
+				max-width: 750px;
+				 height: 51px;
+				background-color: #FFFFFF;
+				margin-top: 2px;
+				padding-left: 20px;
+			}
+			.shop_nav ul {
+				max-width: 750px;
+				width: auto;
+				height: 51px!important;
+				overflow-x: scroll;
+				overflow-y: hidden;
+				white-space: nowrap;
+			}
+
+			.shop_nav ul li {
+				display: inline-block;
+				width: 72px;
+				height: 35px;
+				font-size: 14px;
+				line-height: 39px;
+				letter-spacing: 1.4px;
+				color: #9b9b9b;
+				text-align: center;
+			}
+			.shop_star {
+				width: 34%;
+				height: 21px;
+				background: url(img/xxbg.png) no-repeat;
+				background-size: 382%;
+			}
+			
+			.search {
+				display: none;
+			}
+			
+			.goods_list ul li:nth-of-type(even) {
+				margin-left: 4%;
+			}
+			
+			.goods_list ul li {
+				width: 48%;
+			}
+			
+			.goods_list ul li img {
+				height: 185px;
+				width: 100%;
+			}
+			
+			.goods_oprice,
+			.goods_price {
+				width: auto;
+			}
+
+
+			/*new*/
+			.pt-bottom-box{
+				/*display: flex;*/
+				/*display: -webkit-flex; !* Safari *!*/
+				/*flex-direction: row;*/
+				/*justify-content: center;*/
+				background: orangered;
+				color: #fff;
+				height: 1.4rem;
+			}
+			.price-bottom-m{
+				display: flex;
+				display: -webkit-flex; /* Safari */
+				flex-direction: row;
+				justify-content: center;
+			}
+
+			.price-bottom-l {
+				/*padding: 0.05333rem;*/
+				height: 0.8rem;
+				display: flex;
+				display: -webkit-flex; /* Safari */
+				flex-direction: row;
+				justify-content: center;
+			}
+
+			.price-b-l-first {
+				font-size: 0.45rem;
+				height: 0.8rem;
+				line-height: 0.8rem;
+				margin-left: 0.266667rem;
+			}
+
+			.price-b-l-sencond {
+				float: left;
+				font-size: 0.266667rem;
+			}
+
+
+			.price-bottom-m {
+				/*font-size: 0.26667rem;*/
+			}
+
+			.price-b-l-sencond .price-logo {
+				background-color: #ffccc6;
+				color: #ff5a3a;
+				width: 0.8rem;
+				height: 0.29333rem;
+				border-radius: 0.10666rem;
+				padding: 0.0266666rem 0.053333rem;
+			}
+
+			ul.countdown {
+				list-style: none;
+				width: 3.5rem!important;
+				transform: scale(0.8)!important;
+			}
+			.price-time {
+				font-size: 0.32rem;
+				/* transform: scale(0.9); */
+				height: 0.93rem;
+				line-height: 0.93rem;
+				margin-left: 0.2rem;
+			}
+			.price-time-loading{
+				margin-top: 0.06rem;
+			}
+
+			/*loading--start--*/
+			.status-bar[data-v-5d44c782] {
+				position: relative;
+				box-sizing: border-box;
+				width: 2.4rem;
+				height: 0.36rem;
+				/* transform: scale(0.75); */
+				line-height: 0.3733333rem;
+				border-radius: 0.186666667rem;
+				color: #fff;
+				background: url('./img/ad_imgs/beijing.png') repeat-x;
+				background-size: contain;
+				text-align: center;
+				overflow: hidden;
+			}
+			.status-progress[data-v-5d44c782] {
+				border-radius: 0.186666667rem;
+				position: absolute;
+				top: 0;
+				left: 0;
+				height: 100%;
+				min-width: .13rem;
+				/* background: url(/img/ad_imgs/jindu.png) repeat-x; */
+				background-size: contain;
+			}
+			.status-num[data-v-5d44c782] {
+				font-size: 0.32rem;
+				position: absolute;
+				left: 0.8rem;
+			}
+			.status-soldrate[data-v-5d44c782] {
+				font-size: 0.34rem;
+				position: absolute;
+				left: 1.3333rem;
+			}
+			.status-msg-h{
+				position: relative;
+				text-indent: 1.10rem;
+				/*width: 2.32rem;*/
+			}
+			.status-msg-h:before{
+				content: attr(text);
+				line-height: 0.3733333rem;
+				height: 0.333333rem;
+				position: absolute;
+				left: 0;
+				font-size: 0.3rem;
+			}
+			.status-msg-h:after{
+				content: attr(text);
+				position: absolute;
+				left: 0;
+				/* width: 100%; */
+				/* height: 38px; */
+				height: 0.3733333rem;
+				line-height: 0.3733333rem;
+				white-space: nowrap;
+				overflow: hidden;
+				transition: width 1s ease;
+				width: 57%;
+				color: red;
+				font-size: 0.3rem;
+				/* transform: scale(0.75); */
+				/* background: #0BF; */
+				background: url('./img/ad_imgs/jindu.png') repeat-x;
+			}
+
+			.pin-tuan-h{
+				background-color: #ffffff;
+				width: 1.6rem;
+				height: 0.52rem;
+				line-height: 0.52rem;
+				/* margin-top: 0.37333rem; */
+				border-radius: 4px;
+				margin-left: 0.2666rem;
+				font-size: 0.3733333rem;
+				color: orangered;
+				font-weight: 600;
+			}
+
+			.bro-zy-num-h {
+				display: block;
+				float: left;
+				color: #a8a8a8;
+				font-size: 0.2433rem;
+				/* border: 1px solid #ff2a00; */
+				/* padding: 0 5px; */
+				/* border-radius: 4px; */
+				overflow: hidden;
+				text-overflow: ellipsis;
+				white-space: nowrap;
+				width: 2.72rem;
+			}
+			.bro-sto-e-h {
+				display: block;
+				float: right;
+				color: #9c9797;
+				font-size: 0.32rem;
+				transform: scale(0.8);
+				/* background-color: #f1f1f1; */
+				border-radius: 2px;
+				text-align: center;
+				/* padding: 1px 4px 1px 4px; */
+				/* width: 61px; */
+
+			}
+			.loading-now{
+				height: 40px;
+				line-height: 20px;
+				padding-bottom: 40px;
+				font-size: 14px;
+				color: #474747;
+			}
+		</style>
+	</head>
+
+	<body>
+		<div class="pay_mode_bg">
+
+		</div>
+		<header style="background-color: #fff;">
+			<img class="nav-left" src="img/fanhui.png" alt="" onclick="javascript:history.back(-1);" />
+			<img class="collect" src="img/coolect.png" alt="" />
+			<div class="store_search_box">
+				<input class="search_ipt" type="text" name="search_ipt" id="search_ipt" value="春夏新款女装" />
+				<img src="img/sousuo.png" alt="" />
+			</div>
+			<span class="nav-right gouwuche">
+					<div class="nav-car-num" style="right: -6px;"></div>
+				</span>
+			<span class="nav-right search">确定</span>
+		</header>
+		<div class="container content">
+			<div class="shop-boxInfo"></div>
+			<script type="text/template" id="shop-boxInfo">
+				<div class="shop_logo">
+					<img src="{{shop.bigImg}}" alt="" />
+				</div>
+				<div class="shop_info_box">
+					<!--<div class="discounts_btn">-->
+						<!--<img src="img/youhui.png" alt="" />-->
+					<!--</div>-->
+					<div class="shop_name">店铺：{{shop.name}}</div>
+					<!--<div class="shop_star"></div><br />-->
+					<div class="shop_info">
+						<img src="img/linshidianpu.png" alt="" /> 共计宝贝：{{count}}&emsp;累计销量：{{sales}}
+					</div>
+				</div>
+			</script>
+			<div class="">
+				<div class="shop_nav" id="shopNav"></div>
+				<script type="text/template" id='shop_nav'>
+					<ul>
+						<li class="on" id="showAllGoods">全部商品</li>
+						{{each shopProductCategory as k i}}
+						<li data-id="{{k.id}}">{{k.name}}</li>
+						{{/each}}
+					</ul>
+				</script>
+				<div class="shop_nav" id="shopNav2" style="display: none"></div>
+				<script type="text/template" id='shop_nav2'>
+					<ul>
+						{{each shopProductCategory as k i}}
+						<li data-id="{{k.id}}">{{k.name}}</li>
+						{{/each}}
+					</ul>
+				</script>
+				<div class="rec-bro top10 goods_box1"></div>
+
+				<script type="text/template" id="goods_box1">
+					{{each Product as k i}}
+
+					<div class="bro-sto-left">
+						<a href="{{k.fightAloneTime !==null?'sto-detail-pd.html':'sto-detail.html'}}?id={{k.productId}}">
+							<div class="bro-img">
+								<img src={{k.productImg}}>
+							</div>
+							<span class="bro-sto-nam">{{k.productName}}</span>
+							<div class="bro-num-box">
+								<span class="bro-sto-num">￥{{k.sellPrice}}</span>
+								<span class="bro-sto-yj"><s>￥{{k.marketPrice}}</s></span>
+								{{if k.productEdian!=0}}
+								<span class="bro-sto-e">广告金:<span class="e-st">{{k.productEdian*k.fxparam}}</span></span>
+								{{/if}}
+							</div>
+
+							{{if k.fightAloneTime !==null}}
+							<div class="pt-bottom-box">
+								<div class="price-bottom-l">
+									<div class="price-b-l-first">￥<span>{{k.collagePrice}}</span></div>
+									<div class="price-time"><span style="float: left;">距结束：</span>
+										{{if k.fightAloneTime!==null}}
+										<ul class="countdown countdown{{k.productId}}"  data-clock="{{k.fightAloneTime}}">
+											<li style="display: none;">
+												<span class="days">00</span>
+											</li>
+											<li class="seperator" style="display: none;">.</li>
+											<li><span class="hours">00</span>
+											</li>
+											<li class="seperator">:</li>
+											<li><span class="minutes">00</span>
+											</li>
+											<li class="seperator">:</li>
+											<li><span class="seconds">00</span>
+											</li>
+										</ul>
+										{{/if}}
+									</div>
+								</div>
+								<div class="price-bottom-m">
+									<div class="price-time-loading">
+										<div data-v-5d44c782="" class="status-bar">
+											<div data-v-5d44c782="" class="status-progress"></div>
+											<div data-v-5d44c782="" class="status-msg-h"  data-total="{{k.fightAloneNumber}}" data-last="{{k.areadFightAlone}}" id="myStatusLoading{{k.productId}}" text="{{k.areadFightAlone}}/{{k.fightAloneNumber}}">
+												<!-- <div data-v-5d44c782="" class="status-num">10</div>
+                                                 <span data-v-5d44c782="" class="status-soldrate">200</span>-->
+											</div>
+										</div>
+									</div>
+									<button class="pin-tuan-h" data-productId="{{k.productId}}">马上拼</button>
+								</div>
+							</div>
+							{{else}}
+							<div class="bro-zy-box">
+								{{if k.shopName}}
+								<span class="bro-zy-num-h">{{k.shopName}}</span>
+								{{/if}}
+								<span class="bro-sto-e-h"><span>{{k.productSales}}人付款</span></span>
+							</div>
+							{{/if}}
+						</a>
+					</div>
+					{{/each}}
+				</script>
+
+				<!-- 搜索后的展示-->
+				<div class="goods_box goods_box2"></div>
+
+				<script type="text/template" id="goods_box2">
+					{{each data.data as k i}}
+
+					<div class="bro-sto-left">
+						<a href="{{k.fightAloneTime !==null?'sto-detail-pd.html':'sto-detail.html'}}?id={{k.productId}}">
+							<div class="bro-img">
+								<img src={{k.productImg}}>
+							</div>
+							<span class="bro-sto-nam">{{k.productName}}</span>
+							<div class="bro-num-box">
+								<span class="bro-sto-num">￥{{k.sellPrice}}</span>
+								<span class="bro-sto-yj"><s>￥{{k.marketPrice}}</s></span>
+								{{if k.productEdian!=0}}
+								<span class="bro-sto-e">广告金:<span class="e-st">{{k.productEdian*k.fxparam}}</span></span>
+								{{/if}}
+							</div>
+
+							{{if k.fightAloneTime !==null}}
+							<div class="pt-bottom-box">
+								<div class="price-bottom-l">
+									<div class="price-b-l-first">￥<span>{{k.collagePrice}}</span></div>
+									<div class="price-time"><span style="float: left;">距结束：</span>
+										{{if k.fightAloneTime!==null}}
+										<ul class="countdown countdown{{k.productId}}"  data-clock="{{k.fightAloneTime}}">
+											<li style="display: none;">
+												<span class="days">00</span>
+											</li>
+											<li class="seperator" style="display: none;">.</li>
+											<li><span class="hours">00</span>
+											</li>
+											<li class="seperator">:</li>
+											<li><span class="minutes">00</span>
+											</li>
+											<li class="seperator">:</li>
+											<li><span class="seconds">00</span>
+											</li>
+										</ul>
+										{{/if}}
+									</div>
+								</div>
+								<div class="price-bottom-m">
+									<div class="price-time-loading">
+										<div data-v-5d44c782="" class="status-bar">
+											<div data-v-5d44c782="" class="status-progress"></div>
+											<div data-v-5d44c782="" class="status-msg-h"  data-total="{{k.fightAloneNumber}}" data-last="{{k.areadFightAlone}}" id="myStatusLoading{{k.productId}}" text="{{k.areadFightAlone}}/{{k.fightAloneNumber}}">
+												<!-- <div data-v-5d44c782="" class="status-num">10</div>
+                                                 <span data-v-5d44c782="" class="status-soldrate">200</span>-->
+											</div>
+										</div>
+									</div>
+									<button class="pin-tuan-h" data-productId="{{k.productId}}">马上拼</button>
+								</div>
+							</div>
+							{{else}}
+							<div class="bro-zy-box">
+								{{if k.shopName}}
+								<span class="bro-zy-num-h">{{k.shopName}}</span>
+								{{/if}}
+								<span class="bro-sto-e-h"><span>{{k.productSales}}人付款</span></span>
+							</div>
+							{{/if}}
+						</a>
+					</div>
+					{{/each}}
+				</script>
+
+			</div>
+
+		</div>
+
+		<!--<div class="shop_bottom">
+			<img src="img/jiazai.png" alt="" /><br />
+			<span>别扯啦,没有更多啦~</span>
+		</div>-->
+		<div class="discounts">
+			<div class="discounts_top">
+				<img src="img/guanbi.png" alt="" />
+			</div>
+			<div class="discounts_cont" style="background-image:url(img/youhui1.png);">
+				<div class="discounts_mode"><span>包邮</span></div>
+				<div class="discounts_tit">满58元包邮</div>
+				<div class="discounts_time">优惠券有效期12月16日-12月22日</div>
+			</div>
+			<div class="discounts_cont" style="background-image: url(img/youhui2.png);">
+				<div class="discounts_mode"><span>满减</span></div>
+				<div class="discounts_tit">满200元减20元</div>
+				<div class="discounts_time">优惠券有效期12月16日-12月22日</div>
+			</div>
+		</div>
+		</div>
+		</div>
+
+		<script type="text/javascript">
+			var currentpage = 1,
+				shopId = GetUrlString("id");
+				var isReady=false;
+			$(function() {
+
+
+				//判断用户登录过没有
+				if(!token) {
+					$('.nav-car-num').css('display', 'none');
+				} else {
+					//个人的购物数量		
+					getInfo('post', ajaxUrl + '/productsInfo/cartCount?token=' + token, {}, setcartCountHtml);
+
+					function setcartCountHtml(r) {
+						$('.nav-car-num').text(r.count);
+					};
+				}
+
+				//  m没有登录请求登录去
+				$('.gouwuche').click(function() {
+					if(!token) {
+						location.href = 'login.html';
+					} else {
+						location.href = 'store.html';
+					}
+				});
+
+				// 页面进来的时候初始化数据
+				getList('.goods_box1', 'post', ajaxUrl + '/front/shop/storeAllGoods', listparamUL, getListdata);
+
+				//收藏和取消店铺
+				$(".collect").click(function() {
+					if(!token) {
+						location.href = 'login.html';
+					} else {
+						if($(this).attr('src') == 'img/coolect.png') {
+							$.post(ajaxUrl + '/front/clientShopFollow/addShopLike', {
+								token: token,
+								shopId: shopId
+							}, function(r) {
+								tip.flag(r.msg, 'success');
+							}, 'json')
+							$(this).attr('src', 'img/has-coolect.png');
+
+						} else {
+							$.post(ajaxUrl + '/front/clientShopFollow/deleteShopLike', {
+								token: token,
+								shopId: shopId
+							}, function(r) {
+								tip.flag(r.msg, 'error');
+							}, 'json')
+							$(this).attr('src', 'img/coolect.png');
+						}
+					}
+
+				})
+
+			});
+
+			//店铺信息
+			$.post(ajaxUrl + '/front/shop/storeAllGoods', {
+				shopId: shopId
+			}, function(r) {
+				console.log(r);
+				var html = template('shop-boxInfo', r);
+				$('.shop-boxInfo').html(html);
+				//星星评分
+				if(r.shop.star == 0) {
+					$('.shop_star').css('background-position', '6% 9%');
+				} else if(r.shop.star == 1) {
+					$('.shop_star').css('background-position', '6% 16%');
+				} else if(r.shop.star == 2) {
+					$('.shop_star').css('background-position', '6% 24%');
+				} else if(r.shop.star == 3) {
+					$('.shop_star').css('background-position', '6% 31%');
+				} else if(r.shop.star == 4) {
+					$('.shop_star').css('background-position', '6% 38%');
+				} else if(r.shop.star == 5) {
+					$('.shop_star').css('background-position', '6% 45%');
+				}
+
+				//弹出优惠券
+				$(".discounts_btn img").click(function() {
+					$(document.body).css({
+						"overflow-y": "hidden"
+					});
+					$(".pay_mode_bg").attr("style", "display:block");
+					$(".discounts").attr("style", "height:380px;transition: height 0.5s;-moz-transition: height 0.5s; -webkit-transition: height 0.5s;-o-transition: height 0.5s;");
+				});
+			}, 'json');
+
+			var listparamUL = {
+				shopId: shopId,
+				catId: '',
+				pageNo: currentpage,
+				pageSize: 6
+			};
+
+			// 一级分类
+			getInfo('post', ajaxUrl + '/shopProductCategory/selectShopProductCategory', {
+				shopId: shopId
+			}, setSpecialHtml);
+
+			function setSpecialHtml(r) {
+				console.log(r)
+				var html = template('shop_nav', r);
+
+				$('#shopNav').html(html);
+
+				$("#shopNav ul li").eq(0).addClass('on');
+				// 点击不同的导航请求不同的数据
+				$("#shopNav ul li").click(function() {
+				    debugger
+					var catId = $(this).data('id');
+					/*listLoading = false;
+					listLoadingLock = false; // 初始化页面没有被锁定，，可以滚动
+					currentpage = 1;
+					listparamUL.pageNo = currentpage;
+					catId = $(this).attr('data-id');
+					console.log(catId);
+					listparamUL.catId = catId;
+					$(this).addClass('on').siblings().removeClass('on');
+					$(this).css('color', '#ff5a3a').siblings().css('color', '#8a8a8a');
+					getList('.goods_box1', 'post', ajaxUrl + '/front/shop/storeAllGoods', listparamUL, getListdata);*/
+                    $(this).addClass('on').siblings().removeClass('on');
+                    $(this).css('color', '#ff5a3a').siblings().css('color', '#8a8a8a');
+                    // 二级分类
+                    getInfo('post', ajaxUrl + '/shopProductCategory/selectShopProductCategoryByCId', {
+                        CategoryId: catId
+                    }, setNavTwo);
+
+                    $('#showAllGoods').click(function () {
+						location.reload();
+                    })
+
+				});
+
+			}
+
+
+
+
+           // http://yangxiao.tunnel.qydev.com/shop/shopProductCategory/selectShopProductCategoryByCId?CategoryId=34
+			function setNavTwo(r) {
+                var html = template('shop_nav2', r);
+
+                $('#shopNav2').show().html(html);
+
+                $("#shopNav2 ul li").eq(0).addClass('on');
+                // 默认渲染
+
+                $("#shopNav2 ul li").click(function() {
+                    listLoading = false;
+                    listLoadingLock = false; // 初始化页面没有被锁定，，可以滚动
+                    currentpage = 1;
+                    listparamUL.pageNo = currentpage;
+                    catId = $(this).attr('data-id');
+                    console.log(catId);
+                    listparamUL.catId = catId;
+                    $(this).addClass('on').siblings().removeClass('on');
+                    $(this).css('color', '#ff5a3a').siblings().css('color', '#8a8a8a');
+                    getList('.goods_box1', 'post', ajaxUrl + '/front/shop/storeAllGoods', listparamUL, getListdata);
+
+                });
+                $("#shopNav2 ul li:nth-child(1)").click();
+            }
+			//页面渲染    
+			function getListdata(obj, r) {
+
+                // 获取分销ID和值
+                var fxIdData;
+                getFxId(function(res){
+                    fxIdData = res;
+                });
+
+				if(r.Product.length === 0 && currentpage === 1) {
+					$(obj).html('<div class="_nodata" style="font-size: 14px; text-align: center;">暂无数据</div>');
+				} else if(r.Product.length !== 0) {
+
+                    // 显示广告金
+                    for(var i=0; i<r.Product.length; i++){
+                        for(var j = 0; j< fxIdData.length; j++){
+                            if(r.Product[i].fxparam == fxIdData[j].id){
+                                r.Product[i].fxparam =fxIdData[j].mine;
+                            }
+                        }
+                    }
+
+
+
+
+					var html = template('goods_box1', r);
+
+
+                    var countDownArr=[];
+                    $.each(r.Product, function (key, val) {
+
+                        countDownArr.push('countdown' + val.productId);
+                    });
+
+
+					if(currentpage === 1) {
+						$(obj).html(html);
+                        //倒计时
+                        countDownEvent(countDownArr);
+					} else {
+						$(obj).append(html);
+                        //倒计时
+                        countDownEvent(countDownArr);
+					}
+                    $('.buy-load').remove();
+				} else {
+					listLoadingLock = true;
+					if( $('.buy-load')){
+                        $('.buy-load').remove();
+					}
+					$(obj).append('<div class="buy-load"><img class="load-img" src="img/load.png"><span class="load-tips">没有更多了~</span></div>');
+				}
+			}
+
+
+            // 倒计时
+            function countDownEvent(counmtDomArr) {
+
+                for(var i=0; i<counmtDomArr.length; i++){
+
+                    $('.' + counmtDomArr[i]).downCount({
+//                    date: '3/15/2018 00:00:00',
+                        offset: 0,  //+10
+                        loadingTiao: true
+                    }, function () {
+                        // alert('倒计时结束!');
+                    });
+                }
+
+
+
+            }
+
+
+            $('.content').scroll(function() {
+				totleHeight = parseFloat($(window).height() ) + parseFloat($(window).scrollTop());
+				if((document.body.scrollHeight == totleHeight) && !listLoading) {
+					++currentpage;
+					listparamUL.pageNo = currentpage;
+					// setclcik();
+					$('.sort-list div').click(function() {
+						$(this).css('color', '#ff5a3a').siblings().css('color', '#9b9b9b');
+					});
+                   // $('.goods_box1').append('<div class="buy-load"><span class="load-tips">正在加载中...</span></div>');
+					getList('.goods_box1', 'post', ajaxUrl + '/front/shop/storeAllGoods', listparamUL, getListdata);
+
+				}
+			});
+
+			$('.search').click(function() {
+				// location.href='shop_details_searchResult.html?id='+shopId;
+				var search = $('.search_ipt').val();
+				if(search == '') {
+					$('.goods_box1').css('display', 'block');
+					$('.goods_box2').css('display', 'none');
+				} else {
+					$('.goods_box1').css('display', 'none');
+					$('.goods_box2').css('display', 'block');
+				}
+
+				var listparam = {
+					search: search,
+					sortType: '',
+					type: 2,
+					pageNo: 1,
+					pageSize: 6
+				};
+
+				$(document.body).css({
+					"overflow-y": "auto"
+				});
+				$('.gouwuche').css('display', 'block');
+				$('.search').css('display', 'none');
+				$(".pay_mode_bg").attr("style", "display:none");
+				$(".collect").attr("style", "display:block;")
+				$(".search_ipt").attr("value", search)
+				$("header").attr("style", "background-color: transparent;")
+				$(".store_search_box").attr("style", "transition:all 0.1s;-moz-transition: all 0.1s; -webkit-transition: all 0.1s;-o-transition:all 0.1s;")
+				$(".discounts").attr("style", "height:0px;transition: height 0.5s;-moz-transition: height 0.5s; -webkit-transition: height 0.5s;-o-transition: height 0.5s;");
+
+				getList('.goods_box2', 'post', ajaxUrl + '/front/shop//search', listparam, getListdata);
+
+				isReady=true;
+
+			});
+
+			//选项卡
+			//默认显示第一项
+			$('.goods_box .goods_list').eq(0).css('display', 'block');
+			$(".shop_nav ul li").bind('click', function() {
+
+				// 设index为当前点击
+				var index = $(this).index();
+				//点击添加样式利用siblings清除其他兄弟节点样式
+				$(this).addClass('on').siblings().removeClass('on');
+				//显示对应index的div
+				$('.goods_box .goods_list').eq(index).css('display', 'block').siblings().css('display', 'none');
+			});
+
+			//跳转商品详情
+			$(".goods_btn").click(function() {
+				location.href = "sto-detail.html"
+			});
+
+			//点击搜索
+			$(".search_ipt").click(function() {
+				$(document.body).css({
+					"overflow-y": "hidden"
+				});
+				$(".pay_mode_bg").attr("style", "display:block");
+				$(".collect").attr("style", "display: none;");
+				$(".search_ipt").attr("value", "");
+				$("header").attr("style", "z-index: 5;");
+				$('.gouwuche').css('display', 'none');
+				$('.search').css('display', 'block');
+				$(".store_search_box").attr("style", "margin-left: 40px;width: 70%;transition:all 0.1s;-moz-transition: all 0.1s; -webkit-transition: all 0.1s;-o-transition:all 0.1s;")
+			});
+
+			//取消
+			$(".discounts_top img,.pay_mode_bg,.nav-left").click(function() {
+				$(document.body).css({
+					"overflow-y": "auto"
+				});
+				$('.gouwuche').css('display', 'block');
+				$('.search').css('display', 'none');
+				$(".pay_mode_bg").attr("style", "display:none");
+				$(".collect").attr("style", "display:block;");
+				$(".search_ipt").attr("value", "春夏新款女装");
+				$("header").attr("style", "background-color: transparent;");
+				$(".store_search_box").attr("style", "transition:all 0.1s;-moz-transition: all 0.1s; -webkit-transition: all 0.1s;-o-transition:all 0.1s;");
+				$(".discounts").attr("style", "height:0px;transition: height 0.5s;-moz-transition: height 0.5s; -webkit-transition: height 0.5s;-o-transition: height 0.5s;");
+			});
+			
+		</script>
+	</body>
+
+</html>

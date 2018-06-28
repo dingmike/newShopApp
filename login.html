@@ -1,0 +1,323 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Login</title>
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no"/>
+    <link rel="stylesheet" type="text/css" href="css/index.css"/>
+    <link rel="stylesheet" href="css/hp.css"/>
+    <link rel="stylesheet" href="lib/layer/2.4/skin/layer.css"/>
+    <script src="js/jquery-1.11.1.min.js" type="text/javascript" charset="utf-8"></script>
+    <script src="js/default.js"></script>
+    <script src="js/template.js"></script>
+    <script src="js/template-helper.js"></script>
+    <script src="./js/md5.js" type="text/javascript" charset="utf-8"></script>
+    <script type="text/javascript" src='./js/jmessage-sdk-web.2.6.0.min.js'></script>
+    <script type="text/javascript" src="./lib/layer_mobile/layer.js"></script>
+    <style>
+        body {
+            background-color: #fff;
+        }
+
+        .wbd {
+            float: right;
+            margin: 15px 40px;
+            background: none;
+            color: #FF5A3A;
+        }
+
+        .Account, .Password {
+            font-size: 16px;
+        }
+    </style>
+
+</head>
+<body>
+
+<!-- 登录、注册-->
+<div class="header">
+                        <span class="header-span1">
+                        登录
+                    </span>
+    <a href="register.html" class="a">
+                        <span class="header-span2 header-span3">
+                        注册
+                    </span>
+    </a>
+
+</div>
+<!--输入框-->
+<div class="input_box">
+    <div class="input_box-div">
+        <input class="input_box-input Account" type="text" placeholder="账号/手机号" size="22"/>
+    </div>
+    <div class="input_box-div input_box-div-password">
+        <input class="input_box-input Password" type="password" placeholder="输入密码  " size="22"/>
+        <a href="forget_password.html" class="input_box-a">忘记密码？</a>
+    </div>
+</div>
+<!--登录按钮-->
+<div class="click">
+                <span class="click-span">
+                    立即登录
+                </span>
+</div>
+<!--<input type="button" class="wbd" value="未绑定微信登录" onclick="location.href='number.html'"/>-->
+
+<div class="auth-login">
+    <div class="wechat">
+        <img src="img/wechat.png" class="wechat-img">
+        <span class="wechat-span">
+                微信登录
+            </span>
+    </div>
+    <div class="zfb-block">
+        <img src="img/zhifubaozhifu.png" class="zfbbb-img">
+        <span class="wechat-span">
+                支付宝登录
+            </span>
+    </div>
+    <div style="clear:both;"></div>
+</div>
+
+<script>
+    $(function () {
+        //手机版本号（version）和项目平台(phoneType)
+        var version = '2.0.05';
+        var phoneType = 2;
+        //登录
+        $('.click').click(function () {
+            var Account = $('.Account').val();
+            var Password = $('.Password').val();
+            console.log(Account, Password);
+            // type 1: Android，2：iOS， 3: h5
+            $.post(ajaxUrl + '/front/clients/login', {
+                Account: Account,
+                Password: Password,
+                version: version,
+                type: phoneType
+            }, function (r) {
+                if (r.code == 300) {
+                    tip.flag(r.msg, 'error')
+                } else if (r.code == 3011) { // 更新app版本
+                    layer.open({
+                        content: r.message
+                        , btn: '去更新'
+                        , yes: function () {
+                            window.location.href = r.msg;
+                        }
+                    });
+                } else {
+                    //生成激光注册登录账号
+                    var JgName = Account;
+                    var JgNature = Password;
+                    localStorage.setItem('JgName', JgName);
+                    localStorage.setItem('JgNature', JgNature);
+
+                    // 激光
+                    /*         var timestamp = Date.parse(new Date());
+                     var signature = md5("appkey=3498a873d2a21560612c1b15&timestamp="+timestamp+"&random_str=122cd9fd995849b58b3ef0e943421ed8&key=5bf37a49cc208c13b6aa283c")
+                     //初始化
+                     var auth_payload = {
+                     "appkey": "3498a873d2a21560612c1b15",
+                     "random_str": "122cd9fd995849b58b3ef0e943421ed8",
+                     "signature": signature,
+                     "timestamp": timestamp,
+                     "flag" : 0
+                     };
+                     //            var JIM = new JMessage();
+
+                     var JIM = new JMessage({debug:true});
+                     JIM.init(auth_payload).onSuccess(function(data) {
+                     debugger;
+                     //data.code 返回码
+                     //data.message 描述
+
+                     // 注册
+                     var pass = md5(localStorage.JgNature);
+                     //                var pass = md5('123');// 测试
+                     JIM.register({
+                     'username' : '13258187859',
+                     'password' : '123456'
+                     }).onSuccess(function(data) {
+                     debugger
+                     //data.code 返回码
+                     //data.message 描述
+                     }).onFail(function(data) {
+                     // 同上
+                     debugger
+                     });
+
+
+                     }).onFail(function(data) {
+                     debugger
+                     // 同上
+                     });*/
+                    localStorage.setItem("token", r.token);
+                    if (!r.regAddress) {
+                        layer.open({
+                            content: '没有注册地址'
+                            , btn: '去绑定'
+                            , yes: function () {
+                                window.location.href = 'registerAddress.html?userId=' + r.userId;
+                            }
+                        });
+
+                    } else {
+                        tip.flag('登录成功', 'success');
+                        setTimeout(function () {
+                            window.location.href = 'index.html';
+                        }, 2000);
+                    }
+
+
+                }
+            })
+        });
+
+        // 微信登录
+        $('.wechat-img').click(function () {
+            //调用支付原生
+            setupWebViewJavascriptBridge(function (bridge) {
+                bridge.callHandler('loadThreeLogin', {
+                    type: 'WeChat'
+                }, function (r) {
+                    var res = JSON.parse(r);
+                    if (res.code == 0) {
+                        $.ajax({
+                            type: "POST",
+                            url: ajaxUrl + '/front/clients/verAccount?unionId=' + res.data.unionid + '&type=1' +'&version='+version + '&tType=' + phoneType,  // tType代表终端类型1，Android，2：ios, 3: h5
+                            async: false,
+                            success: function (response) {
+                                if (response.code == 200) {
+                                    localStorage.setItem("token", response.token);
+                                    window.location.href = 'index.html';
+                                } else if (response.code == 100) {
+                                    layer.open({
+                                        content: '微信授权成功是否创建临时账户？'
+                                        , btn: ['是', '否']
+                                        , yes: function (index) {
+                                            $.ajax({
+                                                type: "POST",
+                                                url: ajaxUrl + '/front/clients/weiXinSign?access_token=' + res.data.access_token + '&unionId=' + res.data.unionid + '&openId=' + res.data.openid,
+                                                async: false,
+                                                success: function (responseok) {
+                                                    if (responseok.code == 200) {
+                                                        localStorage.setItem("token", responseok.token);
+                                                        window.location.href = 'index.html';
+                                                    } else {
+                                                        alert('创建临时账号失败！')
+                                                    }
+                                                }
+                                            })
+                                        }
+                                    });
+                                }else if (response.code == 3011) { // 更新app版本
+                                    layer.open({
+                                        content: response.message
+                                        , btn: '去更新'
+                                        , yes: function () {
+                                            window.location.href = response.msg;
+                                        }
+                                    });
+                                }
+                            }
+                        });
+
+                    } else {
+                        alert('登录失败！')
+                    }
+                });
+            });
+
+        });
+        // 支付宝授权登录
+        $('.zfbbb-img').click(function () {
+            $.ajax({
+                type: "POST",
+                url: ajaxUrl + '/front/clients/ZfbSign',
+                async: false,
+                success: function (response) {
+                    if (response.code == 200) {
+                        //调用支付原生
+                        setupWebViewJavascriptBridge(function (bridge) {
+                            bridge.callHandler('loadThreeLogin', {
+                                type: 'Ali',
+                                data: response.json4
+                            }, function (r) {
+                                var res = JSON.parse(r);
+                                if (res.code == 0) {
+                                    var auth_code = GetQueryString2('auth_code', res.data);
+                                    var user_id = GetQueryString2('user_id', res.data);
+                                    $.ajax({
+                                        type: "POST",
+                                        url: ajaxUrl + '/front/clients/verAccount?unionId=' + user_id + '&type=2' + '&version='+version + '&tType=' + phoneType, // tType代表终端类型1，Android，2：ios, 3: h5
+                                        async: false,
+                                        success: function (response) {
+                                            if (response.code == 200) {
+                                                localStorage.setItem("token", response.token);
+                                                window.location.href = 'index.html';
+                                            } else if (response.code == 100) {
+                                                layer.open({
+                                                    content: '支付宝授权成功是否创建临时账户？'
+                                                    , btn: ['是', '否']
+                                                    , yes: function (index) {
+                                                        $.ajax({
+                                                            type: "POST",
+                                                            url: ajaxUrl + '/front/clients/CreateZfb?authCode=' + auth_code,
+                                                            async: false,
+                                                            success: function (responseok) {
+                                                                if (responseok.code == 200) {
+                                                                    localStorage.setItem("token", responseok.token);
+                                                                    window.location.href = 'index.html';
+                                                                } else {
+                                                                    //layer.msg(response.msg)
+                                                                    alert('创建临时账号失败！')
+                                                                }
+                                                            }
+                                                        })
+                                                    }
+                                                });
+                                            }else if (response.code == 3011) { // 更新app版本
+                                                layer.open({
+                                                    content: response.message
+                                                    , btn: '去更新'
+                                                    , yes: function () {
+                                                        window.location.href = response.msg;
+                                                    }
+                                                });
+                                            }
+                                        }
+                                    });
+
+                                } else {
+                                    alert('登录失败！')
+                                }
+                            });
+                        });
+
+                    } else {
+                        layer.open({
+                            content: response.msg
+                            , skin: 'msg'
+                            , time: 3 //2秒后自动关闭
+                        });
+                    }
+                }
+            })
+
+
+        });
+
+    });
+    function GetQueryString2(name, url) {
+        var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)");
+        // var url = decodeURIComponent(window.location);
+        var r = url.substr(1).match(reg);
+        if (r != null)return unescape(r[2]);
+        return null;
+    }
+</script>
+</body>
+</html>

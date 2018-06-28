@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="utf-8" />
+		<title>聊天</title>
+		<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no" />
+		<link rel="stylesheet" type="text/css" href="css/public.css" />
+		<link rel="stylesheet" href="css/hp.css" />
+		<script src="js/jquery-3.2.1.min.js"></script>
+		<style>
+
+		</style>
+	</head>
+
+	<body>
+		<div class="container">
+			<header>
+				<img class="nav-left" src="img/fanhui.png" alt=""/>官方客服
+				<span class="nav-right jd" id="edit">官网</span>
+			</header>
+			<div class="header_box"></div>
+			<div class="news_cont_box chat-body">	
+				<div class="chat-data">2017-08-15 10:20</div>
+				
+				<div class="boss-news clearfix">
+					<div class="boss-icon">
+						<img src="img/eg-gf.png" />
+					</div>
+					<div class="boss-nr">
+						<img src="img/news-icon-l.png" class="news-icon"/>
+							<p>您好！</p>
+					</div>
+				</div>
+				
+				<div class="boss-news clearfix">
+					<div class="boss-icon gk-icon">
+						<img src="img/gk-tx.png" />
+					</div>
+					<div class="boss-nr gk-nr">
+						<img src="img/news-icon-r.png" class="news-icon gk-r"/>
+							<p>00</p>
+					</div>
+					
+				</div>
+				
+				<div class="boss-news clearfix">
+					<div class="boss-icon gk-icon">
+						<img src="img/gk-tx.png" />
+					</div>
+					<div class="boss-nr gk-nr">
+						<img src="img/news-icon-r.png" class="news-icon gk-r"/>
+							<p>00</p>
+					</div>
+					
+				</div>	
+				
+				<div class="boss-news clearfix">
+					<div class="boss-icon">
+						<img src="img/eg-gf.png" />
+					</div>
+					<div class="boss-nr">
+						<img src="img/news-icon-l.png" class="news-icon"/>
+							<p>不退</p>
+					</div>
+				</div>
+				
+				<div class="boss-news clearfix">
+					<div class="boss-icon">
+						<img src="img/eg-gf.png" />
+					</div>
+					<div class="boss-nr">
+						<img src="img/news-icon-l.png" class="news-icon"/>
+							<img src="img/hh.gif"  class="bq"/>
+					</div>
+				</div>
+			</div>
+			<footer>
+				<div class="chat-footer">
+					<ul>
+						<li class="up-img">
+							
+							<input type="file" name="" id="" value="" />
+							<img src="img/up-img.png" />
+						</li>
+						<li>
+							<textarea type="text" class="textarea" id="writeT" maxlength="200" data-selected="true"></textarea>
+						</li>
+						<li class="chat-fs">
+							<input type="button" value="发送" />
+						</li>
+					</ul>
+				</div>
+			</footer>
+			<div class="footer_box"></div>
+		</div>
+		<script type="text/javascript">
+			 $('.textarea').focus(function(){
+			 	$('.chat-fs input').css({
+			 		'color':'#fff',
+			 		'background-color':' #ff5a3a'
+			 	})
+
+			 });
+			 
+		 	$('.textarea').blur(function(){
+			 	$('.chat-fs input').css({
+			 		'color':'#b2b2b2',
+			 		'background-color':'#d3d3d3'
+			 	})
+		    });
+		</script>
+	</body>
+
+</html>

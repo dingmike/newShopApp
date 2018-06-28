@@ -1,0 +1,490 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="utf-8" />
+		<meta name="renderer" content="webkit">
+		<meta content="yes" name="apple-mobile-web-app-capable" content="yes" />
+		<meta content="black" name="apple-mobile-web-app-status-bar-style" />
+		<meta content="telephone=no" name="format-detection"/>
+		<title>拼单订单详情</title>
+		<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no" />
+		<link rel="stylesheet" type="text/css" href="css/public.css" />
+		<link rel="stylesheet" type="text/css" href="css/index.css"/>
+		<link rel="stylesheet" href="css/hp.css" />
+		<!--flex 布局-->
+		<script src="js/flexible.js" type="text/javascript"></script>
+		<script type="text/javascript" src="js/jquery-1.11.1.min.js"></script>
+		<script type="text/javascript" src="js/default.js"></script>
+		<script type="text/javascript" src="js/jquery.downCount.js"></script>
+		<style>
+			body {overflow-x: hidden}
+
+			.content {
+				-webkit-box-flex: 1;
+				overflow: auto;
+				position: relative;
+				overflow-x: hidden;
+			}
+			*{
+				-webkit-overflow-scrolling: touch;
+			}
+			.lianxi {
+				margin-right: 0px;
+				position: relative;
+				right: 18px;
+				top: 20px;
+			}
+			
+			.pro_num {
+				width: 60px;
+				font-size: 13px;
+				line-height: 30px;
+				float: left;
+				margin-left: 30px;
+			}
+			
+			#returnBack {
+				position: absolute;
+				right: 0px;
+				top: 40px;
+				padding: 0 10px;
+				line-height: 17px;
+				height: 20px;
+				font-size: 12px;
+				border-radius: 10px;
+				border: solid 1px #9d9d9d;
+				background: none;
+				color: #8a8a8a;
+			}
+			.order_cot{
+				position: relative;
+			}
+
+			/*loading--start--*/
+			.status-bar[data-v-5d44c782] {
+				position: relative;
+				box-sizing: border-box;
+				width: 3.2rem;
+				height: 0.3733333rem;
+				line-height: 0.3733333rem;
+				border-radius: 0.186666667rem;
+				color: #fff;
+				background: url(./img/ad_imgs/beijing.png) repeat-x;
+				background-size: contain;
+				text-align: center;
+				overflow: hidden;
+			}
+
+			.status-progress[data-v-5d44c782] {
+				border-radius: 0.186666667rem;
+				position: absolute;
+				top: 0;
+				left: 0;
+				height: 100%;
+				min-width: .13rem;
+				/* background: url(/img/ad_imgs/jindu.png) repeat-x; */
+				background-size: contain;
+			}
+
+			.status-num[data-v-5d44c782] {
+				font-size: 0.32rem;
+				position: absolute;
+				left: 0.8rem;
+			}
+
+			.status-soldrate[data-v-5d44c782] {
+				font-size: 0.34rem;
+				position: absolute;
+				left: 1.3333rem;
+			}
+
+			.status-msg {
+				position: relative;
+				text-indent: 1.10rem;
+				/*width: 2.32rem;*/
+			}
+
+			.status-msg:before {
+				content: attr(text);
+				line-height: 0.3733333rem;
+				height: 0.3733333rem;
+				position: absolute;
+				left: 0;
+				font-size: 0.3rem;
+				vertical-align: middle;
+			}
+
+			.status-msg:after {
+				content: attr(text);
+				position: absolute;
+				left: 0;
+				/* width: 100%; */
+				/* height: 38px; */
+				height: 0.3733333rem;
+				line-height: 0.3733333rem;
+				white-space: nowrap;
+				overflow: hidden;
+				transition: width 1s ease;
+				width: 57%;
+				color: red;
+				font-size: 0.3rem;
+				vertical-align: middle;
+				/* background: #0BF; */
+				background: url(./img/ad_imgs/jindu.png) repeat-x;
+			}
+
+			.pin-tuan {
+				font-style: italic;
+				font-weight: 600;
+				background-color: #ffffff;
+				width: 1.86666rem;
+				height: 0.8rem;
+				margin-top: 0.37333rem;
+				border-radius: 4px;
+				margin-left: 0.2666rem;
+				color: orangered;
+			}
+
+			.own-margin-left {
+				padding-left: 0.4rem;
+			}
+
+			/*loading--end--*/
+
+			.user_tit {
+				max-width: 617px;
+				height: 14px;
+				font-size: 14px;
+				padding-right: 35px;
+				line-height: 14px;
+				letter-spacing: 1.4px;
+				color: #1d1d1d;
+				border-top: 1px solid #dfdfdf;
+				padding: 10px 2px!important;;
+			}
+			.xf-code{
+				font-size: 0.43rem;
+				height: 36px;
+				line-height: 30px;
+			}
+			.xf-code span{
+				color: red;
+			}
+			.userinfo {
+				 background-image: none!important;
+
+			}
+		</style>
+	</head>
+	<body>
+		<!--索要发票弹窗 -->
+		<!--<div class="syfp-alert">
+			<div class="alert-choose">
+				<ul>
+					<li>NIKI提供的发票</li>
+					<li>个人增值税普通发票</li>
+					<li>企业增值税普通发票</li>
+					<li>企业增值税专用发票</li>
+				</ul>
+				<div class="alert-confirm">
+					<input type="button" value="确定索要" />
+				</div>
+			</div>
+		</div>-->
+		<!--索要发票弹窗 -->
+		<div class="container alert-op">
+			<header>
+				<img class="nav-left" src="img/fanhui.png" alt="" onclick="location.href='my-order-pd.html?type=0';" />订单详情
+			</header>
+			<!--<div class="header_box"></div>-->
+			<div class="content" id="detail-list">
+
+			</div>
+
+		</div>
+		<!--<div class="footer_box" style="height: 135px;">
+			<div class="no-more">
+				<img src="img/icon-jiazaipng.png" />
+				<p>别扯了。没有更多了！！！</p>
+			</div>
+		</div>-->
+		<script type="text/template" id="detail-list-con">
+			<div class="userinfo">
+
+				<div class="store-send-xq clearfix">
+					{{if order.status==0}}
+						<div class="send-xq-fl">待付款</div>
+					{{/if}}
+
+					{{if order.status==1}}
+					<!--拼单中-->
+					<div>
+						<div class="send-xq-fl">拼单中</div>
+						<div class="send-xq-fr">{{order.autoShou}}拼团结束后发货</div>
+						<div style="clear:both;"></div>
+					</div>
+
+					<div class="loading-time-box">
+						<div class="price-time" style="font-size: 0.32rem;margin-bottom: 0.21333rem;"><span style="float: left;">距结束：</span>
+							{{if order.fightAloneTime!==null}}
+							<ul class="countdown" data-clock="{{order.fightAloneTime}}">
+								<li style="display: none;">
+									<span class="days">00</span>
+								</li>
+								<li class="seperator" style="display: none;">.</li>
+								<li><span class="hours">00</span>
+								</li>
+								<li class="seperator">:</li>
+								<li><span class="minutes">00</span>
+								</li>
+								<li class="seperator">:</li>
+								<li><span class="seconds">00</span>
+								</li>
+							</ul>
+							<div style="clear:both;"></div>
+							{{/if}}
+						</div>
+						<div>
+							<div class="price-time-loading">
+								<div data-v-5d44c782="" class="status-bar">
+									<div data-v-5d44c782="" class="status-progress"></div>
+									<div data-v-5d44c782="" class="status-msg" data-total="{{order.fightAloneNumber}}"
+										 data-last="{{order.areadFightAlone}}" id="myStatusLoading{{order.productId}}"
+										 text="{{order.areadFightAlone}}/{{order.fightAloneNumber}}">
+										<!-- <div data-v-5d44c782="" class="status-num">10</div>
+                                         <span data-v-5d44c782="" class="status-soldrate">200</span>-->
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+					{{/if}}
+
+					{{if order.isType == 1}}
+
+						{{if order.status==2}}
+						<div class="send-xq-fl">待发货</div>
+						{{/if}}
+						{{if order.status==3}}
+						<div class="send-xq-fl">确认收货</div>
+						{{/if}}
+						{{if order.status==5}}
+						<div class="send-xq-fl">已完成</div>
+						{{/if}}
+						{{if order.status==6}}
+						<div class="send-xq-fl">拼单失败</div>
+						{{/if}}
+					{{else if order.isType == 2}}
+						{{if order.status==2}}
+						<div class="send-xq-fl">待发货</div>
+						{{/if}}
+						{{if order.status==3}}
+						<div class="send-xq-fl">待消费</div>
+						{{/if}}
+						{{if order.status==5}}
+						<div class="send-xq-fl">已完成</div>
+						{{/if}}
+						{{if order.status==6}}
+						<div class="send-xq-fl">拼单失败</div>
+						{{/if}}
+
+					{{/if}}
+
+
+				</div>
+				{{if order.payType!= 0 && logisticsInfo != ""}}
+				{{if logisticsInfo.showapi_res_body.flag}}
+				<div class="goods-detail">
+					
+					<p>{{logisticsInfo.showapi_res_body.data[0].context}}</p>
+					<span>{{logisticsInfo.showapi_res_body.data[0].time}}</span>
+					
+				</div>
+				{{/if}}
+				{{/if}}
+
+				{{if order.isType == 1}}
+				<div class="user_tit mtp-25">
+					<div class="user_name">{{address.userName}}</div>
+					<div class="user_phone">{{address.telNumber}}</div>
+				</div>
+				<div class="user_site bg-no">
+					{{address.province}}{{address.city}}{{address.address}}
+					<div class="change_info"></div>
+				</div>
+				{{else if order.isType == 2}}
+					<div class="xf-code">消费码：<span>{{order.code}}</span></div>
+				{{/if}}
+			</div>
+
+			<div class="order_details">
+				<div class="order_tit">{{order.shopName}}</div>
+				<div class="merchandise">
+					<div class="order_img">
+						<img src="{{order.productImg}}" alt="" />
+					</div>
+					<div class="order_cot">
+						<div class="pro_tit">
+							{{order.productName}}
+						</div>
+						<div class="pro_par">
+							参数:{{each order.spectName as listB i}}
+							<span>{{listB}}</span>
+							{{/each}}
+						</div>
+
+						<!--<div class="e_dian">
+							送{{order.productEdian}}e点
+						</div>-->
+						<div class="pro_price">
+							¥{{order.productAmount}}
+						</div>
+						<!--{{if order.status==1}}
+						<input type="button" value="申请退换" id="returnBack" onclick="returnBack('{{order.detailId}}')" />
+						{{/if}}-->
+						<div class="pro_num" style="width: 135px;">	
+							{{if order.returnNumber!=0}}
+							数量: {{order.productCount}}&nbsp;&nbsp;
+							{{else}}
+							数量: {{order.productCount}}
+							{{/if}}
+						</div>
+					</div>
+				</div>
+				<div class="order_tit">快递邮费 {{if order.orderExpfee==0}}
+					<div class="postage">卖家包邮</div>
+					{{else}}
+					<div class="postage">{{order.orderExpfee}}</div>
+					{{/if}}
+				</div>
+				<!--<div class="order_tit">店铺优惠
+					<div class="discount">¥{{order.orderDiscounted}}</div>
+				</div>-->
+			<!--	<div class="order_tit">索要发票
+					<div class="postage has-bg">{{if order.forInvoices==0}}暂不提供发票{{/if}}{{if order.forInvoices==1}}个人增值税普通发票{{/if}}{{if order.forInvoices==2}}企业增值税普通发票{{/if}}{{if order.forInvoices==3}}企业增值税专业发票{{/if}}</div>
+				</div>-->
+				<!--<span class="remark border10" style="display:block;vetical-align:top;float:left;">备注说明</span>
+				<textarea class="remark_txt" style="width: 92%;margin-left: 15px;" rows="4" name="remark"></textarea>-->
+				<div class="order_tit od-tp">
+					<span>备注说明</span>
+					<input type="text" class="bzsm" readonly="readonly" value="{{order.userRemake}}"/>
+				</div>
+
+				<div class="order_tit sfk-box od-tp">
+					<div class="sfk-top">
+						<span>实付款</span>
+						<span>¥{{order.productAmount}}</span>
+					</div>
+				</div>
+				<div class="order_tit sfk-box">
+
+				</div>
+
+				<div class="order_tit order-detail od-tp clearfix" style="height: auto;margin-bottom: 10px;padding: 5px 15px;">
+					<div class="do-de-fl">
+						<p>
+							<span>订单编号：</span>
+							<span style="width: 200px;display: inline-block;">{{order.orderId}}</span>
+						</p>
+						<p>
+							<span>下单时间：</span>
+							<span id="createTime"></span>
+						</p>
+						<p>
+							<span>支付时间：</span>
+							<span id="payTime"></span>
+						</p>
+						<p>
+							<span>发货时间：</span>
+							<span id="sendTime"></span>
+						</p>
+					</div>
+					<div class="do-de-fr lianxi">
+						<!--<input type="button" value="联系卖家" />-->
+						<a href="chat-detil.html?shopId={{order.shopId}}">联系卖家</a>
+					</div>
+				</div>
+			</div>
+		</script>
+		<script src="js/template.js"></script>
+		<script type="text/javascript" src="js/template-helper.js"></script>
+		<script>
+			var params = {
+				orderId: GetUrlString('id')
+			};
+			//页面初始化
+			$(function() {
+				getInfo("post", ajaxUrl+"/front/ordersCollage/orderCollageInfo?token=" + token, params, detailReq);
+			});
+
+			function detailReq(r) {
+//				r.data.order.autoShou = addDate(r.data.order.sendTime,15+r.data.order.refundReasonTime);//自动收货时间
+//				r.data.order.autoShou = getLocalTime(r.data.order.autoShou);
+				var html = template("detail-list-con", r.data);
+				$("#detail-list").html(html);
+				// 倒计时
+                countDownEvent();
+				$(".goods-detail").click(function() {
+					window.location.href = "logisticsTracking.html?orderId=" + params.orderId;
+				});
+				if(r.data.order.payTime != null) {
+					var payTime = new Date(parseInt(r.data.order.payTime)).toLocaleString().replace(/:\d{1,2}$/, ' ');
+					$("#payTime").html(payTime);
+				}
+				if(r.data.order.createTime != null) {
+					var createTime = new Date(parseInt(r.data.order.createTime)).toLocaleString().replace(/:\d{1,2}$/, ' ');
+					$("#createTime").html(createTime);
+				}
+				if(r.data.order.sendTime != null) {
+					var sendTime = new Date(parseInt(r.data.order.sendTime)).toLocaleString().replace(/:\d{1,2}$/, ' ');
+					$("#sendTime").html(sendTime);
+				}
+			}
+
+			$('.postage').click(function() {
+				$('.syfp-alert').css('display', 'block');
+				$('.alert-op').css('opacity', '0.45');
+				$('.alert-choose ul li').click(function() {
+					$(this).addClass('add-li-css').siblings().removeClass('add-li-css')
+				});
+			});
+
+			//确定索要
+			$('.alert-confirm input').click(function() {
+				$('.syfp-alert').css('display', 'none');
+				$('.alert-op').css('opacity', '1');
+			});
+			//退换货跳转
+			function returnBack(detailId,productId) {
+				window.location.href = "return-apply.html?orderId=" + params.orderId+"&detailId="+detailId;
+			}
+			
+			function getLocalTime(nS) { //时间戳转换
+				return new Date(parseInt(nS)).toLocaleString().replace(/:\d{1,2}$/, ' ');
+			}
+
+			function addDate(da, days) {
+				var d = da;
+				console.log(d);
+				d = d + days * 24 * 60 * 60 * 1000;
+				return d;
+			}
+            // 倒计时
+            function countDownEvent() {
+                $('.countdown').downCount({
+//                    date: '3/15/2018 00:00:00',
+                    offset: +10,
+                    loadingTiao: true,
+                    isDetailProduct: true
+                }, function () {
+//                    alert('倒计时结束!');
+					//location.reload();
+                });
+
+            }
+		</script>
+
+	</body>
+
+</html>

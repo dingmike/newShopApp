@@ -1,0 +1,321 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no" />
+		<meta http-equiv="X-UA-Compatible" content="IE=11; IE=10; IE=9; IE=8; IE=7; IE=EDGE,Chrome=1">
+		<link rel="stylesheet" type="text/css" href="css/index.css" />
+		<link rel="stylesheet" type="text/css" href="css/hp.css" />
+		<link rel="stylesheet" type="text/css" href="css/swiper-4.1.0.min.css"></link>
+		<!--flex 布局-->
+		<script src="js/flexible.js" type="text/javascript"></script>
+		<script src="js/jquery-1.11.1.min.js" type="text/javascript" charset="utf-8"></script>
+		<script src="js/modernizr-custom-v2.7.1.min.js" type="text/javascript"></script>
+		<script src="js/jquery-finger-v0.1.0.min.js" type="text/javascript"></script>
+		<script src="js/flickerplate.min.js" type="text/javascript"></script>
+		<script src="js/default.js"></script>
+		<script src="js/swiper-4.1.0.min.js"></script>
+		<title>分类</title>
+		<style>
+			*{
+				-webkit-overflow-scrolling: touch;
+			}
+			.asideCur {
+				background-color: #f3f3f5;
+				color: #ff2a00;
+			}
+			#right-list{padding-bottom: 20px;}
+			aside div {
+				height:40px;
+				line-height: 40px;
+				font-family: PingFang-SC-Medium;
+				font-size: 13px;
+				color: #4c4b4b;
+				text-align: center;
+				border-bottom: 1px solid #e8e8e8;
+			}
+			.show {
+				display: block;
+			}
+			.swiper-container {
+				width: 100%;
+				height: 11rem;
+			}
+			.classify-content {
+				/*margin-top: 5px;*/
+				overflow: hidden;
+			}
+			.swiper-container1{
+				height: 900px;
+				background-color: #fff;
+			}
+			.swiper-container1 ul{
+				background-color: #fff;
+			}
+			aside ul li {
+				line-height: 48px!important;
+			}
+			.swiper-slide {
+				height: auto!important;
+			}
+		</style>
+	</head>
+
+	<body>
+		<div class="container">
+			<header>
+				<div class="nav-sear classify-name">分类</div>
+				<div class="nav-car classify-serch" onclick="location.href='search.html'">
+					<img src="img/sera1.png" />
+				</div>
+			</header>
+			<div class="content classify-content">
+				<aside id="left-list" class="swiper-container1">
+
+				</aside>
+				<div class="classify-content-right">
+					<!--轮播-->
+					<div class="hp-rk" id="carousel">
+
+					</div>
+					<div class="swiper-container">
+						<div class="swiper-wrapper" id="right-list" >
+
+						</div>
+					</div>
+				</div>
+			</div>
+
+			<footer>
+				<div class="hp-fot bor-top">
+					<div>
+						<a href="index.html">
+							<img src="img/shouye.png" data-img="shouye" />
+							<span class="hp-fot-st ">首页</span>
+						</a>
+
+					</div>
+					<div>
+						<a href="classify.html">
+							<img src="img/fenlei-x.png" data-img="fenlei" />
+							<span class="hp-fot-st fot-cor">分类</span>
+						</a>
+					</div>
+					<div>
+						<a href="off_line.html">
+							<img src="img/fuli.png" data-img="news"/>
+							<span class="hp-fot-st">线下</span>
+						</a>
+
+					</div>
+					<div>
+						<a class="news">
+							<img src="img/news.png" data-img = "news"/>
+							<span class="hp-fot-st">消息</span>
+						</a>
+						
+					</div>
+					<!--<div>
+						<a class="weal-q">
+							<img src="img/fuli.png" data-img = "fuli"/>
+							<span class="hp-fot-st">福利</span>
+						</a>
+						
+					</div>-->
+					<div>
+						<a class="my-center">
+							<img src="img/wode.png" data-img="wode"/>
+							<span class="hp-fot-st">我的</span>
+						</a>
+					</div>
+				</div>
+			</footer>
+		</div>
+
+		<script type="text/template" id="left-list-con">
+			<div count="1">全部分类</div>
+				<ul class="swiper-wrapper">
+					{{each data as list i}}
+					{{if i==0}}
+					<li count="2" id="{{list.catId}}" class="asideCur swiper-slide">{{list.catName}}</li>
+					{{else}}
+					<li count="1" id="{{list.catId}}" class="swiper-slide">{{list.catName}}</li>
+					{{/if}}
+					{{/each}}
+				</ul>
+		</script>
+
+		<script type="text/template" id="carousel-img">
+			{{each data as list i}} {{if i==0}}
+			<div class="flicker-example aa right" data-block-text="false" typeid="{{list.catId}}" style="height: 140px;">
+				<ul>
+					<li data-background="{{list.catImageUrl}}"></li>
+					<div class="flick-title"></div>
+					<div class="flick-sub-text"></div>
+				</ul>
+			</div>
+			{{else}}
+			<div class="flicker-example aa right" data-block-text="false" typeid="{{list.catId}}" style="height: 140px;">
+				<ul>
+					<li data-background="{{list.catImageUrl}}"></li>
+					<div class="flick-title"></div>
+					<div class="flick-sub-text"></div>
+				</ul>
+			</div>
+			{{/if}} {{/each}}
+		</script>
+
+		<script type="text/template" id="right-list-con">
+			{{each data as k i}}
+			<div class="swiper-slide right" typeid={{k.catParent}}>
+				<div class="classify-rmpp">
+					<div class="rmpp-title">
+						<p>{{k.catName}}</p>
+					</div>
+					<div class="rmpp-list rqmv">
+						<ul>
+							{{each k.childrens as p i}}
+							<li onclick="classify('{{p.catId}}','{{p.catName}}')">
+								<img src="{{p.catImage}}" />
+								<span>{{p.catName}}</span>
+							</li>
+							{{/each}}
+						</ul>
+					</div>
+				</div>
+			</div>
+			{{/each}}
+		</script>
+		<script src="js/template.js"></script>
+		<script src="js/template-helper.js"></script>
+		<script>
+			$(function() {
+				var leftId = "";
+
+				function footClick(obj){
+					$(obj).click(function(){
+						if(!token){
+							$(this).attr('href','login.html');
+						}else{
+							switch (obj){
+								case '.news':
+									$(this).attr('href','news.html');
+									break;
+								case '.weal-q':
+									$(this).attr('href','weal-q.html');
+									break;
+								case '.my-center':
+									$(this).attr('href','my_center.html');
+									break;
+								default:
+									break;
+							}
+							
+						}
+					});
+				};
+				footClick('.news');
+				footClick('.weal-q');
+				footClick('.my-center');
+
+                //初始信息
+				getInfo('post', ajaxUrl+'/front/productCategory/list', {
+					'id': leftId,
+					 type: 1
+				}, requestL);
+
+				function requestL(r) {
+					var html = template("left-list-con", r);
+					$("#left-list").html(html);
+
+
+                    //swiper scroller left
+                    var swiper1 = new Swiper('.swiper-container1',{
+                        slidesPerView: 'auto',
+                        freeMode: true,
+                        freeModeMomentum: true,
+                        direction: 'vertical',
+                        height : 60,
+                        loop: false
+                    });
+
+						/*for(var i=0; i<r.data.length; i++){
+                            r.data[i].catImageUrl = 'https://gouyigou.oss-cn-zhangjiakou.aliyuncs.com/lunbo/%E5%88%86%E7%B1%BB%E5%9B%BE.png';
+						}*/
+					var htmlImg = template("carousel-img", r);
+					$("#carousel").append(htmlImg);
+					$('.flicker-example').flicker(); /*轮播*/
+
+					var data = {
+						data: r.data[0].childrens
+					};
+
+					var htmlf = template("right-list-con", data);
+					$("#right-list").append(htmlf);
+
+                    //swiper scroller right
+                    var swiper2 = new Swiper('.swiper-container',{
+                        slidesPerView: 'auto',
+                        freeMode: false,
+                        freeModeMomentum: true,
+                        freeModeSticky: true,
+                        spaceBetween:20,
+                        direction: 'vertical',
+                        loop: false
+//                        height: '100%',//你的slide高度
+                    });
+
+
+					$("#left-list ul li").each(function() {
+						if($(this).hasClass("asideCur")) {
+							leftId = $(this).attr("id");
+						}
+					});
+					connectDisplay(".right","typeid",leftId);
+					//左侧导航栏点击
+					$("#left-list ul li").on('click', function() {
+						$(this).addClass("asideCur").siblings().removeClass("asideCur");
+						leftId = $(this).attr("id");
+						if($(this).attr("count") == 1) {
+							getInfo('post', ajaxUrl+'/front/productCategory/list', {
+								'id': leftId,
+								'type': 1
+							}, requestR);
+							$(this).attr("count", 2);
+							connectDisplay(".right","typeid",leftId);
+						} else {
+							connectDisplay(".right","typeid",leftId);
+						}
+					})
+				}
+				//右侧内容
+				function requestR(r) {
+                    var subSlideCounts = r.data.length;
+					var htmlf = template("right-list-con", r);
+					$("#right-list").append(htmlf);
+                    //swiper scroller
+                    var swiper3 = new Swiper('.swiper-container',{
+                        slidesPerView: 'auto',
+                        freeMode: true,
+                        autoHeight: true,
+                        freeModeMomentum:false,
+                        spaceBetween:20,
+                        slidesOffsetAfter : 60,
+                        freeModeMomentumBounce : false,
+                        direction: 'vertical',
+                        loop: false
+//                        height: '80%' //你的slide高度
+                    });
+
+                }
+
+			});
+			//分类点击跳转
+			function classify(classId, cateName) {
+				window.location.href = "classifyTable.html?id=" + classId +"&cateName=" + cateName;
+			}
+		</script>
+	</body>
+
+</html>

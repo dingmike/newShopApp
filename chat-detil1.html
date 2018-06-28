@@ -1,0 +1,584 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="utf-8" />
+		<title>聊天</title>
+		<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no" />
+		<link rel="stylesheet" type="text/css" href="css/public.css" />
+		<link rel="stylesheet" href="css/hp.css" />
+		<script type="text/javascript" src="js/jquery-1.11.1.min.js"></script>
+		<script type="text/javascript" src="js/default.js"></script>
+		<style>
+			.canSent{
+				color:#fff!important;
+				background-color:#ff5a3a!important;
+			}
+			.news-right{
+				float: right;
+				margin-right: 15px;
+			}
+			.nr-right{
+			    position: relative;
+			    margin-top: 14px;
+			    width: auto;
+			    max-width: 64%;
+			    background-color: #ffffff;
+			    border-radius: 10px;
+			    float: left;
+			    font-family: PingFang-SC-Medium;
+			    font-size: 15px;
+			    line-height: 23px;
+			    color: #1c1c1c;
+			    padding: 14px 13px 15px 13px;
+			    margin-left: 10px;
+				float: right;
+			}
+			.nr-right .news-icon{
+			    position: absolute;
+			    top: 0;
+			    width: 8px;
+			    height: 9px;
+			    right: -2px;
+			}
+		</style>
+	</head>
+
+	<body>
+		<div class="container">
+			<header>
+				<img class="nav-left" src="img/fanhui.png" alt="" onclick="javascript:history.back(-1);" /> <span id="shopName"></span>
+			</header>
+			<div class="header_box"></div>
+			<div class="chat-data top10"></div>
+
+			<div class="news_cont_box chat-body" id="chat-list">
+				
+			</div>
+			
+			<footer>
+				<div class="chat-footer">
+					<ul>
+						<li class="up-img" id="my_head">
+							<img src="img/up-img.png" />
+						</li>
+						<li>
+							<textarea type="text" class="textarea" id="writeT" maxlength="200" data-selected="true"></textarea>
+						</li>
+						<li class="chat-fs">
+							<input type="button" data_type="0" id="sendDiv"  value="发送" />
+						</li>
+					</ul>
+				</div>
+			</footer>
+			<div class="footer_box"></div>
+		</div>
+		
+		<script type="text/template" id="boss-content">
+			{{ each data as wr i }}
+				{{ if wr.senduser == 1 }}
+					<div class="boss-news clearfix">
+						<div class="boss-icon ">
+							{{ if wr.userImg == null }}
+								<img src="./img/ad_imgs/head_img.png" />
+							{{ else if wr.userImg != null }}
+								<img src="{{ wr.userImg }}" />
+							{{ /if }}
+						</div>
+						<div class="boss-nr">
+							<!--<img src="img/news-icon-l.png" class="news-icon" />-->
+							{{if wr.isImg == 2}}
+							<img src="{{wr.msg}}" class="bq" style="width: 100% !important;" />
+							{{/if}}
+							
+							{{if wr.isImg==1}}
+							<p style="font-size: 12px;color: #CCCCCC;">{{wr.time | dateFormat :'yyyt-MM-dd h:m:s'}}</p>
+							<p>{{ wr.msg}}</p>
+							{{/if}}
+						</div>
+					</div>
+				{{ else if wr.senduser == 2 }}
+					<div class="boss-news clearfix">
+						<div class="boss-icon news-right">
+							{{ if wr.shopImg == null }}
+								<img src="img/eg-gf.png" />
+							{{ else if wr.shopImg != null }}
+								<img src="{{ wr.shopImg }}" />
+							{{ /if }}
+						</div>
+						<div class="nr-right">
+							<!--<img src="img/news-icon-l.png" class="news-icon" />-->
+							{{if wr.isImg == 2}}
+							<img src="{{wr.msg}}" class="bq" style="width: 100% !important;"/>
+							{{/if}}
+							
+							{{if wr.isImg==1}}
+							<p style="font-size: 12px;color: #CCCCCC;">{{wr.time | dateFormat :'yyyt-MM-dd h:m:s'}}</p>
+							<p>{{ wr.msg}}</p>
+							{{/if}}
+						</div>
+					</div>
+				{{ /if }}
+			{{ /each }}
+		</script>
+		
+		<script type="text/javascript" src="js/template.js" ></script>
+		<script type="text/javascript" src="js/template-helper.js" ></script>
+		<script type="text/javascript" src="js/webim.config.js" ></script>
+		<script type="text/javascript" src="js/strophe-1.2.8.js" ></script>
+		<script type="text/javascript" src="js/websdk-1.4.13.js" ></script>
+		<script type="text/javascript" src="js/adapter.js" ></script>
+		<script type="text/javascript" src="js/webrtc-1.4.12.js" ></script>
+		
+		
+		<script>
+	//			初始化
+			var conn = new WebIM.connection({
+			    isMultiLoginSessions: WebIM.config.isMultiLoginSessions,
+			    https: typeof WebIM.config.https === 'boolean' ? WebIM.config.https : location.protocol === 'https:',
+			    url: WebIM.config.xmppURL,
+			    heartBeatWait: WebIM.config.heartBeatWait,
+			    autoReconnectNumMax: WebIM.config.autoReconnectNumMax,
+			    autoReconnectInterval: WebIM.config.autoReconnectInterval,
+			    apiUrl: WebIM.config.apiURL,
+			    isAutoLogin: true
+			});
+				
+	//			// listern，添加回调函数
+	    conn.listen({
+	        onOpened: function (message) {          //连接成功回调，连接成功后才可以发送消息
+	            //如果isAutoLogin设置为false，那么必须手动设置上线，否则无法收消息
+	            // 手动上线指的是调用conn.setPresence(); 在本例中，conn初始化时已将isAutoLogin设置为true
+	            // 所以无需调用conn.setPresence();
+	            console.log("%c [opened] 连接已成功建立", "color: green")
+	        },
+	        onTextMessage: function (message) {
+	            console.log(message);
+	            console.log(message.type);
+	            console.log('获取到的消息Text');
+	           $.post(wrUrl+"/view/getShopMsg",{token:token, userid: userId},function(data){
+					console.log(data);
+					var html = template('boss-content', data);
+					$('#chat-list').html(html);
+				});
+	        },  //收到文本消息
+	        onEmojiMessage: function (message) {
+	            // 当为WebIM添加了Emoji属性后，若发送的消息含WebIM.Emoji里特定的字符串，connection就会自动将
+	            // 这些字符串和其它文字按顺序组合成一个数组，每一个数组元素的结构为{type: 'emoji(或者txt)', data:''}
+	            // 当type='emoji'时，data表示表情图像的路径，当type='txt'时，data表示文本消息
+	            console.log('Emoji');
+	            var data = message.data;
+	            for (var i = 0, l = data.length; i < l; i++) {
+	                console.log(data[i]);
+	            }
+	        },   //收到表情消息
+	        onPictureMessage: function (message) {
+	            console.log('Picture');
+				console.log(message);
+	            var options = {url: message.url};
+	            options.onFileDownloadComplete = function () {
+	                // 图片下载成功
+	                console.log('Image download complete!');
+	                console.log(options);
+	            };
+	            options.onFileDownloadError = function () {
+	                // 图片下载失败
+	                console.log('Image download failed!');
+	            };
+	            WebIM.utils.download.call(conn, options);       // 意义待查
+	
+	        }, //收到图片消息
+	        onCmdMessage: function (message) {
+	            console.log('CMD');
+	        },     //收到命令消息
+	        onAudioMessage: function (message) {
+	            console.log("Audio");
+	        },   //收到音频消息
+	        onLocationMessage: function (message) {
+	            console.log("Location");
+	        },//收到位置消息
+	        onFileMessage: function (message) {
+	            console.log("File");
+	        },    //收到文件消息
+	        onVideoMessage: function (message) {
+	            var node = document.getElementById('privateVideo');
+	            var option = {
+	                url: message.url,
+	                headers: {
+	                    'Accept': 'audio/mp4'
+	                },
+	                onFileDownloadComplete: function (response) {
+	                    var objectURL = WebIM.utils.parseDownloadResponse.call(conn, response);
+	                    node.src = objectURL;
+	                },
+	                onFileDownloadError: function () {
+	                    console.log('File down load error.')
+	                }
+	            };
+	            WebIM.utils.download.call(conn, option);
+	        },   //收到视频消息
+	        onPresence: function (message) {
+	            switch (message.type) {
+	                case 'subscribe':                           // 对方请求添加好友
+	                    // 同意对方添加好友
+	                    document.getElementById('agreeFriends').onclick = function (message) {
+	                        conn.subscribed({
+	                            to: 'asdfghj',
+	                            message: "[resp:true]"
+	                        });
+	                    };
+	                    // 拒绝对方添加好友
+	                    document.getElementById('rejectFriends').onclick = function (message) {
+	                        conn.unsubscribed({
+	                            to: message.from,
+	                            message: "rejectAddFriend"                  // 拒绝添加好友回复信息
+	                        });
+	                    };
+	
+	                    break;
+	                case 'subscribed':                          // 对方同意添加好友，已方同意添加好友
+	                    break;
+	                case 'unsubscribe':                         // 对方删除好友
+	                    break;
+	                case 'unsubscribed':                        // 被拒绝添加好友，或被对方删除好友成功
+	                    break;
+	                case 'memberJoinPublicGroupSuccess':                 // 成功加入聊天室
+	                    console.log('join chat room success');
+	                    break;
+	                case 'joinChatRoomFaild':                   // 加入聊天室失败
+	                    console.log('join chat room faild');
+	                    break;
+	                case 'joinPublicGroupSuccess':              // 意义待查
+	                    console.log('join public group success', message.from);
+	                    break;
+	                case 'createGroupACK':
+	                    conn.createGroupAsync({
+	                        from: message.from,
+	                        success: function (option) {
+	                            console.log('Create Group Succeed');
+	                        }
+	                    });
+	                    break;
+	            }
+	        },       //收到联系人订阅请求（加好友）、处理群组、聊天室被踢解散等消息
+	        onRoster: function (message) {
+	            console.log('Roster');
+	        },         //处理好友申请
+	        onInviteMessage: function (message) {
+	            console.log('Invite');
+	        },  //处理群组邀请
+	        onOnline: function () {
+	            console.log('onLine');
+	        },                  //本机网络连接成功
+	        onOffline: function () {
+	            console.log('offline');
+	        },                 //本机网络掉线
+	        onError: function (message) {
+	            console.log('Error');
+	            console.log(message);
+	            if (message && message.type == 1) {
+	                console.warn('连接建立失败！请确认您的登录账号是否和appKey匹配。')
+	            }
+	        },           //失败回调
+	        onBlacklistUpdate: function (list) {
+	            // 查询黑名单，将好友拉黑，将好友从黑名单移除都会回调这个函数，list则是黑名单现有的所有好友信息
+	            console.log(list);
+	        }     // 黑名单变动
+	    });
+	    // 初始化WebRTC Call
+	    var rtcCall = null
+	    if (WebIM.WebRTC) {
+	        rtcCall = new WebIM.WebRTC.Call({
+	            connection: conn,
+	
+	            mediaStreamConstaints: {
+	                audio: true,
+	                video: true
+	            },
+	
+	            listener: {
+	                onAcceptCall: function (from, options) {
+	                    console.log('onAcceptCall::', 'from: ', from, 'options: ', options);
+	                },
+	                onGotRemoteStream: function (stream, streamType) {
+	                    console.log('onGotRemoteStream::', 'stream: ', stream, 'streamType: ', streamType);
+	                    var video = document.getElementById('video');
+	                    video.srcObject = stream;
+	                },
+	                onGotLocalStream: function (stream, streamType) {
+	                    console.log('onGotLocalStream::', 'stream:', stream, 'streamType: ', streamType);
+	                    var video = document.getElementById('localVideo');
+	                    video.srcObject = stream;
+	                },
+	                onRinging: function (caller) {
+	                    console.log('onRinging::', 'caller:', caller);
+	                },
+	                onTermCall: function (reason) {
+	                    console.log('onTermCall::');
+	                    console.log('reason:', reason);
+	                },
+	                onIceConnectionStateChange: function (iceState) {
+	                    console.log('onIceConnectionStateChange::', 'iceState:', iceState);
+	                },
+	                onError: function (e) {
+	                    console.log(e);
+	                }
+	            }
+	        });
+	    } else {
+	        console.warn('不能进行视频通话！您的浏览器不支持webrtc或者协议不是https。')
+	    }
+				
+		</script>
+
+		<script type="text/javascript">
+
+            template.helper('dateFormat', function (date, format) {
+                date = new Date(date);
+                var map = {
+                    "M": date.getMonth() + 1, //月份
+                    "d": date.getDate(), //日
+                    "h": date.getHours(), //小时
+                    "m": date.getMinutes(), //分
+                    "s": date.getSeconds(), //秒
+                    "q": Math.floor((date.getMonth() + 3) / 3), //季度
+                    "S": date.getMilliseconds() //毫秒
+                };
+                format = format.replace(/([yMdhmsqS])+/g, function (all, t) {
+                    var v = map[t];
+                    if (v !== undefined) {
+                        if (all.length > 1) {
+                            v = '0' + v;
+                            v = v.substr(v.length - 2);
+                        }
+                        return v;
+                    } else if (t === 'y') {
+                        return (date.getFullYear() + '');
+                    }
+                    return all;
+                });
+
+                var reg = new RegExp("t","g");
+                var a = format.replace(reg,"");
+                return a;
+            });
+            var userid;
+			var onUser;
+			var name;
+			var headimg;
+			var list = "";
+			var shopId = GetUrlString("shopId");
+			var userId = GetUrlString("userId");
+			var shopName;
+			var shopImg; 
+			
+			function login() {
+				$.post(ajaxUrl + '/front/clients/userInfo', {
+					token: token
+				}, function(r) {
+					if(r.code == 300) {
+						tip.flag('账号失效，请重新登录', 'error');
+						setTimeout(function() {
+							window.location.href = 'login.html';
+						}, 1500);
+					} else {
+						userid = r.user.id;
+						onUser = "user" + userid;
+						headimg = r.user.headImg;
+						name = r.user.niceName == null ? "游客" : r.user.niceName;
+						socket.send("useronline::" + onUser);
+					}
+				});
+//				$.post(wrUrl + '/view/getshopInfo', {shopid: shopId}, function(e) {
+//					console.log(e);
+//					console.log(e.name);
+//					shopName = e.name== "" ? "客服" : e.name;
+//					onshop = "shop" + shopId;
+//					headimg = e.big_img;
+//					$("#shopName").html(shopName);
+//				});
+			}
+			
+			var userWr;
+			$.ajax({
+				type:"POST",  //请求方式
+				url:wrUrl + '/view/getuserInfo',  //请求地址
+				dataType:"JSON",  //参数格式
+				data:{ token: token },   //请求数据
+				success:function(data){  //成功回调
+					console.log(data);
+					userWr = data.user.id;
+					var login = function () {
+				        var options = { 
+						  apiUrl: WebIM.config.apiURL,
+						  user: "user"+userWr+"",
+						  pwd: '123456',
+						  appKey: WebIM.config.appkey
+						};
+						conn.open(options);
+				    };
+				    login();
+				}
+			});
+
+			/**用户离线*/
+			function closeOffline(evt) {
+				socket.send(_USER_OFFLINE + _SEPARATOR + userId);
+				//alert("用户离线");
+			}
+
+			/* 上线获取历史消息 */
+//			$.post(wrUrl + '/view/getshopInfo', {shopId: shopId}, function(e) {
+//				console.log(e);
+//				console.log(e.name);
+//				shopName = e.name== "" ? "客服" : e.name;
+//				onshop = "shop" + shopId;
+//				headimg = e.big_img;
+//				$("#shopName").html(shopName);
+//				$("#edit a").attr("href","shop_details.html?id="+shopId+"");
+//			});
+					
+			$.post(wrUrl+"/view/getShopMsg",{token:token, userid: userId},function(data){
+				console.log(data);
+				var html = template('boss-content', data);
+				$('#chat-list').html(html);
+				
+				$("#shopName").text( data.data[0].uName );
+				
+			});
+			
+			var gkParams={};
+			var sjParams={};
+			var textArea=document.getElementById("writeT");
+			textArea.oninput=function() {
+				if(textArea.value == "") {
+					$('.chat-fs input').removeClass("canSent");
+				} else {
+					$('.chat-fs input').addClass("canSent");
+				}
+			};
+			
+			console.log(userId);
+//			发送消息
+			$('.chat-fs input').click(function(){
+				var messge = $("#writeT").val();
+				if($(this).hasClass("canSent")){
+			        $.ajax({
+						type:"POST",
+						url:wrUrl + '/view/shopSendmsg',
+						dataType:"JSON",
+						data:{ msg: messge, userId: userId , shopId: shopId , type: 1 },
+						success:function(data){
+							console.log(data);
+							$("#writeT").val("");
+							$.post(wrUrl+"/view/getShopMsg",{token:token, userid: userId},function(data){
+								console.log(data);
+								var html = template('boss-content', data);
+								$('#chat-list').html(html);
+							});
+						}
+					});
+					$(this).removeClass("canSent");
+				}
+			});
+			
+			//调用原生
+	        setupWebViewJavascriptBridge(function(bridge) {
+	            document.getElementById('my_head').onclick = function (e) {
+	                bridge.callHandler('loadPicture',{'type': 'Photo'},function(resp) {
+	                    setbaseImg(JSON.parse(resp),'my_head');
+	                });
+	            };
+	        });
+	        
+	        //选取图片回调函数
+	        //obj:点击出发对象
+	        function setbaseImg(resp,obj){
+	            if(resp.ret_code=='1'){
+	                $.post(wrUrl+'/view/uploadfile',{
+	                    'imgStr':resp.ret_msg.data
+	                },function(r){
+	                	console.log(r.msg);
+	                	if(r.code == "200"){
+	                		$.ajax({
+								type:"POST",
+								url:wrUrl + '/view/shopSendmsg',
+								dataType:"JSON",
+								data:{ msg: r.msg, userId: userId , shopId: shopId , type: 2 },
+								success:function(data){
+									console.log(data);
+									$("#writeT").val("");
+									$.post(wrUrl+"/view/getUserMsg",{token:token,shopid:shopId},function(data){
+										console.log(data);
+										var html = template('boss-content', data);
+										$('#chat-list').html(html);
+									});
+								}
+							});
+	                	}
+	                })
+	            }else{
+	                tip.flag("图片选取失败",'error');
+	            }
+	        }
+
+			/** 上传图片 */
+//		function ajaxFileUploads() {
+//			alert("图片");
+//			var file_value = $("#file").val();
+//			if (file_value == '' || file_value == null
+//					|| file_value == undefined) {
+//				alert("请先选择图片!");
+//				return;
+//			}
+//			var houzui = file_value.substring(file_value.lastIndexOf(".") + 1,
+//					file_value.length);
+//			if (houzui == '' || houzui == null || houzui == undefined) {
+//				alert("请选择正确图片格式!");
+//			}
+//			houzui = houzui.toLowerCase()
+//			if (houzui == 'jpg' || houzui == 'gif' || houzui == 'png'
+//					|| houzui == 'bmp' || houzui == 'swf') {
+//				//图片等待处理
+//
+//				//上传图片
+//				$.ajaxFileUpload({
+//					url : requestUrl+'upload/uploadimg',
+//					secureuri : false,
+//					fileElementId : 'file',
+//					dataType : 'json',
+//					success : function(data, status) {
+//						console.log(data);
+//						if (data.result == "0") {
+//							var html = '<a href="javascript:;" class="list-group-item text-right"><img src="'+data.remoteurl+'">';
+//							html += '<img width="40" src="${pageContext.request.contextPath }/resources/images/default-head.png" class="img-circle margin_left_10 img_width_40">';
+//							html += '</a>';
+//							$("#chatDiv .list-group").append(html);
+//							socket.send("imgmsg::toserver::shop"+shopid+"::"+data.remoteurl+"::"+userId+"::"+name);
+//						} else if (data.result == "1") {
+//							alert("请先选择图片！");
+//						} else {
+//							alert("上传出现异常！");
+//						}
+//					},
+//					error : function(data, status, e) { //相当于java中catch语句块的用法
+//						alert("发生异常,上传失败!");
+//						$("#10001").remove();
+//					}
+//				});
+//			} else {
+//				alert("图片格式不正确!当前只支持jpg/gif/png/bmp/swf格式.");
+//			}
+//		}
+		
+
+			// setInterval(function(){
+			// 	getInfo("post",ajaxUrl+"/front/News/userAcceptNews?token="+token,{},function(r){
+			// 		var html=template('boss-content',r);
+			// 		$("#chat-list").append(html);
+			// 	})
+			// },10000);
+		</script>
+	</body>
+
+</html>

@@ -1,0 +1,306 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no" />
+		<link rel="stylesheet" type="text/css" href="css/index.css" />
+		<!--<link rel="stylesheet" type="text/css" href="css/sto-sear.css"/>-->
+		<link rel="stylesheet" href="css/hp.css" />
+		<script type="text/javascript" src="js/jquery-1.11.1.min.js"></script>
+		<script type="text/javascript" src="js/default.js"></script>
+		<title></title>
+		<style type="text/css">
+			.canSent {
+				color: #fff!important;
+				background-color: #ff5a3a!important;
+			}
+			
+			.confirmPassword {
+				width: 300px;
+				height: 180px;
+				background-color: white;
+				position: absolute;
+				left: 0;
+				right: 0;
+				margin: auto;
+				top: -70px;
+				bottom: 0;
+				z-index: 15;
+				border-radius: 10px;
+				display: none;
+			}
+			
+			.password-num {
+				border: 1px solid #cac7c7;
+				height: 52px;
+				margin: 0px 14px;
+				width: 270px;
+			}
+			
+			.password-num span {
+				display: inline-block;
+				width: 75px;
+				margin-top: 10px;
+				height: 32px;
+				margin-left: 10px;
+				line-height: 32px;
+				border-right: 1px solid #cac7c7;
+			}
+			
+			.password-num input {
+				display: inline-block;
+				height: 32px;
+				margin-left: 10px;
+				letter-spacing: 10px;
+				width: 120px;
+			}
+			.ma-rgt{
+				margin-right: 14px;
+			}
+			.change-tc-fot button {
+				flex: 1;
+				outline: none;
+				background-color: white;
+				font-size: 17px;
+			}
+		</style>
+	</head>
+
+	<body>
+		<div class="container">
+			<header class="head-st">
+				<div class="sto-nav-left">
+					<img src="img/fanhui.png" onclick="javascript:history.back(-1)" />
+				</div>
+				<div class="sto-nav-sear">
+					e点转广告金
+				</div>
+
+			</header>
+			<div class="content">
+				<div class="change-box" style="height: 272px">
+					<p class="use-e">使用e点:(10的倍数)</p>
+					<input class="use-num" placeholder="0" id="use-num" type="number" oninput="if(value.length>10)value=value.slice(0,10)" style="width: 100%;" />
+					<div class="hen"></div>
+					<p class="use-e" id="use-ePoint">您当前的e点: </p>
+					<div class="clear"></div>
+					<div class="chang-auto" style="font-weight: 600;">
+						自动兑换
+						<div class="auto-open">
+							<div class="round">
+							</div>
+						</div>
+					</div>
+					<input type="button" id="confirmChang" class="sure-btn" style="background: #D4D4D4;margin-top: 10px;" value="确认兑换" />
+				</div>
+				<div class="chang-go">
+					<div class="chang-go-tit">
+						<img class="chang-img" src="img/chang-img.png" />
+						<span class="chang-tit-tex">兑换中</span>
+						<span class="chang-mx ma-rgt" id="chang-mx"><u>已兑换明细</u></span>
+					</div>
+					<ul id="changing-list">
+
+					</ul>
+				</div>
+			</div>
+		</div>
+		<div class="opt"></div>
+		<div class="confirmPassword" id="confirmPassword">
+			<div class="change-tc-tit">
+				<p class="tc-tit-p">输入支付密码</p>
+			</div>
+			<div class="change-tc-body">
+				<div class="password-num">
+					<span>输入密码</span>
+					<input type="password" name="password" maxlength="6" />
+				</div>
+			</div>
+			<div class="change-tc-fot">
+				<!--<input type="button" class="tc-fot-left" id="" value="取消" />-->
+				<button class="tc-fot-left">取消</button>
+				<!--<input type="button" class="tc-fot-rgt" id="" value="确认" data-type="1" />-->
+				<button class="tc-fot-rgt" data-type="1">确认</button>
+			</div>
+		</div>
+		<script type="text/template" id="changing-list-con">
+			{{each data.buys as list i}}
+			<li>
+				<div class="chang-go-left">
+					<div class="chang-state">
+						状态：{{list.des}}
+					</div>
+					<span class="chang-time">时间：{{list.beginTime}}</span>
+				</div>
+				<div class="chang-go-right">
+					-{{list.ePointNum}} e点
+				</div>
+			</li>
+			{{/each}}
+		</script>
+		<script type="text/javascript" src="js/template.js"></script>
+		<script type="text/javascript" src="js/template-helper.js"></script>
+
+		<script>
+			var userId;
+			var Ecount;
+			var params = {
+				pageNo: 1,
+				pageSize: 5
+			}
+			$(function() {
+				//初始化
+				getInfo("post", ajaxUrl+"/front/token/getUserId?token=" + token, {}, userIdReq);
+				var textArea = document.getElementById("use-num");
+				textArea.oninput = function() {
+					var num = parseInt(textArea.value);
+					textArea.value = num;
+					if(textArea.value > parseInt(Ecount)) {
+						$('.sure-btn').removeClass("canSent");
+						tip.flag('你没有那么多e点！', 'error');
+						$("#use-num").val(null);
+					} else if(textArea.value == "" || textArea.value == 0) {
+						$('.sure-btn').removeClass("canSent");
+					} else {
+
+						$('.sure-btn').addClass("canSent");
+					}
+
+				};
+
+
+                $('.auto-open').click(function() { //自动兑出状态改变
+                    $("#confirmPassword,.opt").fadeIn(500);
+                })
+
+
+			});
+
+			function fuliReq(r) {
+				Ecount = r.data.myEPoint;
+				if(r.data.myEPoint == null) {
+					Ecount = 0;
+					$("#use-ePoint").append(Ecount);
+				} else {
+					$("#use-ePoint").append(Ecount);
+				}
+
+			}
+
+			//滚动加载数据
+			$(".content").scroll(function() {
+				if(params.pageNo != 0) {
+					totleHeight = $(".content").height() + $(".content").scrollTop();
+					if(($(".content")[0].scrollHeight == totleHeight) && !listLoading) {
+						params.pageNo += 1;
+						getList("#changing-list", "post", root + "/user/buying", params, ElistReq);
+					}
+				}
+			});
+
+			function ElistReq(obj, r) {
+				var html = "<div class='footer_box detail' style='height: 135 px;'>";
+				html += "<div class = 'no-more' >"
+				html += "<img src = 'img/icon-jiazaipng.png' />";
+				html += "<p > 没有了！！！ </p>";
+				html += "</div> </div>";
+				var length = r.data.buys.length;
+				if(length != 0 && params.pageNo==1) {
+					var html1 = template("changing-list-con", r);
+					$(obj).html(html1);
+				}else if(length != 0 && params.pageNo!=1){
+					var html1 = template("changing-list-con", r);
+					$(obj).append(html1);
+				} else if(length == 0 && params.pageNo == 1) {
+					$(obj).append(html);
+				} else {
+					listLoadingLock = true;
+					params.pageNo = 0
+					$(obj).append(html);
+				}
+
+			}
+
+			function userIdReq(r) {
+				userId = r.userId;
+				params.userId = r.userId;
+				getInfo("post", root + "/user/transParam", {
+					userId: userId
+				}, fuliReq);
+				getList("#changing-list", "post", root + "/user/buying", params, ElistReq);
+
+                getInfo("post", root + "/user/getUserOpenState", params, userOpenStateReq); //获取托管状态 新增兑换自动托管
+			}
+
+            function userOpenStateReq(r) { //自动兑换状态初始化
+                if(r.isOpen) { //开启
+                    $('.auto-open').find('.round').css("left", "22px");
+                    $('.auto-open').css('background-color', '#4CD964');
+                } else { //关闭
+                    $('.auto-open').find('.round').css("left", "0px");
+                    $('.auto-open').css('background-color', '#D7D7D7');
+                }
+            }
+			//确认兑换
+			$("#confirmChang").click(function() {
+				var op;
+				if($(this).hasClass("canSent")) {
+					op=true;
+					var reg = /^[+-]?(\d){1,}0$/;
+					if(!reg.test($("#use-num").val())) {
+						tip.flag('兑换e点数必须为10的倍数！', 'error');
+						op = false;
+					}
+				}
+				if(op) {
+					$("#confirmPassword,.opt").fadeIn(500);
+					$("input[name=password]").val("");
+				}
+			});
+
+			$('.tc-fot-rgt').click(function() { /*弹窗确定*/
+				var op = true;
+				var change={
+					userId:userId
+				};
+				var pasw = $(this).parent().siblings(".change-tc-body").find("input[name=password]").val().trim();
+				change.ePoint = $("#use-num").val();
+				if(pasw.length == 6) {
+					reg = /^\d{6}$/;
+					if(!reg.test(pasw)) {
+						tip.flag('请输入6位数字支付密码！', 'error');
+						op = false;
+					} else {
+						op = true;
+					}
+				} else {
+					tip.flag('请输入6位数字支付密码！', 'error');
+					op = false;
+				}
+				if(op) {
+					change.payPassword = pasw;
+					getInfo("post", root + "/user/buyEFund", change,function(r) {
+						tip.flag('兑换成功！', 'success');
+						$('#confirmPassword,.opt').fadeOut(500);
+						$("#use-num").val("");
+						params.pageNo=1;
+						getList("#changing-list", "post", root + "/user/buying", params, ElistReq);
+					});
+				}
+			});
+
+			$('.tc-fot-left').click(function() { /*本轮兑出弹窗*/
+				$('.change-tc,.opt,.change-next-tc,#confirmPassword').fadeOut(500);
+                $("input[name=password]").val("");
+                $("input[name=changeFw]").val("");
+			});
+
+			//兑换详细跳转
+			$("#chang-mx").click(function() {
+				window.location.href = "change-det.html?type=" + 1;
+			});
+		</script>
+	</body>
+
+</html>

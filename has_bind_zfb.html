@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<meta name="renderer" content="webkit">
+		<meta http-equiv="X-UA-Compatible" content="IE=11; IE=10; IE=9; IE=8; IE=7; IE=EDGE,Chrome=1">
+		<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no" />
+		<link rel="stylesheet" type="text/css" href="css/index.css" />
+		<link rel="stylesheet" href="css/hp.css" />
+		<link rel="stylesheet" href="css/login2.css" />
+		<script src="js/jquery-1.11.1.min.js" type="text/javascript" charset="utf-8"></script>
+		<script type="text/javascript" src="js/jquery.form.js"></script>
+		<script src="js/default.js"></script>
+		<script src="js/template.js"></script>
+		<script src="js/template-helper.js"></script>
+		<script src="js/LAreaData1.js"></script>
+		<script src="js/LAreaData2.js"></script>
+		<script src="js/LArea.js"></script>
+		<title></title>
+		<style type="text/css">
+			 form{
+					position: absolute;
+				    
+				    display: block;
+				    
+			    }
+			.file{    
+				width: 100%;
+				height: 78%;
+				opacity: 0;
+			    margin: 9px 30%;
+			}
+
+			.click{
+    			color: #ffffff;
+    			text-align: center;
+			    margin-top: 101px;
+			    line-height: 42px;
+			  
+			}
+			.idCard{
+				width: 80%;
+			}
+			.sm-span{background: none;width: 75%;}
+		</style>
+	</head>
+	<body>
+		<div class="container">
+			<header class="head-st">
+				<div class="sto-nav-left">
+					<img src="img/fanhui.png" onclick="javascript:history.back(-1)"/>
+				</div>
+				<div class="sto-nav-sear">
+					支付宝绑定
+				</div>
+				
+			</header>
+			<div class="content bac-cor">
+				<div class="shiming head-st">
+					<img class="sm-img" src="img/shiming.png"/>
+					<input class="sm-span zfbName" type="text" value="" />
+				</div>
+				<div class="shiming">
+					<img class="sm-img" src="img/shenfen.png"/>
+					<input class="sm-span payNun"type="text" value="" />
+				</div>
+			
+				<div class="click">确定绑定</div>
+			</div>
+		</div>
+		<script>
+			$(function(){
+				
+				$.post(ajaxUrl+'/front/clients/userInfo',{token:token},function(r){
+					$('.payNun').val(r.user.payNum);
+					$('.zfbName').val(r.user.zfbName);
+					
+				},'json');
+					
+					
+					
+				$('.click').click(function(){
+					var zfbName = $('.zfbName').val();
+					var payNun = $('.payNun').val();
+					if(!zfbName){
+						tip.flag('请填写名字','error');
+					}else if(!payNun){
+						tip.flag('请填写支付宝账号','error');
+					}else{
+						$.post(ajaxUrl+'/front/XtUserInfo/bindingZfb',{token:token,zfbName:zfbName,payNun:payNun},function(r){
+							if(r.code==300){
+								tip.flag(r.msg,'error');
+							}else{
+								tip.flag(r.msg,'success');
+							}
+						},'json')
+					}
+				});
+				
+				
+			});
+		</script>
+	</body>
+</html>

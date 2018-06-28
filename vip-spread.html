@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no" />
+		<link rel="stylesheet" type="text/css" href="css/index.css"/>
+		<link rel="stylesheet" href="css/hp.css" />
+		<script src="js/jquery-1.11.1.min.js" type="text/javascript" charset="utf-8"></script>
+		<title>会员推广</title>
+		<style type="text/css">
+			.team-box{
+				height: 44px;
+				background-color: white;
+				display: flex;
+				border-bottom: 1px solid #ecebeb;
+			}
+			.team-box div{
+				flex: 1;
+				height: 16px;
+				margin-top: 14px;
+				font-size: 12px;
+				text-align: center;
+			}
+			.team-box div span{
+				color: #ff5a3a;
+			}
+			.team-left{
+				border-right: 1px solid #8b8b8b;
+			}
+			.team-rgt{
+				border-left: 1px solid #8b8b8b;
+			}
+			.tjt-box{
+				background-color: white;
+				margin-top: 10px;
+				padding: 10px;
+				overflow-x: scroll;
+    			white-space: nowrap;
+                padding-bottom:30px;
+			}
+			.one-li{
+				width: 100px;
+				padding: 5px 0;
+				text-align: center;
+				font-size: 12px;
+				background-color: #F3F9FB;
+				border-radius: 5px;
+				box-shadow: 3px 3px 5px 1px rgba(162, 158, 158, 0.72);
+				display: inline-block;
+				margin-right: 10px;
+			}
+			.tj-nam{
+				color: #828181;
+				display: block;
+			}
+			.tj-nam span{
+				color: #ff5a3a;
+			}
+			.tj-num{
+				display: block;
+			}
+			.two-li{
+				padding-top: 20px;
+				margin-left: 80px;
+				margin-right: 10px;
+
+			}
+			.two-ul,.three-ul{
+				display: none;
+                border-left: 4px solid #8b8b8b;
+                margin-left:50px;
+                position: relative;
+			}
+            .three-ul li{
+                position: relative;
+            }
+            .two-ul:before,.three-ul li:before{
+                content: '';
+                position: absolute;
+                top: 40px;
+                background: #8b8b8b;
+                width: 70px;
+                height: 4px;
+            }
+            .three-ul li:before{
+                width: 70px;
+                left:-80px;
+            }
+            .three-ul li:last-child{
+                height:24px;
+            }
+            .two-ul:last-child{
+                height:44px;
+            }
+		</style>
+		<script type="text/javascript">
+			$(function(){
+				$('#yj-cd').click(function(){
+					$('.two-ul').toggle();
+				});
+				var two = $('.two-ul').children().children('.one-li');
+				two.click(function(){
+					$(this).siblings().toggle();
+				});
+                $('.two-ul').last().click(function(){
+                    if($(this).find('.three-ul').css('display')=='block'){
+                        $(this).css('height','auto');
+                    }else{
+                        $(this).css('height','44px');
+                    }
+                })
+			})
+		</script>
+	</head>
+	<body>
+		<div class="container">
+			<header class="head-st">
+				<div class="sto-nav-left">
+					<img src="img/fanhui.png" onclick="javascript:history.back(-1)"/>
+				</div>
+				<div class="sto-nav-sear">
+					会员推广
+				</div>
+			</header>
+			<div class="content">
+				<div class="team-box">
+					<div class="team-left">
+						团队人数
+						<span>(132)人</span>
+					</div>
+					<div class="team-rgt">
+						直推人数
+						<span>(4)人</span>
+					</div>
+				</div>
+				<div class="team-box">
+					<div class="team-left">
+						团队业绩
+						<span>(12609)元</span>
+					</div>
+					<div class="team-rgt">
+						直推业绩
+						<span>(470)元</span>
+					</div>
+				</div>
+				<div class="tjt-box">
+					<ul id="one-ul">
+						<li class="fist-li">
+							<div class="one-li" id="yj-cd">
+								<span class="tj-nam">陈宗旭<span>(132)人</span></span>
+								<span class="tj-num">15983624337</span>
+							</div>
+							<!--二级-->
+							<ul class="two-ul">
+								<li class="two-li" style="margin-top: 10px;">
+									<div class="one-li">
+										<span class="tj-nam">陈宗旭<span>(132)人</span></span>
+										<span class="tj-num">15983624337</span>
+									</div>
+									<!--三级-->
+									<ul class="three-ul">
+										<li class="two-li">
+											<div class="one-li">
+												<span class="tj-nam">陈宗旭<span>(132)人</span></span>
+												<span class="tj-num">15983624337</span>
+											</div>
+										</li>
+										<li class="two-li">
+											<div class="one-li">
+												<span class="tj-nam">陈宗旭<span>(132)人</span></span>
+												<span class="tj-num">15983624337</span>
+											</div>
+										</li>
+										<li class="two-li">
+											<div class="one-li">
+												<span class="tj-nam">陈宗旭<span>(132)人</span></span>
+												<span class="tj-num">15983624337</span>
+											</div>
+										</li>
+										
+									</ul>
+								</li>
+								
+							</ul>
+							<ul class="two-ul">
+								<li class="two-li">
+									<div class="one-li">
+										<span class="tj-nam">陈宗旭<span>(132)人</span></span>
+										<span class="tj-num">15983624337</span>
+									</div>
+									<!--三级-->
+									<ul class="three-ul">
+										<li class="two-li">
+											<div class="one-li">
+												<span class="tj-nam">陈宗旭<span>(132)人</span></span>
+												<span class="tj-num">15983624337</span>
+											</div>
+										</li>
+										
+									</ul>
+								</li>
+							</ul>
+							<ul class="two-ul">
+								<li class="two-li">
+									<div class="one-li">
+										<span class="tj-nam">陈宗旭<span>(132)人</span></span>
+										<span class="tj-num">15983624337</span>
+									</div>
+								</li>
+							</ul>
+							<ul class="two-ul">
+								<li class="two-li">
+									<div class="one-li">
+										<span class="tj-nam">陈宗旭<span>(132)人</span></span>
+										<span class="tj-num">15983624337</span>
+									</div>
+                                    <!--三级-->
+                                    <ul class="three-ul">
+                                        <li class="two-li">
+                                            <div class="one-li">
+                                                <span class="tj-nam">陈宗旭<span>(132)人</span></span>
+                                                <span class="tj-num">15983624337</span>
+                                            </div>
+                                        </li>
+                                    </ul>
+								</li>
+							</ul>
+						</li>
+					</ul>
+				</div>
+			</div>
+		</div>
+	</body>
+</html>

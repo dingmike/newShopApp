@@ -1,0 +1,365 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="utf-8" />
+		<title>店铺详情</title>
+		<meta name="renderer" content="webkit">
+		<meta http-equiv="X-UA-Compatible" content="IE=11; IE=10; IE=9; IE=8; IE=7; IE=EDGE,Chrome=1">
+		<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no" />
+		<link rel="stylesheet" type="text/css" href="css/public.css" />
+		<link rel="stylesheet" href="css/hp.css" />
+		<script src="js/jquery-1.11.1.min.js" type="text/javascript" charset="utf-8"></script>
+		<script src="js/default.js"></script>
+		<script src="js/template.js"></script>
+		<script src="js/template-helper.js"></script>
+		<style>
+			.shop_star{
+				    width: 34%;
+				    height: 21px;
+				    background: url(img/xxbg.png) no-repeat;
+				     background-size: 382%;
+		    }
+		    .search{
+		    	display: none;
+		    }
+		</style>
+	</head>
+
+	<body>
+		<div class="pay_mode_bg">
+
+		</div>
+		<div class="container">
+			<header style="background-color: transparent;">
+				<img class="nav-left" src="img/fanhui.png" alt="" onclick="javascript:history.back(-1);"/>
+				<img class="collect" src="img/shoucang.png" alt="" />
+				<div class="store_search_box">
+					<input class="search_ipt" type="text" name="search_ipt" id="search_ipt" value="春夏新款女装" />
+					<img src="img/sousuo.png" alt="" />
+				</div>
+				<span class="nav-right gouwuche" onclick="location.href = 'store.html'">
+					<div class="nav-car-num" style="right: -6px;"></div>
+				</span>
+				<span class="nav-right search">确定</span>
+			</header>
+			<div class="shop-boxInfo"></div>
+			<script type="text/template" id="shop-boxInfo">
+					<div class="shop_logo">
+						<img src="{{shop.bigImg}}" alt="" />
+					</div>
+					<div class="shop_info_box">
+						<div class="discounts_btn">
+							<img src="img/youhui.png" alt="" />
+						</div>
+						<div class="shop_name">店铺：{{shop.name}}</div>
+						<div class="shop_star"></div><br />
+						<div class="shop_info">
+							<img src="img/linshidianpu.png" alt="" /> 共计宝贝：{{count}}&emsp;累计销量：{{sales}}
+						</div>
+					</div>
+			</script>
+
+			<div class="shop_nav"></div>
+			<script type="text/template" id='shop_nav'>
+				<ul>
+					<li class="on">全部商品</li>
+						{{each lp as k i}}
+								<li data-id="{{k.id}}">{{k.catName}}</li>
+						{{/each}}
+				</ul>
+			</script>
+
+			<div class="goods_box goods_box1"></div>
+			<script type="text/template" id="goods_box1">
+				<div class="goods_list">
+					<ul>
+						{{each Product as k i}}
+						<li class="goods_btn">
+							<img src="{{k.productImg}}" alt="" />
+							<div class="goods_tit">{{k.productName}}</div>
+							<div class="goods_price">¥{{k.sellPrice}}</div>
+							<div class="goods_oprice">¥{{k.marketPrice}}</div>
+							{{if k.productExpfee==0}}
+								<div class="goods_act">包邮</div>
+							{{/if}}
+							<div class="goods_int">e点:<span>{{k.productEdian}}</span></div>
+						</li>
+						{{/each}}
+					</ul>
+				</div>
+			</script>
+			
+			<!-- 搜索后的展示-->
+			<div class="goods_box goods_box2"></div>
+			<script type="text/template" id="goods_box2">
+				<div class="goods_list">
+					<ul>
+						{{each Product as k i}}
+						<li class="goods_btn">
+							<img src="{{k.productImg}}" alt="" />
+							<div class="goods_tit">{{k.productName}}</div>
+							<div class="goods_price">¥{{k.sellPrice}}</div>
+							<div class="goods_oprice">¥{{k.marketPrice}}</div>
+							{{if k.productExpfee==0}}
+								<div class="goods_act">包邮</div>
+							{{/if}}
+							<div class="goods_int">e点:<span>{{k.productEdian}}</span></div>
+						</li>
+						{{/each}}
+					</ul>
+				</div>
+			</script>
+			
+		</div>
+
+		<div class="shop_bottom">
+			<img src="img/jiazai.png" alt="" /><br />
+			<span>别扯啦,没有更多啦~</span>
+		</div>
+		<div class="discounts">
+			<div class="discounts_top">
+				<img src="img/guanbi.png" alt="" />
+			</div>
+			<div class="discounts_cont" style="background-image:url(img/youhui1.png);">
+				<div class="discounts_mode"><span>包邮</span></div>
+				<div class="discounts_tit">满58元包邮</div>
+				<div class="discounts_time">优惠券有效期12月16日-12月22日</div>
+			</div>
+			<div class="discounts_cont" style="background-image: url(img/youhui2.png);">
+				<div class="discounts_mode"><span>满减</span></div>
+				<div class="discounts_tit">满200元减20元</div>
+				<div class="discounts_time">优惠券有效期12月16日-12月22日</div>
+			</div>
+		</div>
+		</div>
+		</div>
+
+		<script type="text/javascript">
+			
+			$(function(){
+				
+				
+				//个人的购物数量			
+				getInfo('post',ajaxUrl+'/productsInfo/cartCount?token='+token,{},setcartCountHtml);
+				function setcartCountHtml(r){
+					$('.nav-car-num').text(r.count);
+				};
+			});
+			
+			
+			
+ 			var currentpage=0,shopId = GetUrlString("id");
+					
+					
+				//店铺信息
+				$.post(ajaxUrl+'/front/shop/storeAllGoods',{shopId:shopId},function(r){
+					console.log(r);
+					 var html= template('shop-boxInfo', r);
+					 $('.shop-boxInfo').html(html);
+					 //星星评分
+					 if(r.shop.star==0){
+					 	$('.shop_star').css('background-position','6% 9%');
+					 }else if (r.shop.star==1) {
+					 	$('.shop_star').css('background-position','6% 16%');
+					 }else if (r.shop.star==2) {
+					 	$('.shop_star').css('background-position','6% 24%');
+					 }else if (r.shop.star==3) {
+					 	$('.shop_star').css('background-position','6% 31%');
+					 }else if (r.shop.star==4) {
+					 	$('.shop_star').css('background-position','6% 38%');
+					 }else if(r.shop.star==5) {
+					 	$('.shop_star').css('background-position','6% 45%');
+					 }
+					 
+					 //弹出优惠券
+					$(".discounts_btn img").click(function() {
+						console.log(111)
+						$(document.body).css({
+							"overflow-y": "hidden"
+						});
+						$(".pay_mode_bg").attr("style", "display:block");
+						$(".discounts").attr("style", "height:380px;transition: height 0.5s;-moz-transition: height 0.5s; -webkit-transition: height 0.5s;-o-transition: height 0.5s;");
+					});
+				},'json')
+				
+				
+				
+	 			var listparamUL={
+ 					shopId:shopId,
+ 					catId:'',
+					pageNo:currentpage,
+					pageSize:4,
+				};
+				
+				
+				//头部导航渲染    全部商品
+				getInfo('post',ajaxUrl+'/front/shopcategory/classCation',{shopId:shopId},setSpecialHtml);
+				function setSpecialHtml(r){
+					console.log(r)
+					var html = template('shop_nav', r);
+					
+					$('.shop_nav').html(html);
+
+					$(".shop_nav ul li").eq(0).addClass('on');
+//						//点击不同的导航请求不同的数据
+					$(".shop_nav ul li").click(function(){
+						
+						listLoading = false;
+						listLoadingLock = false;   //初始化页面没有被锁定，，可以滚动
+						currentpage=0;
+						listparamUL.pageNo = currentpage;
+						
+						catId=$(this).attr('data-id');
+						console.log(catId);
+						listparamUL.catId=catId;
+						
+						$(this).addClass('on').siblings().removeClass('on');
+						$(this).css('color','#ff5a3a').siblings().css('color','#8a8a8a');
+						
+						
+						
+						getList('.goods_box1','post',ajaxUrl+'/front/shop/storeAllGoods',listparamUL,getListdata);
+						
+					});
+					
+				};
+				
+			   // 页面进来的时候初始化数据
+			    getList('.goods_box1','post',ajaxUrl+'/front/shop/storeAllGoods',listparamUL,getListdata);
+				$('.content').scroll(function () {
+			        totalheight = parseFloat($('.content').height()) + parseFloat($('.content').scrollTop());
+			        if ($('.content').height() <= totalheight && !listLoading) {
+			            ++currentpage;
+			            listparamUL.pageNo=currentpage;
+			           // setclcik();
+			            $('.sort-list div').click(function(){
+							$(this).css('color','#ff5a3a').siblings().css('color','#9b9b9b');
+						});
+			            getList('.goods_box1','post',ajaxUrl+'/front/shop/storeAllGoods',listparamUL,getListdata);
+
+			        }
+			   });
+			    //页面渲染    
+			    function getListdata(obj,r){
+			    	if (r.Product.length === 0 && currentpage === 1) {
+                        $(obj).html('<div class="_nodata">暂无数据</div>');
+                    } else if (r.Product.length !== 0) {
+                        var html= template('goods_box1', r);
+                        if (currentpage === 1) {
+                            $(obj).html(html);
+                        } else {
+                            $(obj).append(html);
+                        }
+                    } else {
+                        listLoadingLock = true;
+                        $(obj).append('<div class="_nomore">已经没有更多了</div>');
+                    }
+                    
+			    }
+			    
+			    
+			    $('.search').click(function(){
+			    	
+			    });
+			    
+			    
+			    
+			    
+			    
+			    
+			    
+			    
+			    
+			    
+			
+			
+			
+			
+			//选项卡
+			//默认显示第一项
+			$('.goods_box .goods_list').eq(0).css('display', 'block');
+			$(".shop_nav ul li").bind('click', function() {
+				// 设index为当前点击
+				var index = $(this).index();
+				//点击添加样式利用siblings清除其他兄弟节点样式
+				$(this).addClass('on').siblings().removeClass('on');
+				//显示对应index的div
+				$('.goods_box .goods_list').eq(index).css('display', 'block').siblings().css('display', 'none');
+			});
+
+			//收藏
+			$(".collect").click(function() {
+				if($(this).attr('src') == 'img/shoucang.png') {
+					$(this).attr('src', 'img/shoucangon.png');
+				} else {
+					$(this).attr('src', 'img/shoucang.png');
+				}
+			})
+			
+			//跳转商品详情
+			$(".goods_btn").click(function(){
+				location.href = "sto-detail.html"
+			})
+			
+			//点击搜索
+			$(".search_ipt").click(function() {
+				$(document.body).css({
+					"overflow-y": "hidden"
+				});
+				$(".pay_mode_bg").attr("style", "display:block");
+				$(".collect").attr("style", "display: none;");
+				$(".search_ipt").attr("value", "");
+				$("header").attr("style", "z-index: 5;");
+				$('.gouwuche').css('display','none');
+				$('.search').css('display','block')
+				$(".store_search_box").attr("style", "margin-left: 40px;width: 70%;transition:all 0.1s;-moz-transition: all 0.1s; -webkit-transition: all 0.1s;-o-transition:all 0.1s;")
+			});
+
+			//取消
+			$(".discounts_top img,.pay_mode_bg,.nav-left").click(function() {
+				$(document.body).css({
+					"overflow-y": "auto"
+				});
+				$('.gouwuche').css('display','block');
+				$('.search').css('display','none');
+				$(".pay_mode_bg").attr("style", "display:none");
+				$(".collect").attr("style", "display:block;")
+				$(".search_ipt").attr("value", "春夏新款女装")
+				$("header").attr("style", "background-color: transparent;")
+				$(".store_search_box").attr("style", "transition:all 0.1s;-moz-transition: all 0.1s; -webkit-transition: all 0.1s;-o-transition:all 0.1s;")
+				$(".discounts").attr("style", "height:0px;transition: height 0.5s;-moz-transition: height 0.5s; -webkit-transition: height 0.5s;-o-transition: height 0.5s;");
+			});
+
+			
+			//下拉刷新
+			//滚动条到页面底部加载更多
+			$(window).scroll(function() {
+				var scrollTop = $(this).scrollTop(); //滚动条距离顶部的高度
+				var scrollHeight = $(document).height(); //当前页面的总高度
+				var clientHeight = $(this).height(); //当前可视的页面高度
+				// console.log("top:"+scrollTop+",doc:"+scrollHeight+",client:"+clientHeight);
+				if(scrollTop + clientHeight == scrollHeight) { //距离顶部+当前高度 >=文档总高度 即代表滑动到底部 count++;         //每次滑动count加1
+					$(".shop_bottom").attr("style", "margin-top: 34px; margin-bottom: 34px; transition:all 1s;");
+					$(".shop_bottom img").attr("style", "opacity: 1; transition:all 1s;display: inline;");
+					$(".shop_bottom span").attr("style", "opacity: 1; transition:all 1s;display: block;");
+					var shopMG = $(".shop_bottom").css('margin-top');
+					if(shopMG == "34px") {
+						//alert("到底")
+						setTimeout(function() {
+							$('body,html').animate({
+								'scrollTop': scrollTop - 106
+							}, 500)
+						}, 300)
+					}
+					//alert("到底  了");
+					//filterData(serviceTypeId, industryId, cityId, count); //调用筛选方法，count为当前分页数
+				} else if(scrollTop <= 0) {
+					//滚动条距离顶部的高度小于等于0 TODO
+					//alert("下拉刷新，要在这调用啥方法？");
+				}
+			});
+		</script>
+	</body>
+
+</html>

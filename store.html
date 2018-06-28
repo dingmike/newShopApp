@@ -1,0 +1,528 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8" />
+		<title>购物车</title>
+		<meta name="renderer" content="webkit">
+		<meta http-equiv="X-UA-Compatible" content="IE=11; IE=10; IE=9; IE=8; IE=7; IE=EDGE,Chrome=1">
+		<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no" />
+		<link rel="stylesheet" type="text/css" href="css/index.css" />
+		<link rel="stylesheet" href="css/hp.css" />
+		<script src="js/jquery-1.11.1.min.js" type="text/javascript" charset="utf-8"></script>
+		<script src="js/default.js"></script>
+		<script src="js/template.js"></script>
+		<script src="js/template-helper.js"></script>
+		<style>
+			.store-img img {
+				height: 103px;
+			}
+			.store-jia input{
+				width: 30px;
+				text-align: center;
+			}
+			.store-jia button{
+				width: 22px;
+				text-align: center;
+			}
+		</style>
+	</head>
+
+	<body>
+		<div class="container">
+			<header>
+				<img class="nav-left" src="img/fanhui.png" alt="" onclick="javascript:history.back(-1);" /> 购物车
+				<span class="nav-right" id="edit">删除商品</span>
+			</header>
+			<div class="content">
+				<div class="car-box"></div>
+				<script type="text/template" id="car-box">
+					{{each slist as k i}}
+					<div class="store-box ma-top">
+						<div class="store-tit">
+							<label class="cheak-r ma-left top11" id="sd-cheak">
+								<input type="checkbox" name="" class="sto-che" value="1" />
+								<img class="gou" src="img/gou.png" />
+							</label>
+							<a href="shop_details.html?id={{k.id}}">
+								<span class="store-nc">{{k.name}}</span>
+							</a>
+
+							<span class="store-tip"><u></u></span>
+						</div>
+						<ul>
+							{{each k.ptf as j l}} {{if j.productCredit==1}}
+							<li>
+								<div class="product-no">
+									<div class="store-left">
+										<label class="cheak-r ma-left top">
+												<input type="checkbox" name="" class="che" value="1" data-stoId ="{{j.lcc.id}}"/>
+												
+												<img class="gou" src="img/gou.png" />
+											</label>
+									</div>
+									<div class="store-img">
+										<a href="sto-detail.html?id={{j.productId}}">
+											<img src="{{j.lcc.productImg}}" />
+										</a>
+
+									</div>
+									<div class="store-rgt">
+										<p class="store-sp">{{j.productName}}</p>
+										<span class="store-cs">参数:{{j.lcc.specName}}</span>
+
+										<div class="store-jg">
+											<!--<span class="store-s">送</span>
+											<span class="store-s edian">{{j.lcc.ePoint*10}}</span>
+											<span class="store-s">广告金</span>-->
+											<span class="store-zhi unit">￥{{j.lcc.sellPrice}}</span>
+										</div>
+										<div class="store-jia">
+											<!--<input type="button" value="-" class="jian" />-->
+											<button class="jian">-</button>
+											<input type="number" value="{{j.lcc.count}}" class="count" readonly/>
+											<!--<input type="button" value="+" class="jia" />-->
+											<button class="jia">+</button>
+										</div>
+									</div>
+								</div>
+							</li>
+							{{/if}} {{if j.productCredit==2}}
+							<li>
+								<div class="store-left">
+									<label class="cheak-r ma-left top">
+											<input type="checkbox" name="" class="che" value="1" data-stoId ="{{j.lcc.id}}"/>
+											<img class="gou" src="img/gou.png" />
+										</label>
+								</div>
+								<div class="store-img">
+									<a href="sto-detail.html?id={{j.productId}}">
+										<img src="{{j.lcc.productImg}}" />
+										<div class="optic"></div>
+										<div class="sx-tip">
+											已失效
+										</div>
+									</a>
+								</div>
+								<div class="store-rgt">
+									<p class="store-sp">{{j.productName}}</p>
+									<span class="store-cs">参数:{{j.lcc.specName}}</span>
+									<div class="store-jg">
+										<!--<span class="store-s">送{{j.productEdian}}点</span>-->
+										<span class="store-zhi">￥{{j.sellPrice}}</span>
+									</div>
+
+								</div>
+							</li>
+							{{/if}} {{/each}}
+						</ul>
+					</div>
+					{{/each}}
+				</script>
+			</div>
+
+			<footer class="dis-f">
+				<div>
+					<label class="cheak-r ma-left top15">
+						<input type="checkbox"  id="allcheak" class="all-che" value="" />
+						<img class="gou" src="img/gou.png" />
+					</label>
+					<span class="all-cheak ma-left">全选</span>
+				</div>
+				<div class="store-fot">
+					<span class="sum">合计：<span class="sum-f">￥</span><span class="sum-num"></span></span>
+					<span class="sum-s"></span>
+				</div>
+				<div class="store-fot">
+					<!--<input type="button" class="js-btn account" value="结算(共件)" />-->
+					<button class="js-btn account">结算(共0件)</button>
+				</div>
+				<div class="edit-cet edit-fot">
+				</div>
+				<div class="edit-fot">
+					<!--<input type="button" class="js-btn edit-btn" value="删除(共1件)" />-->
+					<button class="js-btn edit-btn">删除(共0件)</button>
+				</div>
+			</footer>
+		</div>
+		<script type="text/javascript">
+			$(function() {
+
+				function sumCount(count, jsBtn) {
+					var countSum = 0;
+
+					$(count).each(function(n, val) {
+
+						if($(this).parents('.store-rgt').siblings('.store-left').find('input').is(':checked')) {
+							countSum += parseInt($(this).val());
+						}
+					console.log(countSum);
+
+					});
+					sumCount1(count, jsBtn, countSum);
+					if(jsBtn == '.account') {
+						$(jsBtn).html('结算(共' + countSum + '件)');
+					} else {
+						$(jsBtn).html('删除(共' + countSum + '件)');
+					}
+
+				};
+
+				function sumCount1(count, jsBtn, countSum) {
+					$(count).each(function(n, val) {
+						if(!$(this).parents('.store-rgt').siblings('.store-left').find('input').is(':checked')) {
+							countSum -= parseInt($(this).val());
+						}
+					});
+					if(jsBtn == '.account') {
+						$(jsBtn).val('结算共' + countSum + '件)');
+					} else {
+						$(jsBtn).val('删除共' + countSum + '件)');
+					}
+
+				};
+				//合计总钱和赠送的e点总数
+				function allSum() {
+					//合计总钱
+					var sumMoney = 0,
+						sumEdian = 0;
+					$('.unit').each(function(n, val) {
+
+						if($(this).parents('.store-jg').parent('.store-rgt').siblings('.store-left').find('input').is(':checked')) {
+							sumMoney = sumMoney + parseInt($(this).text().substring(1)) * parseInt($(this).parent().siblings('.store-jia').children().eq(1).val());
+						}
+
+					});
+					//送的总e点
+					$('.edian').each(function(n, val) {
+						if($(this).parents('.store-jg').parent('.store-rgt').siblings('.store-left').find('input').is(':checked')) {
+							sumEdian = sumEdian + parseInt($(this).text()) * parseInt($(this).parent().siblings('.store-jia').children().eq(1).val());
+						}
+
+					});
+					$('.sum-num').text(sumMoney);
+//					$('.sum-s').text('送' + sumEdian + '广告金');
+				};
+
+				function add(jia, jian, count) {
+					$(jia).click(function() {
+						var xjia1 = parseInt($(this).siblings(count).val());
+						xjia1++;
+						$(this).siblings(count).val(xjia1);
+						sumCount('.count', '.account');
+						sumCount('.count', '.edit-btn');
+
+						//合计总钱和赠送的e点总数
+						allSum();
+
+					});
+					$(jian).click(function() {
+						var xjian1 = parseInt($(this).siblings(count).val());
+						xjian1--;
+						if(xjian1 <= 1) {
+							xjian1 = 1;
+						}
+						$(this).siblings(count).val(xjian1);
+
+						//结算和删除的总件数
+						sumCount('.count', '.account');
+						sumCount('.count', '.edit-btn');
+
+						allSum();
+					});
+				};
+
+				//底部全选
+				var isCheckAll = false;
+				$('#allcheak').click(function() {
+					if(isCheckAll) { /*购物车点击全选所有商品选中*/
+						$("input[type='checkbox']").each(function() {
+							this.checked = false;
+							$('label').css('background-color', 'white');
+							$('label').css('border-color', '#d4d4d4');
+							$('label').find('.gou').css('display', 'none')
+
+							sumCount('.count', '.account');
+							sumCount('.count', '.edit-btn');
+
+							allSum();
+						});
+						isCheckAll = false;
+					} else {
+						$("input[type='checkbox']").each(function() {
+							this.checked = true;
+							$('label').css('background-color', '#ff5a3a');
+							$('label').css('border-color', '#ff5a3a');
+							$('label').find('.gou').css('display', 'block');
+							sumCount('.count', '.account');
+							sumCount('.count', '.edit-btn');
+
+							allSum();
+						});
+						isCheckAll = true;
+					}
+				});
+				getList('.car-box', 'post', ajaxUrl + '/front/clientCart/CartList?token=' + token, {}, getListdata);
+
+				//			    //页面渲染    
+				function getListdata(obj, r) {
+					if(r.code == 300) {
+						$(obj).html('<div class="_nodata" style="    text-align: center;font-size: 14px;padding: 10px;">暂无数据</div>');
+					} else if(r.slist.length !== 0) {
+						var html = template('car-box', r);
+						if(currentpage === 1) {
+							$(obj).html(html);
+						} else {
+							$(obj).append(html);
+						}
+
+						//初始化结算和删除的总件数
+						//sumCount('.count','.account');
+						//sumCount('.count','.edit-btn');
+
+						//编辑状态下的删除物品
+						$('.edit-btn').click(function() {
+							var sureArr = []; //选择了那些商品
+							$('.che').each(function(n, val) {
+								if($(this).is(':checked')) {
+									sureArr.push(parseInt($(this).attr('data-stoid')));
+								}
+							});
+							console.log(sureArr)
+							if(sureArr.length == 0) {
+								tip.flag('请选择要删除的商品', 'error')
+							} else {
+								console.log(sureArr);
+								$.ajax({
+									type: "post",
+									url: ajaxUrl+"/front/clientCart/deleteCart",
+									async: true,
+									dataType: "json",
+									traditional: true,
+									data: {
+										token: token,
+										cartId: sureArr,
+									},
+									success: function(r) {
+										//console.log(r)
+										//删除完之后刷新
+										if(r.code==200){
+											tip.flag('删除成功！', 'success');
+										location.href = 'store.html';
+										}else{
+											tip.flag(r.msg, 'error');
+										}
+									}
+								});
+							}
+
+						});
+
+						// 结算购物车商品
+						$('.account').click(function() {
+						    debugger
+							var sureArr = []; //选择了那些商品
+							var idNum = []; //
+							var str = '';
+							$('.product-no .che').each(function(n, val) {
+								if($(this).is(':checked')) {
+									sureArr.push(parseInt($(this).attr('data-stoid')));
+								}
+							});
+
+							$('.product-no .che').each(function() {
+								if($(this).is(':checked')) {
+									var Number = parseInt($(this).parents().parents().siblings('.store-rgt').children().find('.count').val());
+
+									idNum.push({
+										"carId": $(this).attr('data-stoid'),
+										"number": Number
+									});
+								}
+							});
+							if(idNum.length == 0) {
+								tip.flag('您还未选择商品', 'error')
+								return;
+							} else {
+								idNum = JSON.stringify(idNum); //数组转json对象
+								console.log(idNum);
+								$.ajax({
+									type: "post",
+									url: ajaxUrl+"/front/clientCart/Settlement",
+									async: true,
+									dataType: "json",
+									traditional: false,
+									data: {
+										JsonDate: idNum,
+									},
+									success: function(r) {
+									    debugger;
+
+									}
+								});
+								location.href = "confirmCart_order.html?sureArr=" + sureArr;
+							}
+
+						});
+
+						//          			$(".store-sp").click(function(){
+						//							location.href ="sto-detail.html";
+						//							
+						//						})	
+						//去掉已失效长度为0的店铺
+						for(var noLen = 0; noLen < $('.store-box').length; noLen++) {
+							if(!$('.store-box').eq(noLen).children('ul').children().length) {
+								$('.store-box').eq(noLen).css('display', 'none');
+							}
+						}
+						//数量加减
+						add('.jia', '.jian', '.count');
+						allSum();
+						$('.che').click(function() { /*购物车选中后，圆圈变色，打勾，再点击还原*/
+							var gou = $(this).parent('label').find('img');
+							console.log($(this).is(':checked'))
+							var xz = $(this).parent('label');
+							var isAllSeleced = true;
+							if($(this).is(':checked')) {
+								xz.css('background-color', '#ff5a3a');
+								xz.css('border-color', '#ff5a3a');
+								xz.find('img').css('display', 'block');
+								sumCount('.count', '.account');
+								sumCount('.count', '.edit-btn');
+								allSum();
+								$(this).parents("li").siblings().each(function() {
+									if(!$(this).find(".che").prop("checked")) {
+										isAllSeleced = false;
+									}
+								})
+
+								if(isAllSeleced) {
+									var that = $(this).parents("ul").prev(".store-tit").find(".sto-che");
+									that.prop("checked", true);
+									that.parent().css('border-color', '#ff5a3a');
+									that.parent().css('background-color', '#ff5a3a');
+									that.parent().find('.gou').css('display', 'block')
+								}
+							} else {
+								xz.css('background-color', 'white');
+								xz.css('border-color', '#d4d4d4');
+								xz.find('img').css('display', 'none')
+								sumCount('.count', '.account');
+								sumCount('.count', '.edit-btn');
+								allSum();
+								var that = $(this).parents("ul").prev(".store-tit").find(".sto-che");
+								that.prop("checked", false);
+								that.parent().css('background-color', 'white');
+								that.parent().css('border-color', '#d4d4d4');
+								that.parent().find('.gou').css('display', 'none')
+							}
+						});
+
+						$('.sto-che').click(function() { /*购物车点击店铺，该店铺商品选中*/
+
+							var $label = $(this).parent().parent().siblings().children().find('label');
+							var isAllSeleced = true;
+							if($(this).is(':checked')) {
+								$(this).parent().css('border-color', '#ff5a3a');
+								$(this).parent().css('background-color', '#ff5a3a');
+								$(this).parent().find('.gou').css('display', 'block')
+
+								$label.css('border-color', '#ff5a3a');
+								$label.css('background-color', '#ff5a3a');
+								$label.find('input').prop('checked', true);
+								$label.find('.gou').css('display', 'block')
+
+								sumCount('.count', '.account');
+								sumCount('.count', '.edit-btn');
+								allSum();
+
+								$('.sto-che').each(function() {
+									if(!$(this).prop("checked")) {
+										isAllSeleced = false;
+									}
+								})
+
+								if(isAllSeleced) {
+									isCheckAll=true;
+									$("#allcheak").prop("checked", true);
+									$("#allcheak").parent().css('border-color', '#ff5a3a');
+									$("#allcheak").parent().css('background-color', '#ff5a3a');
+									$("#allcheak").parent().find('.gou').css('display', 'block');
+								}
+
+							} else {
+								$(this).parent().css('background-color', 'white');
+								$(this).parent().css('border-color', '#d4d4d4');
+								$(this).parent().find('.gou').css('display', 'none')
+
+								$label.css('background-color', 'white');
+								$label.css('border-color', '#d4d4d4');
+								$label.find('input').prop('checked', false);
+								$label.find('.gou').css('display', 'none');
+
+								sumCount('.count', '.account');
+								sumCount('.count', '.edit-btn');
+								allSum();
+								isCheckAll=false;
+								$("#allcheak").prop("checked", false);
+								$("#allcheak").parent().css('background-color', 'white');
+								$("#allcheak").parent().css('border-color', '#d4d4d4');
+								$("#allcheak").parent().find('.gou').css('display', 'none');
+							}
+						});
+
+					} else {
+						listLoadingLock = true;
+						$(obj).append('<div class="_nomore">已经没有更多了</div>');
+					}
+
+				}
+
+				$('#edit').click(function() { /*点击编辑出现编辑功能*/
+					var edit = $(this).text();
+					if(edit == '删除商品') {
+						$(this).text('完成');
+						$('.store-fot').hide();
+						$('.edit-fot').show();
+					} else if(edit == '完成') {
+						$(this).text('删除商品');
+						$('.store-fot').show();
+						$('.edit-fot').hide();
+						var sureArr = []; //选择了那些商品
+						var idNum = []; //
+						$('.product-no .che').each(function(n, val) {
+							if($(this).is(':checked')) {
+								sureArr.push(parseInt($(this).attr('data-stoid')));
+							}
+						});
+
+						$('.product-no .che').each(function() {
+							var Number = parseInt($(this).parents().parents().siblings('.store-rgt').children().find('.count').val());
+
+							idNum.push({
+								"carId": $(this).attr('data-stoid'),
+								"number": Number
+							});
+						});
+						idNum = JSON.stringify(idNum); //数组转json对象
+						console.log(idNum);
+						$.ajax({
+							type: "post",
+							url: ajaxUrl+"/front/clientCart/Settlement",
+							async: true,
+							dataType: "json",
+							traditional: false,
+							data: {
+								JsonDate: idNum,
+							},
+							success: function(r) {
+
+							}
+						});
+
+					}
+				})
+			})
+		</script>
+	</body>
+
+</html>

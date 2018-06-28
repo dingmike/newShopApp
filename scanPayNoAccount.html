@@ -1,0 +1,343 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no"/>
+    <title>交易支付</title>
+    <link rel="stylesheet" type="text/css" href="css/reset.css">
+    <link rel="stylesheet" type="text/css" href="css/hp.css">
+    <link rel="stylesheet" href="./lib/layer_mobile/need/layer.css"/>
+    <script src="js/jquery-1.11.1.min.js" type="text/javascript" charset="utf-8"></script>
+    <script src="./js/layer.js" type="text/javascript" charset="utf-8"></script>
+    <script src="js/default.js"></script>
+    <script src="js/jweixin-1.3.2.js"></script>
+    <script src="https://unpkg.com/axios@0.18.0/dist/axios.min.js"></script>
+    <script type="text/javascript" src="./lib/layer_mobile/layer.js"></script>
+    <style>
+        body {
+            background-color: #dfdfdf;
+        }
+
+        .head {
+            background-color: orangered;
+            height: 40px;
+            line-height: 40px;
+            text-align: center;
+            color: #fff;
+        }
+
+        .main-content {
+            margin: 20px;
+            /* height: 498px; */
+            background-image: url(img/erweima_bg.png);
+            background-position: bottom;
+            background-repeat: no-repeat;
+            background-color: #fff;
+        }
+
+        .head-img {
+            text-align: center;
+        }
+
+        .head-img img {
+            width: 90px;
+            margin: 12px 0 4px;
+        }
+
+        .head-title {
+            text-align: center;
+        }
+
+        .icon-img {
+            vertical-align: middle;
+            width: 24px;
+        }
+
+        .controls .txt {
+            height: 50px;
+            width: 200px;
+            line-height: 50px;
+            padding-left: 8px;
+            outline: none;
+            -webkit-appearance: none;
+            border-radius: 0;
+            background: none;
+            border: none;
+            font-size: 22px;
+        }
+
+        .group {
+            padding: 10px 36px;
+            /*background-color: #fff;*/
+        }
+
+        .bottom-content {
+            position: relative;
+            /*bottom: -26px;*/
+            left: 50%;
+            margin-left: -126px;
+            width: 252px;
+            height: 38px;
+            line-height: 38px;
+            background-color: #b4b4b4;
+            border-radius: 20px;
+            text-align: center;
+            color: #fff;
+            font-size: 16px;
+        }
+        .bottom-test-btn {
+            position: fixed;
+            bottom: 20px;
+            left : 50%;
+            transform: translate(-50%,0);
+            padding : 10px 15px;
+            font-size: 16px;
+        }
+        .pay-box {
+            margin-top: 40px !important;
+        }
+    </style>
+</head>
+<body>
+<div class="head">付 款</div>
+<div class="main-content">
+    <div class="group">
+        <div class="head-img"><img src="./img/adds.png" alt=""></div>
+        <div class="head-title" id="shopNameId">购一购</div>
+        <a id='aot'></a>
+    </div>
+    <div class="group">
+        <div class="group-title">付款金额</div>
+    </div>
+    <div class="group">
+        <div class="controls">
+            <label for="moneyId"><img class="icon-img" src="img/icon_rmb.png" alt=""></label>
+            <input type="text" maxlength="11" id="moneyId" class="txt checkNumber" placeholder="请输入金额">
+        </div>
+    </div>
+    <div class="group">
+    </div>
+    <div class="group" style=" padding-top: 0;">
+        <div class="pay-box">
+
+            <div class="order_line margin10" id="zfbBox" data-pay="zfb">
+                <img src="img/zhifubaozhifu.png" alt=""/>支付宝支付
+            </div>
+            <div class="order_line"  id="wxBox" data-pay="wx">
+                <img src="img/weixinzhifu.png" alt=""/>微信支付
+            </div>
+        </div>
+
+    </div>
+    <div class="group">
+        <button class="bottom-content" id="subOrderId" disabled>确 定</button>
+    </div>
+    <div id="aliId"></div>
+</div>
+<script>
+    $(function () {
+        // 已有账号支付标志
+        //微信app中隐藏支付宝支付按钮 默认选中微信
+        if (is_weixin()) {
+            $('#zfbBox').hide();
+            $($('.order_line')[1]).addClass('pitchon');
+
+        } else if(is_zfb()){ // is_zfb()
+            $('#zfbBox').show();
+            $('#wxBox').hide();
+            $($('.order_line')[0]).addClass('pitchon'); // 默认支付宝选中
+
+        }else{
+            $($('.order_line')[0]).addClass('pitchon');
+        }
+        localStorage.setItem('hasAccountPay','1');
+        //显示结算层
+        $('#moneyId').keyup(function () {
+            if($(this).val()){
+                $('#subOrderId').attr('disabled', false).css({'background-color':'orangered'});
+            }else {
+                $('#subOrderId').attr('disabled', 'disabled').css({'background-color':'#b4b4b4'});
+            }
+        });
+
+        $('#shopNameId').text(localStorage.shopName);
+        $('.head-img img').attr('src',localStorage.shopLogo);
+
+        $("#subOrderId").click(function () {
+            var count = $('#moneyId').val();
+            localStorage.setItem('payCount',count);
+            localStorage.setItem('countMoney',count);
+            $(".pay-box .order_line").each(function () {
+                if ($(this).hasClass('pitchon')) {
+                    var dataPay = $(this).attr('data-pay');
+                    switch (dataPay) {
+                        case 'zfb':
+                        $.ajax({
+                            type: "post",
+                            url: ajaxUrl + "/AliLogin/Link",
+                            async: false,
+                            traditional: true,
+                            success: function (res) {
+                                if (res.code == 200) {
+                                    console.log(res.data);
+                                    window.location.href = res.url;
+                                }else{
+                                    layer.open({
+                                        content: res.msg
+                                        ,skin: 'msg'
+                                        ,time: 2 //2秒后自动关闭
+                                    });
+                                }
+                            }
+                        });
+                            break;
+                        case 'wx':
+                            //微信中使用微信公众号支付，外部使用h5支付
+                            if (is_weixin()) {
+                                //微信公众号支付
+                                $.post(ajaxUrl + '/WxGzh/getCode', {}, function (res) {
+                                    //alert('code wxGzh:' +res.code);
+                                    if (res.code === 200) {
+                                        window.location.href = res.data;
+                                    } else {
+//                                        tip.flag('发生错误请重新下单！', 'error');
+                                        layer.open({
+                                            content: res.msg
+                                            ,skin: 'msg'
+                                            ,time: 2 //2秒后自动关闭
+                                        });
+                                    }
+                                })
+
+                                // location.href = 'scanPaySuccess.html';
+                            } else {
+                                //调用h5支付
+                                $.post(ajaxUrl + '/WxH5/pay', {orderId: orderId, type: 1}, function (res) {
+                                    //  alert('codeH5:' +res.code);
+                                    if (res.code === 100) {
+                                        window.location.href = res.data;
+                                    } else {
+//                                        tip.flag('发生错误请重新下单！', 'error');
+                                        layer.open({
+                                            content: res.msg
+                                            ,skin: 'msg'
+                                            ,time: 2 //2秒后自动关闭
+                                        });
+                                    }
+                                })
+                                //location.href = 'scanPaySuccess.html';
+                            }
+                            break;
+                        default:
+                            break;
+                    }
+                }
+            });
+
+        });
+
+        //关闭结算层
+        $(".pay_mode_tit").click(function () {
+            $(".pay_mode_bg").attr("style", "display:none");
+            $(".pay_mode").attr("style", "height:0px;transition: height 0.5s;bottom: 0; -moz-transition: height 0.5s; -webkit-transition: height 0.5s;-o-transition: height 0.5s;");
+            // window.location.href = 'my-order-pending.html?typeid=1';
+        });
+        //选择支付方式
+
+        $(".pay-box .order_line").click(function () {
+            var index = $(this).index();
+            $(this).addClass("pitchon").siblings().removeClass("pitchon");
+        });
+
+        $(".balance,.integral").click(function () {
+            $(this).toggleClass("pitchon2");
+        });
+
+        $(".balance,.integral").click(function () {
+            $(this).toggleClass("pitchon1");
+            $(".pay_mode .order_line").eq(0).addClass("pitchon").siblings().removeClass("pitchon");
+        });
+
+        $("#moneyId").on('keyup', function (event) {
+
+            if($(this).val()){
+                $('#subOrderId').attr('disabled',false);
+            }else{
+                $('#subOrderId').attr('disabled','disabled');
+            }
+
+            var $amountInput = $(this);
+            //响应鼠标事件，允许左右方向键移动
+            event = window.event || event;
+            if (event.keyCode == 37 | event.keyCode == 39) {
+                return;
+            }
+            //先把非数字的都替换掉，除了数字和.
+            $amountInput.val($amountInput.val().replace(/[^\d.]/g, "").//只允许一个小数点
+            replace(/^\./g, "").replace(/\.{2,}/g, ".").//只能输入小数点后两位
+            replace(".", "$#$").replace(/\./g, "").replace("$#$", ".").replace(/^(\-)*(\d+)\.(\d\d).*$/, '$1$2.$3'));
+        });
+        $("#amount").on('blur', function () {
+            var $amountInput = $(this);
+            //最后一位是小数点的话，移除
+            $amountInput.val(($amountInput.val().replace(/\.$/g, "")));
+        });
+        //判断是否是在微信app内部
+        function is_weixin() {
+            var ua = navigator.userAgent.toLowerCase();
+            if (ua.match(/MicroMessenger/i) == "micromessenger") {
+                return true;
+            } else {
+                return false;
+            }
+        } //判断是否是在支付宝app内部
+        function is_zfb() {
+            var ua = navigator.userAgent.toLowerCase();
+            if (ua.match(/Alipay/i) == "alipay") {
+                return true;
+            } else {
+                return false;
+            }
+        }
+
+        // 小数点后两位
+        $('.checkNumber').on('keyup', function () {
+            var $amountInput = $(this);
+            //响应鼠标事件，允许左右方向键移动
+            event = window.event || event;
+            if (event.keyCode == 37 | event.keyCode == 39) {
+                return;
+            }
+            //先把非数字的都替换掉，除了数字和.
+            $amountInput.val($amountInput.val().replace(/[^\d.]/g, "").//只允许一个小数点
+            replace(/^\./g, "").replace(/\.{2,}/g, ".").//只能输入小数点后两位
+            replace(".", "$#$").replace(/\./g, "").replace("$#$", ".").replace(/^(\-)*(\d+)\.(\d\d).*$/, '$1$2.$3'));
+            $amountInput.val($amountInput.val().substr(0, 9));
+        });
+    });
+
+    function GetUrlParam(paraName) {
+        var url = document.location.toString();
+        var arrObj = url.split("?");
+
+        if (arrObj.length > 1) {
+            var arrPara = arrObj[1].split("&");
+            var arr;
+
+            for (var i = 0; i < arrPara.length; i++) {
+                arr = arrPara[i].split("=");
+
+                if (arr != null && arr[0] == paraName) {
+                    return arr[1];
+                }
+            }
+            return "";
+        }
+        else {
+            return "";
+        }
+    }
+</script>
+</body>
+</html>

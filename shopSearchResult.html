@@ -1,0 +1,255 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<meta name="renderer" content="webkit">
+		<meta content="yes" name="apple-mobile-web-app-capable"/>
+		<meta content="black" name="apple-mobile-web-app-status-bar-style" />
+		<meta content="telephone=no" name="format-detection"/>
+		<title>店铺列表</title>
+		<meta http-equiv="X-UA-Compatible" content="IE=11; IE=10; IE=9; IE=8; IE=7; IE=EDGE,Chrome=1">
+		<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no" />
+
+		<link rel="stylesheet" type="text/css" href="css/index.css"/>
+		<link rel="stylesheet" type="text/css" href="css/hp.css"/>
+		<!--flex 布局-->
+		<script src="js/flexible.js" type="text/javascript"></script>
+		<script src="js/jquery-1.11.1.min.js" type="text/javascript" charset="utf-8"></script>
+		<script src="js/default.js"></script>
+		<script src="js/template.js"></script>
+		<script src="js/template-helper.js"></script>
+		<style>
+			.sto-xj {
+			    width: 100%;
+			    height: 21px;
+			    background: url(img/xxbg.png) no-repeat;
+			    background-size: 346%;
+			}
+			.zy-sp-box div img{
+				width: 98.5%;
+				height: 112px;
+			}
+			.zy-sp-box div img.zy2{
+				width: 112px;
+			}
+		</style>
+	</head>
+	<body>
+		<div class="container">
+			<header>
+				<div class="sto-nav-left">
+					<img src="img/fanhui.png"  alt="" onclick="javascript:history.back(-1);"/>
+				</div>
+				<div class="sto-nav-sear">
+					<input type="text" placeholder="春夏新款女装" value="" />
+					<img src="img/cha.png"/>
+				</div>
+				<div class="sto-nav-right">
+					<img src="img/gouwuche.png"/>
+					<div class="nav-car-num" onclick="location.href = 'store.html'"></div>
+				</div>
+			</header>
+			<div class="content">
+				
+				<div class="sort-list">
+					<div class="sort-st">
+						综合排序
+					</div>
+					<div class="sort-cor">
+						销量优先
+					</div>
+					<div class="sort-cor">
+						信用优先
+					</div>
+				</div>
+				
+				<div class="sto-box"></div>
+					<script type="text/template" id="sto-box">
+						{{each data.data as k i}}
+							{{if k.type ==1}}<!--自营-->
+								<div class="sto-tj-box">
+									<div class="sto-tj">
+										<img src="{{k.logo}}"/>
+									</div>
+									<div class="sto-tj-tit">
+										<span class="sto-tj-nam">{{k.name}}</span>
+										<!--<span class="sto-tj-lx">自营</span>-->
+										<a href='shop_details.html?id={{k.id}}'>
+											<span class="sto-tj-com">进店逛逛</span>
+										</a>
+										
+									</div>
+								</div>
+							{{/if}}
+							{{if k.type !=1}}
+								<div class="zy-sto-box" onclick="window.location.href='shop_details.html?id={{k.id}}'">
+									<div class="zy-sp-box" >
+										{{if k.productList.length==0}}
+											<div class="zi-img">
+												<img src="img/zs2.png" class="zy2"/>
+												
+											</div>
+										{{/if}}
+										{{each k.productList as j f}}
+											{{if f<3}}
+												<div class="zi-img">
+													<img src="{{j.productImg}}"/>
+													<div class="zy-pay">￥{{j.sellPrice}}</div>
+												</div>
+											{{/if}}
+										{{/each}}
+									</div>
+									<div class="zy-tit-box">
+										<img class="zy-logo" src="{{k.logo}}"/>
+										<span class="zy-cet">
+											<span class="zy-nam">{{k.name}}</span>
+											<span class="sto-xj" data-star = "{{k.star}}" style="background-position:{{if k.star==0}}6% 9%{{/if}} {{if k.star==1}}6% 16%{{/if}}{{if k.star==2}}6% 24%{{/if}}{{if k.star==3}}6% 31%{{/if}}{{if k.star==4}}6% 38%{{/if}}{{if k.star==5}}6% 45%{{/if}} ;"></span>
+										</span>
+										<div class="zy-rgt">
+											<span class="zy-baby">共计宝贝:{{k.productTotal}}</span>
+											<span class="zy-xl">销量:{{k.sales}}</span>
+										</div>
+									</div>
+								</div>
+							{{/if}}
+						{{/each}}
+					</script>
+				
+			</div>
+		</div>
+		<script type="text/javascript">
+			
+			$(function(){
+				
+				var arul = location.search;
+ 				var search =decodeURI(arul.split('=')[2]);  
+				$('.sto-nav-sear').find('input').attr('placeholder',search);
+				$('.sto-nav-sear').find('input').click(function(){
+						location.href="search.html";
+				});
+
+				
+				var sort='',time=0;//点击次数;
+				//分页  初始化
+				var arul = location.search;
+ 				var search =decodeURI(arul.split('=')[2]);  
+				var type = GetUrlString('type')
+ 				var listparamUL={
+					search:search,
+					sortType:sort,
+					type:type,
+					pageNo:0,
+					pageSize:4,
+				};
+				
+				
+				$('.sto-nav-sear').find('input').attr('placeholder',search);
+				
+				//页面进来的时候初始化数据
+				getList('.sto-box','post',ajaxUrl+'/front/shop//search',listparamUL,getListdata);
+				
+				$('.content').scroll(function () {
+			        totleHeight = parseFloat($('.content').height()) + parseFloat($('.content').scrollTop());
+			        if (($(".content")[0].scrollHeight == totleHeight) && !listLoading) {
+			            ++currentpage;
+			            listparamUL.pageNo=currentpage;
+			            setclcik();
+			            console.log(currentpage);
+			            $('.sort-list div').click(function(){
+							$(this).css('color','#ff5a3a').siblings().css('color','#9b9b9b');
+						});
+			            getList('.sto-box','post',ajaxUrl+'/front/shop//search',listparamUL,getListdata);
+
+			        }
+			    });
+			    
+			    //页面渲染    
+			    function getListdata(obj,r){
+			    	var length = r.data.data.length;
+			    	if (length === 0 && currentpage === 1) {
+                        $(obj).html('<div class="_nodata">暂无数据</div>');
+                    } else if (length !== 0) {
+                        var html= template('sto-box', r);
+                        if (currentpage === 1) {
+                            $(obj).html(html);
+                        } else {
+                            $(obj).append(html);
+                        }
+
+                        
+                        
+                        
+                    } else {
+                        listLoadingLock = true;
+                    
+                        $(obj).append('<div class="buy-load"><img class="load-img" src="img/load.png"><span class="load-tips">没有更多了~</span></div>');
+                    }
+                    
+			    }
+				//筛选
+				setclcik();
+				function setclcik(){
+					$('.sort-cor').unbind('click').click(function(){
+						console.log($(this).index())
+						listLoading = false;
+						listLoadingLock = false;
+						currentpage=0;
+						listparamUL.pageNo = currentpage;
+						if($(this).index()!=3){
+							sort=$(this).attr('data-sort');
+						}else{
+							time++;
+							if(time%2==0){
+								sort=4;
+							}else{
+								sort=3;
+							}
+						}
+						listparamUL.sortType=sort;
+						getList('.sto-box','post',ajaxUrl+'/front/shop//search',listparamUL,getListdata);
+						
+					});
+				}
+				$('.sort-list div').click(function(){
+					$(this).css('color','#ff5a3a').siblings().css('color','#9b9b9b');
+				});
+				
+				//判断用户登录过没有
+				if(!token){
+					$('.nav-car-num').css('display','none');
+				}else{
+						//个人的购物数量		
+					getInfo('post', ajaxUrl+'/productsInfo/cartCount?token=' + token, {}, setcartCountHtml);
+					function setcartCountHtml(r) {
+						$('.nav-car-num').text(r.count);
+					};
+				}
+				
+				//  m没有登录请求登录去
+				$('.sto-nav-right img').click(function(){
+					if(!token){
+						location.href='login.html';
+					}else{
+						location.href='store.html';
+					}
+				});
+
+			});
+			
+			
+			
+			$(".sto-tj-tit .sto-tj-com").click(function(){
+				location.href = "shop_details.html"
+			})
+			$(".sto-tj").click(function(){
+				location.href = "sto-detail.html"
+			})
+			$(".zy-tit-box").click(function(){
+				location.href = "shop_details.html"
+			})
+			$(".zi-img").click(function(){
+				location.href = "sto-detail.html"
+			})
+		</script>
+	</body>
+</html>

@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<meta name="renderer" content="webkit">
+		<meta http-equiv="X-UA-Compatible" content="IE=11; IE=10; IE=9; IE=8; IE=7; IE=EDGE,Chrome=1">
+		<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no" />
+		<link rel="stylesheet" type="text/css" href="css/public.css" />
+		<link rel="stylesheet" href="css/hp.css" />
+		<script src="js/jquery-1.11.1.min.js" type="text/javascript" charset="utf-8"></script>
+		<script src="js/default.js"></script>
+		<script src="js/template.js"></script>
+		<script src="js/template-helper.js"></script>
+		<title></title>
+		<style type="text/css">
+			.heigh{
+				height: 44px;
+			}
+			.bank-ipt{
+				color: #818181;
+			}
+		</style>
+	</head>
+	<body>
+		<div class="container">
+			<header class="head-st">
+				<div class="sto-nav-left">
+					<img src="img/fanhui.png" onclick="javascript:history.back(-1)"/>
+				</div>
+				<div class="sto-nav-sear">
+					我的银行卡
+				</div>
+				
+			</header>
+			<div class="heigh"></div>
+			<div class="content">
+				<div class="bac-cor">
+					<div class="shiming head-st">
+						<img class="sm-img" src="img/shiming.png"/>
+						<span class="sm-span my-name"></span>
+					</div>
+					<div class="shiming">
+						<img class="sm-img" src="img/shenfen.png"/>
+						<span class="sm-span my-sfz"></span>
+					</div>
+				</div>
+				
+				<div class="bank-ul">
+					<ul>
+						<li>
+							<input type="text" name="" class="bank-ipt bankName" placeholder=" 银行名称" id="" value="" />
+						</li>
+						<li>
+							<input type="text" name="" class="bank-ipt bankId" placeholder="银行卡号" id="" value="" />
+						</li>
+						<li>
+							开卡省/市/区
+							<input class="demo1 address" type="text" readonly="" placeholder="请选择城市" value="">
+							<img class="map-che" src="img/rtu.png"/>
+						</li>
+						<li>
+							<input type="text" name="" class="bank-ipt zhName" placeholder="开卡支行" id="" value="" />
+						</li>
+					</ul>
+				</div>
+				
+				
+				<input type="button" class="sure-bd" id="" value="确认绑定" />
+			</div>
+		</div>
+		<script src="js/LAreaData1.js"></script>
+		<script src="js/LAreaData2.js"></script>
+		<script src="js/LArea.js"></script>
+		<script>
+			
+			$(function(){
+				
+				//调取身份证号;
+				var phone,idCard,name;
+				$.post(ajaxUrl+'/front/clients/userInfo',{token:token},function(r){
+					
+					$('.my-name').text(r.user.relName);//开户名字
+					$('.my-sfz').text(r.user.idCard);//开户身份证
+					$('.bankName').val(r.user.bankName);//银行名称
+					$('.bankId').val(r.user.userBank);//银行卡号
+					$('.demo1').val(r.user.bankAddress)//开卡省市区
+					$('.zhName').val(r.user.zhName);  //开卡支行
+					
+					name = r.user.relName;
+					idCard = r.user.idCard;
+					
+				},'json')
+				
+				
+				
+				$('.sure-bd').click(function(){
+					var bankName = $('.bankName').val();//银行名称
+					
+					var bankCard = $('.bankId').val();//银行卡号
+					
+					var address = $('.demo1').val();//开卡省市区
+					
+					var zhName = $('.zhName').val();  //开卡支行
+					
+					console.log(name,idCard,bankName,bankCard)
+					
+					var data = {
+						token:token,
+						name:name,
+						idCard:idCard,
+						bankName:bankName,
+						bankCard:bankCard,
+						address:address,
+						zhName:zhName,
+						
+					};
+
+					if(!name){
+							tip.flag('请填写开户姓名','error');
+						}else if(!idCard){
+							tip.flag('请填写身份证号','error');
+						}else if(!bankName){
+							tip.flag('请填写银行名称','error');
+						}else if(!address){
+							tip.flag('请填写开卡地址','error');
+						}else if(!zhName){
+							tip.flag('请填写开卡支行','error');
+						}else{
+							$.post(ajaxUrl+'/front/XtUserInfo/bindingBankCard',data,function(r){
+								if(r.code==300){
+									tip.flag(r.msg,'error')
+								}else{
+									tip.flag(r.msg,'success');
+									setTimeout(function(){
+										window.location.href='personal-data.html';
+									},1000);
+								}
+									
+							},'json');
+						}
+				});
+			});
+			
+			
+			
+			
+			var area1 = new LArea();
+			area1.init({
+				'trigger': '.demo1', //触发选择控件的文本框，同时选择完毕后name属性输出到该位置
+				'valueTo': '.value1', //选择完毕后id属性输出到该位置
+				'keys': {
+					id: 'id',
+					name: 'name'
+				}, //绑定数据源相关字段 id对应valueTo的value属性输出 name对应trigger的value属性输出
+				'type': 1, //数据源类型
+				'data': LAreaData //数据源
+			});
+			area1.value = [1, 13, 3]; //控制初始位置，注意：该方法并不会影响到input的value
+		</script>
+	</body>
+</html>

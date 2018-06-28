@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="utf-8" />
+		<meta name="renderer" content="webkit">
+		<meta content="yes" name="apple-mobile-web-app-capable" content="yes" />
+		<meta content="black" name="apple-mobile-web-app-status-bar-style" />
+		<meta content="telephone=no" name="format-detection"/>
+		<title>评价</title>
+		<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no" />
+		<link rel="stylesheet" type="text/css" href="css/index.css" />
+		<link rel="stylesheet" href="css/iconfont.css" />
+		<link rel="stylesheet" href="css/hp.css" />
+		<script src="js/jquery-1.11.1.min.js" type="text/javascript" charset="utf-8"></script>
+		<script type="text/javascript" src="js/default.js"></script>
+		<style>
+
+		</style>
+	</head>
+
+	<body>
+		<div class="container">
+			<header>
+				<img class="nav-left" src="img/fanhui.png" alt="" onclick="javascript:history.back(-1);" /> 延长收货
+			</header>
+			<div class="content">
+				<div class="extended-box" style="width: auto">
+					<div class="extended-hed">
+						<span>延长时间 :</span>
+						<select id="extendDays" style="font-size: 15px;">
+							<option value="1">1天</option>
+							<option value="2">2天</option>
+							<option value="3">3天</option>
+							<option value="4">4天</option>
+							<option value="5">5天</option>
+						</select>
+					</div>
+					<div class="extended-bod">
+						<span>延长原因 :&nbsp;</span>
+						<textarea placeholder="输入原因" id="reason" style="line-height: 20px;width: calc(100% - 80px);" maxlength="180"></textarea>
+					</div>
+				</div>
+				<div class="input-pass">
+					<input type="password" name="password" id="" value="" maxlength="6" placeholder="输入6位支付密码" />
+				</div>
+			</div>
+
+			<footer>
+				<div class="foot-btn">
+					<!--<input type="button" value="确定延长" />-->
+					<button>确定延长</button>
+				</div>
+			</footer>
+		</div>
+	</body>
+	<script>
+		$("input[name=password]").blur(function() {
+			pass(this);
+		});
+		$(".foot-btn button").on("click", function() {
+			var passde = pass("input[name=password]","#reason");
+			if(passde) {
+				var params = {
+					reason: $("#reason").val(),
+					time: $("#extendDays").select().val(),
+					orderId: GetUrlString('id'),
+					payPassword: $("input[name=password]").val()
+				};
+				getInfo('post', ajaxUrl+'/front/orders/delayReceipt?token=' + token, params, extendReq);
+
+				function extendReq(r) {
+					tip.flag('延长收货成功！', 'success');
+					setTimeout(function(){
+						window.location.href = "my-order-pending.html?typeid=" + 3;
+					},1500)
+					
+				}
+			}
+
+		})
+
+		function pass(password, reason) {
+			var str = $(password).val().trim();
+			var reason = $(reason).val().trim().length;
+			if(reason ==0) {
+				tip.flag('请填写原因！', 'error');
+				return false;
+			} else {
+				if(str.length == 6) {
+					reg = /^\d{6}$/;
+					if(!reg.test(str)) {
+						tip.flag('请输入6位数字支付密码！', 'error');
+						return false;
+					} else {
+						return true;
+					}
+				} else {
+					tip.flag('请输入6位数字支付密码！', 'error');
+					return false;
+				}
+			}
+		}
+	</script>
+
+</html>

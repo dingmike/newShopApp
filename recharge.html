@@ -1,0 +1,270 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<meta name="renderer" content="webkit">
+		<meta http-equiv="X-UA-Compatible" content="IE=11; IE=10; IE=9; IE=8; IE=7; IE=EDGE,Chrome=1">
+		<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no" />
+		<link rel="stylesheet" type="text/css" href="css/index.css"/>
+		<link rel="stylesheet" type="text/css" href="css/hp.css"/>
+		<script src="js/jquery-1.11.1.min.js" type="text/javascript" charset="utf-8"></script>
+		<script src="js/default.js"></script>
+		<script src="js/template.js"></script>
+		<script src="js/template-helper.js"></script>
+		<title>充值</title>
+		<style type="text/css">
+		.pay_mode{height: 350px; top: 187px; left: 100%; width: 85%; height: 170px; border-radius: 10px;}
+		.account-box ul li{display: none;}
+		.zhifu-p{line-height: 19px;}
+		</style>
+		<script type="text/javascript">
+			$(document).ready(function(){						/*判断输入框值*/
+	            var status = setTimeout('getvalue()',0); 	/*当输入框大于1的时候*/
+	  		});														/*提现按钮变色*/
+	        function getvalue(){
+	            var value = $('#txje').val();
+	            status = setTimeout('getvalue()',0); 
+	            if( value >=1 ){
+	            	$(document).ready(function(){
+			            $('.qr-cge').css('background-color','#ff5a3a').attr('disabled', false);
+			        });
+	            }else if( value<=0 ){
+	            	$(document).ready(function(){
+			            $('.qr-cge').css('background-color','#D4D4D4').attr('disabled',true);
+
+			        });
+	            }
+	        }
+		</script>
+	</head>
+	<body>
+		<div class="container">
+			<header class="bod-show">
+				<img class="nav-left" src="img/fanhui.png" onclick="javascript:history.back(-1)"/>
+				充值
+			</header>
+			
+			<div class="content">
+				<div class="account-box">
+					<ul>
+						<li data-sure = "yes" class="zfb" id="zfbBox">
+							<img class="zhifu-img" src="img/zhifubaozhifu.png"/>
+							<div class="zhifu-cet" >
+								<p class="zhifu-p">支付宝支付</p>
+								<!--<p class="zfb_id"></p>-->
+							</div>
+						</li>
+						<li class="wx">
+							<img class="zhifu-img" src="img/weixinzhifu.png"/>
+							<div class="zhifu-cet">
+								<p class="zhifu-p">微信支付</p>
+								<!--<p class="wx_id"></p>-->
+							</div>
+						</li>
+						<!--<li class="yzf">
+							<img class="zhifu-img" src="img/yizhifu.png"/>
+							<div class="zhifu-cet">
+								<p class="zhifu-p">翼支付</p>
+								<p class="yzf_id"></p>
+							</div>
+						</li>-->
+					</ul>
+					
+					<div class="sk-rgt">
+						其他方式
+						<img class="sk-rtu" src="img/rtu.png"/>
+					</div>
+					
+				</div>
+				<div class="change-mon">
+					<p class="use-tit">充值金额/元：</p>
+					<input type="text" class="e-num ipt checkNumber" id="txje" placeholder="0.00" value="" />
+				</div>
+				<div class="qr-btn ma-top">
+					<button class="qr-cge" id="" value="">确认充值</button>
+				</div>
+				
+			</div>
+		</div>
+		<div class="pay_mode_bg">
+
+		</div>
+		<div class="pay_mode">
+			<div class="pay_mode_tit">
+				选择支付方式<img src="img/guanbi.png" alt="" />
+			</div>
+			<div class="pay_ways">
+				
+				<div class="order_line margin10 pitchon">
+					<img src="img/zhifubaozhifu.png" alt="" />支付宝支付
+				</div>
+				
+				<div class="order_line">
+					<img src="img/weixinzhifu.png" alt="" />微信支付
+				</div>
+				
+				<!--<div class="order_line">
+					<img src="img/yizhifu.png" alt="" />翼支付
+				</div>-->
+			</div>
+			
+			<!--<button class="pay_yes" id="J_OpenKeyBoard">确定支付</button>-->
+		</div>
+		<div id="aliId"></div>
+		<script>
+			$(function(){
+		        $('.sk-rgt').click(function(){
+		        	$(".pay_mode_bg").attr("style", "display:block");
+		        	$(".pay_mode").css({
+		        		'left':'7%',
+		        		'transition':'left 0.5s'
+		        	});
+		        });
+		        
+		        
+        		$(".pay_mode_bg,.pay_mode_tit img").click(function() {
+					$(".pay_mode_bg").attr("style", "display:none");
+					$(".pay_mode").css({
+		        		'left':'100%',
+		        		'transition':'left 0.5s'
+		        	});
+				});
+				
+				//支付方式选择
+				$('.account-box ul li').eq(0).css('display','block');
+				$(".pay_ways .order_line").click(function() {
+					var index = $(this).index();
+					console.log(index);
+					$(this).addClass("pitchon").siblings().removeClass("pitchon");
+					$('.account-box ul li').eq(index).attr('data-sure','yes').css('display','block').siblings().attr('data-sure','no').css('display','none');
+					
+				});
+				//初始化付款
+				$.post(ajaxUrl+'/front/XtWithdrawControllerFront/withdraw',{token:token},function(r){
+					$('.zfb_id').text(r.zfb);
+					/*$('.wx_id').text(r.wx);
+					$('.yzf_id').text(r.bank);*/
+					$('.balance_money').text(r.balance)
+				},'json');
+				
+				$('.qr-cge').click(function(){
+					var num = $("#txje").val();
+					
+					var payMoney = parseFloat($('.e-num').val());
+					if(!payMoney){
+						tip.flag('请输入充值金额','error');
+					}else{
+
+                        //微信app中隐藏支付宝支付按钮
+                       /* if (is_weixin()) {
+                            $('#zfbBox').hide();
+                        } else {
+                            $('#zfbBox').show();
+                        }*/
+						$('.account-box ul li').each(function(){
+							if($(this).attr('data-sure')=='yes'){
+								var way = $(this).attr('class');
+								switch (way){
+									case 'zfb':
+										console.log('支付宝支付');
+										getInfo("post", ajaxUrl + "/front/RechargeControllerFront/recharge", {amount: num,token:token}, alPayReq);
+												function alPayReq(r) {
+                                                    //h5调用
+                                                   //  $('#aliId').html(r.data.sign);
+                                                    //调用支付原生
+													setupWebViewJavascriptBridge(function(bridge) {
+														bridge.callHandler('loadThreePay', {
+															'pay': 'Alipay',
+															'data': r.data.sign
+														}, function(resp) {
+															var r = JSON.parse(resp);
+                                                            if(r.code == 0) {
+                                                                tip.flag('支付成功', 'success');
+                                                                location.href="money-yue.html";
+                                                            } else if(r.code == -1) {
+                                                                tip.flag('支付失败', 'error');
+                                                            }else if(r.code == -2){
+                                                                tip.flag('取消支付', 'error');
+                                                            }
+														});
+													});
+												}
+										break;
+									case 'wx':
+
+                                        //微信中使用微信公众号支付，外部使用h5支付
+                                        /*if (is_weixin()) {
+                                            //微信公众号支付
+
+                                        } else {
+                                            debugger
+                                            //调用h5支付
+                                            $.post(ajaxUrl + '/WxH5/pay', {orderId: orderId}, function (res) {
+                                                if (res.code === 100) {
+                                                    window.location.href = res.data;
+                                                } else {
+                                                    tip.flag('发生错误请重新下单！', 'error');
+                                                }
+                                            })
+                                        }*/
+										getInfo("post", ajaxUrl+"/front/RechargeControllerFront/wxRecharge", {amount: num,token:token}, wxPayReq);
+										function wxPayReq(r) {
+												//调用支付原生
+												console.log(r.data.sign);
+												setupWebViewJavascriptBridge(function(bridge) {
+													bridge.callHandler('loadThreePay', {
+														'pay': 'WeChat',
+														'data': r.data.sign
+													}, function(resp) {
+														var r = JSON.parse(resp);
+														if(r.code == 0) {
+															tip.flag('支付成功', 'success');
+															location.href="money-yue.html";
+														} else if(r.code == -1) {
+															tip.flag('支付失败', 'error');
+														}else if(r.code == -2){
+                                                            tip.flag('取消支付', 'error');
+														}
+													});
+												});
+											}
+//										console.log('微信支付');
+										break;
+									case 'yzf':
+										console.log('翼支付支付');
+										break;
+									default:
+										break;
+								}
+							}
+						});
+					}
+				});
+                //判断是否是在微信app内部
+                function is_weixin() {
+                    var ua = navigator.userAgent.toLowerCase();
+                    if (ua.match(/MicroMessenger/i) == "micromessenger") {
+                        return true;
+                    } else {
+                        return false;
+                    }
+                }
+
+
+                $('.checkNumber').on('keyup', function () {
+                    var $amountInput = $(this);
+                    //响应鼠标事件，允许左右方向键移动
+                    event = window.event || event;
+                    if (event.keyCode == 37 | event.keyCode == 39) {
+                        return;
+                    }
+                    //先把非数字的都替换掉，除了数字和.
+                    $amountInput.val($amountInput.val().replace(/[^\d.]/g, "").//只允许一个小数点
+                    replace(/^\./g, "").replace(/\.{2,}/g, ".").//只能输入小数点后两位
+                    replace(".", "$#$").replace(/\./g, "").replace("$#$", ".").replace(/^(\-)*(\d+)\.(\d\d).*$/, '$1$2.$3'));
+                    $amountInput.val($amountInput.val().substr(0, 9));
+                });
+			})
+		</script>
+	</body>
+</html>

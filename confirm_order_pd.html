@@ -1,0 +1,922 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8"/>
+    <title>确认订单</title>
+    <meta name="renderer" content="webkit">
+    <meta content="yes" name="apple-mobile-web-app-capable"/>
+    <meta content="black" name="apple-mobile-web-app-status-bar-style"/>
+    <meta content="telephone=no" name="format-detection"/>
+    <meta http-equiv="X-UA-Compatible" content="IE=11; IE=10; IE=9; IE=8; IE=7; IE=EDGE,Chrome=1">
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no"/>
+    <link rel="stylesheet" type="text/css" href="css/public.css"/>
+    <link rel="stylesheet" type="text/css" href="css/index.css"/>
+    <link rel="stylesheet" href="css/hp.css"/>
+    <link rel="stylesheet" href="css/yddemo.css"/>
+    <link rel="stylesheet" href="css/ydui.css"/>
+    <link rel="stylesheet" href="./lib/layer_mobile/need/layer.css"/>
+    <script src="js/jquery-1.11.1.min.js" type="text/javascript" charset="utf-8"></script>
+    <script src="js/default.js"></script>
+    <script src="js/template.js"></script>
+    <script src="js/template-helper.js"></script>
+    <script type="text/javascript" src="js/ydui.js"></script>
+    <script type="text/javascript" src="js/ydui.flexible.js"></script>
+    <script type="text/javascript" src="./lib/layer_mobile/layer.js"></script>
+    <script type="text/javascript" src="https://res.wx.qq.com/open/js/jweixin-1.3.2.js"></script>
+    <style>
+        body {
+            overflow-x: hidden
+        }
+
+        * {
+            -webkit-overflow-scrolling: touch;
+        }
+
+        ._tiping {
+            z-index: 999;
+        }
+
+        .content {
+            -webkit-box-flex: 1;
+            overflow: auto;
+            position: relative;
+            overflow-x: hidden;
+        }
+
+        .PayPassWord {
+            max-width: 750px;
+            width: 100%;
+            height: 100%;
+            background-color: #FFFFFF;
+            border-radius: 10px 10px 0 0;
+            position: absolute;
+            bottom: 0;
+            display: none;
+        }
+
+        .wrap {
+            padding-top: 57px;
+        }
+
+        .inputBoxContainer {
+            width: 240px;
+            height: 50px;
+            margin: 0 auto;
+            position: relative;
+        }
+
+        .inputBoxContainer .bogusInput {
+            width: 100%;
+            height: 100%;
+            border: #c3c3c3 1px solid;
+            border-radius: 7px;
+            -moz-border-radius: 7px;
+            -webkit-border-radius: 7px;
+            overflow: hidden;
+            position: absolute;
+            z-index: 0;
+        }
+
+        .inputBoxContainer .realInput {
+            width: 100%;
+            height: 100%;
+            position: absolute;
+            top: 0;
+            left: 0;
+            z-index: 1;
+            filter: alpha(opacity=0);
+            -moz-opacity: 0;
+            opacity: 0;
+        }
+
+        .inputBoxContainer .bogusInput input {
+            padding: 0;
+            width: 16.3%;
+            height: 100%;
+            float: left;
+            background: #ffffff;
+            text-align: center;
+            font-size: 20px;
+            border: none;
+            border-right: #C3C3C3 1px solid;
+        }
+
+        .inputBoxContainer .bogusInput input:last-child {
+            border: none;
+        }
+
+        .showValue {
+            width: 240px;
+            height: 22px;
+            line-height: 22px;
+            font-size: 16px;
+            text-align: center;
+            margin: 0 auto;
+            opacity: 0;
+        }
+
+        .forGet {
+            float: right;
+            margin-right: 16%;
+            margin-top: 10px;
+            color: #666;
+            font-size: 12px;
+        }
+
+        .integral a {
+            color: #47b5fb;
+            margin-left: 5px;
+        }
+
+        .g-scrollview {
+            display: none;
+            height: auto;
+        }
+
+        .m-loading {
+            border-radius: 4px;
+            color: #FFF;
+            background-color: rgba(40, 40, 40, 0.8);
+            -webkit-animation: zoomIn .1s ease forwards;
+            animation: zoomIn .1s ease forwards;
+            display: -webkit-box;
+            display: -webkit-flex;
+            display: -ms-flexbox;
+            display: flex;
+            -webkit-box-align: center;
+            -webkit-align-items: center;
+            -ms-flex-align: center;
+            align-items: center;
+            padding: 0 23px 0 24px;
+            height: 48px;
+            width: 50%;
+            position: absolute;
+            left: 24%;
+            top: 42px;
+            display: none;
+        }
+
+        .m-loading .loading-icon {
+            width: 28px;
+            height: 28px;
+            background: url(img/scroll.png) no-repeat;
+            background-size: 28px 28px;
+            -webkit-animation: rotate-loading 0.45s linear forwards infinite;
+            animation: rotate-loading 0.45s linear forwards infinite;
+            margin-right: 10px;
+        }
+
+        .m-loading .loading-txt {
+            font-size: 15px;
+            color: #FFF;
+            max-width: 140px;
+            overflow: hidden;
+            white-space: nowrap;
+            text-overflow: ellipsis;
+        }
+
+        .order_details {
+            margin-bottom: 50px;
+        }
+
+        .pitchon2 {
+            background-image: url(img/weixuanzhong.png);
+            background-position: left 36px center;
+            background-repeat: no-repeat;
+            background-size: 17px 17px;
+        }
+
+        .e_dian {
+            max-width: 78px;
+            height: 10px;
+            font-size: 10px;
+            line-height: 10px;
+            letter-spacing: 0px;
+            color: #ff2525;
+            margin-top: 7px;
+        }
+    </style>
+
+</head>
+
+<body>
+
+<!--索要发票弹窗 -->
+<div class="syfp-alert">
+    <div class="alert-choose">
+        <ul>
+            <li>NIKI提供的发票</li>
+            <li data-type="1">个人增值税普通发票</li>
+            <li data-type="2">企业增值税普通发票</li>
+            <li data-type="3">企业增值税专用发票</li>
+        </ul>
+        <div class="alert-confirm">
+            <input type="button" value="确定索要" id="forinvoBtn"/>
+        </div>
+    </div>
+</div>
+<div class="container alert-op">
+    <header>
+        <img class="nav-left" src="img/fanhui.png" alt="" onclick="javascript:history.back(-1);"/> 确认订单
+    </header>
+    <!--	<div class="header_box">
+
+        </div>-->
+
+    <div class="content">
+        <div class="userinfo"></div>
+        <div class="order_details-box"></div>
+    </div>
+
+    <script type="text/template" id="userinfo">
+        <div class="user_tit" data-aid="{{data.address.aid}}">
+            <div class="user_name">{{data.address.uname}}</div>
+            <div class="user_phone">{{data.address.phone}}</div>
+        </div>
+        <div class="user_site">
+            {{if data.address.province!==null}}
+            {{data.address.province}}{{data.address.city}}{{data.address.dist}}{{data.address.addrs}}
+            {{else}}
+            去添加收货地址
+            {{/if}}
+            <div class="change_info"></div>
+        </div>
+    </script>
+
+    <script type="text/template" id="order_details-box">
+        <div class="order_details">
+            <div class="order_tit">{{data.shopName}}</div>
+            <div class="merchandise">
+                <div class="order_img">
+                    <img src="{{data.product.productImg}}" alt=""/>
+                </div>
+                <div class="order_cot">
+                    <div class="pro_tit">{{data.product.productName}}</div>
+                    <div class="pro_par">
+                        规格参数： {{each data.specName as d f}} {{d}} {{/each}}
+                    </div>
+                    <div class="e_dian" data-edian="{{data.product.productEdian}}">
+                        送{{data.product.productEdian*data.product.fxparam}}广告金
+                    </div>
+                    <div class="pro_price" data-price="{{data.productAmount}}">¥{{data.productAmount}}</div>
+                    <div class="pro_num" data-num="{{data.number}}">数量: x{{data.number}}</div>
+                </div>
+                <div class="sum-price" data-sump="{{data.product.sellPrice}}"></div>
+            </div>
+            <div class="order_tit">快递邮费
+                {{if data.orderExpfee===0}}
+                <div class="postage">卖家包邮</div>
+                {{/if}}
+                {{if data.orderExpfee!==0}}
+                <div class="postage">{{data.orderExpfee}}</div>
+                {{/if}}
+            </div>
+            <div class="order_tit">索要发票
+                <div class="postage has-bg" id="forinvoValue" data-type="0">索要发票</div>
+            </div>
+            <div class="order_tit">
+                <span>备注说明</span>
+                <textarea type="text" class="bzsm" id="userRemake" style=""></textarea>
+            </div>
+            <div class="pay_sum order_tit clearfix">
+                <div class="smal-sum">
+                    <span class="sm-x">小计：</span>
+                    <em>￥</em>
+                    <span class="sum-11">{{ data.orderAmount }}</span>
+                </div>
+            </div>
+        </div>
+    </script>
+    <div class="footer_box" style="height: 65px;"></div>
+    <footer>
+        <div class="pay_box">
+            <div class="pay_amount">
+                合计:&ensp;<span>{{data.orderAmount+data.orderExpfee}}</span>
+            </div>
+            <!--<div class="deliver_e">
+                送<span></span>e点
+            </div>-->
+        </div>
+        <div class="pay">付款</div>
+    </footer>
+
+    <div class="pay_mode_bg">
+
+    </div>
+    <div id="aliId"></div>
+    <div class="pay_mode">
+        <div class="pay_mode_tit">
+            选择支付方式<img src="img/guanbi.png" alt=""/>
+        </div>
+        <div class="pay-box">
+
+            <div class="order_line" data-pay="balance">
+                <img src="img/jinbi.png" alt=""/>余额支付
+            </div>
+
+            <div class="balance pitchon2">余额：<span></span>
+                <a class="overplus" href="javascript:void(0)"></a>
+            </div>
+
+            <div class="integral pitchon2">
+                积分：<span></span>
+                <a class="overplus_jifen" href="javascript:void(0)"></a>
+            </div>
+
+            <div class="order_line margin10" id="zfbBox" data-pay="zfb">
+                <img src="img/zhifubaozhifu.png" alt=""/>支付宝支付
+            </div>
+            <div class="order_line" data-pay="wx">
+                <img src="img/weixinzhifu.png" alt=""/>微信支付
+            </div>
+            <button class="pay_yes" id="J_OpenKeyBoard">确定支付</button>
+        </div>
+    </div>
+    <section class="g-scrollview">
+
+        <!--<aside class="demo-tip">
+                <p>该插件暂不支持Data API方式调用，Javascript API方式包含下列方法和事件：</p>
+                <p>1. [open]：打开键盘方法</p>
+                <p>2. [close]：关闭键盘方法</p>
+                <p>3. [done.ydui.keyboard]：六位密码输入完毕后执行</p>
+            </aside>-->
+
+        <!--<div class="m-button demo-pitch">
+                <a href="javascript:;" class="btn-block btn-primary" id="J_OpenKeyBoard">打开</a>
+            </div>-->
+
+        <div class="m-keyboard" id="J_KeyBoard">
+            <div class="m-loading">
+                <div class="loading-icon">
+                </div>
+                <div class="loading-txt">验证支付密码</div>
+            </div>
+
+            <!-- 自定义内容区域 -->
+            <div style="text-align: right;padding: .15rem .8rem 0;">
+                <a href="" style="color: #666;font-size: .24rem;">忘记密码</a>
+            </div>
+            <!-- 自定义内容区域 -->
+        </div>
+    </section>
+</div>
+
+
+<script type="text/javascript">
+    $(function () {
+// 获取分销ID和值
+        var fxIdData;
+        getFxId(function(res){
+            fxIdData = res;
+        });
+        var detailFxParam;
+        // 进入页面加载 确认订单数据
+        var totalAmount = '';
+        var productId = '', productSpec = '', counts = '';
+        var orderParams = {
+            productId: GetQueryString('productId'),
+            productSpec: GetUrlString('productSpec'),
+            number: GetQueryString('number'),
+            type: GetQueryString('type')
+        };
+
+        if (localStorage.getItem('orderParams') === 'null' || localStorage.getItem('orderParams') === undefined || localStorage.getItem('orderParams') === null) {
+            localStorage.setItem('orderParams', JSON.stringify(orderParams));
+        }
+
+        getInfo("post", ajaxUrl + "/front/ordersCollage/showCollageBuyNow?token=" + token, JSON.parse(localStorage.getItem('orderParams')), function (r) {
+            /* layer.open({
+             content: '生成拼单订单成功!'
+             ,skin: 'msg'
+             ,time: 2 //2秒后自动关闭
+             });
+             */
+            // 显示广告金
+            for(var j = 0; j< fxIdData.length; j++){
+                if(r.data.product.fxparam == fxIdData[j].id){
+                    r.data.product.fxparam =fxIdData[j].mine;
+                    detailFxParam= fxIdData[j].mine
+                }
+            }
+
+            if (r.code == 200) {
+                productId = r.data.product.productId;
+                productSpec = JSON.parse(localStorage.getItem('orderParams')).productSpec;
+                counts = r.data.number;
+//                       var productData =  {data:{productArr:[r]}};
+                var html1 = template('userinfo', r);
+                $('.userinfo').html(html1);
+
+                //
+                var html2 = template('order_details-box', r);
+                $('.order_details-box').html(html2);
+
+                //合计总价格和总E点
+                $('.pay_amount').find('span').text("￥" + r.data.orderAmount);
+                totalAmount = r.data.orderAmount;
+//                        $('.deliver_e').find('span').text(r.data.orderEdianAll);
+                allSend = r.data.ePoint;
+                allPrice = r.data.orderAmountAll;
+
+                $('.order_details').each(function () {
+                    //sum-edian
+                    var sumEdian = 0; //赠送总e点数
+
+                    $(this).find('.sum-edian').each(function () {
+                        sumEdian += parseInt($(this).attr('data-sume'));
+                    });
+
+                    var sumPrice = 0; //单个店铺里面的商品价格合计
+                    $(this).find('.sum-price').each(function () {
+                        sumPrice += parseInt($(this).attr('data-sump'));
+                    });
+
+                    // $(this).find('.send-50').text("送" + sumEdian + "e点"); //每个店铺里面的所有商品赠送的总E点数
+//								$(this).find('.sum-11').text(r.data.orderAmount); //每个店铺里面的所有商品的合计价格
+
+                });
+                $('.has-bg').click(function () {
+                    $('.syfp-alert').css('display', 'block');
+                    $('.alert-op').css('opacity', '0.45');
+                    $('.alert-choose ul li').click(function () {
+                        $(this).addClass('add-li-css').siblings().removeClass('add-li-css')
+                    });
+                });
+                //确定索要
+                $("#forinvoBtn").click(function () {
+                    $(".alert-choose ul li").each(function () {
+                        var forinvoValue = $(this).data('type');
+                        console.log(forinvoValue);
+                        if ($(this).hasClass('add-li-css')) {
+                            $("#forinvoValue").html($(this).html());
+                            $("#forinvoValue").attr('data-type', forinvoValue);
+                        }
+                        $('.syfp-alert').css('display', 'none');
+                        $('.alert-op').css('opacity', '1');
+                    })
+                });
+
+                //选择收货地址
+                var aid = $('.user_tit').attr('data-aid');
+                console.log('aid' + aid)
+                $(".userinfo").click(function () {
+                    location.href = "select_site.html?sureArr=" + carIds + '&&aid=' + aid;
+                })
+            } else {
+                window.location.href = "index.html";
+            }
+
+        });
+
+
+        var carIds = GetUrlString('sureArr').split(",");
+        for (var i = 0; i < carIds.length; i++) {
+            carIds[i] = parseInt(carIds[i]);
+        }
+        var allSend = 0; //所有店铺合计的赠送e点
+        var allPrice = 0;
+
+        /*	$.ajax({
+         type: "post",
+         url: ajaxUrl + "/front/orders//showOrderBuyCar?token=" + token,
+         async: true,
+         dataType: "json",
+         traditional: true,
+         data: {
+         carIds: carIds
+         },
+         success: function(r) {
+         if(r.code == 200) {
+
+         var html1 = template('userinfo', r);
+         $('.userinfo').html(html1);
+
+         var html2 = template('order_details-box', r);
+         $('.order_details-box').html(html2);
+
+         //合计总价格和总E点
+         $('.pay_amount').find('span').text("￥" + r.data.orderAmountAll);
+         $('.deliver_e').find('span').text(r.data.orderEdianAll);
+         allSend = r.data.orderEdianAll;
+         allPrice = r.data.orderAmountAll;
+
+         $('.order_details').each(function() {
+         //sum-edian
+         var sumEdian = 0; //赠送总e点数
+
+         $(this).find('.sum-edian').each(function() {
+         sumEdian += parseInt($(this).attr('data-sume'));
+         });
+
+         var sumPrice = 0; //单个店铺里面的商品价格合计
+         $(this).find('.sum-price').each(function() {
+         sumPrice += parseInt($(this).attr('data-sump'));
+         });
+
+         $(this).find('.send-50').text("送" + sumEdian + "e点"); //每个店铺里面的所有商品赠送的总E点数
+         //								$(this).find('.sum-11').text(r.data.orderAmount); //每个店铺里面的所有商品的合计价格
+
+         });
+         $('.has-bg').click(function() {
+         $('.syfp-alert').css('display', 'block');
+         $('.alert-op').css('opacity', '0.45');
+         $('.alert-choose ul li').click(function() {
+         $(this).addClass('add-li-css').siblings().removeClass('add-li-css')
+         });
+         });
+         //确定索要
+         $("#forinvoBtn").click(function() {
+         $(".alert-choose ul li").each(function() {
+         var forinvoValue=$(this).data('type');
+         console.log(forinvoValue)
+         if($(this).hasClass('add-li-css')) {
+         $("#forinvoValue").html($(this).html());
+         $("#forinvoValue").attr('data-type',forinvoValue);
+         }
+         $('.syfp-alert').css('display', 'none');
+         $('.alert-op').css('opacity', '1');
+         })
+         });
+
+         //选择收货地址
+         var aid = $('.user_tit').attr('data-aid');
+         console.log('aid' + aid)
+         $(".userinfo").click(function() {
+         location.href = "select_site.html?sureArr=" + carIds + '&&aid=' + aid;
+         })
+         } else {
+         window.location.href = "index.html";
+         }
+         }
+
+         });*/
+
+        //显示结算层
+        var comfirmOrderId;
+        $(".pay").click(function () {
+            //微信app中隐藏支付宝支付按钮
+             if (is_wxxcx()) {
+             $('#zfbBox').hide();
+             } else {
+             $('#zfbBox').show();
+             }
+            //默认余额支付选中
+//            $('.balance').addClass('pitchon1');
+            $($('.order_line')[0]).addClass('pitchon');
+            if (!$('.user_name').text()) {
+                tip.flag('请添加收货地址', 'error');
+            } else {
+                $(".pay_mode_bg").attr("style", "display:block");
+                $(".pay_mode").attr("style", "height:344px;transition: height 0.5s;-moz-transition: height 0.5s; -webkit-transition: height 0.5s;-o-transition: height 0.5s;");
+                $.ajax({
+                    type: "post",
+                    url: ajaxUrl + "/front/clients/checkBalance",
+                    async: true,
+                    data: {
+                        token: token
+                    },
+                    success: function (r) {
+                        if (parseFloat(r.myMoney) < allPrice) {
+                            var sy = allPrice - r.myMoney;
+                            $('.overplus').addClass('no_money');
+                            $('.overplus').html('还差¥' + sy + ',充值再买');
+                        }
+
+                        if (parseFloat(r.consumPoint) < allPrice) {
+                            var sx = allPrice - r.consumPoint;
+                            $('.overplus_jifen').addClass('no_jifen');
+                            $('.overplus_jifen').html('还差¥' + sx);
+                        }
+
+                        $('.balance span').html(r.myMoney);
+                        $('.integral span').html(r.consumPoint);
+                    }
+                });
+
+                var addressId = $('.user_tit').attr('data-aid');
+
+                //生成订单
+                $.ajax({
+                    type: "post",
+                    url: ajaxUrl + "/front/ordersCollage/insertOrderCollageBuyNow",
+                    async: true,
+                    traditional: true,
+                    data: {
+                        token: token,
+                        addressId: addressId,
+//								carIds: carIds,
+                        number: counts,
+                        productId: productId,
+                        productSpec: productSpec,
+                        userRemake: $("#userRemake").val(),
+                        forInvoices: $("#forinvoValue").data('type')
+                    },
+                    success: function (r) {
+                        comfirmOrderId = r.data.orderId;
+                    }
+                });
+
+
+            }
+
+        });
+
+        //密码支付
+        !function ($, ydui) {
+            var dialog = ydui.dialog;
+
+            var $keyboard = $('#J_KeyBoard');
+
+            // 初始化参数
+            $keyboard.keyBoard({
+                disorder: false, // 是否打乱数字顺序
+                title: '帆恒安全键盘' // 显示标题
+            });
+
+            //输入密码  成功后的操作
+            function payInputPassWord(type) {
+                $('.g-scrollview').css('display', 'block');
+                $keyboard.keyBoard('open');
+
+                // 六位密码输入完毕后执行
+                $keyboard.on('done.ydui.keyboard', function (ret) {
+
+//									console.log('输入的密码是：' + ret.password);
+                    $.post(ajaxUrl + '/front/payInfo/balancePay', {
+                        token: token,
+                        orderId: comfirmOrderId,
+                        type: type,
+                        payPassword: ret.password
+                    }, function (r) {
+                        $('.m-loading').css('display', 'flex');
+                        if (r.code == 300) {
+
+                            // 模拟AJAX校验密码
+                            setTimeout(function () {
+                                // 关闭请求中提示框
+                                $('.m-loading').css('display', 'none');
+                                // 显示错误信息
+                                $keyboard.keyBoard('error', r.msg);
+                            }, 1500);
+                            // 关闭键盘
+                            // $keyboard.keyBoard('close');
+
+                        } else {
+                            setTimeout(function () {
+                                // 关闭请求中提示框
+                                $('.m-loading').css('display', 'none');
+                                // 显示错误信息
+                                window.location.href = 'pay_ok_pd.html?pd=true&allSend=' + allSend;
+                            }, 1500);
+
+                        }
+                    }, 'json')
+
+                });
+            }
+
+            // 打开键盘
+            $('#J_OpenKeyBoard').on('click', function () {
+                $(".pay-box .order_line").each(function () {
+                    if ($(this).hasClass('pitchon')) {
+
+                        var dataPay = $(this).attr('data-pay');
+                        switch (dataPay) {
+                            case 'balance':
+                                if ($('.balance').hasClass('pitchon1') && (!$('.integral').hasClass('pitchon1'))) { //余额支付
+                                    console.log('余额支付');
+                                    if ($('.overplus').hasClass('no_money')) {
+                                        tip.flag('余额不足，请选择其他支付方式', 'error')
+                                    } else {
+                                        payInputPassWord(0);
+                                    }
+
+                                } else if ((!$('.balance').hasClass('pitchon1')) && ($('.integral').hasClass('pitchon1'))) {
+                                    console.log('积分支付');
+
+                                    if ($('.overplus_jifen ').hasClass('no_jifen')) {
+                                        tip.flag('积分不足，请选择其他支付方式', 'error')
+                                    } else {
+
+                                        payInputPassWord(1);
+                                    }
+
+                                } else if ($('.balance').hasClass('pitchon1') && ($('.integral').hasClass('pitchon1'))) {
+                                    console.log('一起支付');
+                                    var yuer = parseFloat($.trim($('.balance span').text()));
+                                    var jifen = parseFloat($.trim($('.integral span').text()));
+
+                                    if ((yuer + jifen) < allPrice) {
+                                        tip.flag('都不够', 'error')
+                                    } else {
+                                        payInputPassWord(2);
+
+                                    }
+                                }
+                                break;
+                            case 'zfb':
+
+                                getInfo("post", ajaxUrl + alipayApp + "" + token, {
+                                    money: totalAmount,
+                                    type: 1,
+                                    orderId: comfirmOrderId
+                                }, alPayReq);
+
+                            function alPayReq(r) {
+//                                $('#aliId').html(r.data.sign); // h5支付
+                                //调用支付原生
+                                setupWebViewJavascriptBridge(function (bridge) {
+                                    bridge.callHandler('loadThreePay', {
+                                        'pay': 'Alipay',
+                                        'data': r.data.sign
+                                    }, function (resp) {
+                                        var r = JSON.parse(resp);
+                                        if (r.respCode === 0) {
+                                            tip.flag('支付成功', 'success');
+
+                                            //支付成功后清除订单数据
+                                            /* window.localStorage.removeItem('productId'); //防止返回订单数据消失
+                                             window.localStorage.removeItem('productSpec'); //防止返回订单数据消失
+                                             window.localStorage.removeItem('number'); //防止返回订单数据消失
+                                             window.localStorage.removeItem('type'); //防止返回订单数据消失*/
+
+                                            window.localStorage.removeItem('orderParams')
+
+                                            setTimeout(function () {
+                                                window.location.href = 'pay_ok.html?allSend=' + allSend;
+                                            }, 1500);
+                                        } else if (r.respCode !== 0) {
+                                            tip.flag(r.respMsg, 'error');
+                                            setTimeout(function () {
+                                                window.location.href = 'my-order-pd.html?typeid=1';
+                                            }, 1500);
+                                        }
+
+                                    });
+                                });
+                            }
+
+                                break;
+                            case 'wx':
+
+
+
+                                // 调用支付原生api
+                                getInfo("post", ajaxUrl + "/front/payInfo/wxPay?token=" + token, {
+                                    money: totalAmount,
+                                    type: 2,
+                                    orderId: comfirmOrderId
+                                }, wxPayReq);
+
+                            function wxPayReq(r) {
+
+                                //调用支付原生
+                                console.log(r.data.sign);
+                                setupWebViewJavascriptBridge(function (bridge) {
+                                    bridge.callHandler('loadThreePay', {
+                                        'pay': 'WeChat',
+                                        'data': r.data.sign
+                                    }, function (resp) {
+                                        var r = JSON.parse(resp);
+                                        if (r.respCode === 0) {
+                                            tip.flag('支付成功', 'success');
+                                            //支付成功后清除订单数据
+                                            //支付成功后清除订单数据
+                                            // window.localStorage.removeItem('productId'); //防止返回订单数据消失
+                                            // window.localStorage.removeItem('productSpec'); //防止返回订单数据消失
+                                            // window.localStorage.removeItem('number'); //防止返回订单数据消失
+                                            // window.localStorage.removeItem('type'); //防止返回订单数据消失
+                                            window.localStorage.removeItem('orderParams');
+                                            setTimeout(function () {
+                                                window.location.href = 'pay_ok.html?allSend=' + allSend;
+                                            }, 1500);
+                                        } else if (r.respCode !== 0) {
+                                            tip.flag(r.respMsg, 'error');
+                                            setTimeout(function () {
+                                                window.location.href = 'my-order-pd.html?typeid=1';
+                                            }, 1500);
+                                        }
+
+                                    });
+                                });
+                            }
+
+
+                               /* if (window.__wxjs_environment === 'miniprogram') {
+                                    // 小程序支付
+                                    var backUrl = location.href;
+                                    var wxpaystr = "?orderId="+ comfirmOrderId + "&backUrl=" + backUrl + '&pdFlag=true';
+                                    var path = '/pages/wxpay/wxpay' + wxpaystr;
+                                    //通过JSSDK的api使小程序跳转到指定的小程序页面
+                                    wx.miniProgram.navigateTo({url: path});
+
+                                }else{
+                                    //微信中使用微信公众号支付，外部使用h5支付
+                                    if (is_weixin()) {
+                                        //微信公众号支付
+
+                                    } else {
+                                        //调用h5支付
+                                        $.post(ajaxUrl + '/WxH5/pay', {orderId: comfirmOrderId, type: 2}, function (res) {
+
+                                            if (res.code === 100) {
+                                                window.location.href = res.data;
+                                                //发起支付后清除订单数据
+                                                // window.localStorage.removeItem('productOrderParams');
+                                            } else {
+                                                tip.flag(res.msg, 'error');
+                                            }
+                                        })
+                                    }
+                                }*/
+
+                                break;
+                            default:
+                                break;
+                        }
+                    }
+                });
+
+            });
+        }(jQuery, YDUI);
+
+        //关闭结算层
+        $(".pay_mode_tit").click(function () {
+            $(".pay_mode_bg").attr("style", "display:none");
+            $(".pay_mode").attr("style", "height:0px;transition: height 0.5s;-moz-transition: height 0.5s; -webkit-transition: height 0.5s;-o-transition: height 0.5s;");
+            window.location.href = 'my-order-pd.html?typeid=1';
+        });
+        //选择支付方式
+
+        $(".pay-box .order_line").click(function () {
+            var index = $(this).index();
+            $(".pay_mode .order_line").removeClass("pitchon");
+            $(this).addClass("pitchon");
+            if (index == 3 || index == 4) {
+                $(".balance,.integral").removeClass("pitchon1").addClass('pitchon2');
+            }
+        });
+
+        /*	$(".balance").click(function() {
+         debugger
+         $(this).toggleClass("pitchon1").toggleClass('potchon2');
+         });
+         $('.integral').click(function () {
+         $(this).toggleClass("pitchon1").toggleClass('potchon2');
+         })*/
+
+        $(".balance").click(function () {
+            if ($(this).hasClass("pitchon2")) {
+                $(this).removeClass("pitchon2").addClass("pitchon1");
+//                $(this).next().removeClass('pitchon1').addClass('pitchon2');
+            } else {
+                $(this).removeClass("pitchon1").addClass("pitchon2");
+                // $(this).next().removeClass('pitchon2').addClass('pitchon1');
+            }
+            $(".pay_mode .order_line").eq(0).addClass("pitchon").siblings().removeClass("pitchon");
+            //$(this).siblings('div').toggleClass("pitchon1");
+
+        });
+        $(".integral").click(function () {
+            if ($(this).hasClass("pitchon2")) {
+                $(this).removeClass("pitchon2").addClass("pitchon1");
+//                $(this).prev().removeClass('pitchon1').addClass('pitchon2');
+            } else {
+                $(this).removeClass("pitchon1").addClass("pitchon2");
+                // $(this).prev().removeClass('pitchon2').addClass('pitchon1');
+            }
+            $(".pay_mode .order_line").eq(0).addClass("pitchon").siblings().removeClass("pitchon");
+        });
+        /* $(".balance,.integral").click(function() {
+         $(this).toggleClass("pitchon2");
+         });
+
+         $(".balance,.integral").click(function() {
+         $(this).toggleClass("pitchon1");
+         $(".pay_mode .order_line").eq(0).addClass("pitchon").siblings().removeClass("pitchon");
+         })*/
+
+        //查看商品详情
+        $(".order_cot").click(function () {
+            location.href = "sto-detail.html"
+        });
+        //判断是否是在微信app内部
+        function is_weixin() {
+            var ua = navigator.userAgent.toLowerCase();
+            if (ua.match(/MicroMessenger/i) == "micromessenger") {
+                return true;
+            } else {
+                return false;
+            }
+        }
+
+        function is_wxxcx(){
+           return window.__wxjs_environment === 'miniprogram';
+        }
+    });
+</script>
+</body>
+
+</html>

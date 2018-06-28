@@ -1,0 +1,416 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no"/>
+    <link rel="stylesheet" type="text/css" href="css/index.css"/>
+    <link rel="stylesheet" type="text/css" href="css/hp.css"/>
+    <link rel="stylesheet" href="css/yddemo.css" />
+    <link rel="stylesheet" href="css/ydui.css" />
+    <script type="text/javascript" src="js/jquery-1.11.1.min.js"></script>
+    <script type="text/javascript" src="js/ydui.js"></script>
+    <script type="text/javascript" src="js/ydui.flexible.js"></script>
+    <script type="text/javascript" src="js/default.js"></script>
+    <title>转账</title>
+    <style type="text/css">
+        .canSent {
+            background-color: #ff5a3a;
+        }
+        .opt {
+            z-index: 0!important;
+        }
+        .confirmPassword {
+            width: 300px;
+            height: 180px;
+            background-color: white;
+            position: absolute;
+            left: 0;
+            right: 0;
+            margin: auto;
+            top: -70px;
+            bottom: 0;
+            border-radius: 10px;
+            display: none;
+            z-index: 12;
+        }
+
+        .password-num {
+            border: 1px solid #cac7c7;
+            height: 52px;
+            margin: 0px 14px;
+            width: 90%;
+        }
+
+        .password-num span {
+            display: inline-block;
+            width: 75px;
+            margin-top: 10px;
+            height: 32px;
+            margin-left: 10px;
+            line-height: 32px;
+            border-right: 1px solid #cac7c7;
+        }
+        .qr-cge{
+            font-size: 16px!important;
+        }
+        .change-tc-fot button{
+            flex: 1;
+            outline: none;
+            background-color: white;
+            font-size: 17px;
+        }
+        /*safe input*/
+
+        .box-password {
+            font-size: 16px;
+        }
+
+        .second-cge {
+            width: 210px;
+        }
+
+        .second-sto {
+            width: 100%;
+            float: none;
+        }
+        .g-scrollview {
+            display: none;
+            height: auto;
+        }
+
+        .m-loading {
+            border-radius: 4px;
+            color: #FFF;
+            background-color: rgba(40, 40, 40, 0.8);
+            -webkit-animation: zoomIn .1s ease forwards;
+            animation: zoomIn .1s ease forwards;
+            display: -webkit-box;
+            display: -webkit-flex;
+            display: -ms-flexbox;
+            display: flex;
+            -webkit-box-align: center;
+            -webkit-align-items: center;
+            -ms-flex-align: center;
+            align-items: center;
+            padding: 0 23px 0 24px;
+            height: 48px;
+            width: 50%;
+            position: absolute;
+            left: 24%;
+            top: 42px;
+            display: none;
+        }
+
+        .m-loading .loading-icon {
+            width: 28px;
+            height: 28px;
+            background: url(img/scroll.png) no-repeat;
+            background-size: 28px 28px;
+            -webkit-animation: rotate-loading 0.45s linear forwards infinite;
+            animation: rotate-loading 0.45s linear forwards infinite;
+            margin-right: 10px;
+        }
+
+        .m-loading .loading-txt {
+            font-size: 15px;
+            color: #FFF;
+            max-width: 140px;
+            overflow: hidden;
+            white-space: nowrap;
+            text-overflow: ellipsis;
+        }
+    </style>
+
+</head>
+
+<body>
+<div class="container">
+    <header class="bod-show">
+        <img class="nav-left" src="img/fanhui.png" onclick="javascript:history.back(-1)"/> 转账
+    </header>
+
+    <div class="content">
+        <div class="zz-user">
+            收款账户
+            <input type="number" class="ipt" id="use-num" autocomplete="off" autocomplete="new-password" placeholder="输入已注册的手机号码"/>
+        </div>
+        <div class="zz-tips" id="haveName">
+
+        </div>
+        <div class="change-mon">
+            <p class="use-tit">转账金额/元：</p>
+            <input type="number" class="e-num ipt" id="txje" autocomplete="off" autocomplete="new-password" placeholder="0"/>
+            <div class="bottom"></div>
+            <div class="sur bod-no">
+						<span class="sur-left">
+							你当前可用余额：<span class="yel" id="canUse">0</span>
+						</span>
+            </div>
+        </div>
+        <div class="qr-btn ma-top">
+            <!--<input type="button" class="qr-cge" id="confirmZ" value="确认转账"/>-->
+        <button class="qr-cge" id="confirmZ">确认转账</button>
+        </div>
+
+    </div>
+    <!--支付密码-->
+    <div class="confirmPassword" id="confirmPassword">
+        <div class="change-tc-tit">
+            <p class="tc-tit-p">输入支付密码</p>
+        </div>
+        <div class="change-tc-body">
+            <div class="password-num">
+                <div style="float: left;margin-top: 15px;margin-left: 10px;">输入密码</div>
+                <input type="password" name="password" maxlength="6" style="width: 55%;float: left;margin-top: 15px;margin-left: 10px;"/>
+            </div>
+        </div>
+        <div class="change-tc-fot">
+            <!--<input type="button" class="tc-fot-left" id="" value="取消"/>-->
+            <button class="tc-fot-left">取消</button>
+            <!--<input type="button" class="tc-fot-rgt" id="" value="确认" data-type="1"/>-->
+            <button class="tc-fot-rgt">确认</button>
+        </div>
+    </div>
+    <div class="opt"></div>
+    <!--输入密码-->
+    <section class="g-scrollview">
+
+        <!--<aside class="demo-tip">
+                <p>该插件暂不支持Data API方式调用，Javascript API方式包含下列方法和事件：</p>
+                <p>1. [open]：打开键盘方法</p>
+                <p>2. [close]：关闭键盘方法</p>
+                <p>3. [done.ydui.keyboard]：六位密码输入完毕后执行</p>
+            </aside>-->
+
+        <!--<div class="m-button demo-pitch">
+                <a href="javascript:;" class="btn-block btn-primary" id="J_OpenKeyBoard">打开</a>
+            </div>-->
+
+        <div class="m-keyboard" id="J_KeyBoard">
+            <div class="m-loading">
+                <div class="loading-icon">
+                </div>
+                <div class="loading-txt">验证支付密码</div>
+            </div>
+
+            <!-- 自定义内容区域 -->
+            <div style="text-align: right;padding: .15rem .8rem 0;">
+                <a href="" style="color: #666;font-size: .24rem;">忘记密码</a>
+            </div>
+            <!-- 自定义内容区域 -->
+        </div>
+    </section>
+</div>
+<script type="text/javascript">
+    var params = {
+        type: GetUrlString("type"),
+        realName: false,
+        realMoney: false
+    };
+    var zhuan = {
+        type: GetUrlString("type"),
+        payPassword: ''
+    };
+    $(function () {
+        if (params.type == 0) {
+            $(".use-tit").html("转账余额/元：");
+        }
+        if (params.type == 1) {
+            $(".use-tit").html("转账e点：");
+        }
+        if (params.type == 2) {
+            $(".use-tit").html("转账积分：");
+        }
+        getInfo("post", ajaxUrl + "/front/clients/selectAssets?token=" + token, {
+            type: params.type
+        }, getDetail);
+
+        var textArea = document.getElementById("use-num"); //手机号
+        textArea.oninput = function () {
+            textArea.value = parseInt(textArea.value);
+            var num = textArea.value;
+            if (num.length == 11) {
+                getInfo("post", ajaxUrl + "/front/ClientTransfer/payeeSubInfo?token=" + token, {
+                    payeeAccount: num
+                }, haveNameReq);
+            } else if (num.length > 11) {
+                textArea.value = num.slice(0, 11);
+            } else if (num.length < 11) {
+                params.realName = false;
+                $("#haveName").html("*电话号码格式不正确");
+            }
+            zhuan.payeeAccount = num;
+            getvalue(params.realMoney, params.realName);
+        };
+
+    });
+
+    $(function () {
+        var transNum = document.getElementById("txje"); //转账数量
+        transNum.oninput = function () {
+            transNum.value = parseInt(transNum.value);
+            var num = transNum.value;
+            if (num > 0 && (num < params.canUse)) {
+                params.realMoney = true;
+            }
+            else if (num > params.canUse) {
+                tip.flag('你没有那么多！', 'error');
+                transNum.value = "";
+                params.realMoney = false;
+            }
+            zhuan.amount = num;
+            getvalue(params.realMoney, params.realName);
+        };
+
+        // 弹出支付密码
+      /*  $("#confirmZ").click(function () {
+            if($('.qr-cge').hasClass("canSent")){
+                $("#confirmPassword,.opt").fadeIn(500);
+            }
+        });*/
+
+        $('.tc-fot-rgt').click(function () { /*弹窗确定*/
+            var op = true;
+            var pasw = $(this).parent().siblings(".change-tc-body").find("input[name=password]").val().trim();
+            if (pasw.length == 6) {
+                reg = /^\d{6}$/;
+                if (!reg.test(pasw)) {
+                    tip.flag('请输入6位数字支付密码！', 'error');
+                    op = false;
+                } else {
+                    op = true;
+                }
+            } else {
+                tip.flag('请输入6位数字支付密码！', 'error');
+                op = false;
+            }
+
+            // 密码ok
+            if (op) {
+                zhuan.payPassword = pasw;
+                if ($('#confirmZ').hasClass("canSent")) {
+                    getInfo("post", ajaxUrl + "/front/ClientTransfer/confirmTransfer?token=" + token, zhuan, confirmTransferReq);
+                }
+            }
+        });
+        // close the zf
+
+
+        $('.tc-fot-left').click(function() { /*本轮兑出弹窗*/
+            $('.change-tc,.opt,.change-next-tc,#confirmPassword').fadeOut(500);
+            $("input[name=password]").val("");
+            $("input[name=changeFw]").val("");
+        });
+
+        !function($, ydui) {
+            //密码支付
+            var dialog = ydui.dialog;
+
+            var $keyboard = $('#J_KeyBoard');
+
+            // 初始化参数
+            $keyboard.keyBoard({
+                disorder: false, // 是否打乱数字顺序
+                title: '帆恒安全键盘' // 显示标题
+            });
+            //输入密码  成功后的操作
+            function payInputPassWord() {
+                $('.g-scrollview').css('display', 'block');
+                $keyboard.keyBoard('open');
+
+                // 六位密码输入完毕后执行
+                $keyboard.on('done.ydui.keyboard', function(ret) {
+                    zhuan.payPassword = ret.password;
+                    if ($('#confirmZ').hasClass("canSent")) {
+                        $.post(ajaxUrl + "/front/ClientTransfer/confirmTransfer?token=" + token, zhuan, function(r) {
+                            $('.m-loading').css('display', 'flex');
+                            if(r.code == 300) {
+                                // 模拟AJAX校验密码
+                                setTimeout(function() {
+                                    // 关闭请求中提示框
+                                    $('.m-loading').css('display', 'none');
+                                    // 显示错误信息
+                                    $keyboard.keyBoard('error', r.msg);
+                                }, 1500);
+                                // 关闭键盘
+                                // $keyboard.keyBoard('close');
+
+                            } else {
+                                setTimeout(function() {
+                                    // 关闭请求中提示框
+                                    $('.m-loading').css('display', 'none');
+                                    // 显示错误信息
+                                    confirmTransferReq();
+                                }, 1500);
+
+                            }
+                        }, 'json')
+                    }
+
+
+                });
+            };
+            // 打开键盘
+            $("#confirmZ").click(function () {
+                if($('.qr-cge').hasClass("canSent")){
+                    payInputPassWord();
+                }
+            });
+
+        }(jQuery, YDUI);
+
+    });
+
+    function getDetail(r) { //可用余额
+        if (params.type == 0) {
+            params.canUse = r.cashAmount;
+            $("#canUse").html(r.cashAmount + "元");
+        }
+        if (params.type == 1) {
+            params.canUse = r.edian;
+            $("#canUse").html(r.edian + "e点");
+        }
+        if (params.type == 2) {
+            params.canUse = r.score;
+            $("#canUse").html(r.score + "积分");
+        }
+
+    }
+
+    function haveNameReq(r) { //验证是否实名
+
+        if (typeof(r.verify) != 'undefined') {
+            params.realName = true;
+            if (r.verify === 'true') {
+                var haveName =r.relName;
+                $("#haveName").html("即将转账给：" + haveName);
+            } else {
+                $("#haveName").html("*请注意：该用户未实名制！");
+            }
+        } else {
+            $("#haveName").html("*该用户不存在或未注册！");
+        }
+        getvalue(params.realMoney, params.realName);
+    }
+
+    function getvalue(realName, realMoney) {//判断是否能转账
+        if (realMoney && realName) {
+            $('.qr-cge').addClass("canSent");
+        } else {
+            $('.qr-cge').removeClass("canSent");
+        }
+    }
+
+
+    function confirmTransferReq(r) {
+        tip.flag('转账成功！', 'success');
+        setTimeout(function () {
+            javascript:history.back(-1);
+        }, 1000)
+    }
+</script>
+</body>
+
+</html>

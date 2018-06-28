@@ -1,0 +1,728 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="UTF-8">
+	<meta name="renderer" content="webkit">
+	<meta content="yes" name="apple-mobile-web-app-capable" content="yes" />
+	<meta content="black" name="apple-mobile-web-app-status-bar-style" />
+	<meta content="telephone=no" name="format-detection"/>
+	<meta http-equiv="X-UA-Compatible" content="IE=11; IE=10; IE=9; IE=8; IE=7; IE=EDGE,Chrome=1">
+	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no" />
+	<link rel="stylesheet" type="text/css" href="css/index.css" />
+	<link rel="stylesheet" href="css/hp.css" />
+	<link rel="stylesheet" href="./lib/layer_mobile/need/layer.css"/>
+	<!--flex 布局-->
+	<script src="js/flexible.js" type="text/javascript"></script>
+	<script src="js/jquery-1.11.1.min.js" type="text/javascript" charset="utf-8"></script>
+	<script src="js/default.js"></script>
+	<script type="text/javascript" src="js/jquery.downCount.js"></script>
+	<script src="js/template.js"></script>
+	<script src="js/template-helper.js"></script>
+	<script type="text/javascript" src="./lib/layer_mobile/layer.js"></script>
+	<title>拼单订单</title>
+	<style>
+		.all-fr .webJump {
+			float: right;
+			margin-left: 5px;
+			margin-top: 5px;
+			width: 64px;
+			height: 20px;
+			border-radius: 10px;
+			border: solid 1px #9d9d9d;
+			background: none;
+			font-size: 12px;
+			color: #8a8a8a;
+			line-height: 18px;
+		}
+
+		.all-fr .webJump:hover {
+			border-color: #ff5a3a;
+			color: #ff5a3a;
+		}
+
+		.pingjia {
+			position: absolute;
+			top: 45px;
+			right: 15px;
+			z-index: 20000;
+			float: right;
+			width: 64px;
+			height: 20px;
+			border-radius: 10px;
+			border: solid 1px #9d9d9d;
+			background: none;
+			font-size: 12px;
+			color: #8a8a8a;
+			line-height: 18px;
+		}
+
+		.sort-box ul li {
+			padding: 0 9px;
+		}
+
+		/*选项卡--start--*/
+		.tab-nav {
+			display: -webkit-box;
+			display: -webkit-flex;
+			display: -ms-flexbox;
+			display: flex;
+			position: relative;
+			z-index: 0;
+		}
+		.tab-nav-item.tab-active {
+			color: #FF5E53;!important;
+		}
+		.tab-nav-item {
+			height: 30px;
+			line-height: 30px;
+			font-size: 16px;
+			width: 1%;
+			-webkit-box-flex: 1;
+			-webkit-flex: 1;
+			-ms-flex: 1;
+			flex: 1;
+			position: relative;
+			text-align: center;
+			color: #585858;
+			display: block;
+			background-color: #FFF;
+		}
+		/*选项卡--end--*/
+
+
+		.order_img {
+			/* width: 30%; */
+			/* height: 98px; */
+			float: left;!important;
+			margin-left: 0.4266667rem;!important;
+			margin-top: 0.66667rem;!important;
+		}
+		/*loading--start--*/
+		.loading-time-box {
+			float: left;
+			font-size: 0.16rem;
+			margin-top: 0.1rem;
+			/*width: 3.733333rem;*/
+		}
+
+		.price-time {
+			font-size: 0.30rem;
+			/*padding: 0 0.21333rem;*/
+		}
+
+		.price-time span {
+			font-size: 0.30rem;
+			height: 0.5333rem;
+			line-height: 0.5333rem;
+		}
+
+		.price-time ul {
+			float: left;
+		}
+
+		.price-time-loading {
+			margin-top: 0.15rem;
+		}
+		.status-bar[data-v-5d44c782] {
+			position: relative;
+			box-sizing: border-box;
+			width: 3.2rem;
+			height: 0.36rem;
+			line-height: 0.3733333rem;
+			border-radius: 0.186666667rem;
+			color: #F44336;
+			border: 1px solid #ff5e53;
+			/* background: url(./img/ad_imgs/beijing.png) repeat-x; */
+			background-size: contain;
+			text-align: center;
+			overflow: hidden;
+		}
+
+		.status-progress[data-v-5d44c782] {
+			border-radius: 0.186666667rem;
+			position: absolute;
+			top: 0;
+			left: 0;
+			height: 100%;
+			min-width: .13rem;
+			/* background: url(/img/ad_imgs/jindu.png) repeat-x; */
+			background-size: contain;
+		}
+
+		.status-num[data-v-5d44c782] {
+			font-size: 0.32rem;
+			position: absolute;
+			left: 0.8rem;
+		}
+
+		.status-soldrate[data-v-5d44c782] {
+			font-size: 0.34rem;
+			position: absolute;
+			left: 1.3333rem;
+		}
+
+		.status-msg {
+			position: relative;
+			text-indent: 1.10rem;
+			/*width: 2.32rem;*/
+		}
+
+		.status-msg:before {
+			content: attr(text);
+			line-height: 0.3733333rem;
+			height: 0.3733333rem;
+			position: absolute;
+			left: 0;
+			font-size: 0.3rem;
+			vertical-align: middle;
+		}
+
+		.status-msg:after {
+			content: attr(text);
+			position: absolute;
+			left: 0;
+			/* width: 100%; */
+			/* height: 38px; */
+			height: 0.3733333rem;
+			line-height: 0.3733333rem;
+			white-space: nowrap;
+			overflow: hidden;
+			transition: width 1s ease;
+			width: 57%;
+			color: red;
+			font-size: 0.3rem;
+			vertical-align: middle;
+			/* background: #0BF; */
+			background: url(./img/ad_imgs/jindu.png) repeat-x;
+		}
+
+		.pin-tuan {
+			font-style: italic;
+			font-weight: 600;
+			background-color: #ffffff;
+			width: 1.86666rem;
+			height: 0.8rem;
+			margin-top: 0.37333rem;
+			border-radius: 4px;
+			margin-left: 0.2666rem;
+			color: orangered;
+		}
+
+		.own-margin-left {
+			padding-left: 0.4rem;
+		}
+
+		/*loading--end--*/
+
+	</style>
+</head>
+<body>
+<div class="container">
+	<header>
+		<div class="sto-nav-left">
+			<img src="img/fanhui.png" alt="" onclick="window.location.href='my_center.html';" />
+		</div>
+		<div class="sto-nav-sear">
+			拼单订单
+		</div>
+	</header>
+	<div class="content">
+		<ul class="tab-nav">
+			<li class="tab-nav-item tab-active" data-id="online-order">线上订单</li>
+			<li class="tab-nav-item" data-id="offline-order">线下订单</li>
+		</ul>
+		<div>
+			<div id="online-order">
+				<div class="sort-box bod-show">
+					<div class="sort-box bod-show bod-wid">
+						<ul style="padding-left: 15px;">
+							<li typeid="0" count="1" class="on">全部订单</li>
+							<li typeid="1" count="1">待付款</li>
+							<!--<li typeid="2" count="1">待售罄</li>-->
+							<li typeid="5" count="1">拼单中</li>
+							<!--<li typeid="2" count="1">待发货</li>-->
+							<li typeid="3" count="1">待收货</li>
+							<li typeid="4" count="1">待评价</li>
+						</ul>
+					</div>
+				</div>
+				<div id="order-list">
+				</div>
+				<div class="right-buy-box">
+				</div>
+			</div>
+			<div id="offline-order" style="display: none;">
+				<div class="sort-box bod-show">
+					<div class="sort-box bod-show bod-wid">
+						<ul style="padding-left: 15px;">
+							<li typeid="0" count="1" class="on">全部订单</li>
+							<li typeid="1" count="1">待付款</li>
+							<li typeid="5" count="1">拼单中</li>
+							<li typeid="3" count="1">待消费</li>
+							<li typeid="4" count="1">待评价</li>
+						</ul>
+					</div>
+				</div>
+				<div id="offOrder-list">
+				</div>
+				<div class="right-buy-box">
+				</div>
+			</div>
+		</div>
+
+	</div>
+</div>
+<script type="text/template" id="order-list-con">
+	{{each OrdersCollage as listA i}}
+	<div class="order_details detail" typeid="{{listA.type}}">
+		<div class="order_tit clearfix">
+			<span class="wddd-name webJump" jumpId="{{listA.shopId}}" jumpType="6">{{listA.shopName}}</span>
+			<span class="triangle-right"></span>
+
+
+
+			{{if listA.isType==1}}
+
+				{{if listA.status==0}}
+				<span class="hasdon">待付款</span>
+				{{/if}}
+
+				{{if listA.status==2}}
+				<span class="hasdon">待发货</span>
+				{{/if}}
+
+				{{if listA.status == 3}}
+				<span class="hasdon">待收货</span>
+				{{/if}}
+				{{if listA.status==4}}
+				<span class="hasdon">待评价</span>
+				{{/if}}
+				{{if listA.status==5}}
+				<span class="hasdon">已完成</span>
+				{{/if}}
+				{{if listA.status==6}}
+				<span class="hasdon">拼单失败</span>
+				{{/if}}
+
+
+			{{else if listA.isType == 2}}
+
+				{{if listA.status==0}}
+				<span class="hasdon">待付款</span>
+				{{/if}}
+				{{if listA.status==2}}
+				<span class="hasdon">待发货</span>
+				{{/if}}
+				{{if listA.status == 3}}
+				<span class="hasdon">待消费</span>
+				{{/if}}
+				{{if listA.status==4}}
+				<span class="hasdon">待评价</span>
+				{{/if}}
+				{{if listA.status==5}}
+				<span class="hasdon">已完成</span>
+				{{/if}}
+				{{if listA.status==6}}
+				<span class="hasdon">拼单失败</span>
+				{{/if}}
+
+			{{/if}}
+
+		</div>
+		<div class="merchandise no-bom webJump" jumpId="{{listA.orderId}}" jumpType="7" style="position:relative;">
+			<div class="wddd_img order_img">
+				<div style="background:url({{listA.productImg}}) no-repeat center;background-size:cover; height: 99px;width: 100%;" alt=""></div>
+			</div>
+			<div class="order_cot wddd-cot" style="padding-bottom: 8px;" productId="{{listA.productId}}">
+				<div class="pro_tit">
+					{{listA.productName}}
+				</div>
+				<div class="pro_par">
+					参数:{{each listA.spectName as listC i}}
+					<span>{{listC}}</span>
+					{{/each}}
+				</div>
+
+				<!--进度条--start-->
+				{{if listA.isSuccess == 1}}
+
+
+
+				{{if listA.isType ==1}}
+
+
+				{{else if listA.isType == 2}}
+				<div style="padding-bottom: 8px;">
+					消费码： <span>{{listA.code}}</span>
+				</div>
+				{{/if}}
+
+
+				{{else if listA.isSuccess == 2}}
+
+				<div class="loading-time-box">
+					<div class="price-time"><span style="float: left;">距结束：</span>
+						{{if listA.fightAloneTime!==null}}
+						<ul class="countdown countdown{{listA.productId}}"  data-clock="{{listA.fightAloneTime}}">
+							<li style="display: none;">
+								<span class="days">00</span>
+							</li>
+							<li class="seperator" style="display: none;">.</li>
+							<li><span class="hours">00</span>
+							</li>
+							<li class="seperator">:</li>
+							<li><span class="minutes">00</span>
+							</li>
+							<li class="seperator">:</li>
+							<li><span class="seconds">00</span>
+							</li>
+						</ul>
+						<div style="clear:both;"></div>
+						{{/if}}
+					</div>
+					<div>
+						<div class="price-time-loading">
+							<div data-v-5d44c782="" class="status-bar">
+								<div data-v-5d44c782="" class="status-progress"></div>
+								<div data-v-5d44c782="" class="status-msg status-msg-h{{listA.productId}}" data-total="{{listA.fightAloneNumber}}"
+									 data-last="{{listA.areadFightAlone}}" id="myStatusLoading{{listA.productId}}"
+									 text="{{listA.areadFightAlone}}/{{listA.fightAloneNumber}}">
+									<!-- <div data-v-5d44c782="" class="status-num">10</div>
+                                     <span data-v-5d44c782="" class="status-soldrate">200</span>-->
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+
+				{{/if}}
+
+
+				<!--进度条--end-->
+				<div class="pro_price wddd-price" style="margin-top: 0.8rem;">
+					<span>¥{{listA.productAmount}}</span>
+					<span>x{{listA.productCount}}</span>
+				</div>
+			</div>
+		</div>
+		<div class="wddd-all">
+			<div class="all-lf">
+				<p>
+					<span>共{{listA.productCount}}件商品</span>
+					<!--<span>送{{listA.eDian}}e点</span>-->
+				</p>
+				<p>
+					<span>邮费：共{{listA.orderExpfee}}元</span>
+				</p>
+
+			</div>
+			<div class="all-fr">
+				<p style="text-align: right;">
+					<span>合计：</span>
+					<span>¥{{listA.orderAmount}}</span>
+				</p>
+				{{if listA.status==6}}
+				<input type="button" value="再次购买" class="webJump" jumpId="{{listA.orderId}}" jumpType="1" />
+
+				<input type="button" value="再次购买" class="webJump" jumpId="{{listA.orderId}}" jumpType="1" />
+				{{/if}}
+
+				{{if listA.status==0}}
+				<input type="button" value="取消订单" class="webJump" jumpId="{{listA.orderId}}" jumpType="8" />
+				<input type="button" value="去付款" class="webJump" jumpId="{{listA.orderId}}" jumpType="2" />
+				{{/if}}
+				{{if listA.type!=3}}
+				{{if listA.status==3}}
+				<input type="button" value="查看物流" class="webJump" jumpId="{{listA.orderId}}" jumpType="3" />
+				<input type="button" value="确认收货" class="webJump" jumpId="{{listA.orderId}}" jumpType="5" />
+				{{/if}}
+				{{/if}}
+			</div>
+		</div>
+	</div>
+	{{/each}}
+</script>
+
+<script>
+    var pageNo = 1,
+        type = 0,
+        webType = 1, // 线上订单：1； 线下订单2；
+        totleHeight;
+    var params = { //数据
+        type: type,
+        webType: webType,
+        pageNo: pageNo,
+        pageSize: 3
+    };
+    var op = [];
+    $(function() {
+
+
+        // 切换选项卡
+        $('.tab-nav-item').click(function () {
+            listLoadingLock = false; //初始化页面没有被锁定，，可以滚动
+            var ObjId = $(this).data('id');
+            if($(this).hasClass('tab-active')){
+                return;
+            }else{
+                if(ObjId === 'offline-order'){
+                    params.webType = 2;  // 2 线下
+                    $(this).addClass('tab-active');
+                    $(this).siblings().removeClass('tab-active');
+                    $('#'+ObjId).show().siblings().hide();
+                    getList("#offOrder-list", 'post', ajaxUrl + '/front/ordersCollage/orderCollageListFront?token=' + token, params, orderReqNow);
+
+				}else{
+                    params.webType = 1; // 1 线上
+                    $(this).addClass('tab-active');
+                    $(this).siblings().removeClass('tab-active');
+                    $('#'+ObjId).show().siblings().hide();
+                    getList("#order-list", 'post', ajaxUrl + '/front/ordersCollage/orderCollageListFront?token=' + token, params, orderReqNow);
+
+				}
+            }
+        });
+
+        if(GetUrlString('typeid') != "") {
+            type = GetUrlString('typeid');
+        }
+        params.type = type;
+        $(".sort-box ul li").each(function() {
+            op.push(1);
+            if($(this).attr("typeid") == type) {
+//                $(this).attr("count", 2);
+                $(this).addClass('on').siblings().removeClass('on');
+                $(this).css('color', '#ff5a3a').siblings().css('color', '#8a8a8a');
+            }
+        });
+        //loading层
+        layer.open({type: 2});
+        getList("#order-list", 'post', ajaxUrl + '/front/ordersCollage/orderCollageListFront?token=' + token, params, orderReqNow);
+
+        //滚动加载数据
+        $(".content").scroll(function() {
+            if(op[type] != 0) {
+                totleHeight = $(".content").height() + $(".content").scrollTop();
+                if(($(".content")[0].scrollHeight == totleHeight) && !listLoading) {
+                    op[type] += 1;
+                    params.pageNo = op[type];
+                    getList("#order-list", "post", ajaxUrl + '/front/ordersCollage/orderCollageListFront?token=' + token, params, orderReqNow);
+//                    connectDisplay(".detail", "typeid", type);
+                }
+            }
+        });
+
+        //导航栏点击切换
+        $(".sort-box ul li").click(function() {
+            $("#offOrder-list").empty();
+            $("#order-list").empty();
+//            params.pageNo = 1;
+            $('#loadingIcon').remove();
+            //loading层
+            // layer.open({type: 2});
+            listLoading = false;
+            listLoadingLock = false; //初始化页面没有被锁定，，可以滚动
+            type = $(this).attr('typeid');
+//            params.pageNo = op[type];
+            params.pageNo = 1;
+            params.type = type;
+            $(this).addClass('on').siblings().removeClass('on');
+            $(this).css('color', '#ff5a3a').siblings().css('color', '#8a8a8a');
+			var itemId = '';
+			$('.tab-nav-item').each(function() {
+                op.push(1);
+                if($(this).hasClass("tab-active")) {
+               	itemId = $(this).data('id');
+                }
+            });
+
+			if(itemId === 'offline-order'){
+                if($(this).attr("count") == 1){
+                    var loadingHtml = '<p id="loadingIcon" style="text-align: center; margin-top: 12px; font-size: 0.32rem;">加载中...</p>';
+                    $('#order-list').append(loadingHtml);
+                    getList("#offOrder-list", 'post', ajaxUrl + '/front/ordersCollage/orderCollageListFront?token=' + token, params, orderReqNow);
+//                connectDisplay(".detail", "typeid", type);
+//                $(this).attr("count", 2);
+                } else {
+//                connectDisplay(".detail", "typeid", type);
+                }
+			}else{
+                if($(this).attr("count") == 1){
+                    var loadingHtml = '<p id="loadingIcon" style="text-align: center; margin-top: 12px; font-size: 0.32rem;">加载中...</p>';
+                    $('#order-list').append(loadingHtml);
+                    getList("#order-list", 'post', ajaxUrl + '/front/ordersCollage/orderCollageListFront?token=' + token, params, orderReqNow);
+//                connectDisplay(".detail", "typeid", type);
+//                $(this).attr("count", 2);
+                } else {
+//                connectDisplay(".detail", "typeid", type);
+                }
+			}
+
+
+        });
+
+        //回调处理数据
+        function orderReqNow(obj, r) {
+//            if($(obj).children())
+            $(obj).find('#loadingIcon').remove();
+            $(obj).find('.footer_box').remove();
+            var html = "<div class='footer_box detail' style='height: 135px;' typeid=" + type + ">";
+            html += "<div class = 'no-more' >";
+            html += "<img src = 'img/icon-jiazaipng.png' />";
+            html += "<p > 没有更多了！！！ </p>";
+            html += "</div> </div>";
+            if(r.code ==200){
+                var length = r.OrdersCollage.length;
+                if(length != 0) {
+                    var html1 = template('order-list-con', r);
+                    var countDownArr=[];
+                    $.each(r.OrdersCollage, function (key, val) {
+
+                        countDownArr.push('countdown' + val.productId);
+                    });
+
+                    if (currentpage === 1) {
+                        $(obj).append(html1);
+                        //倒计时
+                        countDownEvent(countDownArr);
+
+                    } else {
+                        $(obj).append(html1);
+                        //倒计时
+                        countDownEvent(countDownArr);
+                    }
+
+//                $(obj).append(html1);
+                } else if(length == 0 && op[type] == 1) {
+                    $(obj).append(html);
+                    var countDownArr=[];
+                    $.each(r.OrdersCollage, function (key, val) {
+                        countDownArr.push('countdown' + val.productId);
+                    });
+                    if (currentpage === 1) {
+                        $(obj).html(html);
+                        //倒计时
+                        countDownEvent(countDownArr);
+                    } else {
+                        $(obj).append(html);
+                        //倒计时
+                        countDownEvent(countDownArr);
+                    }
+                } else {
+                    listLoadingLock = true;
+                    op[type] = 1;
+                    $(obj).append(html);
+                }
+            }else if(r.code == 300) {
+                listLoadingLock = true;
+                op[type] = 1;
+//                params.pageNo =1;
+            }
+			/*else if(r.code == 300){
+			 $(obj).children().remove(); // 清空容器
+			 var loadingHtml = '<p id="loadingIcon"  style="text-align: center;margin-top: 12px;font-size: 0.32rem;">'+r.msg+'...</p>';
+			 $(obj).append(loadingHtml);
+			 }*/
+
+            layer.closeAll();
+            //页面跳转
+            $(".webJump").on("click", function() {
+                var id = $(this).attr("jumpId");
+                var jumpType = $(this).attr("jumpType");
+                var proId = $(this).attr("jumpProId");
+                var seleteDetail = $(this).parents(".detail");
+                switch(jumpType) {
+                    case '1': //再次购买
+                        getInfo('post', ajaxUrl + '/front/orders/buyAgain?token=' + token, {
+                            orderId: id
+                        }, repOrderReq);
+
+                    function repOrderReq(r) {
+                        var catId = r.cartIds;
+                        tip.flag('再次购买成功！马上跳转去支付！', 'success');
+                        setTimeout(function() {
+                            window.location.href = "confirm_order_pd.html?sureArr=" + catId;
+                        }, 1000)
+                    }
+                        break;
+                    case '2': //去支付
+                        window.location.href = "returnPayOrder_pd.html?orderId=" + id;
+                        break;
+                    case '3': //查看物流
+                        window.location.href = "logisticsTracking.html?orderId=" + id;
+                        break;
+                    case '4': //延长收货
+                        window.location.href = "extended-delivery.html?id=" + id;
+                        break;
+                    case '5': //确认收货
+                        getInfo('post', ajaxUrl + '/front/orders/Receive?token=' + token, {
+                            orderId: id
+                        }, shouReq);
+
+                    function shouReq(r) {
+                        tip.flag('确认收货成功！立即去评价！', 'success');
+                        setTimeout(function() {
+                            window.location.href = "my-order-pd.html?typeid=" + 4;
+                        }, 1000)
+                    }
+                        break;
+                    case '6': //店铺
+                        window.location.href = "shop_details.html?id=" + id;
+                        break;
+                    case '7': //订单详情
+                        window.location.href = "order-details-pd.html?id=" + id;
+                        break;
+                    case '8': //取消订单
+                        getInfo('post', ajaxUrl + '/front/orders/cancelOrders?token=' + token, {
+                            orderId: id
+                        }, cancelOrderReq);
+
+                    function cancelOrderReq(r) {
+                        tip.flag('取消订单成功！', 'success');
+                        setTimeout(function() {
+                            window.location.href = "my-order-pending.html?typeid=" + type;
+                        }, 1000);
+                    }
+                        break;
+                    case '9': //提醒发货
+                        getInfo('post', ajaxUrl + '/front/orders/remindShip?token=' + token, {
+                            orderId: id
+                        }, remindShopReq);
+
+                    function remindShopReq(r) {
+                        tip.flag('提醒发货成功！', 'success');
+                        setTimeout(function() {
+                            window.location.href = "my-order-pending.html?typeid=" + type;
+                        }, 1000);
+                    }
+                        break;
+                    default:
+
+                        break;
+                }
+            });
+        }
+
+    });
+
+    function pingjia(Id, proId) {
+        $(".webJump").unbind("click");
+        window.location.href = "order_evaluation.html?orderId=" + Id + "&proId=" + proId;
+    }
+    // 序列化倒计时插件
+    function countDownEvent(counmtDomArr) {
+        for(var i=0; i<counmtDomArr.length; i++){
+            $('.' + counmtDomArr[i]).downCount({
+//                    date: '3/15/2018 00:00:00',
+                offset: +10,
+                loadingTiao: false,
+                pdLoading: true
+            }, function () {
+                // alert('倒计时结束!');
+            });
+        }
+    }
+</script>
+</body>
+
+</html>

@@ -1,0 +1,823 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8" />
+		<title>消息</title>
+		<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no" />
+		<link rel="stylesheet" type="text/css" href="css/public.css" />
+		<link rel="stylesheet" href="css/hp.css" />
+		<script src="js/jquery-1.11.1.min.js" type="text/javascript" charset="utf-8"></script>
+		<script src="js/default.js"></script>
+		<script src="js/template.js"></script>
+		<script src="js/template-helper.js"></script>
+		<script type="text/javascript" src="js/webim.config.js" ></script>
+		<script type="text/javascript" src="js/strophe-1.2.8.js" ></script>
+		<script type="text/javascript" src="js/websdk-1.4.13.js" ></script>
+		<script type="text/javascript" src="js/adapter.js" ></script>
+		<script type="text/javascript" src="js/webrtc-1.4.12.js" ></script>
+		<script src="./js/layer.js" type="text/javascript" charset="utf-8"></script>
+		<script src="./js/md5.js" type="text/javascript" charset="utf-8"></script>
+		<!--<script src="./js/crypto-js.js" type="text/javascript" charset="utf-8"></script>-->
+		<!--<script type="text/javascript" src='./js/jmessage-sdk-web.2.6.0.min.js'></script>-->
+		<style>
+			body{
+				overflow: scroll;
+			}
+			.news_btn a {
+				color: #808080;
+			}
+			.cu-li-lf{
+				overflow: hidden;
+			}
+			.cu-li-lf img{
+				height: 100%;
+			}
+			.cu-li-lr {
+			    margin-left: 2%;
+			}
+			.cu-li-cen{
+				width: 57%;
+			}
+			.news_nav ul li{
+				width: 25%;
+			}
+			.imkefu ul{
+				margin-left: 4%;
+			}
+			.on2{
+				color: #ff5a3a !important;
+				border-bottom: 2px solid red;
+			}
+			#imke{
+				display: none;
+			}
+		</style>
+	</head>
+
+	<body>
+		<div class="container " style="background: #fff;">
+			<header class="shadow">
+				<!--复用店铺详情导航样式-->
+				<div class="news_nav">
+					<ul>
+						<li class="on2" id="imyong">客服咨询</li>
+						<li>系统消息</li>
+						<li>购一购公告</li>
+						<li id="imke">我是客服</li>
+					</ul>
+				</div>
+			</header>
+			<div class="header_box"></div>
+
+			<div class="news_cont_box">
+				<div>
+					<span id="userid" class="hidden"></span>
+					<span id="name" class="hidden"></span>
+					<span id="userImg" class="hidden"></span>
+				</div>
+				<div class="news_list_box">
+					<div class="my_customer">
+						<div class="customer-news-list">
+							<ul id="khlist">
+								<!--隐藏-->
+								<li class="clearfix">
+									<div class="cu-li-lf"><img src="img/eg-gf.png" /></div>
+									<div class="cu-li-cen">
+										<div class="cen-top">购一购商城</div>
+										<div class="cen-bom">亲~您好！。</div>
+									</div>
+									<div class="cu-li-lr">
+										<div class="lr-top">昨天</div>
+										<div class="lr-bom">5</div>
+									</div>
+									<i class="li-bottom"></i>
+								</li>
+							</ul>
+						</div>
+					</div>
+					<div class="kefu_news"></div>
+
+				</div>
+
+				<div class="news_list_box custom_news">
+					<!--复用支付成功页面分割线-->
+					<!--<div class="guess_you_like" style="margin-top: 25px;margin-bottom: 25px;"><span></span><label>没有更多啦~</label><span></span></div>-->
+				</div>
+				<script type="text/template" id="custom_news">
+					{{each cmsg as k i}}
+					<div class="news_list">
+						<div class="news_time">{{k.time}}</div>
+						<div class="news_box">
+							<a href="news-detal.html?id={{k.id}}">
+								<div class="news_tit">{{k.title}}</div>
+								<div class="news_img"><img src="{{k.img}}" alt="" /></div>
+								<div class="news_brief">{{k.content}}</div>
+							</a>
+
+						</div>
+					</div>
+					{{/each}}
+				</script>
+				
+				<script type="text/template" id="chat-con">
+					{{each as list i}}
+					<li class="clearfix" onclick="javascript:window.location.href='chat-detil-SJ.html?shopId='+{{list.id}}+">
+						<div class="cu-li-lf"><img src="{{if list.type==1}} {{list.big_img}} {{else}} {{list.notice_img}} {{/if}}" /></div>
+						<div class="cu-li-cen">
+							<div class="cen-top">{{list.name}}</div>
+							<div class="cen-bom">
+								{{if list.msg!=null}} {{list.msg.msg}} {{/if}}
+							</div>
+						</div>
+						<div class="cu-li-lr">
+							<div class="lr-top">
+								{{if list.msg!=null}} {{list.msg.time}} {{/if}}
+							</div>
+							<div class="lr-bom">{{list.number}}</div>
+						</div>
+						<i class="li-bottom"></i>
+					</li>
+					{{/each}}
+				</script>
+
+				<!--对话列表-->
+				<script type="text/template" id="chat-list">
+					{{each data as a i}}
+						<a href="chat-detil.html?shopId={{ a.id }}">
+							<li class="clearfix">
+								{{ if a.logo != null }}
+								<div class="cu-li-lf"><img src="{{a.logo}}" /></div>
+								{{ else }}
+								<div class="cu-li-lf"><img src="img/eg-gf.png" /></div>
+								{{ /if }}
+								<div class="cu-li-cen">
+									<div class="cen-top">{{ a.name }}</div>
+									<div class="cen-bom">{{ a.msg.msg }}</div>
+								</div>
+								<div class="cu-li-lr">
+									{{ if a.msg.datanumber != 0 }}
+										<div class="lr-top">{{ a.msg.datanumber }}天前</div>
+									{{ else if a.msg.dataMinute < 60 }}
+										<div class="lr-top">{{ a.msg.dataMinute }}分钟前</div>
+									{{ else if a.msg.dataMinute > 60 }}
+										<div class="lr-top">{{ a.msg.dataMinute/60 | fn:'hour' }}</div>
+									{{ /if }}
+									{{ if a.number == 0 }}
+									<div class="lr-bom" style="display: none;">{{a.number}}</div>
+									{{ else }}
+									<div class="lr-bom">{{a.number}}</div>
+									{{ /if }}
+								</div>
+								<i class="li-bottom"></i>
+							</li>
+						</a>
+					{{/each}}
+				</script>
+				
+				
+
+			<div class="news_list_box yg_news" ></div>
+				<script type="text/template" id="yg_news">
+					<div class="eg_news_banner"><img src="img/newsbanner.png" alt="" /></div>
+					<!--<div class="eg_kefu"><img src="img/kefu.png" alt="" /><span>官方客服</span></div>-->
+					{{each anno as k i}}
+					<div class="news_list">
+						<div class="news_time">{{k.time}}</div>
+						<div class="news_box">
+							<div class="news_tit">{{k.title}}</div>
+							<div class="news_brief">{{k.content}}</div>
+							<div class="news_btn">
+								<a href="news-detal.html?id={{k.id}}&locaId=2">查看详细>></a>
+							</div>
+						</div>
+					</div>
+					{{/each}}
+				</script>
+			
+				<!--我是客服-->
+				<div class="news_list_box imkefu">
+					<div id="kefuOnline"></div>
+					<ul id="imkefu">
+						
+					</ul>
+				</div>
+				
+				<script type="text/template" id="kefu-list">
+					{{each data as a i}}
+						<a href="chat-detil1.html?userId={{ a.msg.uid }}&shopId={{ a.msg.shopid }}">
+							<li class="clearfix">
+								{{ if a.headImg != null }}
+								<div class="cu-li-lf"><img src="{{a.headImg}}" style="width: 100%;" /></div>
+								{{ else }}
+								<div class="cu-li-lf"><img src="img/eg-gf.png" /></div>
+								{{ /if }}
+								<div class="cu-li-cen">
+									<div class="cen-top">{{ a.niceName }}</div>
+									<div class="cen-bom">{{ a.msg.msg }}</div>
+								</div>
+								<div class="cu-li-lr">
+									{{ if a.msg.datanumber != 0 }}
+										<div class="lr-top">{{ a.msg.datanumber }}天前</div>
+									{{ else if a.msg.dataMinute < 60 }}
+										<div class="lr-top">{{ a.msg.dataMinute }}分钟前</div>
+									{{ else if a.msg.dataMinute > 60 }}
+										<div class="lr-top">{{ a.msg.dataMinute/60 | fn:'hour' }}</div>
+									{{ /if }}
+									{{ if a.number == 0 }}
+									<div class="lr-bom" style="display: none;">{{a.number}}</div>
+									{{ else }}
+									<div class="lr-bom">{{a.number}}</div>
+									{{ /if }}
+								</div>
+								<i class="li-bottom"></i>
+							</li>
+						</a>
+					{{/each}}
+				</script>
+			
+
+			</div>
+
+			<footer>
+				<div class="hp-fot" style="height: 50px;">
+					<div>
+						<a href="index.html">
+							<img src="img/shouye.png" data-img="shouye" />
+							<span class="hp-fot-st ">首页</span>
+						</a>
+
+					</div>
+					<div>
+						<a href="classify.html">
+							<img src="img/fenlei.png" data-img="fenlei" />
+							<span class="hp-fot-st">分类</span>
+						</a>
+					</div>
+					<div>
+						<a href="off_line.html">
+							<img src="img/fuli.png" data-img="news"/>
+							<span class="hp-fot-st">线下</span>
+						</a>
+
+					</div>
+					<div>
+						<a href="news.html">
+							<img src="img/news-x.png" data-img="news" />
+							<span class="hp-fot-st fot-cor">消息</span>
+						</a>
+
+					</div>
+					<!--<div>
+						<a href="weal-q.html">
+							<img src="img/fuli.png" data-img="fuli" />
+							<span class="hp-fot-st">福利</span>
+						</a>
+
+					</div>-->
+					<div>
+						<a href="my_center.html">
+							<img src="img/wode.png" data-img="wode" />
+							<span class="hp-fot-st">我的</span>
+						</a>
+
+					</div>
+				</div>
+			</footer>
+
+			<div class="footer_box" style="background: #ebebeb;"></div>
+		</div>
+		
+		<script>
+	//			初始化
+		var conn = new WebIM.connection({
+		    isMultiLoginSessions: WebIM.config.isMultiLoginSessions,
+		    https: typeof WebIM.config.https === 'boolean' ? WebIM.config.https : location.protocol === 'https:',
+		    url: WebIM.config.xmppURL,
+		    heartBeatWait: WebIM.config.heartBeatWait,
+		    autoReconnectNumMax: WebIM.config.autoReconnectNumMax,
+		    autoReconnectInterval: WebIM.config.autoReconnectInterval,
+		    apiUrl: WebIM.config.apiURL,
+		    isAutoLogin: true
+		});
+			
+//			// listern，添加回调函数
+    conn.listen({
+        onOpened: function (message) {          //连接成功回调，连接成功后才可以发送消息
+            //如果isAutoLogin设置为false，那么必须手动设置上线，否则无法收消息
+            // 手动上线指的是调用conn.setPresence(); 在本例中，conn初始化时已将isAutoLogin设置为true
+            // 所以无需调用conn.setPresence();
+            console.log("%c [opened] 连接已成功建立", "color: green")
+        },
+        onTextMessage: function (message) {
+            // 在此接收和处理消息，根据message.type区分消息来源，私聊或群组或聊天室
+            console.log(message);
+            console.log(message.type);
+            console.log('获取到的消息Text');
+            $.ajax({
+				type:"POST",  //请求方式
+				url:wrUrl + '/view/getshopChatlist',  //请求地址
+				dataType:"JSON",  //参数格式
+				data:{ token: token },   //请求数据
+				success:function(data){  //成功回调
+					console.log(data);
+					var html = template('chat-list', data);
+					$('#khlist').html(html);
+					for(var i=0;i<data.data.length;i++){
+						var gettime = data.data[i].msg.datanumber;  //获取时间
+						var gettimeF = data.data[i].msg.dataMinute;
+						var fen = ""+gettimeF/60+"";
+						var s = fen.split('.')[0];
+						console.log(s);
+					}
+				}
+			});
+			
+			$.ajax({
+				type:"POST",  //请求方式
+				url:wrUrl + '/view/getUserChatlist',  //请求地址
+				dataType:"JSON",  //参数格式
+				data:{ token: token },   //请求数据
+				success:function(data){  //成功回调
+					console.log(data);
+					var html = template('kefu-list', data);
+					$('#imkefu').html(html);
+				}
+			});
+			
+        },  //收到文本消息
+        onEmojiMessage: function (message) {
+            // 当为WebIM添加了Emoji属性后，若发送的消息含WebIM.Emoji里特定的字符串，connection就会自动将
+            // 这些字符串和其它文字按顺序组合成一个数组，每一个数组元素的结构为{type: 'emoji(或者txt)', data:''}
+            // 当type='emoji'时，data表示表情图像的路径，当type='txt'时，data表示文本消息
+            console.log('Emoji');
+            var data = message.data;
+            for (var i = 0, l = data.length; i < l; i++) {
+                console.log(data[i]);
+            }
+        },   //收到表情消息
+        onPictureMessage: function (message) {
+            console.log('Picture');
+			console.log(message);
+            var options = {url: message.url};
+            options.onFileDownloadComplete = function () {
+                // 图片下载成功
+                console.log('Image download complete!');
+                console.log(options);
+            };
+            options.onFileDownloadError = function () {
+                // 图片下载失败
+                console.log('Image download failed!');
+            };
+            WebIM.utils.download.call(conn, options);       // 意义待查
+
+        }, //收到图片消息
+        onCmdMessage: function (message) {
+            console.log('CMD');
+        },     //收到命令消息
+        onAudioMessage: function (message) {
+            console.log("Audio");
+        },   //收到音频消息
+        onLocationMessage: function (message) {
+            console.log("Location");
+        },//收到位置消息
+        onFileMessage: function (message) {
+            console.log("File");
+        },    //收到文件消息
+        onVideoMessage: function (message) {
+            var node = document.getElementById('privateVideo');
+            var option = {
+                url: message.url,
+                headers: {
+                    'Accept': 'audio/mp4'
+                },
+                onFileDownloadComplete: function (response) {
+                    var objectURL = WebIM.utils.parseDownloadResponse.call(conn, response);
+                    node.src = objectURL;
+                },
+                onFileDownloadError: function () {
+                    console.log('File down load error.')
+                }
+            };
+            WebIM.utils.download.call(conn, option);
+        },   //收到视频消息
+        onPresence: function (message) {
+            switch (message.type) {
+                case 'subscribe':                           // 对方请求添加好友
+                    // 同意对方添加好友
+                    document.getElementById('agreeFriends').onclick = function (message) {
+                        conn.subscribed({
+                            to: 'asdfghj',
+                            message: "[resp:true]"
+                        });
+                    };
+                    // 拒绝对方添加好友
+                    document.getElementById('rejectFriends').onclick = function (message) {
+                        conn.unsubscribed({
+                            to: message.from,
+                            message: "rejectAddFriend"                  // 拒绝添加好友回复信息
+                        });
+                    };
+
+                    break;
+                case 'subscribed':                          // 对方同意添加好友，已方同意添加好友
+                    break;
+                case 'unsubscribe':                         // 对方删除好友
+                    break;
+                case 'unsubscribed':                        // 被拒绝添加好友，或被对方删除好友成功
+                    break;
+                case 'memberJoinPublicGroupSuccess':                 // 成功加入聊天室
+                    console.log('join chat room success');
+                    break;
+                case 'joinChatRoomFaild':                   // 加入聊天室失败
+                    console.log('join chat room faild');
+                    break;
+                case 'joinPublicGroupSuccess':              // 意义待查
+                    console.log('join public group success', message.from);
+                    break;
+                case 'createGroupACK':
+                    conn.createGroupAsync({
+                        from: message.from,
+                        success: function (option) {
+                            console.log('Create Group Succeed');
+                        }
+                    });
+                    break;
+            }
+        },       //收到联系人订阅请求（加好友）、处理群组、聊天室被踢解散等消息
+        onRoster: function (message) {
+            console.log('Roster');
+        },         //处理好友申请
+        onInviteMessage: function (message) {
+            console.log('Invite');
+        },  //处理群组邀请
+        onOnline: function () {
+            console.log('onLine');
+        },                  //本机网络连接成功
+        onOffline: function () {
+            console.log('offline');
+        },                 //本机网络掉线
+        onError: function (message) {
+            console.log('Error');
+            console.log(message);
+            if (message && message.type == 1) {
+                console.warn('连接建立失败！请确认您的登录账号是否和appKey匹配。')
+            }
+        },           //失败回调
+        onBlacklistUpdate: function (list) {
+            // 查询黑名单，将好友拉黑，将好友从黑名单移除都会回调这个函数，list则是黑名单现有的所有好友信息
+            console.log(list);
+        }     // 黑名单变动
+    });
+    // 初始化WebRTC Call
+    var rtcCall = null
+    if (WebIM.WebRTC) {
+        rtcCall = new WebIM.WebRTC.Call({
+            connection: conn,
+
+            mediaStreamConstaints: {
+                audio: true,
+                video: true
+            },
+
+            listener: {
+                onAcceptCall: function (from, options) {
+                    console.log('onAcceptCall::', 'from: ', from, 'options: ', options);
+                },
+                onGotRemoteStream: function (stream, streamType) {
+                    console.log('onGotRemoteStream::', 'stream: ', stream, 'streamType: ', streamType);
+                    var video = document.getElementById('video');
+                    video.srcObject = stream;
+                },
+                onGotLocalStream: function (stream, streamType) {
+                    console.log('onGotLocalStream::', 'stream:', stream, 'streamType: ', streamType);
+                    var video = document.getElementById('localVideo');
+                    video.srcObject = stream;
+                },
+                onRinging: function (caller) {
+                    console.log('onRinging::', 'caller:', caller);
+                },
+                onTermCall: function (reason) {
+                    console.log('onTermCall::');
+                    console.log('reason:', reason);
+                },
+                onIceConnectionStateChange: function (iceState) {
+                    console.log('onIceConnectionStateChange::', 'iceState:', iceState);
+                },
+                onError: function (e) {
+                    console.log(e);
+                }
+            }
+        });
+    } else {
+        console.warn('不能进行视频通话！您的浏览器不支持webrtc或者协议不是https。')
+    }
+	</script>
+
+
+
+		<!--激光消息 暂时不适用-->
+	<!--	<script>
+            window.onbeforeunload = function (e) {
+                debugger
+                e = e || window.event;
+
+                // 兼容IE8和Firefox 4之前的版本
+                if (e) {
+                    debugger
+                    JIM.loginOut();//无回调函数，调用则成功
+                }
+            };
+			// 激光推送
+            var timestamp = Date.parse(new Date());
+			var signature = md5("appkey=3498a873d2a21560612c1b15&timestamp="+timestamp+"&random_str=122cd9fd995849b58b3ef0e943421ed8&key=5bf37a49cc208c13b6aa283c")
+			//初始化
+            var auth_payload = {
+                "appkey": "3498a873d2a21560612c1b15",
+                "random_str": "122cd9fd995849b58b3ef0e943421ed8",
+                "signature": signature,
+                "timestamp": timestamp,
+                "flag" : 0
+            };
+//            var JIM = new JMessage();
+
+            var JIM = new JMessage({debug:true});
+            JIM.init(auth_payload).onSuccess(function(data) {
+                debugger;
+                //data.code 返回码
+                //data.message 描述
+
+                // 注册
+//                var pass = md5(localStorage.JgNature);
+                var pass = md5('123');// 测试
+
+                JIM.login({
+//                    'username' : localStorage.JgName,
+                    'username' : '13320889409',
+                    'password' : pass
+                }).onSuccess(function(data) {
+                    debugger
+                    console.log(data);
+//                        var html = template('chat-list', data);
+//                        $('#khlist').html(html);
+                    var mtime, isOnline;
+                    for(var i=0;i<data.online_list.length;i++){
+                        mtime = data.online_list[i].mtime;  //获取时间
+                        isOnline = data.online_list[i].isOnline;
+//                            var fen = ""+gettimeF/60+"";
+//                            var s = fen.split('.')[0];
+                        console.log(s);
+                    }
+                    $('#kefuOnline').text(mtime)
+                    //data.code 返回码
+                    //data.message 描述
+                    //data.online_list[] 在线设备列表
+                    //data.online_list[].platform  Android,ios,pc,web
+                    //data.online_list[].mtime 最近一次登录时间
+                    //data.online_list[].isOnline 是否在线 true or false
+                    //data.online_list[].isLogin 是否登录 true or false
+                    //data.online_list[].flag 该设备是否被当前登录设备踢出 true or false
+
+                    // 发送消息
+                    JIM.sendSingleMsg({
+                        'target_username' : '<targetName>',
+                        'target_nickname' : '<targetNickname>',
+                        'content' : '<textContent>',
+                        'appkey' : '<targetAppkey>',
+                        'extras' : 'json object'
+                    }).onSuccess(function(data , msg){
+                        //data.code 返回码
+                        //data.message 描述
+                        //data.msg_id 发送成功后的消息 id
+                        //data.ctime_ms 消息生成时间,毫秒
+                        //data.appkey 用户所属 appkey
+                        //data.target_username 用户名
+                        //msg.content 发送成功消息体,见下面消息体详情
+                    }).onFail(function(data) {
+                        //data.code 返回码
+                        //data.message 描述
+                    });
+
+
+
+                }).onFail(function(data){
+                    debugger
+                    //同上
+                })
+
+                /* JIM.register({
+                     'username' : localStorage.JgName,
+                     'password' : pass,
+                     'is_md5' : false
+                 }).onSuccess(function(data) {
+                     debugger
+                     //data.code 返回码
+                     //data.message 描述
+
+
+                 }).onFail(function(data) {
+                     debugger
+                     // 同上
+                 });
+ */
+
+            }).onFail(function(data) {
+                debugger
+                // 同上
+            });
+            JIM.isConnect();// 无回调函数，调用则成功
+            JIM.onDisconnect(function(){
+                layer.open({
+                    content: '聊天已断开'
+                    ,skin: 'msg'
+                    ,time: 2 //2秒后自动关闭
+                });
+            });
+
+
+		</script>-->
+
+
+	<script type="text/javascript">
+		$(function() {
+
+			//系统消息
+			$.post(ajaxUrl + '/clientMessagePush/getMessage', {
+				token: token,
+				remark: 0
+			}, function(r) {
+				if(r.count ===0) {
+					$(".news_nav ul li").eq(1).find('span').css({'display':'none'});
+					$('.custom_news').html('<div class="buy-load" style="background-color:#EBEBEB;margin-top: 0;padding-top: 20px;"><img class="load-img" src="img/load.png"><span class="load-tips" style="top: 56px;">暂无消息~</span></div>');
+				} else {
+					$.each(r.cmsg, function(n, val) {
+						val.time = formatDateTime(new Date(val.ctime));
+					});
+//					$(".news_nav ul li").eq(1).find('span').css({'display':'block'});
+//					$(".news_nav ul li").eq(1).find('span').text(r.count);
+					var html = template('custom_news', r);
+					$('.custom_news').html(html);
+				}
+			}, 'json');
+			
+			console.log(token);
+			
+//				客服咨询列表
+			template.helper( 'fn' , function( a , b  ){
+			  if( b == 'hour' ){
+			  	return parseInt(a)+'小时前';
+			  }
+			});
+			
+			$.ajax({
+				type:"POST",  //请求方式
+				url:wrUrl + '/view/getshopChatlist',  //请求地址
+				dataType:"JSON",  //参数格式
+				data:{ token: token },   //请求数据
+				success:function(data){  //成功回调
+					console.log(data);
+					var html = template('chat-list', data);
+					$('#khlist').html(html);
+					for(var i=0;i<data.data.length;i++){
+						var gettime = data.data[i].msg.datanumber;  //获取时间
+						var gettimeF = data.data[i].msg.dataMinute;
+						var fen = ""+gettimeF/60+"";
+						var s = fen.split('.')[0];
+					}
+				}
+			});
+			
+
+			//翼购公告
+			$.post(ajaxUrl + '/clientMessagePush/getMessage', {
+				token: token,
+				remark: 2
+			}, function(r) {
+				if(r.count ===0) {
+					$(".news_nav ul li").eq(2).find('span').css({'display':'none'});
+					$('.custom_news').html('<div class="buy-load" style="background-color:#EBEBEB;margin-top: 0;padding-top: 20px;"><img class="load-img" src="img/load.png"><span class="load-tips" style="top: 56px;">暂无消息~</span></div>');
+				} else {
+					$.each(r.anno, function(n, val) {
+						val.time = formatDateTime(new Date(val.ctime));
+					});
+					$(".news_nav ul li").eq(2).find('span').text(r.count);
+					var html = template('yg_news', r);
+					$('.yg_news').html(html);
+				}
+			}, 'json');
+
+			//选项卡
+			//默认显示项
+			$('.news_cont_box .news_list_box').eq(0).css('display', 'block');
+
+			$(".news_nav ul li").bind('click', function() {
+				// 设index为当前点击
+				var index = $(this).index();
+				//点击添加样式利用siblings清除其他兄弟节点样式
+				$(this).addClass('on2').siblings().removeClass('on2');
+				//显示对应index的div
+				$('.news_cont_box .news_list_box').eq(index).css('display', 'block').siblings().css('display', 'none');
+			});
+			
+			$("#imyong").click(function(){
+				$.ajax({
+					type:"POST",  //请求方式
+					url:wrUrl + '/view/getshopChatlist',  //请求地址
+					dataType:"JSON",  //参数格式
+					data:{ token: token },   //请求数据
+					success:function(data){  //成功回调
+						console.log(data);
+						var html = template('kefu-list', data);
+						$('#imkefu').html(html);
+					}
+				});
+			});
+			
+			$("#imke").click(function(){
+				$.ajax({
+					type:"POST",  //请求方式
+					url:wrUrl + '/view/getUserChatlist',  //请求地址
+					dataType:"JSON",  //参数格式
+					data:{ token: token },   //请求数据
+					success:function(data){  //成功回调
+						console.log(data);
+						var html = template('kefu-list', data);
+						$('#imkefu').html(html);
+					}
+				});
+			})
+
+		}); 
+		
+		$.ajax({
+			type:"POST",  //请求方式
+			url:wrUrl + '/view/getuserInfo',  //请求地址
+			dataType:"JSON",  //参数格式
+			data:{ token: token },   //请求数据
+			success:function(data){  //成功回调
+				console.log(data);
+				if(data.code == 300) {
+					tip.flag('账号失效，请重新登录', 'error');
+					setTimeout(function() {
+						window.location.href = 'login.html';
+					}, 1500);
+				}
+				if(data.isshop ==='0'){
+				    $('#imke').hide();
+				    $(".news_nav ul li").css("width","33%");
+				}else {
+                    $('#imke').show();
+                    $(".news_nav ul li").css("width","25%");
+				}
+				var userId = data.user.id;
+				var login = function () {
+			        var options = { 
+					  apiUrl: WebIM.config.apiURL,
+					  user: "user"+userId+"",
+					  pwd: '123456',
+					  appKey: WebIM.config.appkey
+					};
+					conn.open(options);
+			    };
+			    login();
+			    
+			    if(data.isshop == "1"){
+		//			我是客服
+					$.ajax({
+						type:"POST",  //请求方式
+						url:wrUrl + '/view/getUserChatlist',  //请求地址
+						dataType:"JSON",  //参数格式
+						data:{ token: token },   //请求数据
+						success:function(data){  //成功回调
+							console.log(data);
+							var html = template('kefu-list', data);
+							$('#imkefu').html(html);
+						}
+					});
+			    }else{
+//			    	$.ajax({
+//						type:"POST",  //请求方式
+//						url:wrUrl + '/view/getshopChatlist',  //请求地址
+//						dataType:"JSON",  //参数格式
+//						data:{ token: token },   //请求数据
+//						success:function(data){  //成功回调
+//							var html = template('chat-list', data);
+//							$('#khlist').html(html);
+//							for(var i=0;i<data.data.length;i++){
+//								var gettime = data.data[i].msg.datanumber;  //获取时间
+//								var gettimeF = data.data[i].msg.dataMinute;
+//								var fen = ""+gettimeF/60+"";
+//								var s = fen.split('.')[0];
+//							}
+//						}
+//					});
+			    }
+			    
+			}
+		});
+		
+	</script>
+		
+		
+	</body>
+
+</html>

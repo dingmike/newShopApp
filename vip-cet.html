@@ -1,0 +1,459 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<meta name="renderer" content="webkit">
+		<meta http-equiv="X-UA-Compatible" content="IE=11; IE=10; IE=9; IE=8; IE=7; IE=EDGE,Chrome=1">
+		<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no" />
+		<link rel="stylesheet" type="text/css" href="css/index.css"/>
+		<link rel="stylesheet" type="text/css" href="css/hp.css"/>
+		<script src="js/jquery-1.11.1.min.js" type="text/javascript" charset="utf-8"></script>
+		<script src="js/modernizr-custom-v2.7.1.min.js" type="text/javascript"></script>
+		<script src="js/jquery-finger-v0.1.0.min.js" type="text/javascript"></script>
+		<script src="js/flickerplate.min.js" type="text/javascript"></script>
+		<script src="js/default.js"></script>
+		<script src="js/template.js"></script>
+		<script src="js/template-helper.js"></script>
+		<title></title>
+		<style type="text/css">
+			.vip-lev-box {
+				width: auto;
+				height: 80px;
+				overflow-x: scroll;
+				overflow-y: hidden;
+				white-space: nowrap;
+				position: absolute;
+				width: 100%;
+				z-index: 10;
+			}
+			
+			.vip-img-box {
+				width: 33%;
+				height: 80px;
+				display: inline-block;
+			}
+			
+			.vip-img {
+				width: 100%;
+				height: 60px;
+				position: relative;
+			}
+			
+			.cor-w {
+				color: white;
+			}
+			
+			.vip-mrimg {
+				width: 40px;
+				height: 40px;
+				position: absolute;
+				top: 0;
+				bottom: 0;
+				left: 0;
+				right: 0;
+				margin: auto;
+				border-radius: 50%;
+				z-index: 3;
+			}
+			
+			.vip-xzimg {
+				width: 60px;
+				height: 60px;
+				display: block;
+				position: absolute;
+				left: 0;
+				right: 0;
+				margin: auto;
+				border-radius: 50%;
+				z-index: 3;
+			}
+			
+			.vip-hen {
+				width: 100%;
+				height: 1px;
+				background-color: white;
+				position: absolute;
+				top: 101px;
+				z-index: 1;
+			}
+			.vip-img1{
+				background:-webkit-linear-gradient(left,#ff6235,#ff6836);
+				background:linear-gradient(left,#ff6235,#ff6836); 
+			}
+			.vip-img2{
+				background:-webkit-linear-gradient(left,#ff732f,#ff7d34);
+				background:linear-gradient(left,#ff6235,#ff6836); 
+			}
+			.vip-img3{
+				background:-webkit-linear-gradient(left,#ff8125,#ff8422);
+				background:linear-gradient(left,#ff6235,#ff6836);
+				/*background:-webkit-linear-gradient(left,#ff7f24,#ff8525);
+				background:linear-gradient(left,#ff6235,#ff6836);*/
+			}
+			.jdt-box{
+				height: 4px;
+				position: absolute;
+				left: 0;
+				top: 25px;
+				/*display: none;*/
+			}
+			.jd-load{
+				height: 100%;
+				background-color: white;
+				position: absolute;
+				top: 0;
+				left: 0;
+				border-bottom-right-radius: 5px;
+				border-top-right-radius: 5px;
+			}
+			.jdt-tip-num{
+				height: 20px;
+				line-height: 20px;
+				position: absolute;
+				color: white;
+				top: -20px;
+				font-size: 12px;
+				transform: scale(0.8);
+			}
+		</style>
+		<script type="text/javascript">
+			
+			$(function(){
+				
+				$('.vip-nav-right').click(function(){
+					$('.opt,.qiandao-box,.qiandao-gz').show();
+				})
+				$('.qd-gb').click(function(){
+					$('.opt,.qiandao-box,.qiandao-gz').hide();
+				})
+				$('.vip-img img').click(function(){
+					$(this).addClass('vip-xzimg').removeClass('vip-mrimg')
+				})
+				var aa = $('.vip-lev-box').children().length-1;//获取div下元素长度
+				var wi = $('.vip-img-box').width();				//获取每个图标盒子宽度
+				var dj = $('.vip-lev-box').width()*0.01*aa;		//获取进度条盒子缺少的长度
+				var load = wi * aa+dj;							//进度条盒子的长度
+				$('.jdt-box').width(load);							//进度条盒子的长度
+				console.log(wi*2)
+				var imgwt = $('.vip-img-box img').width();		//默认图标宽度
+				console.log(imgwt);
+				
+				var jd = 100;	
+				console.log(jd)
+				
+				$('.jd-load').width(jd);
+				if( jd < wi*2 ){
+					$('.jdt-tip-num').css('left',(wi - 40)*0.5+40)
+				}else if( wi*2 < jd <wi*3 ){
+					$('.jdt-tip-num').css('left',(wi - 40)*0.5+40)
+				}
+			})
+		
+		</script>
+	</head>
+	<body>
+		<div class="container">
+			<header>
+				<div class="sto-nav-left">
+					<img src="img/fanhui.png" onclick="location.href='my_center.html'"/>
+				</div>
+				<div class="vip-nav-cet">
+					易购会员
+				</div>
+				<div class="vip-nav-right">
+					说明
+				</div>
+			</header>
+			<div class="content bac-cor">
+				<div class="vip-top">
+					<span class="vip-name"> </span>
+					
+					<div class="vip-lev-box" id="vip-lev-box">
+						
+						<!--<div class="vip-img-box">
+							<div class="vip-img">
+								<img class="vip-mrimg vip-img1" src="img/zc-vip.png" style=""/>
+							</div>
+							<span class="rem-nam cor-w">
+								注册会员
+							</span>
+						</div>
+						<div class="vip-img-box">
+							<div class="vip-img">
+								<img class="vip-xzimg vip-img2" src="img/jh-vip.png" style=""/>
+							</div>
+							<span class="rem-nam cor-w">
+								激活会员
+							</span>
+						</div>
+						<div class="vip-img-box">
+							<div class="vip-img">
+								<img class="vip-mrimg vip-img3" src="img/pt-vip.png" style=" "/>
+							</div>
+							<span class="rem-nam cor-w">
+								普通会员
+							</span>
+						</div>
+						<div class="vip-img-box">
+							<div class="vip-img">
+								<img class="vip-mrimg vip-img3" src="img/hj-vip.png" style=" "/>
+							</div>
+							<span class="rem-nam cor-w">
+								黄金会员
+							</span>
+						</div>
+						<div class="vip-img-box">
+							<div class="vip-img">
+								<img class="vip-mrimg vip-img3" src="img/hj-vip.png" style=" "/>
+							</div>
+							<span class="rem-nam cor-w">
+								铂金会员
+							</span>
+						</div>
+						<div class="vip-img-box">
+							<div class="vip-img">
+								<img class="vip-mrimg vip-img3" src="img/zs-vip.png" style=" "/>
+							</div>
+							<span class="rem-nam cor-w">
+								钻石会员
+							</span>
+						</div>
+						<div class="vip-img-box">
+							<div class="vip-img">
+								<img class="vip-mrimg vip-img3" src="img/dl-vip.png" style=" "/>
+							</div>
+							<span class="rem-nam cor-w">
+								初级代理
+							</span>
+						</div>
+						<div class="vip-img-box">
+							<div class="vip-img">
+								<img class="vip-mrimg vip-img3" src="img/dl-vip.png" style=" "/>
+							</div>
+							<span class="rem-nam cor-w">
+								高级代理
+							</span>
+						</div>
+						<div class="jdt-box">		
+                                                    
+							<div class="jd-load">
+								
+							</div>
+							<div class="jdt-tip-num">
+								4350活跃值
+							</div>
+						</div>-->
+						
+					</div>
+					
+					<div class="vip-hen">
+
+					</div>
+				</div>
+				<div class="kh"></div>
+				<div class="vip-jifen">
+					<div class="k-box">
+						<span class="ke-use">可用积分:800</span>
+						<span class="jfmx" onclick="window.location.href='vip-detail.html'">
+							积分明细
+							<img src="img/rtu.png"/>
+						</span>
+					</div>
+				</div>
+				<div class="vip-gn">
+					<div class="zc-box">
+						<img src="img/zhuce.png"/>
+						<p class="gn-tit">注册会员</p>
+					</div>
+					<div class="zs-box">
+						<img src="img/zuanshi.png"/>
+						<p class="gn-tit">钻石会员</p>
+					</div>
+					<div class="mo-box">
+						<img src="img/vip-m.png"/>
+					</div>
+					<div class="shu"></div>
+					<div class="vip-gn-in">
+						<a href="e-assets.html">
+							<img src="img/jiedong.png"/>
+						</a>
+						<a href="luck-pan.html">
+							<img src="img/luck.png"/>
+						</a>
+						
+						<img src="img/mo-act.png"/>
+					</div>
+				</div>
+			</div>
+			<div class="opt"></div>
+			<div class="qiandao-box">
+				<div class="qiandao-gz">
+					<p class="qiandao-tit">会员说明</p>
+					<img class="qd-gb" src="img/cha-qd.png"/>
+					<div class="qiandao-nr">
+						哒哒哒哒哒哒哒哒哒哒哒哒哒哒哒哒哒哒哒哒哒哒哒哒哒哒啊大大大哒哒哒哒哒哒哒哒哒哒哒哒哒哒哒哒哒哒哒哒哒哒哒哒哒哒啊大大大哒哒哒哒哒哒哒哒哒哒哒哒哒哒哒哒哒哒哒哒哒哒哒哒哒哒啊大大大哒哒哒哒哒哒哒哒哒哒哒哒哒哒哒哒哒哒哒哒哒哒哒哒哒哒啊大大大哒哒哒哒哒哒哒哒哒哒哒哒哒哒哒哒哒哒哒哒哒哒哒哒哒哒啊大大大哒哒哒哒哒哒哒哒哒哒哒哒哒哒哒哒哒哒哒哒哒哒哒哒哒哒啊大大大哒哒哒哒哒哒哒哒哒哒哒哒哒哒哒哒哒哒哒哒哒哒哒哒哒哒啊大大大哒哒哒哒哒哒哒哒哒哒哒哒哒哒哒哒哒哒哒哒哒哒哒哒哒哒啊大大大
+					</div>
+				</div>
+			</div>
+		</div>
+		
+		<script type="text/template" id="body1">
+			<div class="vip-img-box">
+				<div class="vip-img">
+					<img class="vip-mrimg vip-img1" src="img/zc-vip.png" style=""/>
+				</div>
+				<span class="rem-nam cor-w">
+					{{ MemberGrade[0].name }}
+				</span>
+			</div>
+			<div class="vip-img-box">
+				<div class="vip-img">
+					<img class="vip-xzimg vip-img2" src="img/jh-vip.png" style=""/>
+				</div>
+				<span class="rem-nam cor-w">
+					{{ MemberGrade[1].name }}
+				</span>
+			</div>
+			<div class="vip-img-box">
+				<div class="vip-img">
+					<img class="vip-mrimg vip-img3" src="img/pt-vip.png" style=" "/>
+				</div>
+				<span class="rem-nam cor-w">
+					{{ MemberGrade[2].name }}
+				</span>
+			</div>
+			<div class="vip-img-box">
+				<div class="vip-img">
+					<img class="vip-mrimg vip-img3" src="img/hj-vip.png" style=" "/>
+				</div>
+				<span class="rem-nam cor-w">
+					{{ MemberGrade[3].name }}
+				</span>
+			</div>
+			<div class="vip-img-box">
+				<div class="vip-img">
+					<img class="vip-mrimg vip-img3" src="img/hj-vip.png" style=" "/>
+				</div>
+				<span class="rem-nam cor-w">
+					{{ MemberGrade[4].name }}
+				</span>
+			</div>
+			<div class="vip-img-box">
+				<div class="vip-img">
+					<img class="vip-mrimg vip-img3" src="img/zs-vip.png" style=" "/>
+				</div>
+				<span class="rem-nam cor-w">
+					{{ MemberGrade[5].name }}
+				</span>
+			</div>
+			<div class="vip-img-box">
+				<div class="vip-img">
+					<img class="vip-mrimg vip-img3" src="img/dl-vip.png" style=" "/>
+				</div>
+				<span class="rem-nam cor-w">
+					{{ MemberGrade[6].name }}
+				</span>
+			</div>
+			<div class="vip-img-box">
+				<div class="vip-img">
+					<img class="vip-mrimg vip-img3" src="img/dl-vip.png" style=" "/>
+				</div>
+				<span class="rem-nam cor-w">
+					{{ MemberGrade[7].name }}
+				</span>
+			</div>
+			
+			{{ if VIP == "R1" }}
+				<div class="jdt-box">		
+					<div class="jd-load" style="width: 10px;">
+						
+					</div>
+					<div class="jdt-tip-num" style="left: 0px;">
+						{{ totalmembertegral }}活跃值
+					</div>
+				</div>
+			{{ else if VIP == "R2" }}
+				<div class="jdt-box">		
+					<div class="jd-load" style="width: 130px;">
+						
+					</div>
+					<div class="jdt-tip-num" style="left: 90px;">
+						{{ totalmembertegral }}活跃值
+					</div>
+				</div>
+			{{ else if VIP == "R3" }}
+				<div class="jdt-box">		
+					<div class="jd-load" style="width: 270px;">
+						
+					</div>
+					<div class="jdt-tip-num" style="left: 230px;">
+						{{ totalmembertegral }}活跃值
+					</div>
+				</div>
+			{{ else if VIP == "R4" }}
+				<div class="jdt-box">		
+					<div class="jd-load" style="width: 390px;">
+						
+					</div>
+					<div class="jdt-tip-num" style="left: 350px;">
+						{{ totalmembertegral }}活跃值
+					</div>
+				</div>
+			{{ else if VIP == "R5" }}
+				<div class="jdt-box">		
+					<div class="jd-load" style="width: 410px;">
+						
+					</div>
+					<div class="jdt-tip-num" style="left: 370px;">
+						{{ totalmembertegral }}活跃值
+					</div>
+				</div>
+			{{ else if VIP == "R6" }}
+				<div class="jdt-box">		
+					<div class="jd-load" style="width: 530px;">
+						
+					</div>
+					<div class="jdt-tip-num" style="left: 490px;">
+						{{ totalmembertegral }}活跃值
+					</div>
+				</div>
+			{{ else if VIP == "R7" }}
+				<div class="jdt-box">		
+					<div class="jd-load" style="width: 650px;">
+						
+					</div>
+					<div class="jdt-tip-num" style="left: 610px;">
+						{{ totalmembertegral }}活跃值
+					</div>
+				</div>
+			{{ else if VIP == "R8" }}
+				<div class="jdt-box">		
+					<div class="jd-load" style="width: 770px;">
+						
+					</div>
+					<div class="jdt-tip-num" style="left: 730px;">
+						{{ totalmembertegral }}活跃值
+					</div>
+				</div>
+			{{ /if }}
+			
+		</script>
+		
+		<script>
+			$(function(){
+				$.post(ajaxUrl+'/front/XtUserInfo/memberGrade',{token:token},function(r){
+					
+					var html = template('body1', r);
+					$('#vip-lev-box').html(html);
+					
+					if(r.NiceName != null ){
+						$('.vip-name').html(r.NiceName);
+					}else{
+						$('.vip-name').html("还未填写名字");
+					}
+					$('.ke-use').html('可用积分:'+r.membertegral);
+				},'json')
+			});
+		</script>
+	</body>
+</html>

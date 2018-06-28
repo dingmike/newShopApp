@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no" />
+		<link rel="stylesheet" type="text/css" href="css/index.css" />
+		<link rel="stylesheet" href="css/hp.css" />
+		<script src="js/jquery-1.11.1.min.js" type="text/javascript" charset="utf-8"></script>
+		<script src="js/default.js"></script>
+		<script src="js/template.js"></script>
+		<script src="js/template-helper.js"></script>
+		<style>
+			.xq-ig dd{line-height: 25px;}
+		</style>
+	</head>
+	<body>
+		<div class="container "style="background: #fff;">
+			<header>
+				<div class="sto-nav-left">
+						<img src="img/fanhui.png"  alt="" onclick="javascript:history.back(-1);"/>
+				</div>
+				<div class="sto-nav-sear">
+					公告详情
+				</div>
+			</header>
+			<div class="content xq" ></div>
+			
+			<script type="text/template" id="xq">
+				<div class="xq-title">{{anno.title}}</div>
+				<div class="xq-fbsj">发布时间：{{anno.time}}</div>
+				<div class="xq-ig">
+					<dl>
+						<dt class="xq-img"><!--<img src="img/2050.png" />--></dt>
+						<dd>{{anno.content}}</dd>
+					</dl>
+				</div>
+			</script>
+		</div>
+		<script>
+			$(function(){
+				
+				function formatDateTime(date) {
+					var y = date.getFullYear();
+					var m = date.getMonth() + 1;
+					m = m < 10 ? ('0' + m) : m;
+					var d = date.getDate();
+					d = d < 10 ? ('0' + d) : d;
+					var h = date.getHours();
+					h = h < 10 ? ('0' + h) : h;
+					var minute = date.getMinutes();
+					minute = minute < 10 ? ('0' + minute) : minute;
+					var second = date.getSeconds();
+					second = second < 10 ? ('0' + second) : second;
+					return y + '-' + m + '-' + d + ' ' + h + ':' + minute ;
+				}
+				$.post(ajaxUrl+'/clientMessagePush/selectAnnoDesc',{messageId:GetUrlString('id')},function(r){
+					r.anno.time = formatDateTime(new Date(r.anno.ctime));
+					var html = template('xq',r);
+					$('.xq').html(html);
+					console.log(r)
+				},'json')
+			})
+		</script>
+	</body>
+</html>

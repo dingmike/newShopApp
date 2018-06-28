@@ -1,0 +1,476 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no" />
+		<link rel="stylesheet" type="text/css" href="css/index.css" />
+		<!--<link rel="stylesheet" type="text/css" href="css/sto-sear.css"/>
+		<link rel="stylesheet" type="text/css" href="css/shp-car.css"/>
+		<link rel="stylesheet" type="text/css" href="css/cet.css"/>-->
+		<link rel="stylesheet" href="css/hp.css" />
+		<script type="text/javascript" src="js/jquery-1.11.1.min.js"></script>
+		<script type="text/javascript" src="js/default.js"></script>
+		<title></title>
+		<style type="text/css">
+			.opt {
+				z-index: 0;
+			}
+			
+			.change-tc {
+				width: 300px;
+			}
+			
+			.change-next-tc {
+				width: 300px;
+			}
+			
+			.tc-tit-tip {
+				width: 300px;
+				margin-left: 0px;
+			}
+			
+			.dh-fs {
+				width: 85px;
+			}
+			
+			.change-fw {
+				width: 120px;
+				font-size: 15px;
+				color: black;
+				float: none;
+    			padding-left: 10px;
+			}
+			
+			.change-num {
+				width: 270px;
+				margin-bottom: 15px;
+			}
+			
+			.confirmPassword {
+				width: 300px;
+				height: 180px;
+				background-color: white;
+				position: absolute;
+				left: 0;
+				right: 0;
+				margin: auto;
+				top: -70px;
+				bottom: 0;
+				border-radius: 10px;
+				display: none;
+			}
+			
+			.password-num {
+				border: 1px solid #cac7c7;
+				height: 52px;
+				margin: 0px 14px;
+				width: 270px;
+			}
+			
+			.password-num span {
+				display: inline-block;
+				width: 75px;
+				margin-top: 10px;
+				height: 32px;
+				margin-left: 10px;
+				line-height: 32px;
+				border-right: 1px solid #cac7c7;
+			}
+			.dh-fot-left{
+				height: 50px;
+			}
+			.dh-fot-rgt{
+				height: 50px;
+			}
+			.password-num input {
+				display: inline-block;
+				height: 32px;
+				margin-left: 10px;
+				letter-spacing: 10px;
+				width: 110px;
+			}
+			.own-btn-big{
+				width: 100%;
+				background-color: #ff5a3a;
+				color: #fff;
+				height: 34px;
+				line-height: 34px;
+				border-radius: 6px;
+				margin: 10px 0;
+			}
+		</style>
+		<script type="text/javascript">
+		</script>
+	</head>
+
+	<body>
+		<div class="container">
+			<header class="head-st">
+				<div class="sto-nav-left">
+					<img src="img/fanhui.png" onclick="javascript:history.back(-1);" />
+				</div>
+				<div class="sto-nav-sear">
+					兑出
+				</div>
+			</header>
+			<div class="content">
+				<div class="chang-out-box">
+					<div class="curr-box">
+						<div class="curr-left">
+							<span class="curr-tit">建议兑出份数</span>
+							<span class="curr-num"><span class="curr-num" style="display: inline-block;">0</span>份</span>
+						</div>
+						<!--<div class="curr-right">
+							<span class="curr-tit">本轮新增：</span>
+							<span class="add-num"><span id="newEnum" class="add-num" style="display: inline-block;">0</span>份</span>
+						</div>-->
+					</div>
+					<!--<div class="his-box">
+						<span class="his-dh" id="chang-mx"><u>已兑出明细</u></span>
+						<span class="now-dh"><u>本轮兑出</u></span>
+					</div>-->
+					<div style="padding: 6px 0">
+						<div class="curr-left" style="float:left;">
+							<span class="curr-tit">当前持有的福利券：<span id="myEnum">274份</span></span>
+						</div>
+						<div class="curr-right" style="float:right;">
+							<span class="curr-tit">本轮新增：<span id="newEnum">27433份</span></span>
+						</div>
+						<div class="clear"></div>
+					</div>
+					<div class="clear"></div>
+					<div class="chang-auto" style="font-weight: 600;">
+						自动兑出
+						<div class="auto-open">
+							<div class="round">
+							</div>
+						</div>
+					</div>
+					<input class="own-btn-big" type="button" id="sellOutId" value="确认兑出">
+
+				</div>
+
+				<!--<div class="chang-go">
+					<div class="chang-go-tit">
+						<img class="chang-img" src="img/chang-img.png" />
+						<span class="chang-tit-tex">本轮兑现</span>
+						<span class="chang-sy" id="nowCh-total">150份(约15元)</span>
+					</div>
+					<ul id="nowChange-list">
+
+					</ul>
+				</div>-->
+
+				<div class="chang-go">
+					<div class="chang-go-tit">
+						<img class="chang-img" src="img/chang-img.png" />
+						<span class="chang-tit-tex">下轮兑现</span>
+						<span class="chang-sy" id="nextCh-total">150份(约15元)</span>
+					</div>
+					<ul id="nextChange-list">
+
+					</ul>
+				</div>
+			</div>
+			<footer>
+				<div class="">
+					<div class="dh-fot-left">
+						<input type="button" id="suggestNum" value="建议兑出份数：0份" />
+					</div>
+					<div class="dh-fot-rgt">
+						<input type="button" value="下轮兑出" />
+					</div>
+				</div>
+			</footer>
+			<div class="opt"></div>
+
+			<div class="change-tc">
+				<div class="change-tc-tit">
+					<p class="tc-tit-p">本轮兑出-确认</p>
+					<p class="tc-tit-tip">本轮兑出过多会致使e点兑出周期加长，请谨慎操作！</p>
+				</div>
+				<div class="change-tc-body">
+					<div class="change-num">
+						<div class="dh-fs">
+							兑换份数
+						</div>
+						<input type="number" class="change-fw" oninput="if(value.length>8)value=value.slice(0,8)" name="changeFw" />
+					</div>
+					<div class="password-num">
+						<span>输入密码</span>
+						<input type="password" name="password" maxlength="6" />
+					</div>
+				</div>
+				<div class="change-tc-fot">
+					<input type="button" class="tc-fot-left" id="" value="取消" />
+					<input type="button" class="tc-fot-rgt" id="" value="确认" data-type="3" />
+				</div>
+			</div>
+
+			<div class="change-next-tc">
+				<div class="change-tc-tit">
+					<p class="tc-tit-p">下轮兑出-确认</p>
+					<p class="tc-tit-tip">请按参考值兑出，让收益最大化！</p>
+				</div>
+				<div class="change-tc-body">
+					<div class="change-num">
+						<div class="dh-fs">
+							兑换份数
+						</div>
+						<input type="number" class="change-fw" oninput="if(value.length>8)value=value.slice(0,8)" name="changeFw" />
+					</div>
+					<div class="password-num">
+						<span>输入密码</span>
+						<input type="password" name="password" maxlength="6" />
+					</div>
+				</div>
+				<div class="change-tc-fot">
+					<input type="button" class="tc-fot-left" id="" value="取消" />
+					<input type="button" class="tc-fot-rgt" id="" value="确认" data-type="2" />
+				</div>
+			</div>
+
+			<div class="confirmPassword" id="confirmPassword">
+				<div class="change-tc-tit">
+					<p class="tc-tit-p">输入支付密码</p>
+				</div>
+				<div class="change-tc-body">
+					<div class="password-num">
+						<span>输入密码</span>
+						<input type="password" name="password" maxlength="6" />
+					</div>
+				</div>
+				<div class="change-tc-fot">
+					<input type="button" class="tc-fot-left" id="" value="取消" />
+					<input type="button" class="tc-fot-rgt" id="" value="确认" data-type="1" />
+				</div>
+			</div>
+		</div>
+		<script type="text/template" id="nowChange-con">
+			{{each data.buys as list i}}
+			<li>
+				<div class="chang-go-left">
+					<div class="chang-state">
+						状态：{{list.des}}
+					</div>
+					<span class="chang-time">时间：{{list.beginTime}}</span>
+				</div>
+				<div class="chang-go-rgt">
+					<div class="chang-one">
+						{{list.sellFundNum}}份 {{list.value}}元/份
+					</div>
+					<span class="chang-time">合计金额：{{list.totalValue}}元</span>
+				</div>
+			</li>
+			{{/each}}
+		</script>
+		<script type="text/template" id="nextChange-con">
+			{{each data.buys as list i}}
+			<li>
+				<div class="chang-go-left">
+					<div class="chang-state">
+						状态：{{list.des}}
+					</div>
+					<span class="chang-time">时间：{{list.beginTime}}</span>
+				</div>
+				<div class="chang-go-rgt">
+					<div class="chang-one">
+						{{list.sellFundNum}}份 {{list.value}}元/份
+					</div>
+					<span class="chang-time">合计金额：{{list.totalValue}}元</span>
+				</div>
+			</li>
+			{{/each}}
+		</script>
+
+		<script type="text/javascript" src="js/template.js"></script>
+		<script type="text/javascript" src="js/template-helper.js"></script>
+		<script>
+			var params = {};
+			var sell={};
+			var totalE; //用户当前所有可用券
+			//初始化
+			$(function() {
+				getInfo("post", ajaxUrl+"/front/token/getUserId?token=" + token, {}, userIdReq);
+
+			});
+
+			//初始化回调处理
+			function userIdReq(r) {
+				params.userId = r.userId;
+				params.id = r.userId;
+				getInfo("post", root + "/user/getUserOpenState", params, userOpenStateReq); //获取托管状态
+				getInfo("post", root + "/user/currentCanSellNum", params, canChangeReq); //本轮新增
+				getInfo("post", root + "/user/getBasePram", params, changeDetReq); //获取总数
+				getList("#nowChange-list", "post", root + "/user/selling", params, changeBenReq); //获取本轮兑出
+				getList("#nextChange-list", "post", root + "/user/nextSell", params, changeNextReq); //获取下轮兑出
+				getInfo("post", root + "/user/layerData", params, totalNumReq); //获取本轮，下轮总数
+			}
+
+			function userOpenStateReq(r) { //自动兑换状态初始化
+				if(r.isOpen) { //开启
+					$('.auto-open').find('.round').css("left", "22px");
+					$('.auto-open').css('background-color', '#4CD964');
+				} else { //关闭
+					$('.auto-open').find('.round').css("left", "0px");
+					$('.auto-open').css('background-color', '#D7D7D7');
+				}
+
+			}
+
+			function totalNumReq(r) {
+				//$("#nowCh-total").text(r.data.sellIngNum + "份(约" + r.data.sellIngValue + "元)");
+				$("#nextCh-total").text(r.data.sellNextNum + "份(约" + r.data.sellNextValue + "元)");
+				$("#suggestNum").val("建议兑出份数:" + r.data.jsSellNum + "份")
+			}
+
+			function changeDetReq(r) { //我的福利券数
+				$("#myEnum").text(r.data.myEFundNum);
+				totalE = r.data.myEFundNum;
+			}
+
+			function canChangeReq(r) { //本轮新增
+				$("#newEnum").text(r.data.totalNum);
+			}
+
+			function changeBenReq(obj, r) { //本轮兑出
+				var html = "<div class='footer_box detail' style='height: 135px;'>";
+				html += "<div class = 'no-more' >"
+				html += "<img src = 'img/icon-jiazaipng.png' />";
+				html += "<p > 没有了！！！ </p>";
+				html += "</div> </div>";
+				var length = r.data.buys.length;
+				if(length != 0) {
+					var html1 = template("nowChange-con", r);
+					$(obj).html(html1);
+				} else if(length == 0) {
+					$(obj).html(html);
+				} 
+			}
+
+			function changeNextReq(obj, r) { //下轮兑出
+				var html = "<div class='footer_box detail' style='height: 135 px;'>";
+				html += "<div class = 'no-more' >"
+				html += "<img src = 'img/icon-jiazaipng.png' />";
+				html += "<p > 没有了！！！ </p>";
+				html += "</div> </div>";
+				var length = r.data.buys.length;
+				if(length != 0) {
+					var html1 = template("nextChange-con", r);
+					$(obj).html(html1);
+				} else if(length == 0) {
+					$(obj).html(html);
+				}
+			}
+			$("#chang-mx").click(function() {
+				window.location.href = "change-det.html?type=" + 2;
+			});
+
+			$(function() {
+				$('.auto-open').click(function() { //自动兑出状态改变
+					$("#confirmPassword,.opt").fadeIn(500);
+				})
+
+				$('.tc-fot-rgt').click(function() { /*弹窗确定*/
+					var op = true;
+					var type = $(this).data("type");
+					if(type != 1) {
+						var num = $(this).parent().siblings(".change-tc-body").find("input[name=changeFw]").val().trim();
+					}
+					var pasw = $(this).parent().siblings(".change-tc-body").find("input[name=password]").val().trim();
+					if(num == "") {
+						tip.flag('请填写兑出数量！', 'error');
+						op = false;
+					} else {
+						if(pasw.length == 6) {
+							reg = /^\d{6}$/;
+							if(!reg.test(pasw)) {
+								tip.flag('请输入6位数字支付密码！', 'error');
+								op = false;
+							} else {
+								op = true;
+							}
+						} else {
+							tip.flag('请输入6位数字支付密码！', 'error');
+							op = false;
+						}
+					}
+					if(op && type>1) { //下轮兑出2,本轮3
+						if(totalE < num) {
+							tip.flag('你没有那么多福利券！', 'error');
+							$(this).parent().siblings(".change-tc-body").find("input[name=changeFw]").val("");
+						} else {
+							sell.num=num;
+							sell.sellNum = num;
+							sell.payPassword = pasw;
+							sell.userId = params.userId;
+							if(type == 2) {
+								getInfo("post", root + "/user/sellEFund", sell, function(r) {
+									$('.change-tc,.opt,.change-next-tc,#confirmPassword').fadeOut(500);
+									tip.flag('兑换成功！', 'success');
+									setTimeout(function(){
+										getInfo("post", ajaxUrl+"/front/token/getUserId?token=" + token, {}, userIdReq);
+									},1000);
+									
+								});
+							} else if(type == 3) {
+								getInfo("post", root + "/user/sellCurrentNum", sell, function(r) {
+									$('.change-tc,.opt,.change-next-tc,#confirmPassword').fadeOut(500);
+									tip.flag('兑换成功！', 'success');
+									setTimeout(function(){
+										getInfo("post", ajaxUrl+"/front/token/getUserId?token=" + token, {}, userIdReq);
+									},1000);
+								});
+							}
+						}
+
+					} else if(op && type == 1) {
+						var that = '.auto-open';
+						var open = $(that).find('.round').css("left");
+						params.psw = pasw;
+						if(parseInt(open) <= 5) { //开启	
+							params.open = 1;
+							getInfo("post", root + "/user/updateOpen", params, function(r) {
+								$(that).find('.round').animate({
+									left: '22px'
+								});
+								$(that).css('background-color', '#4CD964');
+								$('.change-tc,.opt,.change-next-tc,#confirmPassword').fadeOut(500);
+							});
+						} else if(parseInt(open) >= 15) { //关闭
+							params.open = 0;
+							getInfo("post", root + "/user/updateOpen", params, function(r) {
+								$(that).find('.round').animate({
+									left: '0px'
+								});
+								$(that).css('background-color', '#D7D7D7');
+								$('.change-tc,.opt,.change-next-tc,#confirmPassword').fadeOut(500);
+							});
+						}
+						$("input[name=password]").val("");
+
+					} //
+					//					$('.change-tc,.opt,.change-next-tc,#confirmPassword').fadeOut(500);
+				});
+				$('.tc-fot-left').click(function() { /*本轮兑出弹窗*/
+					$('.change-tc,.opt,.change-next-tc,#confirmPassword').fadeOut(500);
+					$("input[name=password]").val("");
+					$("input[name=changeFw]").val("");
+				});
+				$('.now-dh').click(function() { //本轮兑出弹窗
+					$('.change-tc,.opt').fadeIn(500);
+				})
+
+				/*$('.dh-fot-rgt').click(function() { /!*下轮兑出弹窗*!/
+					$('.change-next-tc,.opt').fadeIn(500);
+				})*/
+				$('#sellOutId').click(function() { /*下轮兑出弹窗*/
+					$('.change-next-tc,.opt').fadeIn(500);
+				})
+			})
+		</script>
+	</body>
+
+</html>
+</html>

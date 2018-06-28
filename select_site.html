@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="utf-8" />
+		<title>选择收货地址</title>
+		<meta name="renderer" content="webkit">
+		<meta http-equiv="X-UA-Compatible" content="IE=11; IE=10; IE=9; IE=8; IE=7; IE=EDGE,Chrome=1">
+		<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no" />
+		<link rel="stylesheet" type="text/css" href="css/public.css" />
+		<link rel="stylesheet" href="css/hp.css" />
+		<script src="js/jquery-1.11.1.min.js" type="text/javascript" charset="utf-8"></script>
+		<script src="js/default.js"></script>
+		<script src="js/template.js"></script>
+		<script src="js/template-helper.js"></script>
+	</head>
+
+	<body>
+		<div class="container">
+			<header style="box-shadow: 0px 2px 5px 0px rgba(191, 191, 191, 0.72);">
+				<img class="nav-left" src="img/fanhui.png"  alt="" onclick="javascript:history.back(-1);" /> 选择收货地址
+			</header>
+			<div class="header_box">
+
+			</div>
+			<div class="no-map-box">
+					<img class="nomap-img" src="img/nomao-i.png"/>
+					<span class="no-dz">暂时还没有地址</span>
+			</div>
+			<div class="select-box"></div>
+		
+			<script type="text/template" id='select-box'>
+				{{each Address as k i}}
+				<div class="select_site_box">
+					<div class="user_tit">
+						<div class="aid" data-aid = "{{k.aid}}"></div>
+						<div class="user_name">{{k.uname}}</div>
+						<div class="user_phone">{{k.phone}}</div>
+					</div>
+					<div class="select_site">{{k.province}}{{k.city}}{{k.dist}}{{k.addrs}}</div>
+				</div>
+				{{/each}}
+			</script>
+			
+			<button class="add_site_btn add-btn">+添加地址</button>
+			<div class="footer_box"></div>
+		</div>
+		<script type="text/javascript">
+			$(function(){
+
+				//地址栏列表
+				$.ajax({
+					type:"post",
+					url:ajaxUrl+"/front/clientAddresses/getAddress?token="+token,
+					data:{},
+					async:true,
+					dataType:'json',
+					success:function(r){
+						if(r.code==300){
+							$('.no-map-box').css('display','block');
+							return ;
+						}else{
+							var html = template('select-box', r);
+							$('.select-box').html(html);
+							
+							var maid = GetUrlString('aid');//默认的aid
+							
+							$(".select_site_box").each(function(){
+								if($(this).find('.aid').attr('data-aid')==maid){
+									$(this).addClass('site_on');
+									
+								}
+							});
+							
+							$(".select_site_box").click(function(){
+								$(this).addClass("site_on").siblings().removeClass("site_on");
+							})
+							var carIds = GetUrlString('sureArr').split(",");
+							$(".select_site_box").click(function(){
+								console.log($(this))
+								if($(this).hasClass('site_on')){
+									console.log($(this))
+									var aid = $(this).find('.aid').attr('data-aid');
+									$.ajax({
+											type:'post',
+											url:ajaxUrl+'/front/clientAddresses/defaultAddress',
+											data:{
+												addressId:aid,
+												token:token
+											},
+											async:true,
+											dataType:'json',
+											success:function(r){
+												console.log(r)
+											}
+									});
+									
+								}
+								// 区分拼单和普通购买
+								if(localStorage.getItem('orderParams')==='null'|| localStorage.getItem('orderParams')===null||localStorage.getItem('orderParams')===undefined){
+
+                                    location.href = "confirm_order.html";
+								}else{
+                                    location.href = "confirm_order_pd.html";
+								}
+
+							})
+							
+						}	
+					},
+				});
+				
+				$(".add_site_btn").click(function(){
+					location.href = "add_site.html?sureArr="+GetUrlString('sureArr');
+				})
+				console.log(GetUrlString('sureArr'))
+				
+			});
+		</script>
+	</body>
+
+</html>
+

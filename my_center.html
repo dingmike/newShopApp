@@ -1,0 +1,851 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="renderer" content="webkit">
+    <meta http-equiv="X-UA-Compatible" content="IE=11; IE=10; IE=9; IE=8; IE=7; IE=EDGE,Chrome=1">
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no"/>
+    <meta content="yes" name="apple-mobile-web-app-capable"/>
+    <meta content="black" name="apple-mobile-web-app-status-bar-style"/>
+    <meta content="telephone=no" name="format-detection"/>
+    <link rel="stylesheet" type="text/css" href="css/index.css"/>
+    <link rel="stylesheet" href="css/hp.css"/>
+    <link rel="stylesheet" href="./lib/layer_mobile/need/layer.css"/>
+    <script type="text/javascript" src="https://res.wx.qq.com/open/js/jweixin-1.3.2.js"></script>
+    <script src="js/jquery-1.11.1.min.js" type="text/javascript" charset="utf-8"></script>
+    <!--<script type="text/javascript" src="js/jquery.qrcode.min.js"></script>-->
+    <script type="text/javascript" src="js/qrcode.min.js"></script>
+    <script src="js/default.js"></script>
+    <script src="js/template.js"></script>
+    <script src="js/template-helper.js"></script>
+    <script type="text/javascript" src="./lib/layer_mobile/layer.js"></script>
+    <style type="text/css">
+        .nav-order-num {
+            width: 15px;
+            height: 15px;
+            position: absolute;
+            background-color: #ff0000;
+            top: 22px;
+            right: -3rem;
+            border-radius: 30px;
+            color: white;
+            text-align: center;
+            line-height: 15px;
+            font-size: 12px;
+        }
+
+        .my-nc {
+            color: white;
+        }
+
+        .my-img {
+            border-radius: 50%;
+        }
+
+        .tz-news {
+            display: inline-block;
+            font-size: 16px;
+        }
+
+        .marq {
+            margin-left: 11%;
+        }
+
+        .qiandao-gz {
+            width: 100%;
+            height: 100%;
+            border-radius: 5px;
+            display: none;
+            position: absolute;
+            top: 0;
+            z-index: 10;
+            background: white;
+        }
+
+        .qd-bg {
+            background-color: #ffdcab;
+            border-radius: 5px;
+        }
+
+        .bor-top {
+            border-top: 1px solid #cac7c7;
+        }
+
+        .ewm-tc {
+            position: absolute;
+            left: 0;
+            right: 0;
+            top: 0;
+            bottom: 0;
+            margin: auto;
+            width: calc(70% - 28px);
+            background-color: white;
+            height: 250px;
+            border-radius: 5px;
+            display: none;
+            z-index: 12;
+        }
+
+        .ewm-top {
+            height: 210px;
+            width: 100%;
+            position: relative;
+        }
+
+        .ewm {
+            height: 80px;
+            width: 80px;
+            position: absolute;
+            left: 0;
+            right: 0;
+            top: 0;
+            bottom: 0;
+            margin: auto;
+        }
+
+        .ewm-fot {
+            height: 39px;
+            border-top: 1px solid #cac7c7;
+            text-align: center;
+            line-height: 39px;
+            font-size: 13px;
+            color: #00acec;
+        }
+
+        #qrcode img {
+            position: absolute;
+            top: 0;
+            left: 0;
+            bottom: 0;
+            right: 0;
+            margin: auto;
+        }
+
+        .m-loading {
+            border-radius: 4px;
+            color: #FFF;
+            background-color: rgba(40, 40, 40, 0.8);
+            -webkit-animation: zoomIn .1s ease forwards;
+            animation: zoomIn .1s ease forwards;
+            display: -webkit-box;
+            display: -webkit-flex;
+            display: -ms-flexbox;
+
+            -webkit-box-align: center;
+            -webkit-align-items: center;
+            -ms-flex-align: center;
+            align-items: center;
+            padding: 0 23px 0 24px;
+            height: 48px;
+            position: fixed;
+            top: 41%;
+            left: 33%;
+            z-index: 20;
+            display: none;
+        }
+
+        .m-loading .loading-icon {
+            width: 28px;
+            height: 28px;
+            background: url(img/scroll.png) no-repeat;
+            background-size: 28px 28px;
+            -webkit-animation: rotate-loading 0.45s linear forwards infinite;
+            animation: rotate-loading 0.45s linear forwards infinite;
+            margin-right: 10px;
+        }
+
+        .m-loading .loading-txt {
+            font-size: 15px;
+            color: #FFF;
+            max-width: 140px;
+            overflow: hidden;
+            white-space: nowrap;
+            text-overflow: ellipsis;
+        }
+
+        @-webkit-keyframes rotate-loading {
+            0% {
+                -webkit-transform: rotate(0);
+                transform: rotate(0);
+            }
+            100% {
+                -webkit-transform: rotate(360deg);
+                transform: rotate(360deg);
+            }
+        }
+
+        @keyframes rotate-loading {
+            0% {
+                -webkit-transform: rotate(0);
+                transform: rotate(0);
+            }
+            100% {
+                -webkit-transform: rotate(360deg);
+                transform: rotate(360deg);
+            }
+        }
+
+        .huideng {
+            height: 23px;
+            position: absolute;
+            right: 0;
+            top: 0;
+            bottom: 0;
+            margin: auto;
+            width: 90px;
+            background: #abaaaa;
+            border-radius: 10px 0 0 10px;
+            color: white;
+            text-align: center;
+            font-size: 12px;
+            line-height: 23px;
+        }
+    </style>
+</head>
+
+<body>
+<div class="container">
+    <div class="content">
+        <div class="cet-nav-box">
+            <div class="my-nav">
+                <a href="personal-data.html">
+                    <img class="my-sel" src="./img/del.png" onclick="location.href='personal-data.html'"/>
+                </a>
+                <!--个人中心-->
+                <img class="qiandao" src="./img/qiandao.png"/>
+            </div>
+
+            <div class="my-meg-box">
+                <img class="my-img" src="./img/ad_imgs/head_img.png" onclick="location.href='personal-data.html'"/>
+                <div class="my-meg" onclick="location.href='personal-data.html'">
+                    <p class="my-nc"></p>
+                    <p class="my-phone"></p>
+                </div>
+
+                <a href="#">
+                    <!--<img class="vip-st" src="img/vip.png" />vip-cet.html-->
+                    <span class="huideng"></span>
+                </a>
+
+
+            </div>
+            <div class="notice">
+                <img class="tz-img" src="img/tongzhi.png"/>
+                <marquee direction="" onmouseover="this.stop()" onmouseout="this.start()" class="marq"></marquee>
+                <script type="text/template" id="marq">
+                    {{each anno as k i}}
+                    <span class="tz-news"
+                          onclick="location.href='news-detal.html?id={{k.id}}'">{{k.title}}</span>&nbsp;&nbsp;&nbsp;
+                    {{/each}}
+                </script>
+            </div>
+        </div>
+
+        <div class="my-fom">
+            <a href="my-order-pending.html">
+                <div class="form-tit">
+
+                    单买订单
+                    <img class="rgt-img" src="img/rtu.png"/>
+
+                </div>
+            </a>
+            <div class="form-gn">
+                <div class="" onclick="order(1)">
+                    <img src="img/weifu.png"/>
+                    <span class="gn-nam">待付款</span>
+                </div>
+                <div class="" onclick="order(2)">
+                    <img src="img/weifa.png"/>
+                    <span class="gn-nam">待发货</span>
+                </div>
+                <div class="" onclick="order(3)">
+                    <img src="img/weishou.png"/>
+                    <span class="gn-nam">待收货</span>
+                </div>
+                <div class="" onclick="order(4)">
+                    <img src="img/weihui.png"/>
+                    <span class="gn-nam">待评价</span>
+                </div>
+                 <div class="" onclick="changeback()">
+                     <img src="img/tuihuan.png"/>
+                     <span class="gn-nam">退/换货</span>
+                 </div>
+            </div>
+        </div>
+        <div class="my-fom ma-top">
+            <div class="form-tit  bod-no">
+                我的资产
+                <img class="rgt-img" src="img/rtu.png"/>
+            </div>
+            <div class="zic-box">
+                <ul>
+                    <a href="money-yue.html">
+                        <li>
+                            <p class="zic-tit">现金余额</p>
+                            <span class="jt-num xjye">0</span>
+                        </li>
+                    </a>
+                    <a href="#">
+                        <li>
+                            <p class="zic-tit">广告金</p>
+                            <span class="jt-num ggsj">0</span>
+                        </li>
+                    </a>
+                    <!-- <a href="e-num.html">
+                         <li>
+                             <p class="zic-tit">e点</p>
+                             <span class="jt-num ed">0</span>
+                         </li>
+                     </a>-->
+
+                    <a href="consumption.html">
+                        <li>
+                            <p class="zic-tit">消费积分</p>
+                            <span class="jt-num xfjf">0</span>
+                        </li>
+                    </a>
+                    <a href="#">
+                        <li>
+                            <p class="zic-tit">业务提成</p>
+                            <span class="jt-num ywtc">0</span>
+                        </li>
+                    </a>
+                    <!--<a href="devote.html">
+                                                    <li>
+                                                        <p class="zic-tit">贡献值</p>
+                                                        <span class="jt-num gxz"></span>
+                                                    </li>
+                                                </a>-->
+
+                </ul>
+            </div>
+        </div>
+        <div class="collect-box">
+            <div class="collect-c">
+                <div class="collect-n" onclick="location.href='goods-collection.html'">
+                    <img src="img/stosc.png"/>
+                    <span class="sto-sc">商品收藏</span>
+                    <span class="sc-num sp"></span>
+                </div>
+            </div>
+            <div class="collect-c">
+                <div class="collect-n" onclick="location.href='store_collection.html'">
+                    <img src="img/shoucang.png"/>
+                    <span class="sto-sc">店铺收藏</span>
+                    <span class="sc-num dp"></span>
+                </div>
+            </div>
+            <div class="collect-c">
+                <div class="collect-n" onclick="location.href='my-trakesl.html'">
+                    <img src="img/zuji.png"/>
+                    <span class="sto-sc">我的足迹</span>
+                    <span class="sc-num wd"></span>
+                </div>
+            </div>
+        </div>
+        <div class="back-w">
+            <div class="form-tit" onclick="location.href='my-order-pd.html'">
+                <img class="team-img" src="img/pindanIcon.png"/>
+                <span class="team-tit">我的拼单</span>
+                <img class="rgt-img" src="img/rtu.png"/>
+            </div>
+            <div class="form-tit" onclick="location.href='memberShip.html'">
+                <img class="team-img" src="img/tuandui.png"/>
+                <span class="team-tit">我的团队</span>
+                <img class="rgt-img" src="img/rtu.png"/>
+            </div>
+            <div class="form-tit bod-no" id="ewm-tc" onclick="location.href='personal-data.html'">
+                <img class="ewm-img" src="img/settingIcon.png"/>
+                <span class="team-tit">账户设置</span>
+                <img class="rgt-img" src="img/rtu.png"/>
+            </div>
+
+            <div class="form-tit bod-no" id="ewm-tc2">
+                <img class="ewm-img" src="img/erwm.png"/>
+                <span class="team-tit">推荐二维码</span>
+                <img class="rgt-img" src="img/rtu.png"/>
+            </div>
+        </div>
+    <!--    <div class="cet-img-box" >
+            <img src="img/offLineEnter.png">
+        </div>-->
+        <div class="cet-img-box" >
+            <a href="storeManagement.html" class="store-management"><img src="img/offLineEnter.png" style="margin-bottom: 12px;"></a>
+            <img src="img/qf.png" id="goStoreLogin">
+        </div>
+    </div>
+    <footer>
+        <div class="hp-fot bor-top">
+            <div>
+                <a href="index.html">
+                    <img src="img/shouye.png" data-img="shouye"/>
+                    <span class="hp-fot-st ">首页</span>
+                </a>
+
+            </div>
+            <div>
+                <a href="classify.html">
+                    <img src="img/fenlei.png" data-img="fenlei"/>
+                    <span class="hp-fot-st">分类</span>
+                </a>
+            </div>
+            <div>
+                <a href="off_line.html">
+                    <img src="img/fuli.png" data-img="xianxia"/>
+                    <span class="hp-fot-st">线下</span>
+                </a>
+
+            </div>
+            <div>
+                <a class="news" href="news.html">
+                    <img src="img/news.png" data-img="news"/>
+                    <span class="hp-fot-st">消息</span>
+                </a>
+
+            </div>
+            <!--<div>
+                <a href="weal-q.html">
+                    <img src="img/fuli.png" data-img="fuli" />
+                    <span class="hp-fot-st">福利</span>
+                </a>
+
+            </div>-->
+            <div>
+                <a href="my_center.html">
+                    <img src="img/wode-x.png" data-img="wode"/>
+                    <span class="hp-fot-st fot-cor">我的</span>
+                </a>
+
+            </div>
+        </div>
+    </footer>
+
+    <div class="opt"></div>
+    <!--
+        二维码弹窗
+    -->
+    <div class="ewm-tc">
+        <div class="ewm-top" id="qrcode">
+
+        </div>
+        <div class="ewm-fot">
+            长按识别或分享二维码
+        </div>
+    </div>
+
+    <!--
+        签到弹窗
+    -->
+    <div class="qiandao-box">
+        <div class="qiandao-dat">
+            <div class="qiandao-top">
+                <div class="signed-in">
+                    <div class="signed-gz">
+                        <img src="img/qd-img.png"/>
+                        <span class="signed-tc">签到规则</span>
+                    </div>
+                    <img class="cha-qd" src="img/cha-qd.png"/>
+                </div>
+                <div class="signed-btn">
+                    <span class="signed-btn-span">签到</span>
+                    <span>领积分</span>
+                </div>
+            </div>
+
+            <div id="calendar">
+                <div class="dat-tit">
+                    <p>
+                        <span class="year"></span>
+                        <span>年</span>
+                        <span class="mouth"></span>
+                        <span>月</span>
+                    </p>
+                    <a href="##" class="top-mon"><img src="img/mon-rgt.png"/></a>
+                    <a href="##" class="next-mon"><img src="img/mon-left.png"/></a>
+                </div>
+                <ul class="week">
+                    <li>日</li>
+                    <li>一</li>
+                    <li>二</li>
+                    <li>三</li>
+                    <li>四</li>
+                    <li>五</li>
+                    <li>六</li>
+                </ul>
+                <ul class="dateList"></ul>
+            </div>
+
+        </div>
+        <div class="qiandao-suc">
+            <img src="img/qiandao-s.png"/>
+            <p class="qd-sp">签到成功</p>
+            <p class="qd-hd"></p>
+            <p class="qd-tip"></p>
+            <input type="button" class="qd-sbtn" id="" value="确定"/>
+        </div>
+        <div class="qiandao-gz">
+            <p class="qiandao-tit">签到规则</p>
+            <img class="qd-gb" src="img/cha-qd.png"/>
+            <div class="qiandao-nr">
+                签到规则：参与签到活动可获得（当前连续签到天数*5）的广告金奖励；如连续签到满10天，第10天还将额外获赠25广告金。如连续签到满20天，第20天还将额外获赠50广告金。如连续签到满30天，第30天还将额外获赠100广告金。
+
+                连续签到规则：连续签到的日期不可中断，如日期中断，连续签到的天数会从1天开始重新计算；用户签到天数会在每月1号重新开始计算。
+
+                例如：您从6月1日开始每日连续签到，您将在6月10日获得连续签到奖励（25点广告金）；6月20日，您将在6月10日获得连续签到奖励（50点广告金）；6月30日，您可获得连签30天的广告金奖励（100点广告金）。7月1号，你签到天数从第1天开始计算。
+            </div>
+        </div>
+    </div>
+</div>
+<div class="m-loading">
+    <div class="loading-icon"></div>
+    <div class="loading-txt">识别中</div>
+</div>
+<script>
+    //页面初始化
+    var recommonder = '';
+
+    $(function () {
+
+
+
+        run(0);
+        var links;
+
+        function formatDateTime(date) {
+            var signDetail = {
+                year: '',
+                mouth: '',
+                day: ''
+
+            };
+            var y = date.getFullYear();
+            y = parseInt(y);
+            var m = date.getMonth() + 1;
+            m = m < 10 ? ('0' + m) : m;
+            m = parseInt(m);
+            var d = date.getDate();
+            d = d < 10 ? ('0' + d) : d;
+            d = parseInt(d);
+            var h = date.getHours();
+            h = h < 10 ? ('0' + h) : h;
+            var minute = date.getMinutes();
+            minute = minute < 10 ? ('0' + minute) : minute;
+            var second = date.getSeconds();
+            second = second < 10 ? ('0' + second) : second;
+            signDetail.year = y;
+            signDetail.mouth = m;
+            signDetail.day = d;
+            return signDetail;
+
+        }
+
+        //个人资料
+        $.post(ajaxUrl + '/front/clients/userInfo', {token: token}, function (r) {
+            if (r.code == 201) {
+//							tip.flag('账号失效，请重新登录','error');
+                setTimeout(function () {
+                    window.location.href = 'login.html';
+                }, 1000);
+            } else {
+                localStorage.setItem('shopRegData', r.user.shopData);// 是否注册店铺，0 未注册，1 资料待完善，2 已注册待审核，3 审核通过注册完成。
+                recommonder = r.user.account;
+                $('.my-nc').html(r.user.niceName);
+                $('.my-phone').html(r.user.account);
+                $('.huideng').html(r.user.memberName);
+                $('.ggsj').text(r.user.advertisingMoeny); // 广告赏金
+
+                if (r.user.headImg == null || r.user.headImg == "") {
+                    $('.my-img').attr('src', './img/ad_imgs/head_img.png');
+                } else {
+                    $('.my-img').attr('src', r.user.headImg);
+                }
+
+                if(r.user.webType == 2){
+                    $('.store-management').show()
+                }else{
+                    $('.store-management').hide()
+                }
+
+                var regAddress = r.user.regAddress;
+                var account = r.user.account;
+
+                var linkUrl = 'http://www.goego.cn/';
+                links = linkUrl + 'register.html?account=' + account + '&regAddress=' + (regAddress);
+
+                //推广二维码
+                $('#ewm-tc2').click(function () {
+                    $('.opt,.ewm-tc').show();
+                    var qrcode = new QRCode(document.getElementById("qrcode"), {
+                        text: links,
+                        width: 128,
+                        height: 128,
+                        colorDark: "#000000",
+                        colorLight: "#ffffff",
+                        correctLevel: QRCode.CorrectLevel.H
+                    });
+
+
+                    document.getElementById('qrcode').ontouchstart = function (e) {
+                        e.preventDefault();
+                    };
+                    $('#qrcode').longPress(function () {
+                        $('.m-loading').css('display', 'flex');
+                        setTimeout(function () {
+                            window.location.href = links;
+                        }, 1500)
+                        //console.log(links)
+                    });
+
+                });
+                $('.opt').click(function () {
+                    $('.opt,.ewm-tc').hide();
+                    $('.m-loading').css('display', 'none')
+                });
+            }
+        });
+
+        getInfo("post", ajaxUrl + "/front/ordersDetail/ordersCount?token=" + token, "", orderReq);
+        //查询现金余额   e点   消费积分    贡献值
+
+        $.post(ajaxUrl + '/front/clients/checkBalance', {token: token}, function (r) {
+            if (r.code == 201) {
+//							tip.flag('账号失效，请重新登录','error');
+                setTimeout(function () {
+                    window.location.href = 'login.html';
+                }, 1000);
+            } else {
+                $('.xjye').html(r.myMoney);//现金余额
+
+                $('.ed').html(r.ePoint);//e点
+
+                // 业务提成
+                $('.xfjf').html(r.consumPoint);      // 消费积分
+                $('.gxz').html(r.contributingMoney); // 贡献值
+                $('.ywtc').html(r.fxMoney); // 业务提成
+            }
+        });
+
+        //商品收藏数量
+        $.post(ajaxUrl + '/front/clientProductLikes/likeCount', {token: token}, function (r) {
+            $('.sp').html(r.count);
+        });
+
+        //店铺收藏数量
+        $.post(ajaxUrl + '/front/clientShopFollow/likeCount', {token: token}, function (r) {
+            $('.dp').html(r.count);
+        });
+
+        //我的足迹数量
+        $.post(ajaxUrl + '/productsInfo/hotProduct', {token: token}, function (r) {
+            $('.wd').html(r.count);
+        });
+
+
+        //消息公告滚动
+        $.post(ajaxUrl + '/clientMessagePush/getMessage', {token: token, remark: 2}, function (r) {
+            var html = template('marq', r);
+            $('.marq').html(html);
+        });
+
+
+        //必要的数据
+        //今天的年 月 日 ；本月的总天数；本月第一天是周几？？？
+        var iNow = 0;
+
+        function run(n) {
+
+            var oDate = new Date(); //定义时间
+            oDate.setMonth(oDate.getMonth() + n);//设置月份
+            var year = oDate.getFullYear(); //年
+            var month = oDate.getMonth(); //月
+            var today = oDate.getDate(); //日
+
+            //计算本月有多少天
+            var allDay = [31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31][month];
+
+            //判断闰年
+            if (month == 1) {
+                if (year % 4 == 0 && year % 100 != 0 || year % 400 == 0) {
+                    allDay = 29;
+                }
+            }
+            //判断本月第一天是星期几
+            oDate.setDate(1); //时间调整到本月第一天
+            var week = oDate.getDay(); //读取本月第一天是星期几
+
+            //console.log(week);
+            $(".dateList").empty();//每次清空
+            //插入空白
+
+            for (var i = 0; i < week; i++) {
+                $(".dateList").append("<li></li>");
+            }
+
+            //日期插入到dateList
+            for (var i = 1; i <= allDay; i++) {
+                $(".dateList").append("<li>" + i + "</li>")
+            }
+
+
+            //定义标题日期
+            $(".dat-tit .year").text(year);
+            $(".dat-tit .mouth").text(month + 1);
+
+        }
+
+
+        $(".top-mon").click(function () {
+            iNow--;
+            run(iNow);
+            sign();
+        });
+
+        $(".next-mon").click(function () {
+            iNow++;
+            run(iNow);
+            sign();
+        });
+
+        $('#gb-tz').click(function () {
+            $('.notice').remove();
+        });
+        $('.qiandao').click(function () {
+            $('.opt,.qiandao-box,.qiandao-dat').show();
+            sign();
+
+        });
+
+        function sign() {
+            $.post(ajaxUrl + '/front/SignDetail/goSign', {token: token}, function (r) {
+                $.each(r.SignDetail, function (n, val) {
+
+                    var year = formatDateTime(new Date(val.signDate)).year;
+                    var mouth = formatDateTime(new Date(val.signDate)).mouth;
+                    var day = formatDateTime(new Date(val.signDate)).day;
+
+                    if (($('.dat-tit .year').text() == year) && ($('.dat-tit .mouth').text() == mouth)) {
+                        $(".dateList li").each(function () {
+                            if ($(this).text() == day) {
+                                $(this).addClass('add-cek');
+                                //alert($(this))
+                            }
+                        })
+                    }
+                });
+
+            })
+        }
+
+        $('.signed-gz').click(function () {
+            $('.qiandao-gz').show();
+        });
+        $('.signed-btn').click(function () {
+
+            $.post(ajaxUrl + '/front/SignDetail/doSign', {token: token}, function (r) {
+                if (r.code == 100) {
+                    $('.qiandao-dat').hide();
+                    $('.qiandao-suc').show();
+                    $('.qd-hd').html(r.data.data);
+                    if (r.data.soap <= 10) {
+                        $('.qd-tip').html('再连续签到' + parseInt(10 - parseInt(r.data.soap)) + '天将额外获得5积分')
+                    } else if (10 < r.data.soap && r.data.soap <= 20) {
+                        $('.qd-tip').html('再连续签到' + parseInt(20 - parseInt(r.data.soap)) + '天将额外获得10积分')
+                    } else if (20 < r.data.soap && r.data.soap < 31) {
+                        $('.qd-tip').html('再连续签到' + parseInt(30 - parseInt(r.data.soap)) + '天将额外获得20积分')
+                    }
+                } else if (r.code == 200) {
+                    tip.flag(r.data.data, 'success');
+                }
+
+            })
+        });
+
+        $('.qd-sbtn').click(function () {
+            $('.opt,.qiandao-box,.qiandao-dat').show();
+            $('.qiandao-box,.opt,.qiandao-suc').hide();
+        });
+        $('.qd-gb').click(function () {
+            $('.qiandao-gz').hide();
+        });
+        $('.cha-qd').click(function () {
+            $('.qiandao-dat,.qiandao-box,.opt').hide();
+        })
+
+        $('#goStoreLogin').click(function () {
+// 是否注册店铺，0 未注册，1 资料待完善，2 已注册待审核，3 审核通过注册完成。
+            switch (localStorage.shopRegData) {
+                case "0":
+                    location.href = 'store_login.html';
+                    break;
+                case null:
+                    location.href = 'store_login.html';
+                    break;
+                case '1':
+                    location.href = 'store_wait.html?newReg=1';
+                    break;
+                case '2': // 待审核
+                    location.href = 'store_wait.html?newReg=2';
+                    break;
+                case '3': // 审核通过
+                    location.href = 'store_over.html';
+                    break;
+                default:
+                    break;
+            }
+
+        })
+
+    });
+    //推荐注册二维码
+    function recommond() {
+        var account = recommonder;
+        layer.open()
+    }
+    //
+    function orderReq(r) {
+        al(r.aCount, 0);
+        al(r.bCount, 1);
+        al(r.cCount, 2);
+        al(r.dCount, 3);
+    }
+
+    function al(obj, index) {
+        var html = "";
+        if (obj != 0) {
+            html = "<div class='nav-order-num'>" + obj + "</div>";
+            $(".form-gn").children("div").eq(index).append(html);
+        }
+    }
+    //待付款，待收货
+    function order(type) {
+        window.location.href = "my-order-pending.html?typeid=" + type;
+    }
+    //退换货
+    function changeback() {
+        window.location.href = "give-back.html";
+    }
+    //模拟长按识别
+    $.fn.longPress = function (fn) {
+        var timer = null;
+        var $this = this;
+
+        for (var i = 0; i < $this.length; i++) {
+
+            $this[i].addEventListener('touchstart', function (event) {
+                timer = setTimeout(fn, 600);
+            }, false);
+
+            $this[i].addEventListener('touchend', function (event) {
+                clearTimeout(timer);
+
+            }, false);
+        }
+    };
+
+</script>
+</body>
+
+</html>

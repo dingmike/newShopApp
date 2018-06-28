@@ -1,0 +1,495 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="renderer" content="webkit">
+    <meta content="yes" name="apple-mobile-web-app-capable" content="yes"/>
+    <meta content="black" name="apple-mobile-web-app-status-bar-style"/>
+    <meta content="telephone=no" name="format-detection"/>
+    <meta http-equiv="X-UA-Compatible" content="IE=11; IE=10; IE=9; IE=8; IE=7; IE=EDGE,Chrome=1">
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no"/>
+    <link rel="stylesheet" type="text/css" href="css/index.css"/>
+    <link rel="stylesheet" href="css/hp.css"/>
+    <link rel="stylesheet" href="./lib/layer_mobile/need/layer.css"/>
+    <script src="js/jquery-1.11.1.min.js" type="text/javascript" charset="utf-8"></script>
+    <script src="js/default.js"></script>
+    <script src="js/template.js"></script>
+    <script src="js/template-helper.js"></script>
+    <script type="text/javascript" src="./lib/layer_mobile/layer.js"></script>
+    <title>我的订单</title>
+    <style>
+        .all-fr .webJump {
+            float: right;
+            margin-left: 5px;
+            margin-top: 5px;
+            width: 64px;
+            height: 20px;
+            border-radius: 10px;
+            border: solid 1px #9d9d9d;
+            background: none;
+            font-size: 12px;
+            color: #8a8a8a;
+            line-height: 18px;
+        }
+
+        .all-fr .webJump:hover {
+            border-color: #ff5a3a;
+            color: #ff5a3a;
+        }
+
+        .pingjia {
+            position: absolute;
+            top: 45px;
+            right: 15px;
+            z-index: 20000;
+            float: right;
+            width: 64px;
+            height: 20px;
+            border-radius: 10px;
+            border: solid 1px #9d9d9d;
+            background: none;
+            font-size: 12px;
+            color: #8a8a8a;
+            line-height: 18px;
+        }
+
+        .sort-box ul li {
+            padding: 0 9px;
+        }
+
+        /*选项卡--start--*/
+        .tab-nav {
+            display: -webkit-box;
+            display: -webkit-flex;
+            display: -ms-flexbox;
+            display: flex;
+            position: relative;
+            z-index: 0;
+        }
+
+        .tab-nav-item.tab-active {
+            color: #FF5E53;
+        !important;
+        }
+
+        .tab-nav-item {
+            height: 30px;
+            line-height: 30px;
+            font-size: 16px;
+            width: 1%;
+            -webkit-box-flex: 1;
+            -webkit-flex: 1;
+            -ms-flex: 1;
+            flex: 1;
+            position: relative;
+            text-align: center;
+            color: #585858;
+            display: block;
+            background-color: #FFF;
+        }
+
+        /*选项卡--end--*/
+    </style>
+</head>
+<body>
+<div class="container">
+    <header>
+        <div class="sto-nav-left">
+            <img src="img/fanhui.png" alt="" onclick="window.location.href='my_center.html';"/>
+        </div>
+        <div class="sto-nav-sear">
+            单买订单
+        </div>
+    </header>
+    <div class="content">
+        <ul class="tab-nav">
+            <li class="tab-nav-item tab-active" data-id="online-order">线上订单</li>
+            <li class="tab-nav-item" data-id="offline-order">线下订单</li>
+        </ul>
+        <div>
+            <div id="online-order">
+                <div class="sort-box bod-show">
+                    <div class="sort-box bod-show bod-wid">
+                        <ul style="padding-left: 15px;">
+                            <li typeid="0" count="1" class="on">全部订单</li>
+                            <li typeid="1" count="1">待付款</li>
+                            <li typeid="2" count="1">待发货</li>
+                            <li typeid="3" count="1">待收货</li>
+                            <li typeid="4" count="1">待评价</li>
+                        </ul>
+                    </div>
+                </div>
+                <div id="order-list">
+                </div>
+                <div class="right-buy-box">
+                </div>
+            </div>
+            <div id="offline-order" style="display: none;">
+                <div class="sort-box bod-show">
+                    <div class="sort-box bod-show bod-wid">
+                        <ul style="padding-left: 15px;">
+                            <li typeid="0" count="1" class="on">全部订单</li>
+                            <li typeid="1" count="1">待付款</li>
+                            <li typeid="4" count="1">待评价</li>
+                        </ul>
+                    </div>
+                </div>
+                <div id="offOrder-list">
+
+                </div>
+                <div class="right-buy-box">
+
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+<script type="text/template" id="order-list-con">
+    {{if ordersList[0].productInfos.length!=0}}
+    {{each ordersList as listA i}}
+    <div class="order_details detail" typeid="{{listA.type}}">
+        <div class="order_tit clearfix">
+            <span class="wddd-name webJump" jumpId="{{listA.shopId}}" jumpType="6">{{listA.shopName}}</span>
+            <span class="triangle-right"></span> {{if listA.payType==0}} {{if listA.status==0}}
+            <span class="hasdon">待付款</span> {{else if listA.status==6}}
+            <span class="hasdon">交易取消</span> {{/if}} {{else}} {{if listA.status==0}}
+            <span class="hasdon">待发货</span> {{/if}} {{if listA.status==1}}
+            <span class="hasdon">已发货</span> {{/if}} {{if listA.status==2}}
+            <span class="hasdon">已收货</span> {{/if}} {{if listA.status==3}}
+            <span class="hasdon">已退货</span> {{/if}} {{if listA.status==4}}
+            <span class="hasdon">延长收货</span> {{/if}} {{if listA.status==5}}
+            <span class="hasdon">已提醒发货</span> {{/if}} {{if listA.status==6}}
+            <span class="hasdon">交易取消</span> {{/if}} {{/if}}
+        </div>
+        {{each listA.productInfos as listB i}}
+        <div class="merchandise no-bom webJump" jumpId="{{listA.orderId}}" jumpType="7" style="position:relative;">
+            <div class="wddd_img order_img">
+                <div style="background:url({{listB.productImg}}) no-repeat center;background-size:cover;height: 99px;width: 100%;"
+                     alt=""></div>
+            </div>
+            <div class="order_cot wddd-cot" productId="{{listB.productId}}">
+                <div class="pro_tit">
+                    {{listB.productName}}
+                </div>
+                {{if listA.type==4}}
+                <input type="button" value="评价" onclick="pingjia('{{listA.orderId}}','{{listB.productId}}', this)"
+                       class="pingjia"/> {{/if}}
+                <div class="pro_par">
+                    参数:{{each listB.spec as listC i}}
+                    <span>{{listC}}</span> {{/each}}
+                </div>
+
+                <div class="e_dian wddd-dian">
+                    送{{listB.productSpec.ePoint*listB.fxId}}个广告金
+                </div>
+                <div class="pro_price wddd-price">
+                    <span>¥{{listB.productSpec.salePrice}}</span>
+                    <span>x{{listB.productCount}}</span>
+                </div>
+
+            </div>
+        </div>
+        {{/each}}
+        <div class="wddd-all">
+            <div class="all-lf">
+                <p>
+                    <span>共{{listA.productCount}}件商品</span>
+                    <span>共送{{listA.eDian*(listA.fxId)}}个广告金</span>
+                </p>
+                <p>
+                    <span>邮费：共{{listA.orderExpfee}}元</span>
+                </p>
+
+            </div>
+            <div class="all-fr">
+                <p style="text-align: right;">
+                    <span>合计：</span>
+                    <span>¥{{listA.orderAmount}}</span>
+                </p>
+                {{if listA.type==0}}
+                {{if listA.payType==0}}
+                {{if listA.status== 6}}
+                <input type="button" value="再次购买" class="webJump" productId="{{listA.productInfos[0].productId}}"
+                       jumpId="{{listA.orderId}}" jumpType="1"/>
+                {{/if}}
+                {{else}}
+                <input type="button" value="再次购买" class="webJump" productId="{{listA.productInfos[0].productId}}"
+                       jumpId="{{listA.orderId}}" jumpType="1"/>
+                {{/if}}
+                {{/if}}
+                {{if listA.payType==0 && listA.status!= 6}}
+                <input type="button" value="取消订单" class="webJump" jumpId="{{listA.orderId}}" jumpType="8"/>
+                <input type="button" value="去付款" class="webJump" jumpId="{{listA.orderId}}" jumpType="2"/>
+                {{/if}}
+                {{if listA.type==2}}
+                <input type="button" value="取消订单" class="webJump" jumpId="{{listA.orderId}}" jumpType="8"/>
+                {{if listA.status!=5}}
+                <input type="button" value="提醒发货" class="webJump" jumpId="{{listA.orderId}}" jumpType="9"/>
+                {{/if}}
+                {{/if}}
+                {{if listA.type==3}}
+                <input type="button" value="查看物流" class="webJump" jumpId="{{listA.orderId}}"
+                       detailId="{{listA.productInfos[0].DetailId}}" jumpType="3"/>
+                {{if listA.status!=4}}
+                <input type="button" value="延长收货" class="webJump" jumpId="{{listA.orderId}}" jumpType="4"/>
+                {{/if}}
+                <input type="button" value="确认收货" class="webJump" jumpId="{{listA.orderId}}" jumpType="5"/>
+                {{/if}}
+                {{if listA.type==4}}
+                <input type="button" value="再次购买" class="webJump" productId="{{listA.productInfos[0].productId}}"
+                       jumpId="{{listA.orderId}}" jumpType="1"/>
+                {{/if}}
+            </div>
+        </div>
+    </div>
+    {{/each}}
+    {{/if}}
+</script>
+
+<script>
+
+    $(function () {
+
+
+        // 获取分销ID和值
+        var fxIdData;
+        getFxId(function (res) {
+            fxIdData = res;
+        });
+
+        var pageNo = 1,
+            type = 0,
+            webType = 1, // 线上订单：1； 线下订单2；
+            totleHeight;
+        var params = { //数据
+            type: type,
+            webType: webType,
+            pageNo: pageNo,
+            pageSize: 3
+        };
+        var op = [];
+        // 切换选项卡
+        $('.tab-nav-item').click(function (e) {
+            var ObjId = $(this).data('id');
+            if ($(this).hasClass('tab-active')) {
+                return;
+            } else {
+                if (ObjId === 'offline-order') {
+                    params.webType = 2;  // 2 线下
+                    getList("#offOrder-list", 'post', ajaxUrl + '/front/ordersCollage/orderCollageListFront?token=' + token, params, orderReq);
+                } else {
+                    params.webType = 1; // 1 线上
+                    getList("#order-list", 'post', ajaxUrl + '/front/ordersCollage/orderCollageListFront?token=' + token, params, orderReq);
+                }
+                $(this).addClass('tab-active');
+                $(this).siblings().removeClass('tab-active');
+                $('#' + ObjId).show().siblings().hide();
+            }
+        });
+
+        if (GetUrlString('typeid') != "") {
+            type = GetUrlString('typeid');
+        }
+        params.type = type;
+        $(".sort-box ul li").each(function () {
+            op.push(1);
+            if ($(this).attr("typeid") == type) {
+                $(this).attr("count", 2);
+                $(this).addClass('on').siblings().removeClass('on');
+                $(this).css('color', '#ff5a3a').siblings().css('color', '#8a8a8a');
+            }
+        });
+        //loading层
+        layer.open({type: 2});
+
+        getList("#order-list", 'post', ajaxUrl + '/front/ordersDetail/selectOrders?token=' + token, params, orderReq);
+
+        //滚动加载数据
+        $(".content").scroll(function () {
+            if (op[type] != 0) {
+                totleHeight = $(".content").height() + $(".content").scrollTop();
+                if (($(".content")[0].scrollHeight == totleHeight) && !listLoading) {
+                    op[type] += 1;
+                    params.pageNo = op[type];
+                    getList("#order-list", "post", ajaxUrl + '/front/ordersDetail/selectOrders?token=' + token, params, orderReq);
+                    connectDisplay(".detail", "typeid", type);
+                }
+            }
+        });
+
+        //回调处理数据
+        function orderReq(obj, r) {
+            $(obj).find('#loadingIcon').remove();
+            $(obj).find('.footer_box').remove();
+            var html = "<div class='footer_box detail' style='height: 135px;' typeid=" + type + ">";
+            html += "<div class = 'no-more' >";
+            html += "<img src = 'img/icon-jiazaipng.png' />";
+            html += "<p > 没有更多了！！！ </p>";
+            html += "</div> </div>";
+
+            if (r.code == 200) {
+
+
+                var length = r.ordersList.length;
+                if (length != 0) {
+                    // 显示广告金
+
+                    for (var i = 0; i < r.ordersList.length; i++) {
+                        for (var n = 0; n < r.ordersList[i].productInfos.length; n++) {
+                            console.log('sdfasdsdfdfdf');
+                            for (var j = 0; j < fxIdData.length; j++) {
+                                console.log('sdfasdf');
+                                if (r.ordersList[i].productInfos[n].fxId == fxIdData[j].id) {
+                                    r.ordersList[i].productInfos[n].fxId = fxIdData[j].mine;
+                                    r.ordersList[i]['fxId'] = parseInt(fxIdData[j].mine);
+
+                                }
+                            }
+                        }
+                    }
+debugger
+                    var html1 = template('order-list-con', r);
+                    $(obj).append(html1);
+                } else if (length == 0 && op[type] == 1) {
+                    $(obj).append(html);
+                } else {
+                    listLoadingLock = true;
+                    op[type] = 0;
+                    $(obj).append(html);
+                }
+            } else if (r.code == 300) {
+                params.pageNo = 1;
+            }
+
+            layer.closeAll();
+            //页面跳转
+            $(".webJump").on("click", function () {
+                var id = $(this).attr("jumpId");
+                var detailId = $(this).attr("detailId");
+                var jumpType = $(this).attr("jumpType");
+                var proId = $(this).attr("jumpProId");
+                var seleteDetail = $(this).parents(".detail");
+                switch (jumpType) {
+                    case '1': //再次购买跳转到详情页面
+
+                        var productId = $(this).attr('productId');
+                        setTimeout(function () {
+                            window.location.href = "sto-detail.html?id=" + productId;
+                        }, 1000)
+                        /*getInfo('post', ajaxUrl + '/front/orders/buyAgain?token=' + token, {
+                         orderId: id
+                         }, repOrderReq);
+
+                         function repOrderReq(r) {
+                         // var catId = r.cartIds;
+
+                         //tip.flag('再次购买成功！马上跳转去支付！', 'success');
+                         setTimeout(function() {
+                         window.location.href = "confirm_order.html?sureArr=" + catId;
+                         }, 1000)
+                         }*/
+                        break;
+                    case '2': //去支付
+                        window.location.href = "returnPayOrder.html?orderId=" + id;
+                        break;
+                    case '3': //查看物流
+                        window.location.href = "logisticsTracking.html?orderId=" + id + '&detailId=' + detailId;
+                        break;
+                    case '4': //延长收货
+                        window.location.href = "extended-delivery.html?id=" + id;
+                        break;
+                    case '5': //确认收货
+                        getInfo('post', ajaxUrl + '/front/orders/Receive?token=' + token, {
+                            orderId: id
+                        }, shouReq);
+
+                    function shouReq(r) {
+                        tip.flag(r.msg, 'success');
+                        setTimeout(function () {
+                            window.location.href = "my-order-pending.html?typeid=" + 4;
+                        }, 1000)
+                    }
+
+                        break;
+                    case '6': //店铺
+                        window.location.href = "shop_details.html?id=" + id;
+                        break;
+                    case '7': //订单详情
+                        window.location.href = "order-details.html?id=" + id;
+                        break;
+                    case '8': //取消订单
+                        getInfo('post', ajaxUrl + '/front/orders/cancelOrders?token=' + token, {
+                            orderId: id
+                        }, cancelOrderReq);
+
+                    function cancelOrderReq(r) {
+                        tip.flag(r.msg, 'success');
+                        setTimeout(function () {
+                            window.location.href = "my-order-pending.html?typeid=" + type;
+                        }, 1000);
+                    }
+
+                        break;
+                    case '9': //提醒发货
+                        getInfo('post', ajaxUrl + '/front/orders/remindShip?token=' + token, {
+                            orderId: id
+                        }, remindShopReq);
+
+                    function remindShopReq(r) {
+                        tip.flag('提醒发货成功！', 'success');
+                        setTimeout(function () {
+                            window.location.href = "my-order-pending.html?typeid=" + type;
+                        }, 1000);
+                    }
+
+                        break;
+                    default:
+
+                        break;
+                }
+            });
+        }
+
+        //导航栏点击切换
+        $(".sort-box ul li").click(function () {
+            //loading层
+            // layer.open({type: 2});
+            listLoading = false;
+            listLoadingLock = false; //初始化页面没有被锁定，，可以滚动
+            type = $(this).attr('typeid');
+            params.pageNo = op[type];
+            params.type = type;
+            $(this).addClass('on').siblings().removeClass('on');
+            $(this).css('color', '#ff5a3a').siblings().css('color', '#8a8a8a');
+            if ($(this).attr("count") == 1) {
+
+                var loadingHtml = '<p id="loadingIcon"  style="text-align: center;margin-top: 12px">加载中...</p>';
+                $('#order-list').append(loadingHtml);
+                getList("#order-list", 'post', ajaxUrl + '/front/ordersDetail/selectOrders?token=' + token, params, orderReq);
+                connectDisplay(".detail", "typeid", type);
+                $(this).attr("count", 2);
+            } else {
+                connectDisplay(".detail", "typeid", type);
+            }
+        });
+    })
+    function pingjia(Id, proId, eventObj) {
+        cancelBubble(eventObj);
+        $(".webJump").unbind("click");
+        window.location.href = "order_evaluation.html?orderId=" + Id + "&proId=" + proId;
+    }
+    function cancelBubble(eventObj) {
+        var evt = eventObj ? eventObj : window.event;
+        if (evt.stopPropagation) {        //W3C
+            evt.stopPropagation();
+        } else {       //IE
+            evt.cancelBubble = true;
+        }
+    }
+
+</script>
+</body>
+
+</html>

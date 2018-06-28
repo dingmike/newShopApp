@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no" />
+		<link rel="stylesheet" type="text/css" href="css/index.css" />
+		<link rel="stylesheet" type="text/css" href="css/hp.css" />
+		<script type="text/javascript" src="js/jquery-1.11.1.min.js"></script>
+		<script type="text/javascript" src="js/default.js"></script>
+
+		<title>消费积分</title>
+		<style type="text/css">
+
+		</style>
+		<script type="text/javascript">
+		</script>
+	</head>
+
+	<body>
+		<div class="container">
+			<header class="bod-show">
+				<img class="nav-left" src="img/fanhui.png" onclick="location.href='my_center.html'" /> 消费积分
+			</header>
+			<div class="content">
+				<div class="gx-top">
+					<p class="gx-tit-top">消费积分：</p>
+					<span class="gx-num">0</span>
+					<div class="zhuan">
+						<!--<input type="button" id="transfer" value="转账" />-->
+					</div>
+				</div>
+				<div class="chang-go" style="height: 100%;">
+					<div class="gx-tit">
+						<img src="img/mingxi.png" /> 明细
+					</div>
+					<ul id="detail-list">
+
+					</ul>
+					<!--<div class="gx-more">
+						<div class="gx-img">
+							<img class="gx-sx" src="img/load.png" />
+						</div>
+						<p>扯疼了，没有更多了~</p>
+					</div>-->
+				</div>
+
+			</div>
+		</div>
+
+		<script type="text/template" id="detail-con">
+			{{each list as list i}}
+			<li class="pad-left">
+				<div class="chang-go-left ma-zero">
+					<div class="chang-state">
+						{{list.detail}}
+					</div>
+					<span class="chang-time">时间：{{list.time}}</span>
+				</div>
+				<div class="chang-go-rgt">
+					<div class="chang-one">
+						{{if list.inOrout==1||list.inOrout==4}}-{{else}}+{{/if}}{{list.money}}
+					</div>
+					<span class="chang-time">{{list.balance}}</span>
+				</div>
+			</li>
+			{{/each}}
+		</script>
+		<script type="text/javascript" src="js/template.js"></script>
+		<script type="text/javascript" src="js/template-helper.js"></script>
+		<script>
+			var params={
+				pageNo:1,
+				pageSize:8,
+				type:2,
+				type2:0
+			}
+			
+			$(function() { //初始化
+				getInfo("post", ajaxUrl+"/front/clients/selectAssets?token=" + token, {
+					type: 2
+				}, getNum)
+				
+				getList("#detail-list","post",ajaxUrl+"/front/XtWalletControllerFront/selectDetails?token="+token,params,detailsReq);
+			});
+			
+			function detailsReq(obj,r){
+				var html = "<div class='footer_box detail' style='height: 135 px;'>";
+				html += "<div class = 'no-more' >"
+				html += "<img src = 'img/icon-jiazaipng.png' />";
+				html += "<p > 没有了！！！ </p>";
+				html += "</div> </div>";
+				var length = r.list.length;
+				if(length != 0 && params.pageNo==1) {
+					var html1 = template("detail-con", r);
+					$(obj).html(html1);
+				}else if(length != 0 && params.pageNo!=1){
+					var html1 = template("detail-con", r);
+					$(obj).append(html1);
+				} else if(length == 0 && params.pageNo == 1) {
+					$(obj).append(html);
+					params.pageNo = 0;
+				} else {
+					listLoadingLock = true;
+					params.pageNo = 0;
+					$(obj).append(html);
+				}
+			}
+			function getNum(r) {
+				$(".gx-num").text(r.score);
+			}
+			
+			//滚动加载数据
+			$(".content").scroll(function() {
+				if(params.pageNo != 0) {
+					totleHeight = $(".content").height() + $(".content").scrollTop();
+					if(($(".content")[0].scrollHeight == totleHeight) && !listLoading) {
+						params.pageNo += 1;
+						getList("#detail-list","post",ajaxUrl+"/front/XtWalletControllerFront/selectDetails?token="+token,params,detailsReq)
+					}
+				}
+			});
+			
+			$("#transfer").click(function(){
+				location.href="transfer.html?type=2";
+			});
+		</script>
+	</body>
+
+</html>

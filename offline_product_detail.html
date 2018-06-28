@@ -1,0 +1,1557 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="renderer" content="webkit">
+    <meta content="yes" name="apple-mobile-web-app-capable" content="yes" />
+    <meta content="black" name="apple-mobile-web-app-status-bar-style" />
+    <meta content="telephone=no" name="format-detection"/>
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no"/>
+    <link rel="stylesheet" type="text/css" href="css/index.css"/>
+    <link rel="stylesheet" href="css/hp.css"/>
+    <link rel="stylesheet" href="./lib/layer_mobile/need/layer.css"/>
+    <!--<link rel="stylesheet" href="lib/layer/2.4/skin/layer.css"/>-->
+    <!--flex 布局-->
+    <script src="js/flexible.js" type="text/javascript"></script>
+    <script src="js/jquery-1.11.1.min.js" type="text/javascript" charset="utf-8"></script>
+    <!--<script type="text/javascript" src="lib/layer/2.4/layer.js"></script>-->
+    <script type="text/javascript" src="js/jquery.downCount.js"></script>
+    <script src="js/modernizr-custom-v2.7.1.min.js" type="text/javascript"></script>
+    <script src="js/jquery-finger-v0.1.0.min.js" type="text/javascript"></script>
+    <script src="js/flickerplate.min.js" type="text/javascript"></script>
+    <script src="js/default.js"></script>
+    <script src="js/template.js"></script>
+    <script src="js/template-helper.js"></script>
+    <script type="text/javascript" src="./lib/layer_mobile/layer.js"></script>
+    <title>商品详情</title>
+    <style type="text/css">
+        .shop-right {
+            width: 75%;
+        }
+
+        .shop-right div {
+            height: 100%;
+            display: inline-block;
+        }
+
+        .shop-box input {
+            width: 31px;
+            height: 31px;
+            border-radius: 6px;
+            border: solid 1px #b4b4b4;
+            color: #191919;
+            font-size: 24px;
+        }
+
+        .shop-box div {
+            float: left;
+        }
+
+        .shop-box {
+            float: right;
+        }
+
+        .shop-tip {
+            float: left;
+        }
+
+        .shop-shu {
+            color: #ff5a3a;
+            font-size: 20px;
+            padding: 0 15px;
+        }
+
+        .pay-fot button {
+            width: 100%;
+            border: none;
+            outline: none;
+            background-color: #ff5a3a;
+            color: white;
+            font-size: 15px;
+            letter-spacing: 3px;
+            height: 100%;
+        }
+
+        .opt {
+            z-index: 0;
+        }
+
+        .selected {
+            background: #ff5a3a !important;
+            color: white;
+        }
+
+        .moren {
+            width: auto;
+            height: 25px;
+            margin-right: 15px;
+            margin-bottom: 10px;
+            outline: none;
+            padding: 0 2px;
+            background-color: white;
+            border-radius: 5px;
+            text-align: center;
+            -webkit-appearance: none;
+            outline: none;
+        }
+
+        .det-fot-right input {
+            height: 50px;
+            padding: 0 5px;
+        }
+
+        .det-fot-right button {
+            height: 50px;
+            padding: 0 1px;
+            border: none;
+            flex: 1;
+            color: white;
+            letter-spacing: 0.1066667rem;
+            font-size: 12px;
+        }
+
+        .closeBuy {
+            height: 20px;
+            width: 20px;
+            position: relative;
+            top: -5px;
+            left: 96%;
+            background-image: url(./img/cha2.png);
+            background-repeat: no-repeat;
+            background-position: center;
+            background-size: cover;
+        }
+
+        .pay-cheak {
+            flex-wrap: wrap;
+            height: auto;
+            width: 8.266667rem;
+            padding-left: 1.33333rem;
+            padding-bottom: 0;
+            margin-top: 0.13333rem;
+        }
+
+        .list-mr {
+            position: relative;
+        }
+
+        .list-mr i {
+            display: none;
+            width: 37%;
+            height: 2px;
+            background: #ff5a3a;
+            position: absolute;
+            left: 30%;
+            bottom: 0px
+        }
+
+        .pay-body {
+            max-height: 350px;
+            overflow: auto;
+        }
+
+        .pay-body p {
+            font-size: 14px;
+            font-weight: 600;
+        }
+
+        ._nodata {
+            height: 50px;
+            text-align: center;
+            line-height: 50px;
+        }
+
+        .left-es {
+            margin-left: 0.53333rem;
+        }
+
+        .left-ys {
+            margin-left: 18px;
+        }
+
+        .pay-tc {
+            transition: all 0.5s;
+        }
+
+        @media only screen and (min-width: 300px) and (max-width: 330px) {
+            .left-es {
+                margin-left: 15px;
+            }
+
+            .left-ys {
+                margin-left: 10px;
+            }
+        }
+
+        .sto-pj-box ul li span {
+            display: block;
+            height: 20px;
+            line-height: 20px;
+            border-radius: 5px;
+            width: calc(100% - 40px);
+            margin: auto;
+            margin-top: 7px;
+        }
+
+        .bor-cor-mo {
+            color: #9b9b9b;
+            border: 1px solid #9b9b9b;
+        }
+
+        .bor-cor {
+            color: rgb(255, 90, 58);
+            border: 1px solid rgb(255, 90, 58);
+        }
+
+        .jia-btn {
+            background: #fff;
+            border: 1px solid #ff775c;
+            width: 35px;
+            height: 23px;
+            font-size: 22px;
+            font-weight: 600;
+            border-radius: 4px;
+            line-height: 20px;
+        }
+
+        /*jia-jian*/
+        .btn-numbox {
+            overflow: hidden;
+            margin-top: 20px;
+        }
+
+        .btn-numbox li {
+            float: left;
+        }
+
+        .btn-numbox li .number,
+        .kucun {
+            display: inline-block;
+            font-size: 12px;
+            color: #808080;
+            vertical-align: sub;
+        }
+
+        .btn-numbox .count {
+            overflow: hidden;
+            margin: 0 16px 0 -20px;
+        }
+
+        .btn-numbox .count .num-jian,
+        .input-num,
+        .num-jia {
+            display: inline-block;
+            width: 28px;
+            height: 28px;
+            line-height: 28px;
+            text-align: center;
+            font-size: 18px;
+            color: #999;
+            cursor: pointer;
+            border: 1px solid #e6e6e6;
+        }
+
+        .btn-numbox .count .num-jia {
+            margin-left: 1px;
+        }
+
+        .btn-numbox .count .input-num {
+            width: 58px;
+            height: 26px;
+            color: #333;
+            border-left: 0;
+            border-right: 0;
+        }
+
+        /*轮播图*/
+        .hp-rk {
+            padding: 0px;
+        }
+
+        .flicker-example .bb {
+            width: 100%;
+            height: auto;
+        }
+
+        /*拼单box--start--*/
+        .pt-price-box {
+            display: flex;
+            display: -webkit-flex;
+            flex-direction: row;
+            justify-content: space-between;
+            background-color: orangered;
+            height: 1.386667rem;
+            font-size: 0.32rem;
+            color: #ffeb00;
+        }
+
+        .sale-price {
+            font-size: 0.6rem;
+        }
+
+        .market-price {
+            color: #fff;
+            padding-left: 0.26667rem;
+        }
+
+        .sale-num-info {
+            color: #fff;
+            font-size: 0.266667rem;
+        }
+
+        .loading-time-box {
+            font-size: 0.16rem;
+            margin-top: 0.1rem;
+            width: 3.733333rem;
+        }
+
+        .price-time {
+            font-size: 0.30rem;
+            /*padding: 0 0.21333rem;*/
+        }
+
+        .price-time span {
+            font-size: 0.30rem;
+            height: 0.5333rem;
+            line-height: 0.5333rem;
+        }
+
+        .price-time ul {
+            float: left;
+        }
+
+        .price-time-loading {
+            margin-top: 0.15rem;
+        }
+
+        /*拼单box--end--*/
+        /*loading--start--*/
+        .status-bar[data-v-5d44c782] {
+            position: relative;
+            box-sizing: border-box;
+            width: 3.2rem;
+            height: 0.3733333rem;
+            line-height: 0.3733333rem;
+            border-radius: 0.186666667rem;
+            color: #fff;
+            background: url(./img/ad_imgs/beijing.png) repeat-x;
+            background-size: contain;
+            text-align: center;
+            overflow: hidden;
+        }
+
+        .status-progress[data-v-5d44c782] {
+            border-radius: 0.186666667rem;
+            position: absolute;
+            top: 0;
+            left: 0;
+            height: 100%;
+            min-width: .13rem;
+            /* background: url(/img/ad_imgs/jindu.png) repeat-x; */
+            background-size: contain;
+        }
+
+        .status-num[data-v-5d44c782] {
+            font-size: 0.32rem;
+            position: absolute;
+            left: 0.8rem;
+        }
+
+        .status-soldrate[data-v-5d44c782] {
+            font-size: 0.34rem;
+            position: absolute;
+            left: 1.3333rem;
+        }
+
+        .status-msg {
+            position: relative;
+            text-indent: 1.10rem;
+            /*width: 2.32rem;*/
+        }
+
+        .status-msg:before {
+            content: attr(text);
+            line-height: 0.3733333rem;
+            height: 0.3733333rem;
+            position: absolute;
+            left: 0;
+            font-size: 0.3rem;
+            vertical-align: middle;
+        }
+
+        .status-msg:after {
+            content: attr(text);
+            position: absolute;
+            left: 0;
+            /* width: 100%; */
+            /* height: 38px; */
+            height: 0.3733333rem;
+            line-height: 0.3733333rem;
+            white-space: nowrap;
+            overflow: hidden;
+            transition: width 1s ease;
+            width: 57%;
+            color: red;
+            font-size: 0.3rem;
+            vertical-align: middle;
+            /* background: #0BF; */
+            background: url(./img/ad_imgs/jindu.png) repeat-x;
+        }
+
+        .pin-tuan {
+            font-style: italic;
+            font-weight: 600;
+            background-color: #ffffff;
+            width: 1.86666rem;
+            height: 0.8rem;
+            margin-top: 0.37333rem;
+            border-radius: 4px;
+            margin-left: 0.2666rem;
+            color: orangered;
+        }
+
+        .own-margin-left {
+            padding-left: 0.4rem;
+        }
+
+        /*loading--end--*/
+
+        .det-nav-shouchang {
+            height: 22px;
+            width: 22px;
+            right: 70px;
+            top: 11px;
+            position: absolute;
+        }
+
+        .left-shopcart {
+            width: 1.6rem !important;
+        }
+
+        /**/
+        .det-sj-h {
+            height: 0.566667rem;
+            padding-bottom: 4px;
+            border-bottom: 1px solid #cac7c7;
+        }
+
+        .det-sj-left-h {
+            width: 170px;
+            float: left;
+        }
+
+        .det-sum-h {
+            display: block;
+            color: #9b9b9b;
+            font-size: 12px;
+        }
+
+        .det-sj-right-h {
+            height: 26px;
+            float: right;
+            text-align: end;
+            /* margin-top: 20px; */
+        }
+    </style>
+</head>
+
+<body>
+<div class="container">
+    <header>
+        <img class="det-nav-left" src="img/fanhui.png" alt="" onclick="javascript:history.back(-1);"/> 商品详情
+        <img class="det-nav-shouchang" id="sc" src="img/shouchang.png" data-se="1"/>
+        <!--<img id="sc" src="img/shouchang.png" data-se="1" />-->
+        <img class="det-nav-car" src="img/gouwuche.png" onclick="location.href = 'store.html'"/>
+        <img class="det-nav-fx" id="threeShareId" src="img/fenxiang.png"/>
+        <div class="sto-car-num"></div>
+    </header>
+    <div class="content">
+
+        <div class="sto-det-box"></div>
+        <script type="text/template" id="sto-det-box">
+            <!--<img class="sto-det-ban" src={{data.productImg}}>-->
+
+            <div class="hp-rk">
+                <div class="flicker-example bb" data-block-text="false">
+                    <ul>
+                        <!--<li data-background="{{data.productImg}}"></li>-->
+                    </ul>
+                </div>
+            </div>
+
+            <div class="sto-det-tit">
+
+
+                <!--拼单和单买-->
+                {{if data.sellPrice!==0&&data.bidPrice!==0}}
+                <p class="det-tit">{{data.productName}}</p>
+                <div class="det-sj">
+                    <div class="det-sj-left">
+                        <p class="clearfix">
+                            <span class="det-sj-num">￥{{data.sellPrice}}</span> {{if data.productExpfee==0}}
+                            <span class="det-sj-by">包邮</span> {{/if}}
+                        </p>
+                        <span class="det-sj-yj"><s>￥{{data.marketPrice}}</s></span>
+                    </div>
+                    <div class="det-sj-right">
+                        <img src="./img/ad_imgs/share.png" alt="" style="width: 23%;">
+                        <span style="font-size: 0.30rem;">分享有赏</span>
+                        <span class="det-sum">累计销售：{{data.productSales}}件</span>
+                        <!--<span class="det-song-e">送{{data.productEdian}}e点</span>-->
+                    </div>
+                </div>
+                <div class="pt-price-box sto-det-tit">
+                    <div>
+                        <div><span class="sale-price">¥{{data.collagePrice}}</span><span class="market-price"><s>¥{{data.bidPrice}}</s></span>
+                        </div>
+                        <div class="sale-num-info"><span>还剩 {{data.fightAloneNumber-data.areadFightAlone}}件</span> /
+                            <span>限量 {{data.fightAloneNumber}}件</span></div>
+                    </div>
+                    <div class="loading-time-box">
+                        <div class="price-time"><span style="float: left;">距结束：</span>
+                            {{if data.fightAloneTime!==null}}
+                            <ul class="countdown" data-clock="{{data.fightAloneTime}}">
+                                <li style="display: none;">
+                                    <span class="days">00</span>
+                                </li>
+                                <li class="seperator" style="display: none;">.</li>
+                                <li><span class="hours">00</span>
+                                </li>
+                                <li class="seperator">:</li>
+                                <li><span class="minutes">00</span>
+                                </li>
+                                <li class="seperator">:</li>
+                                <li><span class="seconds">00</span>
+                                </li>
+                            </ul>
+                            <div style="clear:both;"></div>
+                            {{/if}}
+                        </div>
+                        <div>
+                            <div class="price-time-loading">
+                                <div data-v-5d44c782="" class="status-bar">
+                                    <div data-v-5d44c782="" class="status-progress"></div>
+                                    <div data-v-5d44c782="" class="status-msg" data-total="{{data.fightAloneNumber}}"
+                                         data-last="{{data.areadFightAlone}}" id="myStatusLoading{{data.productId}}"
+                                         text="{{data.areadFightAlone}}/{{data.fightAloneNumber}}">
+                                        <!-- <div data-v-5d44c782="" class="status-num">10</div>
+                                         <span data-v-5d44c782="" class="status-soldrate">200</span>-->
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                {{/if}}
+
+
+                <!--只拼单-->
+                {{if data.sellPrice==0}}
+                <div class="pt-price-box sto-det-tit">
+                    <div>
+                        <div><span class="sale-price">¥{{data.collagePrice}}</span><span class="market-price"><s>¥{{data.bidPrice}}</s></span>
+                        </div>
+                        <div class="sale-num-info"><span>还剩 {{data.fightAloneNumber-data.areadFightAlone}}件</span> /
+                            <span>限量 {{data.fightAloneNumber}}件</span></div>
+                    </div>
+                    <div class="loading-time-box">
+                        <div class="price-time"><span style="float: left;">距结束：</span>
+                            {{if data.fightAloneTime!==null}}
+                            <ul class="countdown" data-clock="{{data.fightAloneTime}}">
+                                <li style="display: none;">
+                                    <span class="days">00</span>
+                                </li>
+                                <li class="seperator" style="display: none;">.</li>
+                                <li><span class="hours">00</span>
+                                </li>
+                                <li class="seperator">:</li>
+                                <li><span class="minutes">00</span>
+                                </li>
+                                <li class="seperator">:</li>
+                                <li><span class="seconds">00</span>
+                                </li>
+                            </ul>
+                            <div style="clear:both;"></div>
+                            {{/if}}
+                        </div>
+                        <div>
+                            <div class="price-time-loading">
+                                <div data-v-5d44c782="" class="status-bar">
+                                    <div data-v-5d44c782="" class="status-progress"></div>
+                                    <div data-v-5d44c782="" class="status-msg" data-total="{{data.fightAloneNumber}}"
+                                         data-last="{{data.areadFightAlone}}" id="myStatusLoading{{data.productId}}"
+                                         text="{{data.areadFightAlone}}/{{data.fightAloneNumber}}">
+                                        <!-- <div data-v-5d44c782="" class="status-num">10</div>
+                                         <span data-v-5d44c782="" class="status-soldrate">200</span>-->
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <p class="det-tit">{{data.productName}}</p>
+                <div class="det-sj-h">
+                    <div class="det-sj-left-h">
+                        <span class="det-sum-h">快递：{{data.productExpfee}}</span>
+                    </div>
+                    <div class="det-sj-right-h">
+                        <span class="det-sum-h">累计销售：{{data.productSales}}件</span>
+                        <!--<span class="det-song-e">送{{data.productEdian}}e点</span>-->
+                    </div>
+                </div>
+                {{/if}}
+            </div>
+            <div class="sto-img-tet">
+                <div class="det-gn-list">
+							<span class="list-mr" id="xq">
+								<span>商品详情</span>
+							<i></i>
+							</span>
+                    <span class="list-mr" id="cans">
+								<span>商品参数</span>
+							<i></i>
+							</span>
+                    <span class="list-mr" id="pinj">
+								<span>商品评价</span>
+							<i></i>
+							</span>
+                </div>
+                <div class="sto-img-box"></div>
+                <div class="sto-tet-box"></div>
+                <div class="sto-pj-box">
+                    <ul>
+                        <li>
+                            <span class="bor-cor pjTitle" id="pjCount" data-type="">评价(0)</span>
+                        </li>
+                        <li>
+                            <!--<span>好评100%</span>-->
+                        </li>
+                        <li>
+                            <span class="pjTitle" id="img-pj" data-type="1">有图(0)</span>
+                        </li>
+                    </ul>
+                    <div class="sto-pj-box-box">
+
+                    </div>
+                </div>
+            </div>
+        </script>
+
+        <!-- 商品参数数据 -->
+        <script type="text/template" id="sto-tet-box">
+            <ul>
+                {{each date as k i}}
+                <li>
+                    <span class="sto-cs-tit">{{k}}</span>
+                </li>
+                {{/each}}
+            </ul>
+        </script>
+
+        <!--商品评论-->
+        <script type="text/template" id='sto-pj-box-box'>
+            {{each ordersComment as k i}}
+            <div class="use-pj-box">
+                <div class="use-pj-tx">
+                    <img src="{{k.clientHead}}"/>
+                </div>
+                <div class="use-pj-nr">
+                    <div class="pj-nr-left">
+                        <span class="pj-tit">{{k.clientNickname}}</span>
+                        <span class="pj-lx">{{k.spec}}</span>
+                    </div>
+                    <div class="pj-nr-right">
+								<span class="pj-xj">
+									{{if k.starts.length!=0}}
+										{{each k.starts as l i}}
+											<img src="img/xin1.png"/>
+										{{/each}}
+									{{/if}}
+									{{if k.nostarts.length!=0}}
+										{{each k.nostarts as k i}}
+											<img src="img/xin2.png"/>
+										{{/each}}
+									{{/if}}
+								</span>
+
+                        <span class="pj-tim">{{k.dateArr[i]}}</span>
+
+                    </div>
+                    <div class="clear"></div>
+                    <span class="pj-tet">{{k.content}}</span>
+                    {{if k.contentImg!= null}}
+
+                    <div class="sc-img-box">
+                        {{each k.ContentImg as list i}}
+                        <div><img src="{{list}}"></div>
+                        {{/each}}
+                    </div>
+
+                    {{/if}}
+                </div>
+                <div class="clear"></div>
+                {{if k.replyContent!=null}}
+                <div class="sto-huif">
+                    <span class="sto-nam">掌柜回复：</span>
+                    <span class="huif-nr">{{k.replyContent}}</span>
+                </div>
+                {{/if}}
+            </div>
+            {{/each}}
+        </script>
+    </div>
+    <footer>
+        <div class="det-fot-left">
+            <div class="jumPage left-es" data-type="1">
+                <img src="img/shouye.png"/>
+                <span class="st-fot-sp">首页</span>
+            </div>
+            <div class="jumPage left-ys" data-type="2">
+                <a href="#" class="chat-a">
+                    <img src="img/news.png"/>
+                    <span class="st-fot-sp">消息</span>
+                </a>
+            </div>
+            <!--<div class="left-ys">
+                <img id="sc" src="img/shouchang.png" data-se="1" />
+                <span class="st-fot-sp">收藏</span>
+            </div>-->
+            <div class="left-ys left-shopcart goBuy" data-id="3" data-type="1">
+                <img id="sc2" src="img/gouwuche.png"/>
+                <span class="st-fot-sp">加入购物车</span>
+            </div>
+        </div>
+        <div class="det-fot-right">
+            <!--<button type="button" class="jr-car goBuy" data-id="1" value="加入购物车">加入购物车</button>
+
+            <button type="button" class="lj-pay goBuy" data-id="2" value="立即购买">立即购买</button>-->
+            <!--<button type="button" class="jr-car goBuy" data-id="1" data-type="1" value="加入购物车">加入购物车</button>-->
+            <button type="button" id="buyAlone" class="jr-car goBuy" data-id="2" data-type="1" value="单独购买">单独购买
+            </button>
+            <button type="button" class="lj-pay goBuy" data-id="1" data-type="2" value="参与拼单">参与拼单</button>
+        </div>
+    </footer>
+    <div class="am-share">
+        <h3 class="am-share-title">分享到</h3>
+        <ul class="am-share-sns">
+            <li><a onclick="shareSociety('WechatTimeline')" href="javascript:;"> <img class="share-icon-weibo"
+                                                                                      src="./img/society_share/weixin.png">
+                <span>微信朋友圈</span> </a></li>
+            <li><a onclick="shareSociety('WechatSession')" href="javascript:;"> <img class="share-icon-weibo"
+                                                                                     src="./img/society_share/weixin_friend.png">
+                <span>微信好友</span> </a></li>
+            <li><a onclick="shareSociety('SinaWeibo')" href="javascript:;"> <img class="share-icon-weibo"
+                                                                                 src="./img/society_share/weibo.png">
+                <span>新浪微博</span> </a></li>
+            <li><a onclick="shareSociety('QZone')" href="javascript:;"> <img class="share-icon-weibo"
+                                                                             src="./img/society_share/qqzone.png">
+                <span>QQ空间</span> </a></li>
+        </ul>
+        <div class="am-share-footer">
+            <button class="share_btn">取消</button>
+        </div>
+    </div>
+    <div class="opt"></div>
+    <div class="pay-tc"></div>
+    <script type="text/template" id="pay-tc">
+        <div class="pay-head">
+            <div class="closeBuy">
+
+            </div>
+            <div class="pay-num">
+                <span class="pay-jq" id="selectedSpecMoney">￥</span>
+
+                <span class="pay-tip"></span>
+            </div>
+            <div class="clear"></div>
+            <div class="pay-lx">
+                <span class="pay-now">当前选择:</span><span class="pay-now" id="selectedSpecName"></span>
+                <span class="pay-kc" id="selectedSpecKu"></span><span class="pay-kc">库存:</span>
+            </div>
+        </div>
+        <div class="pay-body">
+            {{each ShopSpec as k i}}
+            <p>{{k.specName}}:</p>
+            <div class="pay-cheak">
+                {{each k.shopSpecDets as j n}}
+                {{if k.id==j.specId}}
+                <input type="button" readonly="readonly" class="moren " id="" value="{{j.detName}}" name="{{j.specId}}"
+                       data-id={{j.id}}>
+                {{/if}}
+                {{/each}}
+            </div>
+            {{/each}}
+
+            <div class="shop-num">
+                <span class="shop-tit">购买数量</span>
+                <div class="shop-right">
+                    <div class="shop-box">
+                        <div class="shop-jian">
+                            <!--<input type="button" value="-" id="jian" />-->
+                            <button class="jia-btn" id="jian" style="line-height: 16px;">-</button>
+                        </div>
+                        <div class="shop-shu">0</div>
+                        <div class="shop-jia">
+                            <!--<input type="button" value="+" id="jia" />-->
+                            <button class="jia-btn" id="jia">+</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="pay-fot">
+            <!--<input type="button" id="confirm" value="确定" />-->
+            <button id="confirm">确定</button>
+        </div>
+    </script>
+</div>
+<script type="text/javascript">
+    // 分享内容
+    var shareContent, shareUrlId, shareImgeUrl, shareTitle;
+    $(function () {
+
+
+        // 清空 拼单和单买商品数据
+        localStorage.removeItem('buyNowOrderParams');
+        localStorage.removeItem('orderParams');
+
+        var product_id = GetUrlString('id'),
+            currentpage = 0; //获取地址栏传过来的参数
+        var productSpec = [];
+        var productSpecA = [];
+        var productSpecB = [];
+        var specName = [];
+        var specNameId;
+        var goBuyId;
+        var params = {
+            productId: product_id
+        };
+        //商品评价参数
+
+        //日期转化
+        function formatDateTime(date) {
+            var y = date.getFullYear();
+            var m = date.getMonth() + 1;
+            m = m < 10 ? ('0' + m) : m;
+            var d = date.getDate();
+            d = d < 10 ? ('0' + d) : d;
+            var h = date.getHours();
+            h = h < 10 ? ('0' + h) : h;
+            var minute = date.getMinutes();
+            minute = minute < 10 ? ('0' + minute) : minute;
+            var second = date.getSeconds();
+            second = second < 10 ? ('0' + second) : second;
+            return y + '/' + m + '/' + d;
+        }
+
+        //判断用户登录过没有
+        if (!token) {
+            $('.sto-car-num').css('display', 'none');
+        } else {
+            //个人的购物数量
+            getInfo('post', ajaxUrl + '/productsInfo/cartCount?token=' + token, {}, setcartCountHtml);
+
+            function setcartCountHtml(r) {
+                $('.sto-car-num').text(r.count);
+            };
+        }
+
+        //  m没有登录请求登录去
+        $('.det-nav-car').click(function () {
+            if (!token) {
+                location.href = 'login.html';
+            } else {
+                location.href = 'store.html';
+            }
+        });
+
+        $("#sc").click(function () {
+            if (!token) {
+                location.href = 'login.html';
+            } else {
+                if ($(this).attr('data-se') == '1') {
+                    $.post(ajaxUrl + '/front/clientProductLikes/addLikes', {
+                        productId: product_id,
+                        token: token
+                    }, function (r) {
+                        tip.flag(r.msg, 'success')
+                    });
+                    $('#sc').attr({
+                        'src': 'img/shouchang1.png',
+                        'data-se': '2'
+                    });
+                } else {
+                    $.post(ajaxUrl + '/front/clientProductLikes/deleteLikes', {
+                        Lid: product_id,
+                        token: token
+                    }, function (r) {
+                        tip.flag(r.msg, 'success')
+                    })
+                    $('#sc').attr({
+                        'src': 'img/shouchang.png',
+                        'data-se': '1'
+                    });
+                }
+
+            }
+
+        });
+
+        //从上一个页面进来的商品接口
+
+        getInfo('post', ajaxUrl + '/productOffline/shopProductInfo', {
+            token: token,
+            productId: product_id
+        }, setProductHtml);
+
+        function setProductHtml(r) {
+            shareContent = r.data.productName;
+            shareImgeUrl = r.data.descImgs[0];
+            shareTitle = r.data.productName;
+            shareUrlId = r.data.productId;
+            var html = template('sto-det-box', r);
+            $('.sto-det-box').html(html);
+            if (r.data.sellPrice === 0) {
+                $('#buyAlone').hide();
+                $('.left-shopcart').hide();
+            } else {
+                $('#buyAlone').show();
+                $('.left-shopcart').show();
+            }
+            countDownEvent();
+
+            for (var i = 0; i < r.data.descImgs.length; i++) {
+                $('.bb ul').append("<li data-background=" + r.data.descImgs[i] + "></li>");
+            }
+
+            $('.flicker-example').flicker();
+            /*轮播*/
+            var bh = $('.bb').width();
+            $('.bb').height(bh);
+
+            //console.log(r.data.productDesc) 商品详情的描述图片返回的的是用逗号隔开的字符串
+
+            $(".chat-a").attr("href", "chat-detil.html?shopId=" + r.data.shopId);
+//				var productDescUrl = new Array();
+//				productDescUrl = r.data.productDesc.split(',');
+//				var htimg = '';
+//				for(var i = 0; i < productDescUrl.length; i++) {
+//					htimg += '<img src=' + productDescUrl[i] + '>';
+//				}
+            $('.sto-img-box').html(r.data.productSubtitle);
+
+            $('.list-mr').eq(0).css('color', '#ff5a3a');
+            $('.list-mr').eq(0).find('i').css('display', 'block');
+
+            $('.list-mr').click(function () {
+                $(this).css('color', '#ff5a3a').siblings().css('color', '#9b9b9b');
+                $(this).find('i').css('display', 'block').parent().siblings().find('i').css('display', 'none');
+            });
+
+            //商品详情
+            $('#xq').click(function () {
+                $('.sto-img-box').show();
+                $('.sto-tet-box').hide();
+                $('.sto-pj-box').hide();
+            });
+
+            //商品参数
+            $('#cans').click(function () {
+                $('.sto-img-box').hide();
+                $('.sto-tet-box').show();
+                $('.sto-pj-box').hide();
+
+                //获取商品参数数据
+
+                $.post(ajaxUrl + '/productsInfo/productParam', {
+                    productId: product_id
+                }, function (r) {
+                    var html = template('sto-tet-box', r);
+                    $('.sto-tet-box').html(html);
+                }, 'json');
+            });
+
+            //商品评价
+            $('#pinj').click(function () {
+                $('.sto-img-box').hide();
+                $('.sto-tet-box').hide();
+                $('.sto-pj-box').show();
+
+                $('.pjTitle').click(function () { //评论、有图评论切换
+                    currentpage = 0;
+                    listparamUL.type = $(this).data('type');
+                    listparamUL.pageNo = currentpage; //数据初始化
+                    $('.sto-pj-box-box').html("");
+
+                    getList('.sto-pj-box-box', 'post', PjUrl, listparamUL, getListdata);
+                    $('.pjTitle').each(function () {
+                        $(this).removeClass('bor-cor');
+                    });
+                    $(this).addClass('bor-cor');
+                });
+
+                currentpage = 0;
+                PjUrl = ajaxUrl + '/front/ordersComment/productComment';
+                listLoading = false;
+                listLoadingLock = false; //初始化页面没有被锁定
+
+                var listparamUL = {
+                    productId: product_id,
+                    type: '', //默认不传参数，对应评价，好评，有图
+                    pageNo: currentpage,
+                    pageSize: 6
+                };
+
+                //获取评论的数据
+                getList('.sto-pj-box-box', 'post', PjUrl, listparamUL, getListdata);
+                //页面渲染
+                function getListdata(obj, r) {
+                    if (r.code == 300) {
+                        tip.flag(r.msg, 'success');
+                        $(obj).html('<div class="_nodata">暂无评论</div>');
+                    } else if (r.ordersComment.length !== 0) {
+                        $("#pjCount").text("评价(" + r.count + ")");
+                        $("#img-pj").text("有图(" + r.imgCount + ")");
+                        var dateArr = [];
+                        $.each(r.ordersComment, function (n, val) {
+                            starts = val.starts;
+                            nostarts = 5 - val.starts;
+                            val.starts = [];
+                            val.nostarts = [];
+                            val.dateArr = dateArr;
+                            //转化为数组，5颗星就数组长度为5，然后是上面就可以循环遍历数组长度就知道评论了多少
+                            for (i = 0; i < starts; i++) {
+                                val.starts.push('1')
+                            }
+                            for (i = 0; i < nostarts; i++) {
+                                val.nostarts.push('2')
+                            }
+                            //日期
+                            //console.log(val.dateArr)
+                            val.dateArr.push(formatDateTime(new Date(val.mTime)));
+
+                        });
+                        var html = template('sto-pj-box-box', r);
+                        if (currentpage === 1) {
+                            $(obj).html(html);
+                        } else {
+                            $(obj).append(html);
+                        }
+                    } else {
+                        listLoadingLock = true;
+                        $(obj).append('<div class="_nomore">已经没有更多了</div>');
+                    }
+                }
+
+                $('.content').scroll(function () {
+                    if ($('.sto-pj-box-box').html() != "") {
+                        var totalheight = parseFloat($('.content').height()) + parseFloat($('.content').scrollTop());
+                        if ($('.content').height() <= totalheight && !listLoading) {
+                            currentpage++;
+                            listparamUL.pageNo = currentpage;
+                            getList('.sto-pj-box-box', 'post', PjUrl, listparamUL, getListdata);
+                        }
+                    }
+                });
+            });
+
+        }
+        // 倒计时
+        function countDownEvent() {
+            $('.countdown').downCount({
+//                    date: '3/15/2018 00:00:00',
+                offset: +10,
+                loadingTiao: true,
+                isDetailProduct: true
+            }, function () {
+                // alert('倒计时结束!');
+            });
+
+        }
+
+        //商品立即购买弹窗
+        $('.goBuy').click(function () {
+            debugger;
+            //loading层
+            layer.open({type: 2});
+            productSpec = [];
+            productSpecA = [];
+            productSpecB = [];
+            specName = [];
+            specNameId = "";
+            productId = '';
+            goBuyId = $(this).data("id");
+            typeId = $(this).data('type');
+
+            //请求商品信息
+            getInfo('post', ajaxUrl + '/productsInfo/nowBuy', {
+                productId: product_id,
+                type: typeId
+            }, setStoInfoHtml);
+
+            function setStoInfoHtml(r) {
+                productSpec = r.ProductSpec;
+                productId = r.ProductsInfo.productId;
+                typeLength = r.ShopSpec.length;
+                if (r.ShopSpec.length === 1 && r.ShopSpec[0].specName === '') {
+                    r.ShopSpec[0].specName = '统一规格';
+                    r.ShopSpec[0].shopSpecDets[0].detName = '无规格';
+                }
+
+                var html = template('pay-tc', r);
+                $('.pay-tc').html(html);
+                //shop-box 利用事件委托来搞事情数量的加减
+                var sum = 1; // 库存充足的时候购买件数默认1
+
+                $('.shop-box').click(function (e) {
+                    if ($('#selectedSpecKu').text() === '0') {
+                        sum = 0; //库存0购买件数0
+                        $('#jia').attr('disabled', true);
+                        $('#jian').attr('disabled', true);
+                    } else {
+                        $('#jia').attr('disabled', false);
+                        $('#jian').attr('disabled', false);
+                    }
+                    if (e.target.nodeName == 'BUTTON') {
+                        switch (e.target.id) {
+                            case 'jian': {
+
+                                if (sum >= 2) {
+                                    --sum;
+                                    if (sum <= $('#selectedSpecKu').text()) {
+                                        $('#jia').attr('disabled', false);
+                                    }
+                                }
+
+                                break;
+                            }
+                            case 'jia': {
+                                ++sum;
+                                if (sum == parseInt($('#selectedSpecKu').text())) {
+                                    tip.flag('该规格产品库存不足！', 'error');
+                                    $('#jia').attr('disabled', true);
+                                }
+                                var lastCount = r.ProductsInfo.fightAloneNumber - r.ProductsInfo.areadFightAlone;
+
+                                if (sum == lastCount) {
+                                    tip.flag('已达最大拼单数量！', 'error');
+                                    $('#jia').attr('disabled', true);
+                                }
+
+                                if (parseInt(r.ProductSpec.instock) != 0) {
+                                    if (sum > parseInt(r.ProductSpec.instock)) {
+                                        sum = parseInt(r.ProductSpec.instock);
+                                    }
+                                }
+                                break;
+                            }
+
+                        }
+                    }
+                    $('.shop-shu').text(sum);
+
+                });
+
+                $(".closeBuy,.opt").on('click', function () {
+                    $('.opt').fadeOut(300);
+                    $('.pay-tc').css({
+                        "display": "none"
+                    });
+                });
+
+                $("#confirm").click(function () {
+                    debugger;
+                    if (!token) {
+                        location.href = 'login.html';
+                    } else {
+                        debugger;
+                        getDetails(productId, specName.length, specNameId, goBuyId, typeLength);
+                    }
+
+                });
+
+                initialize();
+                $('.moren').click(function () {
+
+                    debugger;
+                    if ($(this).hasClass('tc-cheak')) {
+
+                        var specId = $(this).prop("name");
+                        var typeId = $(this).data("id");
+                        var typeName = $(this).val();
+                        if ($(this).hasClass('selected')) {
+                            for (var i = 0, max = specName.length; i < max; i++) {
+                                if (typeName === specName[i]) {
+                                    specName.splice(i, 1);
+                                    break;
+                                }
+                            }
+                            $(this).removeClass('selected');
+                            for (var i = 0, max = productSpecB.length; i < max; i++) {
+                                if (productSpecB[i] == typeId) {
+                                    productSpecB.splice(i, 1);
+                                }
+                            }
+                            if (productSpecB.length == 0) {
+                                initialize();
+                            } else {
+                                judge(specId, productSpecB, '.tc-cheak');
+                            }
+
+                        } else {
+                            specName.push(typeName);
+                            productSpecB.push(typeId);
+                            $(this).addClass('selected');
+                            $(this).siblings().each(function () {
+                                if ($(this).hasClass('selected')) {
+                                    var tyid = $(this).data('id');
+                                    for (var i = 0, max = productSpecB.length; i < max; i++) {
+                                        if (productSpecB[i] == tyid) {
+                                            productSpecB.splice(i, 1);
+                                        }
+                                    }
+                                    $(this).removeClass('selected');
+                                }
+                            });
+                            judge(specId, productSpecB, '.tc-cheak');
+
+                        }
+                        $("#selectedSpecName").html(specName + "&nbsp");
+                        getDetails(productId, specName.length, specNameId, 0, typeLength); // 不同规格不同价格
+                        // 选中规格 检测库存不足禁用添加
+                        if ($('#selectedSpecKu').text() === '0') {
+                            $('#jia').attr('disabled', true);
+                            $('#jian').attr('disabled', true);
+                        } else {
+                            $('#jia').attr('disabled', false);
+                            $('#jian').attr('disabled', false);
+                            $('.shop-shu').text(1);
+                        }
+                    } else {
+                        // 选其他的规格 立即选中
+                        var specId = $(this).prop("name");
+                        // 去掉该分类中选中的那个参数
+                        $(this).parent().children().each(function (obj) {
+                            if ($(this).hasClass('selected')) {
+                                for (var i = 0, max = specName.length; i < max; i++) {
+                                    if ($(this).val() === specName[i]) {
+                                        specName.splice(i, 1);
+                                        break;
+                                    }
+                                }
+                                for (var i = 0, max = productSpecB.length; i < max; i++) {
+                                    if (productSpecB[i] == $(this).data("id")) {
+                                        productSpecB.splice(i, 1);
+                                    }
+                                }
+                                if (productSpecB.length == 0) {
+                                    initialize();
+
+                                } else {
+                                    judge(specId, productSpecB, '.tc-cheak');
+                                }
+                            }
+                        });
+                        $("#selectedSpecName").html(specName + "&nbsp");
+                        getDetails(productId, specName.length, specNameId, 0, typeLength); // 不同规格不同价格
+                        // 选中规格 检测库存不足禁用添加
+                        if ($('#selectedSpecKu').text() === '0') {
+                            $('#jia').attr('disabled', true);
+                            $('#jian').attr('disabled', true);
+                        } else {
+                            $('#jia').attr('disabled', false);
+                            $('#jian').attr('disabled', false);
+                            $('.shop-shu').text(1);
+                        }
+                        $(this).click(); // 判断完后选中点击的规格参数
+
+                    }
+                });
+
+
+                //数据加载完毕显示
+                layer.closeAll();
+                $('.opt').fadeIn(200);
+                $('.pay-tc').slideDown(200);
+            }
+
+        });
+
+        function judge(specId, arrB, obj) {
+            var arrQ = [];
+            productSpecA.splice(0, productSpecA.length);
+            for (var k = 0, max = arrB.length; k < max; k++) {
+                if (k == 0) {
+                    for (var i = 0, maxA = productSpec.length; i < maxA; i++) {
+                        var arrW = productSpec[i].specDetIds.split(",");
+                        for (var j = 0, maxB = arrW.length; j < maxB; j++) {
+                            if (arrW[j] == arrB[k]) {
+                                arrQ.push(productSpec[i].specDetIds);
+                            }
+                        }
+                    }
+                } else {
+                    for (var j = 0, maxB = arrQ.length; j < maxB; j++) {
+                        if (arrQ[j] != null || arrQ[j] != undefined) {
+                            var d = true;
+                            var arrW = arrQ[j].split(",");
+                            for (var i = 0, maxA = arrW.length; i < maxA; i++) {
+                                if (arrW[i] == arrB[k]) {
+                                    d = false;
+                                }
+                            }
+                            if (d) {
+                                delete arrQ[j];
+                            }
+                        }
+                    }
+                }
+            }
+            for (var i = 0, maxC = arrQ.length; i < maxC; i++) {
+                if (arrQ[i] != undefined) {
+                    var arr = arrQ[i].split(",");
+                    for (var j = 0, maxB = arr.length; j < maxB; j++) {
+                        productSpecA.push(arr[j]);
+                    }
+                }
+            }
+
+            productSpecA = unique(productSpecA);
+            specNameId = productSpecA.toString();
+            refresh(productSpecA, '.moren');
+            $(obj).each(function () {
+                var specIdzx = $(this).prop("name");
+                var typeIdzx = $(this).data("id");
+                if (specIdzx != specId && !$(this).hasClass("selected")) {
+
+                }
+            })
+        }
+
+        // 选择规格后确定
+        function getDetails(productId, length, spec, btn, totalLength) {
+            if (length != totalLength) {
+                $("#selectedSpecKu").html("");
+                $("#selectedSpecMoney").html("");
+                debugger
+                if (btn != 0) {
+                    // tip.flag('请选择商品规格！', 'error');
+                    layer.open({
+                        content: '请选择商品规格!'
+                        , skin: 'msg'
+                        , time: 2 //2秒后自动关闭
+                    });
+
+                }
+            } else if (length == totalLength) {
+                if (btn == 0) {
+                    for (var i = 0, maxA = productSpec.length; i < maxA; i++) {
+                        if (productSpec[i].specDetIds == spec) {
+                            $("#selectedSpecKu").html(productSpec[i].instock);
+                            if (productSpec[i].instock == 0) {
+                                //tip.flag('该规格产品库存为0', 'error');
+                                layer.open({
+                                    content: '该规格产品库存为0!'
+                                    , skin: 'msg'
+                                    , time: 2 //2秒后自动关闭
+                                });
+                                $(".shop-shu").text(0)
+                            }
+                            $("#selectedSpecMoney").html("￥" + productSpec[i].salePrice);
+                        }
+                    }
+                } else if (btn == 1) {
+                    // 拼单
+                    params.productSpec = spec;
+                    params.productId = productId;
+//                params.productSpec = specName.toString();
+                    params.number = parseInt($(".shop-shu").text());
+                    params.type = 2; //2代表拼单
+
+                    // 关闭弹窗
+                    $('.opt').hide(300);
+                    $('.pay-tc').hide(300);
+
+                    // 跳转到确认订单页面
+                    window.location.href = "confirm_order_pd_off.html?productSpec=" + params.productSpec + "&productId=" + params.productId + "&number=" + params.number + "&type=" + params.type + "&orderExpfee=0";
+
+                    /* getInfo("post", ajaxUrl + "/front/clientCart/userCart?token=" + token, params, function(r) {
+                     tip.flag('添加购物车成功！', 'success');
+                     getInfo('post', ajaxUrl + '/productsInfo/cartCount?token=' + token, {}, setcartCountHtml);
+                     $('.opt').hide(300);
+                     $('.pay-tc').hide(300);
+                     })*/
+                } else if (btn == 2) {
+                    debugger
+
+                    debugger
+                    // 立即购买或单独购买
+                    params.productSpec = spec;
+                    params.productId = productId;
+//                params.productSpec = specName.toString();
+                    params.number = parseInt($(".shop-shu").text());
+//                params.type = 1; //2代表拼单
+
+                    // 关闭弹窗
+                    $('.opt').hide(300);
+                    $('.pay-tc').hide(300);
+
+                    // 跳转到确认订单页面
+                    window.location.href = "confirm_order.html?productSpec=" + params.productSpec + "&productId=" + params.productId + "&number=" + params.number;
+
+
+                    //单独购买或者立即购买
+                    /*                params.specId = spec;
+                     params.specName = specName.toString();
+                     params.count = $(".shop-shu").text();
+                     getInfo("post", ajaxUrl + "/front/clientCart/userCart1?token=" + token, params, function(r) {
+                     debugger
+                     //                    tip.flag('生成拼单订单成功！', 'success');
+                     layer.open({
+                     content: '生成订单成功!'
+                     ,skin: 'msg'
+                     ,time: 2 //2秒后自动关闭
+                     });
+                     window.location.href = "confirm_order.html?sureArr=" + r.id;
+                     })*/
+                } else if (btn == 3) {
+                    debugger
+                    // 加入购物车
+                    params.specId = spec;
+                    params.specName = specName.toString();
+                    params.count = $(".shop-shu").text();
+                    getInfo("post", ajaxUrl + "/front/clientCart/userCart?token=" + token, params, function (r) {
+//                    tip.flag('添加购物车成功！', 'success');
+                        layer.open({
+                            content: '添加购物车成功!'
+                            , skin: 'msg'
+                            , time: 2 //2秒后自动关闭
+                        });
+
+                        getInfo('post', ajaxUrl + '/productsInfo/cartCount?token=' + token, {}, setcartCountHtml);
+                        $('.opt').hide(300);
+                        $('.pay-tc').hide(300);
+                    })
+                }
+            }
+        }
+
+        function unique(arr) {
+            var ret = [];
+            for (var i = 0, max = arr.length; i < max; i++) {
+                var item = arr[i];
+                if (ret.indexOf(item) === -1) {
+                    ret.push(item);
+                }
+            }
+            return ret;
+        }
+
+        function refresh(arr, obj) {
+            debugger
+            $(obj).each(function () {
+                $(this).removeClass('tc-cheak');
+                //						$(this).removeClass('selected');
+                var specIdzx = $(this).prop("name");
+                var typeIdzx = $(this).data("id");
+                for (var i = 0, max = arr.length; i < max; i++) {
+                    if (arr[i] == typeIdzx) {
+                        $(this).addClass('tc-cheak');
+                    }
+                }
+            });
+        }
+
+        function initialize() {
+            debugger
+            $.each(productSpec, function (n, val) {
+                var arr = val.specDetIds.split(",");
+                for (var i = 0, max = arr.length; i < max; i++) {
+                    productSpecA.push(arr[i]);
+                }
+            })
+            productSpecA = unique(productSpecA);
+            refresh(productSpecA, '.moren');
+        }
+
+        $('.pay-fot button').click(function () {
+            $('.opt').hide();
+            $('.pay-tc').hide();
+        });
+
+        $(".buy-top").click(function () {
+            location.href = "sto-detail.html";
+        });
+
+        $(".buy-fot-btn").click(function () {
+            location.href = "sto-detail.html";
+        });
+
+        $('.jumPage').click(function () {
+            var type = $(this).data('type');
+            switch (type) {
+                case 1:
+                    window.location.href = "index.html";
+                    break;
+                case 2:
+                    if (!token) {
+                        location.href = "login.html";
+                    } else {
+                        window.location.href = "news.html";
+                    }
+                    break;
+                default:
+                    break;
+            }
+
+        });
+
+        // 分享商品调用原生接口
+        $('#threeShareId').click(function () {
+            $(".am-share").addClass("am-modal-active");
+            if ($(".sharebg").length > 0) {
+                $(".sharebg").addClass("sharebg-active");
+            } else {
+                $("body").append('<div class="sharebg"></div>');
+                $(".sharebg").addClass("sharebg-active");
+            }
+            $(".sharebg-active,.share_btn").click(function () {
+                $(".am-share").removeClass("am-modal-active");
+                setTimeout(function () {
+                    $(".sharebg-active").removeClass("sharebg-active");
+                    $(".sharebg").remove();
+                }, 300);
+            })
+        })
+    });
+
+
+    // 社交分享调用原生
+    function shareSociety(shareType) {
+        var urlPath = location.pathname;
+        var striArr = urlPath.split('/');
+        urlPath =  striArr[striArr.length-1];
+        var shareUrl = frontLoaclHost+'/'+urlPath+'?productId=' +shareUrlId;
+        setupWebViewJavascriptBridge(function (bridge) {
+            bridge.callHandler('ThreeShare', {
+                'type': shareType,  // 分享内容
+                "content": shareContent, // 分享内容
+                "url": shareUrl,  // 分享连接
+                "image": shareImgeUrl,  //  分享图片
+                "title": shareTitle  // 分享标题
+            }, function (resp) {
+                resp = JSON.parse(resp);
+                if (resp.respCode === 0) {
+                    tip.flag('分享成功', 'success');
+                } else if (resp.respCode !== 0) {
+                    tip.flag('分享失败', 'error');
+                }
+            });
+        })
+    }
+</script>
+</body>
+
+</html>

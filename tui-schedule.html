@@ -1,0 +1,590 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<meta name="renderer" content="webkit">
+		<meta http-equiv="X-UA-Compatible" content="IE=11; IE=10; IE=9; IE=8; IE=7; IE=EDGE,Chrome=1">
+		<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no" />
+		<link rel="stylesheet" type="text/css" href="css/index.css" />
+		<link rel="stylesheet" type="text/css" href="css/hp.css" />
+		<script src="js/jquery-1.11.1.min.js" type="text/javascript" charset="utf-8"></script>
+		<script src="js/default.js"></script>
+		<script src="js/template.js"></script>
+		<script src="js/template-helper.js"></script>
+		<title></title>
+		<style type="text/css">
+			.bod-top {
+				border-top: 1px solid #e5e5e5;
+			}
+			
+			.ret-sch-box {
+				overflow: hidden;
+				padding-bottom: 30px;
+			}
+			
+			.sch-lc-box {
+				overflow: hidden;
+				position: relative;
+				padding-top: 20px;
+			}
+			
+			.sch-lc-rgt {
+				overflow: hidden;
+				margin-left: 40px;
+				width: 260px;
+				background-color: white;
+				margin-top: 4px;
+			}
+			
+			.lc-tit {
+				height: 44px;
+				line-height: 44px;
+				text-align: center;
+				color: #595959;
+				font-size: 15px;
+				position: relative;
+			}
+			
+			.lc-nr {
+				padding: 15px;
+				overflow: hidden;
+				font-size: 12px;
+				color: #9b9b9b;
+			}
+			
+			.tel-num {
+				margin-top: 10px;
+			}
+			
+			.jh-map-tit {
+				display: block;
+				float: left;
+			}
+			
+			.jh-map {
+				display: block;
+				float: right;
+				width: 170px;
+			}
+			
+			.sta-tim {
+				color: #90a4ae;
+				font-size: 15px;
+				text-align: center;
+				line-height: 35px;
+			}
+			
+			.track {
+				position: absolute;
+				right: 15px;
+				border: 1px solid #ff5a3a;
+				color: #ff5a3a;
+				font-size: 10px;
+				height: 20px;
+				line-height: 20px;
+				padding: 0 5px;
+				border-radius: 12px;
+				top: 12px;
+			}
+			
+			.dan-num {
+				margin-top: 23px;
+			}
+			
+			.th-suc {
+				height: 44px;
+				line-height: 44px;
+				font-size: 15px;
+				text-align: center;
+				color: #29cf30;
+			}
+			
+			.sch-tim-box {
+				width: 50px;
+				position: absolute;
+				top: 15px;
+				left: 28px;
+			}
+			
+			.sch-tim-box img {
+				width: 100%;
+			}
+			
+			.lc-dian {
+				width: 5px;
+				height: 5px;
+				background-color: #90a4ae;
+				border-radius: 10px;
+				left: 18px;
+				position: absolute;
+				top: 21px;
+			}
+			
+			.lc-tip-tim {
+				display: block;
+				position: absolute;
+				font-size: 16px;
+				top: -3px;
+				right: -3px;
+				color: white;
+				transform: scale(0.5);
+			}
+		</style>
+		<script type="text/javascript">
+			$(function() {
+
+			});
+		</script>
+	</head>
+
+	<body>
+		<div class="container">
+			<header class="head-st">
+				<div class="sto-nav-left">
+					<img src="img/fanhui.png" onclick="javascript:history.back(-1);" />
+				</div>
+				<div class="sto-nav-sear">
+					退货进度
+				</div>
+			</header>
+			<div class="content">
+				<div class="logisti-tit head-st bac-cor">
+					退货详情
+				</div>
+				<div class="merchandise no-bom bac-cor"></div>
+				<script type="text/template" id="merchandise">
+					<div class="wddd_img order_img">
+						<img src="{{data.productImg}}" alt="" />
+					</div>
+					<div class="order_cot wddd-cot bod-no">
+						<div class="pro_tit">
+							{{data.productName}}
+						</div>
+						<div class="pro_par">
+							参数:{{each data.productSpecName as k i}} {{k}} {{/each}}
+						</div>
+						<!--<div class="e_dian wddd-dian">
+							送{{data.productEdian}}广告金
+						</div>-->
+						<div class="pro_price wddd-price">
+							<span>¥{{data.productPrice}}</span>
+							<span>x{{{{data.returnGoods.productCount}}</span>
+						</div>
+					</div>
+				</script>
+
+				<div class="logisti-tit bac-cor bod-top">
+					退货进度
+				</div>
+				<div class="flow-xian-h"></div>
+				<div class="ret-sch-box"></div>
+				<script type="text/template" id="ret-sch-box">
+
+					{{if data.returnGoods.returnType==1}}
+					<div class="sch-lc-box">
+						<div class="sch-tim-box">
+							<img src="img/tuihuo.png" />
+							<span class="lc-tip-tim">{{data.returnGoods.cTime2}}</span>
+						</div>
+						<div class="lc-dian"></div>
+						<div class="sch-lc-rgt">
+							<div class="lc-tit head-st">卖家审核中。。。</div>
+						</div>
+					</div>
+					<p class="sta-tim">{{data.returnGoods.cTime1}}</p>
+					{{/if}} {{if data.returnGoods.returnType==2}}
+					<div class="sch-lc-box">
+						<div class="sch-tim-box">
+							<img src="img/tuihuo.png" />
+							<span class="lc-tip-tim">{{data.returnGoods.cTime2}}</span>
+						</div>
+						<div class="lc-dian"></div>
+						<div class="sch-lc-rgt">
+							<div class="lc-tit head-st">卖家审核中。。。</div>
+						</div>
+					</div>
+					<p class="sta-tim">{{data.returnGoods.cTime1}}</p>
+
+					<div class="sch-lc-box">
+						<div class="sch-tim-box">
+							<img src="img/tuihuo.png" />
+							<span class="lc-tip-tim">{{data.returnGoods.aTime2}}</span>
+						</div>
+						<div class="lc-dian"></div>
+						<div class="sch-lc-rgt">
+							<div class="lc-tit head-st">
+								卖家同意
+							</div>
+							<div class="lc-nr">
+								<p>收货人:{{data.returnGoods.peopleName}}</p>
+								<p class="tel-num">收货电话:{{data.returnGoods.peoplePhone}}</p>
+								<div class="tel-num">
+									<span class="jh-map-tit">收货地址:{{data.returnGoods.peopleAddress}}</span>
+
+								</div>
+								<div class="clear"></div>
+								<p class="tel-num">备注:{{data.returnGoods.peopleOther}}</p>
+							</div>
+						</div>
+					</div>
+					<p class="sta-tim">{{data.returnGoods.aTime1}}</p>
+
+					<div class="sch-lc-box">
+						<div class="sch-tim-box">
+							<img src="img/tuihuo.png" />
+							<span class="lc-tip-tim">{{data.returnGoods.aTime2}}</span>
+						</div>
+						<div class="lc-dian"></div>
+						<div class="sch-lc-rgt">
+							<div class="lc-tit head-st">
+								买家寄货
+								<a href="#" onclick="jihuo('{{data.returnGoods.id}}')">
+									<div class="track">确定添加</div>
+								</a>
+							</div>
+							<div class="lc-nr">
+
+								<div>
+									<span class="jh-map-tit">快递单号：</span>
+									<span class="jh-map">
+										<input type="number" id="expressNumber" placeholder="请填写寄送的物流单号"/>
+									</span>
+								</div>
+								<div class="dan-num" style="margin-top:28px ;">
+									<span class="jh-map-tit">快递名称：</span>
+									<span class="jh-map">
+										<select id="expressName" style="font-size: 12px;" maxlength="15" placeholder="请填写寄送的物流公司">
+											<option value="0">选择物流公司</option>
+										</select>
+									</span>
+								</div>
+							</div>
+						</div>
+					</div>
+					<p class="sta-tim">{{data.returnGoods.aTime1}}</p>
+					{{/if}} {{if data.returnGoods.returnType==3}}
+					<div class="sch-lc-box">
+						<div class="sch-tim-box">
+							<img src="img/tuihuo.png" />
+							<span class="lc-tip-tim">{{data.returnGoods.cTime2}}</span>
+						</div>
+						<div class="lc-dian"></div>
+						<div class="sch-lc-rgt">
+							<div class="lc-tit head-st">卖家审核中。。。</div>
+						</div>
+					</div>
+					<p class="sta-tim">{{data.returnGoods.cTime1}}</p>
+
+					<div class="sch-lc-box">
+						<div class="sch-tim-box">
+							<img src="img/tuihuo.png" />
+							<span class="lc-tip-tim">{{data.returnGoods.aTime2}}</span>
+						</div>
+						<div class="lc-dian"></div>
+						<div class="sch-lc-rgt">
+							<div class="lc-tit head-st">卖家拒绝退货。。。</div>
+							<div class="lc-nr">
+								<span>拒绝原因：</span>
+								<span>{{data.returnGoods.refuseRemake}}</span>
+							</div>
+						</div>
+					</div>
+					<p class="sta-tim">{{data.returnGoods.eTime1}}</p>
+					{{/if}} {{if data.returnGoods.returnType==4}}
+					<div class="sch-lc-box">
+						<div class="sch-tim-box">
+							<img src="img/tuihuo.png" />
+							<span class="lc-tip-tim">{{data.returnGoods.cTime2}}</span>
+						</div>
+						<div class="lc-dian"></div>
+						<div class="sch-lc-rgt">
+							<div class="lc-tit head-st">卖家审核中。。。</div>
+						</div>
+					</div>
+					<p class="sta-tim">{{data.returnGoods.cTime1}}</p>
+
+					<div class="sch-lc-box">
+						<div class="sch-tim-box">
+							<img src="img/tuihuo.png" />
+							<span class="lc-tip-tim">{{data.returnGoods.aTime2}}</span>
+						</div>
+						<div class="lc-dian"></div>
+						<div class="sch-lc-rgt">
+							<div class="lc-tit head-st">
+								卖家同意
+							</div>
+							<div class="lc-nr">
+								<p>收货人:{{data.returnGoods.peopleName}}</p>
+								<p class="tel-num">收货电话:{{data.returnGoods.peoplePhone}}</p>
+								<div class="tel-num">
+									<span class="jh-map-tit">收货地址:{{data.returnGoods.peopleAddress}}</span>
+
+								</div>
+								<div class="clear"></div>
+								<p class="tel-num">备注:{{data.returnGoods.peopleOther}}</p>
+							</div>
+						</div>
+					</div>
+					<p class="sta-tim">{{data.returnGoods.aTime1}}</p>
+
+					<div class="sch-lc-box">
+						<div class="sch-tim-box">
+							<img src="img/tuihuo.png" />
+							<span class="lc-tip-tim">{{data.returnGoods.expressTime2}}</span>
+						</div>
+						<div class="lc-dian"></div>
+						<div class="sch-lc-rgt">
+							<div class="lc-tit head-st">
+								买家寄货
+								<a href="logisticsTracking.html?orderId={{data.returnGoods.orderId}}&detailId={{data.returnGoods.detailId}}">
+									<div class="track">物流追踪</div>
+								</a>
+							</div>
+							<div class="lc-nr">
+								<div class="">
+									<span class="jh-map-tit">快递名称：</span>
+									<span class="jh-map">
+											{{data.returnGoods.expressName}}
+										</span>
+								</div>
+								<div class="dan-num">
+									<span class="jh-map-tit">快递单号：</span>
+									<span class="jh-map">
+											{{data.returnGoods.expressNumber}}
+										</span>
+								</div>
+							</div>
+						</div>
+					</div>
+					<p class="sta-tim">{{data.returnGoods.expressTime1}}</p>
+					{{/if}} {{if data.returnGoods.returnType==5}}
+					<div class="sch-lc-box">
+						<div class="sch-tim-box">
+							<img src="img/tuihuo.png" />
+							<span class="lc-tip-tim">{{data.returnGoods.cTime2}}</span>
+						</div>
+						<div class="lc-dian"></div>
+						<div class="sch-lc-rgt">
+							<div class="lc-tit head-st">卖家审核中。。。</div>
+						</div>
+					</div>
+					<p class="sta-tim">{{data.returnGoods.cTime1}}</p>
+
+					<div class="sch-lc-box">
+						<div class="sch-tim-box">
+							<img src="img/tuihuo.png" />
+							<span class="lc-tip-tim">{{data.returnGoods.aTime2}}</span>
+						</div>
+						<div class="lc-dian"></div>
+						<div class="sch-lc-rgt">
+							<div class="lc-tit head-st">
+								卖家同意
+							</div>
+							<div class="lc-nr">
+								<p>收货人:{{data.returnGoods.peopleName}}</p>
+								<p class="tel-num">收货电话:{{data.returnGoods.peoplePhone}}</p>
+								<div class="tel-num">
+									<span class="jh-map-tit">收货地址:{{data.returnGoods.peopleAddress}}</span>
+
+								</div>
+								<div class="clear"></div>
+								<p class="tel-num">备注:{{data.returnGoods.peopleOther}}</p>
+							</div>
+						</div>
+					</div>
+					<p class="sta-tim">{{data.returnGoods.aTime1}}</p>
+
+					<div class="sch-lc-box">
+						<div class="sch-tim-box">
+							<img src="img/tuihuo.png" />
+							<span class="lc-tip-tim">{{data.returnGoods.expressTime2}}</span>
+						</div>
+						<div class="lc-dian"></div>
+						<div class="sch-lc-rgt">
+							<div class="lc-tit head-st">
+								买家寄货
+								<a href="logisticsTracking.html?orderId={{data.returnGoods.orderId}}&detailId={{data.returnGoods.detailId}}">
+									<div class="track">物流追踪</div>
+								</a>
+
+							</div>
+							<div class="lc-nr">
+								<div class="">
+									<span class="jh-map-tit">快递名称：</span>
+									<span class="jh-map">
+											{{data.returnGoods.expressName}}
+										</span>
+								</div>
+								<div class="dan-num">
+									<span class="jh-map-tit">快递单号：</span>
+									<span class="jh-map">
+											{{data.returnGoods.expressNumber}}
+										</span>
+								</div>
+							</div>
+						</div>
+					</div>
+					<p class="sta-tim">{{data.returnGoods.expressTime1}}</p>
+
+					<div class="sch-lc-box">
+						<div class="sch-tim-box">
+							<img src="img/tuihuo.png" />
+							<span class="lc-tip-tim">{{data.returnGoods.eTime2}}</span>
+						</div>
+						<div class="lc-dian"></div>
+						<div class="sch-lc-rgt">
+							<div class="lc-tit head-st">
+								卖家确认-已收货
+							</div>
+						</div>
+					</div>
+					<p class="sta-tim">{{data.returnGoods.eTime1}}</p>
+
+					<div class="sch-lc-box">
+						<div class="sch-tim-box">
+							<img src="img/tuihuo.png" />
+							<span class="lc-tip-tim">{{data.returnGoods.eTime2}}</span>
+						</div>
+						<div class="lc-dian"></div>
+						<div class="sch-lc-rgt">
+							<div class="lc-tit head-st">
+								退款退至买家余额账户
+							</div>
+							<div class="lc-nr">
+								<p>退款余额：{{data.productMoney}}</p>
+								<div class="">
+									<span class="jh-map-tit">到账时间：</span>
+									<span class="jh-map">
+										{{data.returnGoods.eTime1}}
+										</span>
+								</div>
+								<div class="clear"></div>
+							</div>
+						</div>
+					</div>
+
+					<div class="sch-lc-box">
+						<div class="sch-tim-box">
+							<img src="img/tuihuo.png" />
+							<span class="lc-tip-tim">{{data.returnGoods.eTime2}}</span>
+						</div>
+						<div class="lc-dian"></div>
+						<div class="sch-lc-rgt th-suc">
+							退货成功
+						</div>
+					</div>
+					<p class="sta-tim">{{data.returnGoods.eTime1}}</p>
+					{{/if}}
+				</script>
+			</div>
+		</div>
+		<script>
+			$(function() {
+				var id = GetUrlString('id');
+
+				function formatDateTime1(date) {
+					var y = date.getFullYear();
+					var m = date.getMonth() + 1;
+					m = m < 10 ? ('0' + m) : m;
+					var d = date.getDate();
+					d = d < 10 ? ('0' + d) : d;
+					var h = date.getHours();
+					h = h < 10 ? ('0' + h) : h;
+					var minute = date.getMinutes();
+					minute = minute < 10 ? ('0' + minute) : minute;
+					var second = date.getSeconds();
+					second = second < 10 ? ('0' + second) : second;
+					return y + '/' + m + '/' + d; //+ ' ' + h + ':' + minute
+				}
+
+				function formatDateTime2(date) {
+					var y = date.getFullYear();
+					var m = date.getMonth() + 1;
+					m = m < 10 ? ('0' + m) : m;
+					var d = date.getDate();
+					d = d < 10 ? ('0' + d) : d;
+					var h = date.getHours();
+					h = h < 10 ? ('0' + h) : h;
+					var minute = date.getMinutes();
+					minute = minute < 10 ? ('0' + minute) : minute;
+					var second = date.getSeconds();
+					second = second < 10 ? ('0' + second) : second;
+					return h + ':' + minute;
+				}
+				$.post(ajaxUrl + '/front/returnGoods/progressReturnGoods', {
+					token: token,
+					id: id
+				}, function(r) {
+					console.log(r)
+
+					r.data.returnGoods.cTime1 = formatDateTime1(new Date(r.data.returnGoods.createTime));
+					r.data.returnGoods.cTime2 = formatDateTime2(new Date(r.data.returnGoods.createTime));
+
+					r.data.returnGoods.aTime1 = formatDateTime1(new Date(r.data.returnGoods.agreedTime));
+					r.data.returnGoods.aTime2 = formatDateTime2(new Date(r.data.returnGoods.agreedTime));
+
+					r.data.returnGoods.eTime1 = formatDateTime1(new Date(r.data.returnGoods.endTime));
+					r.data.returnGoods.eTime2 = formatDateTime2(new Date(r.data.returnGoods.endTime));
+
+					r.data.returnGoods.expressTime1 = formatDateTime1(new Date(r.data.returnGoods.expressTime));
+					r.data.returnGoods.expressTime2 = formatDateTime2(new Date(r.data.returnGoods.expressTime));
+
+					var shopAddress = r.data.returnGoods.shopAddress.split(';')
+					r.data.returnGoods.peopleName = shopAddress[1];
+					r.data.returnGoods.peoplePhone = shopAddress[2];
+					r.data.returnGoods.peopleAddress = shopAddress[3] + shopAddress[0];
+					r.data.returnGoods.peopleOther = shopAddress[4];
+
+					var html1 = template('merchandise', r);
+					$('.merchandise').html(html1);
+					var html2 = template('ret-sch-box', r);
+					$('.ret-sch-box').html(html2);
+					$(".flow-xian-h").height($('.ret-sch-box').height());
+					
+					
+					$("#expressNumber").blur(function() { //发货运单显示快递公司
+						getInfo("post", ajaxUrl + "/orders/fetchCom", {
+							nu: $(this).val()
+						}, function(r) {
+							r.fetchCom = JSON.parse(r.fetchCom);
+							$("#expressName").html("");
+							for(var i = 0, max = r.fetchCom.showapi_res_body.data.length; i < max; i++) {
+
+								$("#expressName").append("<option value='" + r.fetchCom.showapi_res_body.data[i].expName + "'>" + r.fetchCom.showapi_res_body.data[i].expName + "</option>");
+							}
+						});
+					})
+				}, 'json')
+
+			});
+
+			function jihuo(id) {
+				var expressName = $("#expressName").val().trim();
+				var expressNumber = $("#expressNumber").val().trim();
+				if(expressName == "") {
+					tip.flag('请填写快递公司！', 'error');
+					return
+				} else if(expressNumber == "") {
+					tip.flag('请填写快递单号！', 'error');
+					return
+				} else {
+					var params = {
+						expressName: expressName,
+						expressNumber: expressNumber,
+						id: id
+					}
+					getInfo("post", ajaxUrl + "/front/returnGoods/mailReturnGoods?token=" + token, params, jihuoReq)
+				}
+			}
+
+			function jihuoReq(r) {
+				tip.flag('寄货成功！', 'success');
+				setTimeout(function() {
+					location.reload();
+				}, 1000)
+			}
+		</script>
+	</body>
+
+</html>
