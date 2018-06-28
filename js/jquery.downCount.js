@@ -6,6 +6,7 @@
 (function ($) {
 
     $.fn.downCount = function (options, callback) {
+
         var timeRange = '3/15/2018 00:00:00';
         if($(this).attr('data-clock')){
             timeRange = parseInt($(this).attr('data-clock'));
@@ -100,6 +101,7 @@
         function countdown () {
             var target_date = new Date(settings.date), // set target date
                 current_date = currentDate(); // get fixed current date
+            debugger
 
             // difference of dates
             var difference = target_date - current_date;
@@ -119,7 +121,6 @@
                 _minute = _second * 60,
                 _hour = _minute * 60,
                 _day = _hour * 24;
-
             // calculate dates
             var days = Math.floor(difference / _day),
                 hours = Math.floor((difference % _day) / _hour),
@@ -140,12 +141,14 @@
 
             // set to DOM
             container.find('.days').text(days);
-            container.find('.hours').text(parseInt(hours) + 24*parseInt(days));
+            container.find('.hours').text(parseInt(hours));
+            // container.find('.hours').text(parseInt(hours) + 24*parseInt(days));
             container.find('.minutes').text(minutes);
             container.find('.seconds').text(seconds);
 
             container.find('.days_ref').text(ref_days);
-            container.find('.hours_ref').text(parseInt(ref_hours) + 24*parseInt(ref_days));
+            container.find('.hours_ref').text(parseInt(ref_hours));
+            // container.find('.hours_ref').text(parseInt(ref_hours) + 24*parseInt(ref_days));
             container.find('.minutes_ref').text(ref_minutes);
             container.find('.seconds_ref').text(ref_seconds);
         }
@@ -155,6 +158,7 @@
     };
     //时间格式化
     function format(date,str){
+        debugger
         var mat={};
         mat.M=date.getMonth()+1;//月份记得加1
         mat.H=date.getHours();
