@@ -12,16 +12,20 @@
     <script src="./js/layer.js" type="text/javascript" charset="utf-8"></script>
     <script src="js/default.js"></script>
     <script type="text/javascript" src="./lib/layer_mobile/layer.js"></script>
+    <script type="text/javascript" src="js/template.js"></script>
+    <script type="text/javascript" src="js/template-helper.js"></script>
     <style>
         .pay-box {
             width: 100%;
             text-align: center;
             margin: 44px 0;
         }
+
         .opt {
             display: none;
             z-index: 11;
         }
+
         .opt {
             background: black;
             opacity: 0.5;
@@ -31,6 +35,7 @@
             width: 100%;
             height: 100%;
         }
+
         .pay-box button {
             width: 50%;
             height: 44px;
@@ -40,23 +45,100 @@
             color: #fff;
             font-size: 16px;
         }
+
         .group {
             text-align: center;
             padding: 14px 36px;
             background-color: #fff;
         }
-        #countMoneyId{
+
+        #countMoneyId {
             color: #FF5722;
             padding-left: 14px;
         }
-        .head-img{
+
+        .head-img {
             width: 100px;
             height: 100px;
             margin: 0 auto;
         }
-        .head-img>img{
+
+        .head-img > img {
             width: 100%;
         }
+
+        /**/
+
+        .radio-check {
+            position: relative;
+            height: 35px;
+            /*width: 80%;*/
+        }
+
+        .radio-check > input {
+            position: absolute;
+            left: 0;
+            top: 0;
+            width: 20px;
+            height: 20px;
+            opacity: 0;
+        }
+
+        .radio-check > label {
+            position: absolute;
+            left: 30px;
+            line-height: 20px;
+            top: 0px;
+        }
+
+        .radio-check > label:before {
+            content: '';
+            position: absolute;
+            left: -30px;
+            top: 0px;
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            border: 1px solid #ddd;
+            transition: all 0.3s ease;
+            -webkit-transition: all 0.3s ease;
+            -moz-transition: all 0.3s ease;
+        }
+
+        .radio-check > label:after {
+            content: '';
+            position: absolute;
+            left: -30px;
+            top: 0px;
+            display: inline-block;
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            margin-top: 6px;
+            margin-left: 6px;
+            transition: all 0.3s ease;
+            -webkit-transition: all 0.3s ease;
+            -moz-transition: all 0.3s ease;
+        }
+
+        .radio-check input[type='radio']:checked + label:before {
+            border-color: #4cd764;
+        }
+
+        .radio-check input[type='radio']:checked + label:after {
+            background: #4cd764;
+        }
+        .m-select-box{
+            /*width: 100%;*/
+            /*padding: 10px 12%;*/
+        }
+        .tips-title{
+            margin-bottom: 10px;
+            display: block;
+            color: red;
+        }
+
     </style>
 </head>
 <body>
@@ -69,53 +151,62 @@
         <div class="head-img"><img src="./img/ad_imgs/head_img.png" alt=""></div>
         <div class="head-title" id="shopNameId">购一购</div>
     </div>
+    <div class="group m-select-box">
+        <span class="tips-title"></span>
+
+    </div>
     <div class="group">
-        <div class="group-title">扫码支付金额 :<span id="countMoneyId">0.00</span></div>
+        <div class="group-title buy-hide">扫码支付金额 :<span id="countMoneyId">0.00</span></div>
     </div>
     <div class="pay-box">
         <!--<h2 style=" height: 88px;line-height: 60px;">去支付</h2>-->
-        <button id="payId">支付宝支付</button>
+        <button id="payId" class="buy-hide">支付宝支付</button>
     </div>
 </div>
+
+
+<script type="text/template" id="mian-box">
+
+    {{each data as item index}}
+    <div class='radio-check'>
+        <input type='radio' data-productId="{{item.productId}}" data-value="{{item.price}}" name='mianMo'
+               id='product{{item.productId}}'/>
+        <label for='product{{item.productId}}'>{{item.name}},售价：{{item.price}}元</label>
+    </div>
+    {{/each}}
+
+</script>
+
 <div id="aliId"></div>
 </body>
 <script type="text/javascript">
 
     $(function () {
         $('#shopNameId').text(localStorage.shopName);
-        $('.head-img img').attr('src',localStorage.shopLogo);
+        $('.head-img img').attr('src', localStorage.shopLogo);
         $('#countMoneyId').text(localStorage.countMoney);
-        $('#payId').on('click',function(){
-            $(this).attr('disabled','disabled').css({background:'#ccc'});
-            pay();
-        })
-    });
-
-    function alPayReq(r) {
-        $('#aliId').html(r.data.sign); // h5支付
-    }
-    function pay() {
+        var mianMoPrice = '';
         var authCode = GetUrlParam('auth_code');
-        var flag = true;
-        var userOpenId = '';
-        var userAliId = '';
+//        layer.open({type: 2});
         $.ajax({
             type: 'POST',
             async: false,
             url: ajaxUrl + "/AliLogin/getAliId",
-            data: {authCode : authCode},
+            data: {authCode: authCode},
             success: function (res) {
+                //alert('getAliId:  ' + res.AliId)
                 if (res.code == 200) {
-                    userAliId = res.AliId;
-                    if(localStorage.noAccount == '1' ) {
+                    var userAliId = res.AliId;
+                    if (localStorage.noAccount == '1') {
+
                         $.ajax({
                             type: 'POST',
                             async: false,
                             cache: false,
                             url: ajaxUrl + '/front/clients/createAccount',
-                            data: { referPhone: localStorage.referPhone, shopId: localStorage.shopId, AliId: userAliId },
+                            data: {referPhone: localStorage.referPhone, shopId: localStorage.shopId, AliId: userAliId},
                             success: function (res) {
-                                console.log('data:', res.data);
+                               // alert('createAccount:  ' + res.code)
                                 if (res.code == 300) {
                                     layer.open({
                                         content: data.msg
@@ -128,81 +219,68 @@
                                     localStorage.setItem("token", res.data.token);
                                     localStorage.setItem('notRealAccount', res.data.account);
                                     localStorage.setItem('notRealPas', res.data.password);
-                                    $.ajax({
-                                        type: "post",
-                                        url: ajaxUrl + "/front/orders/insertOrderbyQrcode",
-                                        async: false,
-                                        traditional: true,
-                                        data: {
-                                            token : localStorage.getItem('token'),
-                                            productId:localStorage.productId,
-                                            shopId:localStorage.shopId,
-                                            number:localStorage.countMoney,
-                                        },
-                                        success: function (res) {
-                                            if (res.code == 200) {
-                                                var orderId = res.data;
-                                                localStorage.setItem('wxOrderId',orderId);
-                                                var token = localStorage.getItem('token');
-                                                getInfo("post", ajaxUrl + "/front/payInfo/aliPayWeb?token=" + token, {
-                                                    money: parseFloat($('#countMoneyId').val()),
-                                                    type: 3,
-                                                    orderId: orderId
-                                                }, alPayReq);
-                                            }else{
-                                                layer.open({
-                                                    content: res.msg
-                                                    ,skin: 'msg'
-                                                    ,time: 2 //2秒后自动关闭
-                                                });
-                                            }
-                                        },
-                                        error:function(err){
-                                            layer.open({
-                                                content: err
-                                                ,skin: 'msg'
-                                                ,time: 2 //2秒后自动关闭
+                                    // 准备插入订单
+                                    // 如果是购买面膜 获取面膜数据
+                                    if (localStorage.mianmo == '2') {
+                                        getMianMo(res.data.token, function (res) {
+                                            // 面膜列表
+                                            var html = template('mian-box', res);
+                                            $('.m-select-box').html(html);
+
+                                            // 默认选项
+                                            $($('input[type=radio][name=mianMo]')[0]).attr('checked', 'checked');
+                                            $('#countMoneyId').text($($('input[type=radio][name=mianMo]')[0]).data('value'));
+                                            localStorage.setItem('mianMoPrice', $($('input[type=radio][name=mianMo]')[0]).data('value'));
+                                            localStorage.setItem('MproductsId', $($('input[type=radio][name=mianMo]')[0]).attr('data-productId'));
+                                            $('input[type=radio][name=mianMo]').change(function () {
+                                                $('#countMoneyId').text($(this).data('value'));
+                                                mianMoPrice = $(this).data('value');
+                                                localStorage.setItem('mianMoPrice', $(this).data('value'));
+                                                localStorage.setItem('MproductsId', $(this).attr('data-productId'));
                                             });
-                                        }
-                                    })
+                                            layer.closeAll();
+                                        })
+                                    }
+
+                                    layer.closeAll();
                                 }
                             }
                         });
-                    }else {
+                    } else {
                         $.ajax({
                             type: "post",
                             url: ajaxUrl + "/front/orders/insertOrderbyQrcode",
                             async: false,
                             traditional: true,
                             data: {
-                                token : localStorage.getItem('token'),
-                                productId:localStorage.productId,
-                                shopId:localStorage.shopId,
-                                number:localStorage.countMoney
+                                token: localStorage.getItem('token'),
+                                productId: localStorage.productId,
+                                shopId: localStorage.shopId,
+                                number: localStorage.countMoney
                             },
                             success: function (res) {
                                 if (res.code == 200) {
                                     var orderId = res.data;
-                                    localStorage.setItem('wxOrderId',orderId);
+                                    localStorage.setItem('wxOrderId', orderId);
                                     var token = localStorage.getItem('token');
                                     getInfo("post", ajaxUrl + "/front/payInfo/aliPayWeb?token=" + token, {
                                         money: parseFloat($('#countMoneyId').val()),
                                         type: 3,
                                         orderId: orderId
                                     }, alPayReq);
-                                }else{
+                                } else {
                                     layer.open({
                                         content: res.msg
-                                        ,skin: 'msg'
-                                        ,time: 2 //2秒后自动关闭
+                                        , skin: 'msg'
+                                        , time: 2 //2秒后自动关闭
                                     });
                                 }
                             },
-                            error:function(err){
+                            error: function (err) {
                                 layer.open({
                                     content: err
-                                    ,skin: 'msg'
-                                    ,time: 2 //2秒后自动关闭
+                                    , skin: 'msg'
+                                    , time: 2 //2秒后自动关闭
                                 });
                             }
                         })
@@ -217,14 +295,142 @@
                     return;
                 }
             },
-            error : function(err) {
+            error: function (err) {
                 layer.open({
-                    content : '出现错误。请重新支付！',
-                    time : 2,
-                    skin : 'msg'
+                    content: '出现错误。请重新支付！',
+                    time: 2,
+                    skin: 'msg'
                 })
             }
         });
+
+        $('#payId').on('click', function () {
+            $(this).attr('disabled', 'disabled').css({background: '#ccc'});
+            pay();
+        })
+    });
+
+    function alPayReq(r) {
+        $('#aliId').html(r.data.sign); // h5支付
+    }
+    function pay() {
+
+        if (localStorage.noAccount == '1') {
+            if (localStorage.mianmo == '2') { //  支付面膜
+                // 插入订单
+                $.ajax({
+                    type: "post",
+                    url: ajaxUrl + "/front/MOrder/inset",
+                    async: false,
+                    traditional: true,
+                    data: {
+                        token: localStorage.getItem('token'),
+                        MproductsId: localStorage.MproductsId,
+                        shopId: localStorage.shopId,
+                        price: localStorage.mianMoPrice
+                    },
+                    success: function (res) {
+                        if (res.code == 200) {
+                            var orderId = res.data;
+                            localStorage.setItem('wxOrderId', orderId);
+                            var token = localStorage.getItem('token');
+
+                            $.ajax({
+                                type: 'POST',
+                                async: false,
+                                url: ajaxUrl + '/front/payInfo/aliPayWeb?token=' + localStorage.token,
+                                data: {money: localStorage.mianMoPrice, type: 3, orderId: orderId},
+                                success: function (res) {
+                                    if (res.code == 200) {
+                                        $('#aliId').html(res.data.sign); // 支付宝 h5 支付
+                                    } else {
+                                        layer.open({
+                                            content: res.msg
+                                            , skin: 'msg'
+                                            , time: 2 //2秒后自动关闭
+                                        });
+                                        return;
+                                    }
+
+                                }
+                            });
+
+                        } else {
+                            layer.open({
+                                content: res.msg
+                                , skin: 'msg'
+                                , time: 2 //2秒后自动关闭
+                            });
+                        }
+                    },
+                    error: function (err) {
+                        layer.open({
+                            content: err
+                            , skin: 'msg'
+                            , time: 2 //2秒后自动关闭
+                        });
+                    }
+                })
+
+            } else {
+                // 普通支付
+                $.ajax({
+                    type: "post",
+                    url: ajaxUrl + "/front/orders/insertOrderbyQrcode",
+                    async: false,
+                    traditional: true,
+                    data: {
+                        token: localStorage.getItem('token'),
+                        productId: localStorage.productId,
+                        shopId: localStorage.shopId,
+                        number: localStorage.countMoney
+                    },
+                    success: function (res) {
+                        if (res.code == 200) {
+                            var orderId = res.data;
+                            localStorage.setItem('wxOrderId', orderId);
+                            var token = localStorage.getItem('token');
+
+                            $.ajax({
+                                type: 'POST',
+                                async: false,
+                                url: ajaxUrl + '/front/payInfo/aliPayWeb?token=' + localStorage.token,
+                                data: {money: parseFloat($('#countMoneyId').val()), type: 3, orderId: orderId},
+                                success: function (res) {
+                                    if (res.code == 200) {
+                                        $('#aliId').html(res.data.sign); // 支付宝 h5 支付
+                                    } else {
+                                        layer.open({
+                                            content: res.msg
+                                            , skin: 'msg'
+                                            , time: 2 //2秒后自动关闭
+                                        });
+                                        return;
+                                    }
+
+                                }
+                            });
+                        } else {
+                            layer.open({
+                                content: res.msg
+                                , skin: 'msg'
+                                , time: 2 //2秒后自动关闭
+                            });
+                        }
+                    },
+                    error: function (err) {
+                        layer.open({
+                            content: err
+                            , skin: 'msg'
+                            , time: 2 //2秒后自动关闭
+                        });
+                    }
+                })
+
+            }
+        }
+
+
     }
     function GetUrlParam(paraName) {
         var url = document.location.toString();
@@ -245,6 +451,28 @@
         }
     }
 
+    function getMianMo(token, callback) {
+        $.ajax({
+            type: 'POST',
+            async: true,
+            url: ajaxUrl + '/front/MOrder/query',
+            data: {token: token},
+            success: function (res) {
+                if (res.code == 200) {
+                    callback(res)
+                } else {
+                    $('.tips-title').text(res.msg);
+                    $('.buy-hide').hide();
+                    /*layer.open({
+                        content: res.msg
+                        , skin: 'msg'
+                        , time: 2 //2秒后自动关闭
+                    });
+                    return;*/
+                }
+            }
+        });
+    }
 </script>
 
 </html>
