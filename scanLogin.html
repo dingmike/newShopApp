@@ -85,6 +85,20 @@
             color: #fff;
             font-size: 16px;
         }
+        .bottom-btn{
+            position: relative;
+            /*bottom: -26px;*/
+            left: 50%;
+            margin-left: -126px;
+            width: 252px;
+            height: 38px;
+            line-height: 38px;
+            background-color: orangered;
+            border-radius: 20px;
+            text-align: center;
+            color: #fff;
+            font-size: 16px;
+        }
         .bottom-test-btn {
             position: fixed;
             bottom: 20px;
@@ -96,69 +110,123 @@
         .pay-box {
             margin-top: 40px !important;
         }
+        .scan-header{
+            width: 100%;
+            height:40px;
+            border: 1px solid #ccc;
+        }
+        .scan-header ul li{
+            float: left;
+            width: 50%;
+            text-align: center;
+            /*border: 1px solid #ccc;*/
+            height: 38px;
+            line-height: 38px;
+        }
+        .scan-header .scan-tab-l:after{
+            content: '';
+            border-right: 1px solid #ccc;
+            height: 30px;
+            margin-top: 5px;
+            width: 1px;
+            position: absolute;
+            right: 0;
+        }
+        .scan-active{
+            background: orangered;
+            color: #fff;
+            font-size: 16px;
+            font-weight: 600;
+        }
+
     </style>
 </head>
 <body>
 <div class="head">付 款</div>
+
+
 <div class="main-content">
 
-    <div class="header">
-                        <span class="header-span1">
-                        登录
-                    </span>
-        <a href="register.html" class="a">
-                        <span class="header-span2 header-span3">
-                        注册
-                    </span>
-        </a>
+
+    <div class="scan-header">
+        <ul>
+            <li class="scan-tab-l scan-active mm-three" data-press="1">普通支付</li>
+            <li data-press="2">购买面膜</li>
+        </ul>
 
     </div>
 
 
-    <div class="group">
-        <div class="head-img"><img src="./img/adds.png" alt=""></div>
-        <div class="head-title" id="shopNameId">购一购</div>
-        <a id='aot'></a>
-    </div>
-    <div class="group">
-        <div class="group-title">付款金额</div>
-    </div>
-    <div class="group">
-        <div class="controls">
-            <label for="moneyId"><img class="icon-img" src="img/icon_rmb.png" alt=""></label>
-            <input type="text" maxlength="11" id="moneyId" class="txt checkNumber" placeholder="请输入金额">
+    <div class="buy-container">
+        <div class="group">
+            <div class="head-img"><img src="" alt=""></div>
+            <div class="head-title" id="shopNameId">购一购</div>
+            <a id='aot'></a>
         </div>
-    </div>
-    <div class="group">
-    </div>
-    <div class="group" style="padding-top: 0;">
-        <div class="pay-box">
-
-            <div class="order_line margin10" id="zfbBox" data-pay="zfb">
-                <img src="img/zhifubaozhifu.png" alt=""/>支付宝支付
-            </div>
-            <div class="order_line" id="wxBox" data-pay="wx">
-                <img src="img/weixinzhifu.png" alt=""/>微信支付
+        <div class="group">
+            <button class="bottom-btn" id="goBuyMM" data-press="2" disabled>去购买面膜</button>
+            <div class="group-title mm-three">付款金额</div>
+        </div>
+        <div class="group mm-three">
+            <div class="controls">
+                <label for="moneyId"><img class="icon-img" src="img/icon_rmb.png" alt=""></label>
+                <input type="text" maxlength="11" id="moneyId" class="txt checkNumber" placeholder="请输入金额">
             </div>
         </div>
+        <div class="group">
+        </div>
+        <div class="group mm-three" style="padding-top: 0;">
+            <div class="pay-box">
 
+                <div class="order_line margin10" id="zfbBox" data-pay="zfb">
+                    <img src="img/zhifubaozhifu.png" alt=""/>支付宝支付
+                </div>
+                <div class="order_line" id="wxBox" data-pay="wx">
+                    <img src="img/weixinzhifu.png" alt=""/>微信支付
+                </div>
+            </div>
+
+        </div>
+        <div class="group mm-three">
+            <button class="bottom-content" id="subOrderId" disabled>确 定</button>
+        </div>
     </div>
-    <div class="group">
-        <button class="bottom-content" id="subOrderId" disabled>确 定</button>
-    </div>
+
+   <!-- <div class="buy-mianMo">
+        <div class="group">
+            <div class="group-title"></div>
+        </div>
+        <div class="group">
+            <button class="bottom-content" id="subOrderId" disabled>确 定</button>
+        </div>
+    </div>-->
+
+
     <div id="aliId"></div>
 </div>
 <script>
     $(function () {
 
+        localStorage.setItem('scanLoginHref', window.location.href);
         var isPhone = 1;
         localStorage.setItem("shopId", GetUrlParam('shopId'));
         localStorage.setItem("shopLogo", GetUrlParam('logo'));
         localStorage.setItem("productId", GetUrlParam('product'));
         localStorage.setItem("referPhone", GetUrlParam('referPhone'));
-        localStorage.setItem("shopName", GetUrlParam('shopName'));
+        localStorage.setItem("shopName", GetUrlString('shopName'));
 
         localStorage.setItem("noAccount", 1);
+
+        localStorage.removeItem("mianmo");
+
+        if(GetUrlString('MM')==3){
+            $('.mm-three').hide();
+        }else{
+            $('.mm-three').show();
+        }
+
+
+
         // 已有账号支付标志
         //微信app中隐藏支付宝支付按钮 默认选中微信
         if (is_weixin()) {
@@ -186,7 +254,112 @@
         $('#shopNameId').text(localStorage.shopName);
         $('.head-img img').attr('src',localStorage.shopLogo);
 
+
+
+
+        // 选择
+        $('.scan-header ul li','#goBuyMM').on('click',function () {
+            debugger
+
+            $(this).addClass('scan-active').siblings('li').removeClass('scan-active');
+            if($(this).data('press')===2){
+                if(GetUrlString('MM')){
+                    var mianmo = GetUrlString('MM');
+                   // alert(mianmo)
+                    localStorage.setItem("mianmo", mianmo);
+                }
+                // 2或者3面膜支付
+                if(mianmo!=2||mianmo!=3){
+                    layer.open({
+                        content: '无法购买面膜！'
+                        ,skin: 'msg'
+                        ,time: 2 //2秒后自动关闭
+                    });
+                    $(this).removeClass('scan-active').siblings('li').addClass('scan-active');
+                }else{
+                    //alert('mm')
+                    // 跳转去选择购买面膜
+                    $(".pay-box .order_line").each(function () {
+                        if ($(this).hasClass('pitchon')) {
+                            var dataPay = $(this).attr('data-pay');
+                            switch (dataPay) {
+                                case 'zfb':
+                                    $.ajax({
+                                        type: "post",
+                                        url: ajaxUrl + "/AliLogin/Link",
+                                        async: false,
+                                        traditional: true,
+                                        success: function (res) {
+                                            if (res.code == 200) {
+                                                console.log(res.data);
+                                                window.location.href = res.url;
+                                            }else{
+                                                layer.open({
+                                                    content: res.msg
+                                                    ,skin: 'msg'
+                                                    ,time: 2 //2秒后自动关闭
+                                                });
+                                            }
+                                        }
+                                    });
+                                    break;
+                                case 'wx':
+                                    //微信中使用微信公众号支付，外部使用h5支付
+                                    if (is_weixin()) {
+                                        //微信公众号支付
+                                        $.post(ajaxUrl + '/WxGzh/getCode', {}, function (res) {
+                                            //alert('code wxGzh:' +res.code);
+                                            if (res.code === 200) {
+                                                window.location.href = res.data;
+                                            } else {
+//                                        tip.flag('发生错误请重新下单！', 'error');
+                                                layer.open({
+                                                    content: res.msg
+                                                    ,skin: 'msg'
+                                                    ,time: 2 //2秒后自动关闭
+                                                });
+                                            }
+                                        })
+
+                                        // location.href = 'scanPaySuccess.html';
+                                    } else {
+                                        //调用h5支付
+                                        $.post(ajaxUrl + '/WxH5/pay', {orderId: orderId, type: 1}, function (res) {
+                                            //  alert('codeH5:' +res.code);
+                                            if (res.code === 100) {
+                                                window.location.href = res.data;
+                                            } else {
+//                                        tip.flag('发生错误请重新下单！', 'error');
+                                                layer.open({
+                                                    content: res.msg
+                                                    ,skin: 'msg'
+                                                    ,time: 2 //2秒后自动关闭
+                                                });
+                                            }
+                                        })
+                                        //location.href = 'scanPaySuccess.html';
+                                    }
+                                    break;
+                                default:
+                                    break;
+                            }
+                        }
+                    });
+
+
+                }
+
+
+            }
+        })
+
+
+
+
+
+        // 点击开启支付流程
         $("#subOrderId").click(function () {
+          //  alert('paycount: ' + $('#moneyId').val())
             var count = $('#moneyId').val();
             localStorage.setItem('payCount',count);
             localStorage.setItem('countMoney',count);
@@ -340,7 +513,9 @@
     });
 
     function GetUrlParam(paraName) {
+
         var url = document.location.toString();
+        url =decodeURI(url);
         var arrObj = url.split("?");
 
         if (arrObj.length > 1) {
@@ -359,6 +534,17 @@
         else {
             return "";
         }
+    }
+    function GetUrlString(name) {
+
+        var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)");
+
+        var r =decodeURI(window.location.search).substr(1).match(reg);
+
+        if (r != null) return unescape(r[2]);
+
+        return '';
+
     }
 </script>
 </body>
