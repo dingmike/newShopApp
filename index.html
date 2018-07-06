@@ -551,36 +551,36 @@
 
         /*new hot product--start--*/
         .pt-bottom-box-h {
-            /*display: flex;*/
-            /*display: -webkit-flex; !* Safari *!*/
-            /*flex-direction: row;*/
-            /*justify-content: center;*/
             background: orangered;
             color: #fff;
-            height: 1.4rem;
+            height: 2.4rem;
         }
 
         .price-bottom-m-h {
             display: flex;
-            display: -webkit-flex; /* Safari */
-            flex-direction: row;
+            /* display: -webkit-flex; */
+            /* flex-direction: row; */
             justify-content: center;
         }
 
         .price-bottom-l-h {
-            /*padding: 0.05333rem;*/
-            height: 0.8rem;
-            display: flex;
-            display: -webkit-flex; /* Safari */
-            flex-direction: row;
-            justify-content: center;
+            /* padding: 0.05333rem; */
+            /* height: 0.8rem; */
+            /* display: flex; */
+            /* display: -webkit-flex; */
+            /* flex-direction: row; */
+            /* justify-content: center; */
+            padding: 4px 0;
         }
 
         .price-b-l-first-h {
-            font-size: 0.45rem;
+            /* float: left; */
+            padding-left: 10px;
+            text-align: left;
+            font-size: 0.6rem;
             height: 0.8rem;
-            line-height: 0.8rem;
-            margin-left: 0.266667rem;
+            /* line-height: 0.8rem; */
+            /* margin-left: 0.1rem; */
         }
 
         .price-b-l-sencond-h {
@@ -600,18 +600,26 @@
             border-radius: 0.10666rem;
             padding: 0.0266666rem 0.053333rem;
         }
-
+        .ju-title{
+            float: left;
+            font-size: 12px;
+            width: 48px;
+            padding-left: 8px;
+        }
         ul.countdown-h {
-            list-style: none;
-            width: 3.5rem !important;
-            /*transform: scale(0.8) !important;*/
+            /* list-style: none; */
+            /* float: left; */
+            font-size: 0.24rem;
+            /* width: 4.5rem!important; */
+            /* transform: scale(0.8)!important; */
+            display: inline-block;
         }
 
         .price-time-h {
-            font-size: 0.12rem;
-            /*transform: scale(0.9);*/
-            height: 0.93rem;
-            line-height: 0.93rem;
+            font-size: 0.32rem;
+            /* transform: scale(0.9); */
+            /* height: 0.92rem; */
+            /* line-height: 0.92rem; */
             margin-left: 0.2rem;
         }
 
@@ -906,6 +914,7 @@
             height: 1.2rem;
         }
         .icon-list .icon-desc {
+            display: block;
             text-align: center;
             font-size: .32rem;
             color: #666;
@@ -1274,13 +1283,13 @@
                     <div class="pt-bottom-box-h">
                         <div class="price-bottom-l-h">
                             <div class="price-b-l-first-h">￥<span>{{k.collagePrice}}</span></div>
-                            <div class="price-time-h"><span style="float: left;">距结束：</span>
+                            <div class="price-time-h"><span class="ju-title">距结束：</span>
                                 {{if k.fightAloneTime!==null}}
                                 <ul class="countdown-h countdown{{k.productId}}" data-clock="{{k.fightAloneTime}}">
-                                    <li style="display: none;">
+                                    <li style="">
                                         <span class="days">00</span>
                                     </li>
-                                    <li class="seperator" style="display: none;">.</li>
+                                    <li class="seperator" style="">天</li>
                                     <li><span class="hours">00</span>
                                     </li>
                                     <li class="seperator">:</li>
@@ -1552,12 +1561,12 @@
             // 显示广告金
             debugger
             for(var i=0; i<r.Products.length; i++){
+                var newObj = JSON.parse(JSON.stringify(r.Products[i]));
                 for(var j = 0; j< fxIdData.length; j++){
-                    if(r.Products[i].fxparam == fxIdData[j].id){
+                    if(newObj.fxparam == fxIdData[j].id){
                         r.Products[i].fxparam =fxIdData[j].mine;
                     }
                 }
-
             }
             var html = template('bro-sto-box', r);
             $('.bro-sto-box').html(html);
@@ -1582,12 +1591,12 @@
             },
             function (r) {
                 for(var i=0; i<r.Products.length; i++){
+                    var newObj = JSON.parse(JSON.stringify(r.Products[i]));
                     for(var j = 0; j< fxIdData.length; j++){
-                        if(r.Products[i].fxparam == fxIdData[j].id){
+                        if(newObj.fxparam == fxIdData[j].id){
                             r.Products[i].fxparam =fxIdData[j].mine;
                         }
                     }
-
                 }
                 var html = template('bro-sto-box', r);
                 $('.bro-sto-box').html(html);
@@ -1795,7 +1804,7 @@
 
             $('.' + countDownArr[i]).downCount({
 //                    date: '3/15/2018 00:00:00',
-                offset: +10,
+                offset: +8,
                 loadingTiao: true
             }, function () {
                 // alert('倒计时结束!');

@@ -394,8 +394,9 @@
              });
              */
             // 显示广告金
+            var newObj = JSON.parse(JSON.stringify(r.data.product));
             for(var j = 0; j< fxIdData.length; j++){
-                if(r.data.product.fxparam == fxIdData[j].id){
+                if(newObj.fxparam == fxIdData[j].id){
                     r.data.product.fxparam =fxIdData[j].mine;
                     detailFxParam= fxIdData[j].mine
                 }
@@ -478,80 +479,6 @@
         var allSend = 0; //所有店铺合计的赠送e点
         var allPrice = 0;
 
-        /*	$.ajax({
-         type: "post",
-         url: ajaxUrl + "/front/orders//showOrderBuyCar?token=" + token,
-         async: true,
-         dataType: "json",
-         traditional: true,
-         data: {
-         carIds: carIds
-         },
-         success: function(r) {
-         if(r.code == 200) {
-
-         var html1 = template('userinfo', r);
-         $('.userinfo').html(html1);
-
-         var html2 = template('order_details-box', r);
-         $('.order_details-box').html(html2);
-
-         //合计总价格和总E点
-         $('.pay_amount').find('span').text("￥" + r.data.orderAmountAll);
-         $('.deliver_e').find('span').text(r.data.orderEdianAll);
-         allSend = r.data.orderEdianAll;
-         allPrice = r.data.orderAmountAll;
-
-         $('.order_details').each(function() {
-         //sum-edian
-         var sumEdian = 0; //赠送总e点数
-
-         $(this).find('.sum-edian').each(function() {
-         sumEdian += parseInt($(this).attr('data-sume'));
-         });
-
-         var sumPrice = 0; //单个店铺里面的商品价格合计
-         $(this).find('.sum-price').each(function() {
-         sumPrice += parseInt($(this).attr('data-sump'));
-         });
-
-         $(this).find('.send-50').text("送" + sumEdian + "e点"); //每个店铺里面的所有商品赠送的总E点数
-         //								$(this).find('.sum-11').text(r.data.orderAmount); //每个店铺里面的所有商品的合计价格
-
-         });
-         $('.has-bg').click(function() {
-         $('.syfp-alert').css('display', 'block');
-         $('.alert-op').css('opacity', '0.45');
-         $('.alert-choose ul li').click(function() {
-         $(this).addClass('add-li-css').siblings().removeClass('add-li-css')
-         });
-         });
-         //确定索要
-         $("#forinvoBtn").click(function() {
-         $(".alert-choose ul li").each(function() {
-         var forinvoValue=$(this).data('type');
-         console.log(forinvoValue)
-         if($(this).hasClass('add-li-css')) {
-         $("#forinvoValue").html($(this).html());
-         $("#forinvoValue").attr('data-type',forinvoValue);
-         }
-         $('.syfp-alert').css('display', 'none');
-         $('.alert-op').css('opacity', '1');
-         })
-         });
-
-         //选择收货地址
-         var aid = $('.user_tit').attr('data-aid');
-         console.log('aid' + aid)
-         $(".userinfo").click(function() {
-         location.href = "select_site.html?sureArr=" + carIds + '&&aid=' + aid;
-         })
-         } else {
-         window.location.href = "index.html";
-         }
-         }
-
-         });*/
 
         //显示结算层
         var comfirmOrderId;
@@ -725,9 +652,9 @@
                                 }, alPayReq);
 
                             function alPayReq(r) {
-//                                $('#aliId').html(r.data.sign); // h5支付
+                                $('#aliId').html(r.data.sign); // h5支付
                                 //调用支付原生
-                                setupWebViewJavascriptBridge(function (bridge) {
+                                /*setupWebViewJavascriptBridge(function (bridge) {
                                     bridge.callHandler('loadThreePay', {
                                         'pay': 'Alipay',
                                         'data': r.data.sign
@@ -737,10 +664,10 @@
                                             tip.flag('支付成功', 'success');
 
                                             //支付成功后清除订单数据
-                                            /* window.localStorage.removeItem('productId'); //防止返回订单数据消失
+                                            /!* window.localStorage.removeItem('productId'); //防止返回订单数据消失
                                              window.localStorage.removeItem('productSpec'); //防止返回订单数据消失
                                              window.localStorage.removeItem('number'); //防止返回订单数据消失
-                                             window.localStorage.removeItem('type'); //防止返回订单数据消失*/
+                                             window.localStorage.removeItem('type'); //防止返回订单数据消失*!/
 
                                             window.localStorage.removeItem('orderParams')
 
@@ -755,16 +682,13 @@
                                         }
 
                                     });
-                                });
+                                });*/
                             }
 
                                 break;
                             case 'wx':
-
-
-
                                 // 调用支付原生api
-                                getInfo("post", ajaxUrl + "/front/payInfo/wxPay?token=" + token, {
+                               /* getInfo("post", ajaxUrl + "/front/payInfo/wxPay?token=" + token, {
                                     money: totalAmount,
                                     type: 2,
                                     orderId: comfirmOrderId
@@ -801,10 +725,10 @@
 
                                     });
                                 });
-                            }
+                            }*/
 
 
-                               /* if (window.__wxjs_environment === 'miniprogram') {
+                                if (window.__wxjs_environment === 'miniprogram') {
                                     // 小程序支付
                                     var backUrl = location.href;
                                     var wxpaystr = "?orderId="+ comfirmOrderId + "&backUrl=" + backUrl + '&pdFlag=true';
@@ -830,7 +754,7 @@
                                             }
                                         })
                                     }
-                                }*/
+                                }
 
                                 break;
                             default:

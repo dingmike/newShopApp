@@ -243,22 +243,30 @@
                         <div class="pro_price" data-price="{{order.productAmount}}">¥{{order.productAmount}}</div>
                         <div class="pro_num" data-num="{{order.productCount}}">数量: x{{order.productCount}}</div>
                     </div>
-                    <div class="sum-edian" data-sume="{{orderproductEdian}}"></div>
-                    <div class="sum-price" data-sump="{{order.productPrice}}"></div>
+                    <!--<div class="sum-edian" data-sume="{{order.productEdian}}"></div>-->
+                    <!--<div class="sum-price" data-sump="{{order.productPrice}}"></div>-->
                 </div>
-                <div class="order_tit">快递邮费 {{if order.orderExpfee===0}}
+
+
+                <div class="order_tit">
+                    快递邮费
+                    {{if order.orderExpfee===0}}
                     <div class="postage">卖家包邮</div>
-                    {{/if}} {{if order.orderExpfee!==0}}
+                    {{/if}}
+                    {{if order.orderExpfee!==0}}
                     <div class="postage">{{order.orderExpfee}}</div>
                     {{/if}}
                 </div>
                 <div class="order_tit">店铺优惠
                     <div class="discount">{{order.orderDiscounted}}</div>
                 </div>
-                <div class="order_tit">索要发票
-                    <div class="postage has-bg">{{if order.forInvoices==0}}暂不提供发票{{/if}}{{if
-                        order.forInvoices==1}}个人增值税普通发票{{/if}}{{if order.forInvoices==2}}企业增值税普通发票{{/if}}{{if
-                        order.forInvoices==3}}企业增值税专业发票{{/if}}
+                <div class="order_tit">
+                    索要发票
+                    <div class="postage has-bg">
+                        {{if order.forInvoices==0}}暂不提供发票{{/if}}
+                        {{if order.forInvoices==1}}个人增值税普通发票{{/if}}
+                        {{if order.forInvoices==2}}企业增值税普通发票{{/if}}
+                        {{if order.forInvoices==3}}企业增值税专业发票{{/if}}
                     </div>
                 </div>
                 <div class="order_tit">
@@ -417,7 +425,7 @@
             }
             //默认余额支付选中
 //            $('.balance').addClass('pitchon1')
-            $($('.order_line')[0]).addClass('pitchon')
+            $($('.order_line')[0]).addClass('pitchon');
             if (!$('.user_name').text()) {
                 tip.flag('请添加收货地址', 'error');
             } else {
@@ -428,7 +436,7 @@
                     url: ajaxUrl + "/front/clients/checkBalance",
                     async: true,
                     data: {
-                        token: token,
+                        token: token
                     },
                     success: function (r) {
                         if (parseFloat(r.myMoney) < allPrice) {
@@ -557,9 +565,9 @@
 
                             function alPayReq(r) {
                                 //h5调用
-                                         $('#aliId').html(r.data.sign);
+//                                         $('#aliId').html(r.data.sign);
                                 //调用支付原生
-                                /*setupWebViewJavascriptBridge(function (bridge) {
+                                setupWebViewJavascriptBridge(function (bridge) {
                                     bridge.callHandler('loadThreePay', {
                                         'pay': 'Alipay',
                                         'data': r.data.sign,
@@ -578,7 +586,7 @@
                                         }
 
                                     });
-                                });*/
+                                });
                             }
 
                                 break;
@@ -587,7 +595,7 @@
 
 
                                 // 调用支付原生api
-                               /* getInfo("post", ajaxUrl + "/front/payInfo/wxPay?token=" + token, {
+                                getInfo("post", ajaxUrl + "/front/payInfo/wxPay?token=" + token, {
                                     money: nm,
                                     type: 2,
                                     orderId: GetUrlString('orderId')
@@ -616,8 +624,8 @@
 
                                     });
                                 });
-                            }*/
-                                if (window.__wxjs_environment === 'miniprogram') {
+                            }
+                                /*if (window.__wxjs_environment === 'miniprogram') {
                                     // 小程序支付
                                     var backUrl = location.href;
                                     var wxpaystr = "?orderId="+ GetUrlString('orderId') + "&backUrl=" + backUrl + '&pdFlag=returnPayOrder_pd';
@@ -644,7 +652,7 @@
                                             }
                                         })
                                     }
-                                }
+                                }*/
 
 
                                 break;

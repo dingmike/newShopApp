@@ -1,0 +1,201 @@
+
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="utf-8" />
+		<title>评价</title>
+		<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no" />
+		<link rel="stylesheet" type="text/css" href="css/index.css" />
+		<link rel="stylesheet" href="css/iconfont.css" />
+		<link rel="stylesheet" href="css/hp.css" />
+		<script src="js/jquery-1.11.1.min.js" type="text/javascript" charset="utf-8"></script>
+		<script type="text/javascript" src="js/default.js"></script>
+		<script type="text/javascript" src="js/jquery.form.js"></script>
+		<style>
+
+		</style>
+
+	</head>
+
+	<body>
+		<div class="container">
+			<header>
+				<img class="nav-left" src="img/fanhui.png" alt="" onclick="javascript:history.back(-1);" /> 评价
+			</header>
+			<div class="content pad-bom">
+				<div class="assess-box">
+					<ul id="evaluation-list">
+
+					</ul>
+				</div>
+			</div>
+
+		</div>
+		<script type="text/template" id="evaluation-list-con">
+			<li class="one-evaluation" productId="{{productId}}" style="margin-bottom: 0px;">
+				<!--<div class="assess-top">
+					<dl>
+						<dt><img src="{{productImg}}"/></dt>
+						<dd>
+							<p>{{productName}}</p>
+							<p>参数:{{each productSpecName as listB i}}
+								<span>{{listB}}</span> {{/each}}</p>
+						</dd>
+					</dl>
+				</div>-->
+				<div class="assess-cen">
+					<div class="assess-star">
+						<span class="iconfont icon-xuxianwujiaoxing"></span>
+						<span class="iconfont icon-xuxianwujiaoxing"></span>
+						<span class="iconfont icon-xuxianwujiaoxing"></span>
+						<span class="iconfont icon-xuxianwujiaoxing"></span>
+						<span class="iconfont icon-xuxianwujiaoxing"></span>
+					</div>
+				</div>
+				<div class="assess-bom">
+					<div class="assess-con">
+						<span>评价：</span>
+						<textarea maxlength="300"></textarea>
+					</div>
+					<form id="evalvationFrom">
+						<input type="hidden" name="starts" id="" value="" />
+						<input type="hidden" name="content" id="" value="" />
+						<input type="hidden" name="orderId" id="" value="" />
+						<input type="hidden" name="productId" id="" value="{{productId}}" />
+						<div class="up-file-img">
+							<div class="up-img-box" data-id="0">
+								<img style="z-index: 5;" />
+								<input type="hidden" name="imgString" style="width: 5px;height: 5px;" />
+							</div>
+							<div class="up-img-box" data-id="1">
+								<img style="z-index: 5;" />
+								<input type="hidden" name="imgString" style="width: 5px;height: 5px;" />
+							</div>
+							<div class="up-img-box" data-id="2">
+								<img style="z-index: 5;" />
+								<input type="hidden" name="imgString" style="width: 5px;height: 5px;" />
+							</div>
+						</div>
+					</form>
+				</div>
+			</li>
+			<footer style="margin-bottom: 10px;height: 50px;">
+				<div class="foot-btn">
+					<input type="button" value="发布评论" onclick="release({{productId}})" />
+				</div>
+			</footer>
+		</script>
+		<script type="text/javascript" src="js/template.js"></script>
+		<script type="text/javascript" src="js/template-helper.js"></script>
+	</body>
+	<script>
+		var params = {
+			orderId: GetUrlString('orderId'),
+            productId: GetUrlString('proId')
+		};
+		var img_id=0;//触发第几个file框
+		//初始化
+		$(function() {
+//			getInfo("post", ajaxUrl + "/front/orders/orderDetails?token=" + token, params, detailReq);
+            detailReq();
+		});
+		//打印数据
+		function detailReq(r) {
+
+			/*for(var i = 0, max = r.data.orderProduct.length; i < max; i++) {
+				if(r.data.orderProduct[i].productId == GetUrlString('proId')) {
+					var html = template("evaluation-list-con", r.data.orderProduct[i]);
+					$("#evaluation-list").html(html);
+				}
+			}*/
+            var html = template("evaluation-list-con", params);
+            $("#evaluation-list").html(html)
+			//评论星星打分
+			$('.assess-star span').click(function() {
+				$(this).removeClass('icon-xuxianwujiaoxing').addClass('icon-xing').css('color', '#FEDB96');
+				$(this).prevAll().removeClass('icon-xuxianwujiaoxing').addClass('icon-xing').css('color', '#FEDB96');
+				$(this).nextAll().removeClass('icon-xing').addClass('icon-xuxianwujiaoxing').css('color', 'black');
+			});
+
+//			//上传图片
+//			$(".up-img-box input").change(function() {
+//				var $file = $(this);
+//				var objUrl = $file[0].files[0];
+//				//获得一个http格式的url路径:mozilla(firefox)||webkit or chrome  
+//				var windowURL = window.URL || window.webkitURL;
+//				//createObjectURL创建一个指向该参数对象(图片)的URL  
+//				var dataURL;
+//				dataURL = windowURL.createObjectURL(objUrl);
+//
+//				$(this).siblings().attr("src", dataURL);
+//			});
+
+			$(".up-img-box").click(function() {
+				img_id=$(this).attr('data-id');
+				//调用原生
+				setupWebViewJavascriptBridge(function(bridge) {
+					bridge.callHandler('loadPicture', {
+						'type': 'Photo'
+					}, function(resp) {
+						setbaseImg(JSON.parse(resp), ".up-img-box");
+					});
+				})
+			})
+
+		}
+
+		function setbaseImg(resp, obj) {
+			if(resp.ret_code == '1') {
+				$.post(ajaxUrl + "/front/ordersComment/addImg", {
+					imgStr: resp.ret_msg.data
+				}, function(result) {
+					if(result.code == 200) {
+						$(obj).eq(img_id).find('img').attr('src', "data:image/jpg;base64," + resp.ret_msg.data);
+						$(obj).eq(img_id).find('input').val(result.ImgUrl);
+						tip.flag("图片上传成功！", 'success');
+					}else{
+						tip.flag(result.msg, 'error');
+					}
+				});
+			} else {
+				tip.flag("图片选取失败", 'error');
+			}
+		}
+
+		function release(type) {
+			var op = true;
+			var starsNum = $(".assess-star").find(".icon-xing").length;
+			var content = $.trim($(".assess-con").find("textarea").val());
+			if(starsNum == 0) {
+				tip.flag('请评星！', 'error');
+				op = false;
+			} else if(content == "") {
+				tip.flag('请评价！', 'error');
+				op = false;
+			} else {
+				$("input[name=starts]").val(starsNum);
+				$("input[name=content]").val(content);
+				$("input[name=orderId]").val(params.orderId);
+				$("input[name=productId]").val(params.productId);
+
+				$('#evalvationFrom').ajaxSubmit({
+					url: ajaxUrl + '/front/ordersCollage/collageComment?token=' + token,
+					type: 'post',
+					success: function(r) {
+						if(r.code == 200) {
+							tip.flag('评价成功！', 'success');
+							setTimeout(function() {
+								window.location.href = "my-order-pd.html?typeid=4";
+							}, 1000);
+						} else {
+							tip.flag(r.msg, 'error');
+						}
+					}
+				});
+			}
+
+		}
+	</script>
+
+</html>

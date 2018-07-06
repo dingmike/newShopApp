@@ -286,7 +286,9 @@
 				{{if listA.status==0}}
 				<span class="hasdon">待付款</span>
 				{{/if}}
-
+			{{if listA.status==1}}
+			<span class="hasdon">拼单中</span>
+			{{/if}}
 				{{if listA.status==2}}
 				<span class="hasdon">待发货</span>
 				{{/if}}
@@ -337,6 +339,10 @@
 				<div class="pro_tit">
 					{{listA.productName}}
 				</div>
+				<!--{{if listA.status==4}}
+				<input type="button" value="评价" onclick="pingjia('{{listA.orderId}}','{{listA.productId}}', this)"
+					   class="pingjia"/>
+				{{/if}}-->
 				<div class="pro_par">
 					参数:{{each listA.spectName as listC i}}
 					<span>{{listC}}</span>
@@ -364,10 +370,10 @@
 					<div class="price-time"><span style="float: left;">距结束：</span>
 						{{if listA.fightAloneTime!==null}}
 						<ul class="countdown countdown{{listA.productId}}"  data-clock="{{listA.fightAloneTime}}">
-							<li style="display: none;">
+							<li style="">
 								<span class="days">00</span>
 							</li>
-							<li class="seperator" style="display: none;">.</li>
+							<li class="seperator" style="">天</li>
 							<li><span class="hours">00</span>
 							</li>
 							<li class="seperator">:</li>
@@ -424,7 +430,7 @@
 				{{if listA.status==6}}
 				<input type="button" value="再次购买" class="webJump" jumpId="{{listA.orderId}}" jumpType="1" />
 
-				<input type="button" value="再次购买" class="webJump" jumpId="{{listA.orderId}}" jumpType="1" />
+				<!--<input type="button" value="再次购买" class="webJump" jumpId="{{listA.orderId}}" jumpType="1" />-->
 				{{/if}}
 
 				{{if listA.status==0}}
@@ -655,7 +661,7 @@
                         window.location.href = "extended-delivery.html?id=" + id;
                         break;
                     case '5': //确认收货
-                        getInfo('post', ajaxUrl + '/front/orders/Receive?token=' + token, {
+                        getInfo('post', ajaxUrl + '/front/ordersCollage/sureOrdersCollage?token=' + token, {
                             orderId: id
                         }, shouReq);
 
@@ -707,14 +713,14 @@
 
     function pingjia(Id, proId) {
         $(".webJump").unbind("click");
-        window.location.href = "order_evaluation.html?orderId=" + Id + "&proId=" + proId;
+        window.location.href = "order_evaluation_pd.html?orderId=" + Id + "&proId=" + proId;
     }
     // 序列化倒计时插件
     function countDownEvent(counmtDomArr) {
         for(var i=0; i<counmtDomArr.length; i++){
             $('.' + counmtDomArr[i]).downCount({
 //                    date: '3/15/2018 00:00:00',
-                offset: +10,
+                offset: +8,
                 loadingTiao: false,
                 pdLoading: true
             }, function () {

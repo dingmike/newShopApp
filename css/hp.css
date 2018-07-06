@@ -633,7 +633,7 @@
     margin-bottom: 0.26667rem;*/
     width: 49.2%;
     /* display: inline-block; */
-    height: 7.8rem;
+    height: 8.5rem;
     background-color: white;
     float: left;
     /* border-bottom: 8px solid #EBEBEB; */
@@ -2492,13 +2492,13 @@ footer div {
 }
 
 .chang-go ul li {
-    height: 80px;
+    /*height: 80px;*/
     border-bottom: 1px solid #ecebeb;
 }
 
 .chang-go-left {
     float: left;
-    height: 58px;
+    /*height: 58px;*/
     padding: 10px 0;
     width: 80%;
     white-space: normal;
@@ -2506,10 +2506,9 @@ footer div {
 
 .chang-go-rgt {
     float: right;
-    padding: 10px 0;
     height: 50px;
     text-align: end;
-    margin-right: 14px;
+    margin-right: 6px;
 }
 
 .chang-one {

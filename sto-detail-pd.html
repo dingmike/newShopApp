@@ -310,7 +310,7 @@
         .loading-time-box {
             font-size: 0.16rem;
             margin-top: 0.1rem;
-            width: 3.733333rem;
+            /*width: 3.733333rem;*/
         }
 
         .price-time {
@@ -519,10 +519,10 @@
                         <div class="price-time"><span style="float: left;">距结束：</span>
                             {{if data.fightAloneTime!==null}}
                             <ul class="countdown" data-clock="{{data.fightAloneTime}}">
-                                <li style="display: none;">
+                                <li style="">
                                     <span class="days">00</span>
                                 </li>
-                                <li class="seperator" style="display: none;">.</li>
+                                <li class="seperator" style="">天</li>
                                 <li><span class="hours">00</span>
                                 </li>
                                 <li class="seperator">:</li>
@@ -566,10 +566,10 @@
                         <div class="price-time"><span style="float: left;">距结束：</span>
                             {{if data.fightAloneTime!==null}}
                             <ul class="countdown" data-clock="{{data.fightAloneTime}}">
-                                <li style="display: none;">
+                                <li style="">
                                     <span class="days">00</span>
                                 </li>
-                                <li class="seperator" style="display: none;">.</li>
+                                <li class="seperator" style="">天</li>
                                 <li><span class="hours">00</span>
                                 </li>
                                 <li class="seperator">:</li>
@@ -925,8 +925,9 @@
             shareUrlId = r.data.productId;
 
             // 显示广告金
+            var newObj = JSON.parse(JSON.stringify(r.data));
             for(var j = 0; j< fxIdData.length; j++){
-                if(r.data.fxparam == fxIdData[j].id){
+                if(newObj.fxparam == fxIdData[j].id){
                     r.data.fxparam =fxIdData[j].mine;
                     detailFxParam= fxIdData[j].mine;
                 }
@@ -1095,8 +1096,8 @@
         // 倒计时
         function countDownEvent() {
             $('.countdown').downCount({
-//                    date: '3/15/2018 00:00:00',
-                offset: 0,
+//                date: '3/15/2018 00:00:00',
+                offset: +8,
                 loadingTiao: true,
                 isDetailProduct: true
             }, function () {

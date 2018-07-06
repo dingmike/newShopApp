@@ -84,40 +84,21 @@
 			</header>
 			<div class="mx-cheak-box">
 				<ul>
-					<li class="mx-cor" data-type="0">全部明细</li>
-					<li data-type="2">转入</li>
-					<li data-type="1">转出</li>
-					<li data-type="3">收益</li>
-					<li data-type="4">消费</li>
+					<li class="mx-cor" data-type="1">全部明细</li>
+					<!--<li data-type="1">转出</li>-->
 					<!--<li data-type="5">冻结</li>-->
 				</ul>
 			</div>
 			<div class="content bac-cor">
 				<div class="all-mixi ma-zero" id="con-list">
 					<!--全部-->
-					<ul class="jl" data-type="0" id="allDetail-list">
+					<ul class="jl" data-type="1" id="allDetail-list">
 
 					</ul>
 					<!--转入-->
-					<ul class="jl" data-type="1" id="zrDetail-list">
+					<!--<ul class="jl" data-type="1" id="zrDetail-list">
 
-					</ul>
-					<!--转出-->
-					<ul class="jl" data-type="2" id="zcDetail-list">
-
-					</ul>
-					<!--收益-->
-					<ul class="jl" data-type="3" id="syDetail-list">
-
-					</ul>
-					<!--消费-->
-					<ul class="jl" data-type="4" id="xfDetail-list">
-
-					</ul>
-					<!-- 冻结-->
-					<ul class="jl" data-type="5" id="djDetail-list">
-
-					</ul>
+					</ul>-->
 				</div>
 				<div class="opt"></div>
 			</div>
@@ -149,8 +130,8 @@
 				page: []
 			}
 			var params = {
-				type: GetUrlString("type"),
-				type2: '',
+				type: 4,
+				type2: 1,
 				pageSize: 15,
 				pageNo: ''
 			}

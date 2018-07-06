@@ -174,8 +174,8 @@
                     {{listB.productName}}
                 </div>
                 {{if listA.type==4}}
-                <input type="button" value="评价" onclick="pingjia('{{listA.orderId}}','{{listB.productId}}', this)"
-                       class="pingjia"/> {{/if}}
+                <input type="button" value="评价" onclick="pingjia('{{listA.orderId}}','{{listB.productId}}', this)" class="pingjia"/>
+                {{/if}}
                 <div class="pro_par">
                     参数:{{each listB.spec as listC i}}
                     <span>{{listC}}</span> {{/each}}

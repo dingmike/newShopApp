@@ -641,8 +641,9 @@
             shareUrlId = r.data.productId;
 
             // 显示广告金
+            var newObj = JSON.parse(JSON.stringify(r.data));
             for(var j = 0; j< fxIdData.length; j++){
-                if(r.data.fxparam == fxIdData[j].id){
+                if(newObj.fxparam == fxIdData[j].id){
                     r.data.fxparam =fxIdData[j].mine;
                     detailFxParam= fxIdData[j].mine
                 }

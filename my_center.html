@@ -307,7 +307,7 @@
                             <span class="jt-num xfjf">0</span>
                         </li>
                     </a>
-                    <a href="#">
+                    <a href="transfer_yewu.html">
                         <li>
                             <p class="zic-tit">业务提成</p>
                             <span class="jt-num ywtc">0</span>
@@ -357,15 +357,25 @@
                 <span class="team-tit">我的团队</span>
                 <img class="rgt-img" src="img/rtu.png"/>
             </div>
-            <div class="form-tit bod-no" id="ewm-tc" onclick="location.href='personal-data.html'">
+            <div class="form-tit" id="ewm-tc" onclick="location.href='personal-data.html'">
                 <img class="ewm-img" src="img/settingIcon.png"/>
                 <span class="team-tit">账户设置</span>
                 <img class="rgt-img" src="img/rtu.png"/>
             </div>
 
-            <div class="form-tit bod-no" id="ewm-tc2">
+            <div class="form-tit" id="ewm-tc2">
                 <img class="ewm-img" src="img/erwm.png"/>
                 <span class="team-tit">推荐二维码</span>
+                <img class="rgt-img" src="img/rtu.png"/>
+            </div>
+            <div class="form-tit" id="myMianMo" onclick="location.href='mianMoOrder.html'">
+                <img class="ewm-img" src="img/mianmo.png"/>
+                <span class="team-tit">我的面膜</span>
+                <img class="rgt-img" src="img/rtu.png"/>
+            </div>
+            <div class="form-tit" id="mmManage" style="display: none" onclick="location.href='activityManagement.html'">
+                <img class="ewm-img" src="img/miamguli.png"/>
+                <span class="team-tit">管理面膜</span>
                 <img class="rgt-img" src="img/rtu.png"/>
             </div>
         </div>
@@ -509,6 +519,19 @@
 
     $(function () {
 
+       // 是否拥有面膜订单
+
+//        myMianMo
+        $.post(ajaxUrl + '/front/MOrder/nextTime', {token: token}, function (r) {
+          if(r.code==200){
+              if(r.data.ok === true){
+                  $('#myMianMo').show();
+              }else{
+                  $('#myMianMo').hide();
+              }
+          }
+        })
+
 
 
         run(0);
@@ -568,6 +591,13 @@
                 }else{
                     $('.store-management').hide()
                 }
+
+                if(r.user.mm == 2){
+                    $('#mmManage').show();
+                }else{
+                    $('#mmManage').hide();
+                }
+
 
                 var regAddress = r.user.regAddress;
                 var account = r.user.account;

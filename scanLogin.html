@@ -151,7 +151,7 @@
     <div class="scan-header">
         <ul>
             <li class="scan-tab-l scan-active mm-three" data-press="1">普通支付</li>
-            <li data-press="2">购买面膜</li>
+            <li class="scan-tab-r" data-press="2">购买面膜</li>
         </ul>
 
     </div>
@@ -164,7 +164,7 @@
             <a id='aot'></a>
         </div>
         <div class="group">
-            <button class="bottom-btn" id="goBuyMM" data-press="2" disabled>去购买面膜</button>
+            <button class="bottom-btn" id="goBuyMM" data-press="2" style="display: none;">去购买面膜</button>
             <div class="group-title mm-three">付款金额</div>
         </div>
         <div class="group mm-three">
@@ -221,8 +221,12 @@
 
         if(GetUrlString('MM')==3){
             $('.mm-three').hide();
+            $('.scan-header').hide();
+            $('#goBuyMM').show();
         }else{
             $('.mm-three').show();
+            $('.scan-header').show();
+            $('#goBuyMM').hide();
         }
 
 
@@ -258,7 +262,7 @@
 
 
         // 选择
-        $('.scan-header ul li','#goBuyMM').on('click',function () {
+        $('.scan-header ul li,#goBuyMM').on('click',function () {
             debugger
 
             $(this).addClass('scan-active').siblings('li').removeClass('scan-active');
@@ -352,6 +356,8 @@
 
             }
         })
+
+
 
 
 

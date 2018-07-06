@@ -387,8 +387,9 @@
 
                     // 显示广告金
                     for(var i=0; i<r.ProductsInfo.length; i++){
+                        var newObj = JSON.parse(JSON.stringify(r.ProductsInfo[i]));
                         for(var j = 0; j< fxIdData.length; j++){
-                            if(r.ProductsInfo[i].fxparam == fxIdData[j].id){
+                            if(newObj.fxparam == fxIdData[j].id){
                                 r.ProductsInfo[i].fxparam =fxIdData[j].mine;
                             }
                         }

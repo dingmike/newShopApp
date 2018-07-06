@@ -375,9 +375,9 @@
                     // 根据后台mine计算动态广告金
                     for(var i=0; i<r.data.orderList.length; i++){
                             for(var n=0; n<r.data.orderList[i].orderProduct.length; n++){
+                                var newObj = JSON.parse(JSON.stringify(r.data.orderList[i].orderProduct[n].productInfo));
                                 for(var j = 0; j< fxIdData.length; j++){
-                                    if(r.data.orderList[i].orderProduct[n].productInfo.fxparam == fxIdData[j].id){
-                                        debugger
+                                    if(newObj.fxparam == fxIdData[j].id){
                                         r.data.orderList[i].orderProduct[n].productInfo.fxparam =fxIdData[j].mine;
                                         console.log('倍数：'+r.data.orderList[i].orderProduct[n].productInfo.fxparam)
                                     }
@@ -620,9 +620,9 @@
                                         }, alPayReq);
 
                                     function alPayReq(r) {
-//                                         $('#aliId').html(r.data.sign); // h5支付
+                                         $('#aliId').html(r.data.sign); // h5支付
                                         //调用支付原生
-                                        setupWebViewJavascriptBridge(function (bridge) {
+                                        /*setupWebViewJavascriptBridge(function (bridge) {
                                             bridge.callHandler('loadThreePay', {
                                                 'pay': 'Alipay',
                                                 'data': r.data.sign
@@ -641,7 +641,7 @@
                                                 }
 
                                             });
-                                        });
+                                        });*/
                                     }
 
                                         break;
@@ -650,7 +650,7 @@
 
 
                                         // 调用支付原生api
-                                        getInfo("post", ajaxUrl + "/front/payInfo/wxPay?token=" + token, {
+                                       /* getInfo("post", ajaxUrl + "/front/payInfo/wxPay?token=" + token, {
                                             money: totalAmount,
                                             type: 2,
                                             orderId: orderId
@@ -680,9 +680,9 @@
 
                                             });
                                         });
-                                    }
+                                    }*/
 
-                                        /*if (window.__wxjs_environment === 'miniprogram') {
+                                        if (window.__wxjs_environment === 'miniprogram') {
                                             // 小程序支付
                                             var backUrl = location.href;
                                             var wxpaystr = "?orderId="+ orderId + "&backUrl=" + backUrl + '&pdFlag=false';
@@ -704,7 +704,7 @@
                                                     }
                                                 })
                                             }
-                                        }*/
+                                        }
 
                                         break;
                                     default:

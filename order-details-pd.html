@@ -229,10 +229,10 @@
 						<div class="price-time" style="font-size: 0.32rem;margin-bottom: 0.21333rem;"><span style="float: left;">距结束：</span>
 							{{if order.fightAloneTime!==null}}
 							<ul class="countdown" data-clock="{{order.fightAloneTime}}">
-								<li style="display: none;">
+								<li style="">
 									<span class="days">00</span>
 								</li>
-								<li class="seperator" style="display: none;">.</li>
+								<li class="seperator" style="">天</li>
 								<li><span class="hours">00</span>
 								</li>
 								<li class="seperator">:</li>
@@ -474,7 +474,7 @@
             function countDownEvent() {
                 $('.countdown').downCount({
 //                    date: '3/15/2018 00:00:00',
-                    offset: +10,
+                    offset: +8,
                     loadingTiao: true,
                     isDetailProduct: true
                 }, function () {
