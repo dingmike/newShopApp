@@ -7,20 +7,26 @@
     <meta name="apple-mobile-web-app-status-bar-style" content="black"/>
     <meta name="format-detection" content="telephone=no"/>
     <title>发起支付</title>
+    <link rel="stylesheet" type="text/css" href="https://res.wx.qq.com/open/libs/weui/1.1.3/weui.min.css"/>
+    <!--<link rel="stylesheet" href="css/yddemo.css"/>-->
+    <link rel="stylesheet" href="css/ydui.css"/>
     <script src="https://res.wx.qq.com/open/js/jweixin-1.3.2.js" type="text/javascript"></script>
     <script src="./js/jquery-1.11.1.min.js" type="text/javascript" charset="utf-8"></script>
     <script src="./js/layer.js" type="text/javascript" charset="utf-8"></script>
     <script src="js/default.js"></script>
+    <script type="text/javascript" src="js/ydui.js"></script>
+    <script type="text/javascript" src="js/ydui.flexible.js"></script>
     <script type="text/javascript" src="./lib/layer_mobile/layer.js"></script>
-    <script type="text/javascript"  src="js/template.js"></script>
-    <script type="text/javascript"  src="js/template-helper.js"></script>
+    <script type="text/javascript" src="js/template.js"></script>
+    <script type="text/javascript" src="js/template-helper.js"></script>
     <style>
         .pay-box {
             width: 100%;
             text-align: center;
             margin: 44px 0;
         }
-        .page-container{
+
+        .page-container {
             width: 100%;
         }
 
@@ -41,10 +47,12 @@
 
         .pay-box button {
             width: 50%;
-            height: 44px;
+            height: 40px;
+            margin: 0 auto;
+            line-height: 40px;
             background: #00cd00;
             border: none;
-            border-radius: 9px;
+            border-radius: 6px;
             color: #fff;
             font-size: 16px;
         }
@@ -118,8 +126,8 @@
             width: 10px;
             height: 10px;
             border-radius: 50%;
-            margin-top: 6px;
-            margin-left: 6px;
+            margin-top: 5px;
+            margin-left: 5px;
             transition: all 0.3s ease;
             -webkit-transition: all 0.3s ease;
             -moz-transition: all 0.3s ease;
@@ -132,16 +140,179 @@
         .radio-check input[type='radio']:checked + label:after {
             background: #4cd764;
         }
-        .m-select-box{
+
+        .m-select-box {
             /*width: 100%;*/
             /*padding: 10px 12%;*/
         }
-        .tips-title{
+
+        .tips-title {
             margin-bottom: 10px;
             display: block;
             color: red;
         }
 
+        .group-title {
+            width: 100%;
+            /* margin: 0 auto; */
+            text-align: center;
+        }
+
+        /**/
+
+        .pay_mode {
+            max-width: 750px;
+            width: 100%;
+            height: 0px;
+            background-color: #FFFFFF;
+            border-radius: 10px 10px 0 0;
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            z-index: 3;
+        }
+
+        .pay_mode_tit {
+            max-width: 750px;
+            height: 44px;
+            line-height: 44px;
+            font-size: 13px;
+            letter-spacing: 0px;
+            color: #232323;
+            padding-left: 22px;
+            padding-right: 22px;
+        }
+
+        .pay_mode_tit img {
+            float: right;
+            width: 14px;
+            height: 14px;
+            margin-top: 15px;
+        }
+
+        .order_line {
+            max-width: 750px;
+            height: 44px;
+            line-height: 44px;
+            font-size: 14px;
+            letter-spacing: 0px;
+            color: #565656;
+            margin-bottom: 10px;
+        }
+
+        .pitchon {
+            background-image: url(../img/gouxuan.png);
+            background-repeat: no-repeat;
+            background-position: right 33px center;
+            background-size: 18px 13px;
+        }
+
+        .order_line img {
+            width: 27px;
+            height: 27px;
+            margin-right: 16px;
+            margin-left: 31px;
+            margin-top: 8px;
+            float: left;
+        }
+
+        .balance {
+            max-width: 750px;
+            height: 22px;
+            line-height: 22px;
+            font-size: 13px;
+            letter-spacing: 0px;
+            color: #FFC000;
+            margin-bottom: 20px;
+            padding-left: 74px;
+        }
+
+        .integral {
+            max-width: 750px;
+            height: 22px;
+            line-height: 22px;
+            font-size: 13px;
+            letter-spacing: 0px;
+            color: #ff5a3a;
+            margin-bottom: 20px;
+            padding-left: 74px;
+        }
+
+        .pitchon1 {
+            background-image: url(../img/xuanzhong.png);
+            background-position: left 36px center;
+            background-repeat: no-repeat;
+            background-size: 17px 17px;
+        }
+
+        .margin10 {
+            margin-bottom: 10px;
+        }
+
+        .pay_yes {
+            max-width: 321px;
+            width: 85%;
+            height: 44px;
+            margin-left: 31px;
+            background-color: #ff5a3a;
+            border-radius: 50px;
+            font-size: 17px;
+            line-height: 44px;
+            letter-spacing: 1px;
+            color: #ffffff;
+        }
+
+        .pitchon2 {
+            background-image: url(img/weixuanzhong.png);
+            background-position: left 36px center;
+            background-repeat: no-repeat;
+            background-size: 17px 17px;
+        }
+        .g-scrollview {
+            display: none;
+            height: auto;
+        }
+        .m-loading {
+            border-radius: 4px;
+            color: #FFF;
+            background-color: rgba(40, 40, 40, 0.8);
+            -webkit-animation: zoomIn .1s ease forwards;
+            animation: zoomIn .1s ease forwards;
+            display: -webkit-box;
+            display: -webkit-flex;
+            display: -ms-flexbox;
+            display: flex;
+            -webkit-box-align: center;
+            -webkit-align-items: center;
+            -ms-flex-align: center;
+            align-items: center;
+            padding: 0 23px 0 24px;
+            height: 48px;
+            width: 50%;
+            position: absolute;
+            left: 24%;
+            top: 42px;
+            display: none;
+        }
+
+        .m-loading .loading-icon {
+            width: 28px;
+            height: 28px;
+            background: url(img/scroll.png) no-repeat;
+            background-size: 28px 28px;
+            -webkit-animation: rotate-loading 0.45s linear forwards infinite;
+            animation: rotate-loading 0.45s linear forwards infinite;
+            margin-right: 10px;
+        }
+
+        .m-loading .loading-txt {
+            font-size: 15px;
+            color: #FFF;
+            max-width: 140px;
+            overflow: hidden;
+            white-space: nowrap;
+            text-overflow: ellipsis;
+        }
     </style>
 </head>
 <body>
@@ -154,9 +325,9 @@
         <div class="head-title" id="shopNameId">购一购</div>
     </div>
 
-    <div class="group m-select-box">
+    <!--<div class="group m-select-box">
         <span class="tips-title"></span>
-       <!-- <div class='radio-check'>
+        <div class='radio-check'>
             <input type='radio' name='test' id='test1'/>
             <label for='test1' class>苹果苹果苹果苹果苹果</label>
         </div>
@@ -167,28 +338,124 @@
         <div class='radio-check'>
             <input type='radio' name='test' id='test3'/>
             <label for='test3' class>苹苹果苹果苹果苹果苹果果</label>
-        </div>-->
+        </div>
+    </div>-->
+
+
+    <div class=" group weui-cell weui-cell_select">
+        <div class="weui-cell__bd">
+            <select class="weui-select m-select-box" name="select1">
+                <option value="1">苹果苹果苹果苹果苹果</option>
+                <option value="2">苹果苹果苹果苹果苹果</option>
+                <option selected="selected" value="3">Email苹果苹果苹果苹果苹果</option>
+            </select>
+        </div>
     </div>
 
 
-    <div class="group">
+
+    <div class="cell group">
         <div class="group-title buy-hide">扫码支付金额 :<span id="countMoneyId">0.00</span></div>
+
+        <!--<div class="weui-cells yue-pay">
+            <div class="weui-cell">
+                <div class="weui-cell__bd">
+                    <p>可用余额：</p>
+                </div>
+                <div class="weui-cell__ft" id="yueMoney">6565</div>
+            </div>
+        </div>
+        <div class="weui-cells weui-cells_checkbox yue-pay" >
+            <label class="weui-cell weui-check__label" for="yuePayId">
+                <div class="weui-cell__hd">
+                    <input type="checkbox" class="weui-check" name="checkbox1" id="yuePayId" checked="checked">
+                    <i class="weui-icon-checked"></i>
+                </div>
+                <div class="weui-cell__bd">
+                    <p>使用余额支付</p>
+                </div>
+            </label>
+        </div>-->
+
     </div>
+
+    <div class="pay_mode">
+        <div class="pay_mode_tit">
+            选择支付方式<img src="img/guanbi.png" alt=""/>
+        </div>
+        <div class="pay-box" style="margin:0">
+
+            <div class="order_line" data-pay="balance">
+                <img src="img/jinbi.png" alt=""/>余额支付
+            </div>
+
+            <div class="balance pitchon2">余额：<span></span>
+                <a class="overplus" href="javascript:void(0)"></a>
+            </div>
+
+            <div class="integral pitchon2">
+                积分：<span></span>
+                <a class="overplus_jifen" href="javascript:void(0)"></a>
+            </div>
+
+            <div class="order_line margin10" id="zfbBox" data-pay="zfb">
+                <img src="img/zhifubaozhifu.png" alt=""/>支付宝支付
+            </div>
+            <div class="order_line" data-pay="wx">
+                <img src="img/weixinzhifu.png" alt=""/>微信支付
+            </div>
+            <button class="pay_yes" id="J_OpenKeyBoard">确定支付</button>
+        </div>
+    </div>
+    <section class="g-scrollview">
+
+        <!--<aside class="demo-tip">
+                <p>该插件暂不支持Data API方式调用，Javascript API方式包含下列方法和事件：</p>
+                <p>1. [open]：打开键盘方法</p>
+                <p>2. [close]：关闭键盘方法</p>
+                <p>3. [done.ydui.keyboard]：六位密码输入完毕后执行</p>
+            </aside>-->
+
+        <!--<div class="m-button demo-pitch">
+                <a href="javascript:;" class="btn-block btn-primary" id="J_OpenKeyBoard">打开</a>
+            </div>-->
+
+        <div class="m-keyboard" id="J_KeyBoard">
+            <div class="m-loading">
+                <div class="loading-icon">
+                </div>
+                <div class="loading-txt">验证支付密码</div>
+            </div>
+
+            <!-- 自定义内容区域 -->
+            <div style="text-align: right;padding: .15rem .8rem 0;">
+                <a href="" style="color: #666;font-size: .24rem;">忘记密码</a>
+            </div>
+            <!-- 自定义内容区域 -->
+        </div>
+    </section>
+
+
     <div class="pay-box">
-        <button id="payId" class="buy-hide">微信支付</button>
+        <button id="payId" class="buy-hide pay">立即支付</button>
     </div>
 </div>
-
-
-<script type="text/template" id="mian-box">
+<!--<script type="text/template" id="mian-box">
 
     {{each data as item index}}
     <div class='radio-check'>
-        <input type='radio' data-productId="{{item.productId}}" data-value="{{item.price}}" name='mianMo' id='product{{item.productId}}'/>
+        <input type='radio' data-productId="{{item.productId}}" data-value="{{item.price}}" name='mianMo'
+               id='product{{item.productId}}'/>
         <label for='product{{item.productId}}'>{{item.name}},售价：{{item.price}}元</label>
     </div>
     {{/each}}
 
+</script>-->
+
+<script type="text/template" id="mian-box">
+    {{each data as item index}}
+    <option selected="{{item.price}}==198?true:false" value="{{item.price}}" data-productId="{{item.productId}}" data-value="{{item.price}}" id='product{{item.productId}}'>{{item.name}},售价：{{item.price}}元</option>
+    {{/each}}
 </script>
 
 <div class="opt"></div>
@@ -207,7 +474,7 @@
         var userUnionId = '';
 
 //        var orderId = localStorage.wxOrderId;
-       // layer.open({type: 2});
+        // layer.open({type: 2});
         $.ajax({
             type: 'POST',
             async: false,
@@ -230,6 +497,238 @@
             }
         });
 
+
+        $(".pay").click(function () {
+            //微信app中隐藏支付宝支付按钮
+
+            if (is_wxxcx()) {
+                $('#zfbBox').hide();
+            } else {
+                $('#zfbBox').show();
+            }
+            //默认余额支付选中
+//            $('.balance').addClass('pitchon1');
+            $($('.order_line')[0]).addClass('pitchon');
+
+            $(".pay_mode_bg").attr("style", "display:block");
+            $(".pay_mode").attr("style", "height:344px;transition: height 0.5s;-moz-transition: height 0.5s; -webkit-transition: height 0.5s;-o-transition: height 0.5s;");
+            // 锁定支付价格
+//            $('input[type=radio]').attr('disabled',true);
+            $('.m-select-box').attr('disabled', true);
+            //生成订单
+            var params = {};
+            params.MproductsId = localStorage.MproductsId;
+            params.shopId = localStorage.shopId;
+
+            params.token = localStorage.token;
+            // 获取选择面膜的价格
+            params.price = localStorage.mianMoPrice;
+            $.ajax({
+                type: "post",
+                url: ajaxUrl + "/front/MOrder/inset",
+                async: false,
+                data: params,
+                error: function (err) {
+                    alert('Insert  Morder err:' + err)
+                },
+                success: function (res) {
+                    if (res.code == 200) {
+                        orderId = res.data;
+                        localStorage.setItem('wxOrderId', orderId);
+                    }else {
+                        layer.open({
+                            content: res.msg
+                            , skin: 'msg'
+                            , time: 3 //2秒后自动关闭
+                        });
+                       /* setTimeout(function () {
+                            layer.closeAll();
+                            location.href = 'scanLogin.html'
+                        }, 3000)*/
+                    }
+
+                }
+            })
+
+
+
+        });
+
+        //关闭结算层
+        $(".pay_mode_tit").click(function () {
+            $(".pay_mode_bg").attr("style", "display:none");
+            $(".pay_mode").attr("style", "height:0px;transition: height 0.5s;-moz-transition: height 0.5s; -webkit-transition: height 0.5s;-o-transition: height 0.5s;");
+            // 解锁价格选项
+//            $('input[type=radio]').attr('disabled',false);
+            $('.m-select-box').attr('disabled', false);
+        });
+        //选择支付方式
+
+        $(".pay-box .order_line").click(function () {
+            var index = $(this).index();
+            $(".pay_mode .order_line").removeClass("pitchon");
+            $(this).addClass("pitchon");
+            if (index == 3 || index == 4) {
+                $(".balance,.integral").removeClass("pitchon1").addClass('pitchon2');
+            }
+        });
+
+        $(".balance").click(function () {
+            if ($(this).hasClass("pitchon2")) {
+                $(this).removeClass("pitchon2").addClass("pitchon1");
+//                $(this).next().removeClass('pitchon1').addClass('pitchon2'); // 余额和积分只能使用一个
+            } else {
+                $(this).removeClass("pitchon1").addClass("pitchon2");
+                // $(this).next().removeClass('pitchon2').addClass('pitchon1');
+            }
+            $(".pay_mode .order_line").eq(0).addClass("pitchon").siblings().removeClass("pitchon");
+            // $(this).siblings('div').toggleClass("pitchon1");
+
+        });
+        $(".integral").click(function () {
+            // $(this).prev().removeClass('pitchon1')
+            if ($(this).hasClass("pitchon2")) {
+                $(this).removeClass("pitchon2").addClass("pitchon1");
+//                $(this).prev().removeClass('pitchon1').addClass('pitchon2'); // 余额和积分只能使用一个
+            } else {
+                $(this).removeClass("pitchon1").addClass("pitchon2");
+                // $(this).prev().removeClass('pitchon2').addClass('pitchon1');
+            }
+            $(".pay_mode .order_line").eq(0).addClass("pitchon").siblings().removeClass("pitchon");
+        });
+
+
+        //密码支付
+        !function ($, ydui) {
+            var dialog = ydui.dialog;
+
+            var $keyboard = $('#J_KeyBoard');
+
+            // 初始化参数
+            $keyboard.keyBoard({
+                disorder: false, // 是否打乱数字顺序
+                title: '帆恒安全键盘' // 显示标题
+            });
+
+            //输入密码  成功后的操作
+            function payInputPassWord(type) {
+                debugger
+                $('.g-scrollview').css('display', 'block');
+                $keyboard.keyBoard('open');
+
+                // 六位密码输入完毕后执行
+                $keyboard.on('done.ydui.keyboard', function (ret) {
+
+                    $.post(ajaxUrl + '/front/payInfo/balancePay', {
+                        token: token,
+                        orderId: comfirmOrderId,
+                        type: type,
+                        payPassword: ret.password
+                    }, function (r) {
+                        $('.m-loading').css('display', 'flex');
+                        if (r.code == 300) {
+
+                            // 模拟AJAX校验密码
+                            setTimeout(function () {
+                                // 关闭请求中提示框
+                                $('.m-loading').css('display', 'none');
+                                // 显示错误信息
+                                $keyboard.keyBoard('error', r.msg);
+                            }, 1500);
+                            // 关闭键盘
+                            // $keyboard.keyBoard('close');
+
+                        } else {
+                            setTimeout(function () {
+                                // 关闭请求中提示框
+                                $('.m-loading').css('display', 'none');
+                                // 支付成功
+                                window.location.href = 'scanPaySuccess.html';
+//                                window.location.href = 'pay_ok.html?allSend=' + allSend;
+                            }, 1500);
+
+                        }
+                    }, 'json')
+
+                });
+            }
+
+            // 打开键盘
+            $('#J_OpenKeyBoard').on('click', function () {
+                $(".pay-box .order_line").each(function () {
+                    if ($(this).hasClass('pitchon')) {
+                        var dataPay = $(this).attr('data-pay');
+                        switch (dataPay) {
+                            case 'balance':
+                                if ($('.balance').hasClass('pitchon1') && (!$('.integral').hasClass('pitchon1'))) { //余额支付
+                                    console.log('余额支付');
+                                    if ($('.overplus').hasClass('no_money')) {
+//														tip.flag('余额不足，请选择其他支付方式', 'error')
+                                        layer.open({
+                                            content: '余额不足，请选择其他支付方式!'
+                                            , skin: 'msg'
+                                            , time: 2 //2秒后自动关闭
+                                        });
+                                    } else {
+                                        payInputPassWord(0);
+                                    }
+
+                                } else if ((!$('.balance').hasClass('pitchon1')) && ($('.integral').hasClass('pitchon1'))) {
+                                    console.log('积分支付');
+
+                                    if ($('.overplus_jifen ').hasClass('no_jifen')) {
+                                        // tip.flag('积分不足，请选择其他支付方式', 'error')
+                                        layer.open({
+                                            content: '积分不足，请选择其他支付方式!'
+                                            , skin: 'msg'
+                                            , time: 2 //2秒后自动关闭
+                                        });
+                                    } else {
+                                        payInputPassWord(1);
+                                    }
+
+                                } else if ($('.balance').hasClass('pitchon1') && ($('.integral').hasClass('pitchon1'))) {
+                                    console.log('一起支付');
+                                    var yuer = parseFloat($.trim($('.balance span').text()));
+                                    var jifen = parseFloat($.trim($('.integral span').text()));
+
+                                    if ((yuer + jifen) < localStorage.mianMoPrice) {
+//														tip.flag('都不够', 'error')
+                                        layer.open({
+                                            content: '都不够'
+                                            , skin: 'msg'
+                                            , time: 2 //2秒后自动关闭
+                                        });
+                                    } else {
+                                        payInputPassWord(2);
+
+                                    }
+                                }
+                                break;
+                            case 'zfb':
+
+                                alert('zfb')
+                               // $(this).attr('disabled', 'disabled').css({background: '#ccc'});
+                                pay();
+
+                                break;
+                            case 'wx':
+                                alert('wx')
+                              //  $(this).attr('disabled', 'disabled').css({background: '#ccc'});
+                                pay();
+
+
+                                break;
+                            default:
+                                break;
+                        }
+                    }
+                });
+
+            });
+        }(jQuery, YDUI);
+
+
         $.ajax({
             type: 'POST',
             async: false,
@@ -237,6 +736,7 @@
             url: ajaxUrl + '/front/clients/createAccount',
             data: {referPhone: localStorage.referPhone, shopId: localStorage.shopId, unionId: userUnionId},
             success: function (res) {
+                debugger
                 console.log('data:', res.data);
                 if (res.code == 300) {
                     layer.open({
@@ -252,24 +752,82 @@
                     localStorage.setItem('notRealAccount', res.data.account);
                     localStorage.setItem('notRealPas', res.data.password);
 
+                    var res = {
+                        "msg": "成功",
+                        "code": 200,
+                        "data": {
+                            "password": 0,
+                            "myMoney": 120.00,
+                            "consumPoint":1623.00,
+                            "account": "1531124201594",
+                            "token": "420ddfc63655cb44ef8120ac25aed1c0"
+                        }
+                    }
+debugger
+
+                    if (res.data.myMoney) {
+                        $('.yue-pay').show();
+                        $('#yueMoney').text(res.data.myMoney.toFixed(2));
+
+
+
+//                        var allPrice = localStorage.mianMoPrice;
+                        localStorage.setItem('mianMoPrice', 198)
+                        var allPrice = 1000;
+
+                        if (parseFloat(res.data.myMoney) < allPrice) {
+                            var sy = allPrice - res.data.myMoney;
+                            sy = parseFloat(sy);
+                            $('.overplus').addClass('no_money');
+                            $('.overplus').html('还差¥' + sy.toFixed(2) + ',充值再买');
+                        }
+
+                        if (parseFloat(res.data.consumPoint) < allPrice) {
+                            var sx = allPrice - res.data.consumPoint;
+                            sx = parseFloat(sx)
+                            $('.overplus_jifen').addClass('no_jifen');
+                            $('.overplus_jifen').html('还差¥' + sx.toFixed(2));
+                        }
+
+                        $('.balance span').html(res.data.myMoney.toFixed(2));
+                        $('.integral span').html(res.data.consumPoint.toFixed(2));
+
+
+
+
+
+                        $('#yuePayId').change(function () {
+                            if ($(this).prop('checked')) {
+                                // 选中余额支付
+                                alert('yued')
+                            }
+                        })
+
+
+
+                    } else {
+                        $('.yue-pay').hide();
+                    }
+
+
                     // 购买面膜获取面膜数据
                     if (localStorage.mianmo == '2') {
                         getMianMo(res.data.token, function (res) {
                             // 面膜列表
-                            var html= template('mian-box', res);
+                            var html = template('mian-box', res);
                             $('.m-select-box').html(html);
 
                             // 默认选项
-                            $($('input[type=radio][name=mianMo]')[0]).attr('checked','checked');
+                            $($('input[type=radio][name=mianMo]')[0]).attr('checked', 'checked');
                             $('#countMoneyId').text($($('input[type=radio][name=mianMo]')[0]).data('value'));
                             localStorage.setItem('mianMoPrice', $($('input[type=radio][name=mianMo]')[0]).data('value'));
                             localStorage.setItem('MproductsId', $($('input[type=radio][name=mianMo]')[0]).attr('data-productId'));
-                            $('input[type=radio][name=mianMo]').change(function() {
+                            $('input[type=radio][name=mianMo]').change(function () {
                                 $('#countMoneyId').text($(this).data('value'));
                                 mianMoPrice = $(this).data('value');
                                 localStorage.setItem('mianMoPrice', $(this).data('value'))
                                 localStorage.setItem('MproductsId', $(this).attr('data-productId'))
-                              //  alert('okMproductsId: ' + $(this).attr('data-productId'))
+                                //  alert('okMproductsId: ' + $(this).attr('data-productId'))
                                 layer.closeAll();
                             });
                             layer.closeAll();
@@ -283,16 +841,17 @@
 
             },
             error: function (err) {
-                alert('createAccount err: ' +  err);
+                alert('createAccount err: ' + err);
                 return;
             }
         });
 
 
-        $('#payId').on('click', function () {
-            $(this).attr('disabled', 'disabled').css({background: '#ccc'});
-            pay();
-        })
+        // 原始微信支付
+        /* $('#payId').on('click', function () {
+         $(this).attr('disabled', 'disabled').css({background: '#ccc'});
+         pay();
+         })*/
     });
     //去支付
     var appId;
@@ -304,154 +863,109 @@
 
     function pay() {
 
-
         //创建账号
         if (localStorage.noAccount == '1') {
 
             if (localStorage.mianmo == '2') { //  支付面膜
 
-                var params = {};
-                params.MproductsId = localStorage.MproductsId;
-                params.shopId = localStorage.shopId;
-
-                params.token = localStorage.token;
-                // 获取选择面膜的价格
-                params.price = localStorage.mianMoPrice;
-
-               // alert('token: ' +  params.token)
-               // alert('MproductsId: ' +  params.MproductsId)
-               // alert('shopId: ' +  params.shopId)
-               // alert('price: ' +  params.price)
-
-
                 $.ajax({
-                    type: "post",
-                    url: ajaxUrl + "/front/MOrder/inset",
+                    type: 'POST',
                     async: false,
-                    data: params,
-                    error: function(err){
-                        alert('Insert  Morder err:' + err)
+                    url: ajaxUrl + '/WxGzh/pay',
+                    data: {openId: localStorage.userOpenId, orderId: localStorage.wxOrderId},
+                    error: function (err) {
+                        alert('WxGzh/pay: ' + err)
                     },
                     success: function (res) {
-                        // alert(' Morder insert orderId' + res.data)
+                        // alert('appId: ' + res.data.appId)
+                        // alert('timeStamp: ' + res.data.timeStamp)
+                        // alert('nonceStr: ' + res.data.nonceStr)
+                        //alert('prepay_id: ' + res.data.prepay_id)
+                        // alert('signType: ' + res.data.signType)
+                        // alert('sign: ' + res.data.sign)
                         if (res.code == 200) {
-                            orderId = res.data;
-                            localStorage.setItem('wxOrderId', orderId);
-                           // alert('Morder,userOpenId: ' + localStorage.userOpenId)
-                            $.ajax({
-                                type: 'POST',
-                                async: false,
-                                url: ajaxUrl + '/WxGzh/pay',
-                                data: {openId: localStorage.userOpenId, orderId: res.data},
-                                error: function(err){
-                                  alert('WxGzh/pay: ' + err)
-                                },
-                                success: function (res) {
-                                   // alert('appId: ' + res.data.appId)
-                                   // alert('timeStamp: ' + res.data.timeStamp)
-                                   // alert('nonceStr: ' + res.data.nonceStr)
-                                   //alert('prepay_id: ' + res.data.prepay_id)
-                                   // alert('signType: ' + res.data.signType)
-                                  // alert('sign: ' + res.data.sign)
-                                    if (res.code == 200) {
-                                        appId = res.data.appId;
-                                        timestamp = res.data.timeStamp + '';
-                                        nonce_str = res.data.nonceStr;
-                                        prepay_id = res.data.prepay_id;
-                                        signType = res.data.signType;
-                                        paySign = res.data.sign;
-                                    } else {
-                                        layer.open({
-                                            content: res.msg
-                                            , skin: 'msg'
-                                            , time: 2 //2秒后自动关闭
-                                        });
-                                        return;
-                                    }
-
-                                }
-                            });
-
-                            if (typeof WeixinJSBridge == "undefined") {
-                                if (document.addEventListener) {
-                                    document.addEventListener('WeixinJSBridgeReady', onBridgeReady, false);
-                                } else if (document.attachEvent) {
-                                    document.attachEvent('WeixinJSBridgeReady', onBridgeReady);
-                                    document.attachEvent('onWeixinJSBridgeReady', onBridgeReady);
-                                }
-                            } else {
-                                wx.config({
-                                    debug: false, // 开启调试模式,调用的所有api的返回值会在客户端alert出来，若要查看传入的参数，可以在pc端打开，参数信息会通过log打出，仅在pc端时才会打印。
-                                    appId: appId, // 必填，公众号的唯一标识
-                                    timestamp: timestamp, // 必填，生成签名的时间戳
-                                    nonceStr: nonce_str, // 必填，生成签名的随机串
-                                    signature: paySign,// 必填，签名
-                                    jsApiList: ['chooseWXPay'] // 必填，需要使用的JS接口列表
-                                });
-
-                                // 调起微信支付
-                                wx.ready(function () {　　　　// 调用支付函数
-                                    layer.closeAll();
-                                    $('.opt').hide();
-                                    wx.chooseWXPay({
-                                        timestamp: timestamp, // 支付签名时间戳，注意微信jssdk中的所有使用timestamp字段均为小写。但最新版的支付后台生成签名使用的timeStamp字段名需大写其中的S字符
-                                        nonceStr: nonce_str, // 支付签名随机串，不长于 32 位
-                                        package: "prepay_id=" + prepay_id, // 统一支付接口返回的prepay_id参数值，提交格式如：prepay_id=***）
-                                        signType: 'MD5', // 签名方式，默认为'SHA1'，使用新版支付需传入'MD5'
-                                        paySign: paySign, // 支付签名
-                                        success: function (res) {
-                                            localStorage.removeItem('payCount');
-                                            // 支付成功后的回调函数
-                                            window.location.href = 'scanPaySuccess.html';
-
-                                        },
-                                        cancel: function (res) {　　　　　　　　　　　　// 支付取消回调函数
-
-                                            localStorage.removeItem('payCount');
-                                            if (localStorage.noAccount == 1) {
-                                                window.location.href = localStorage.scanLoginHref;
-                                            } else {
-                                                window.location.href = localStorage.scanLoginHref;
-                                            }
-
-                                        },
-                                        fail: function (res) {
-                                            localStorage.removeItem('payCount');　　　　　　　　　　　　// 支付失败回调函数
-                                            if (localStorage.noAccount == 1) {
-                                                window.location.href = localStorage.scanLoginHref;
-                                            } else {
-                                                window.location.href = localStorage.scanLoginHref;
-                                            }
-                                        }
-                                    });
-                                });// js-sdk调用异常回调函数
-                                wx.error(function (res) {
-                                    localStorage.removeItem('payCount');
-                                    layer.open({
-                                        content: res.err_msg
-                                        , skin: 'msg'
-                                        , time: 2 //2秒后自动关闭
-                                    });
-
-                                    window.location.href = 'scanPay.html';
-                                });
-                            }
-
-
+                            appId = res.data.appId;
+                            timestamp = res.data.timeStamp + '';
+                            nonce_str = res.data.nonceStr;
+                            prepay_id = res.data.prepay_id;
+                            signType = res.data.signType;
+                            paySign = res.data.sign;
                         } else {
-
                             layer.open({
                                 content: res.msg
                                 , skin: 'msg'
-                                , time: 3 //2秒后自动关闭
+                                , time: 2 //2秒后自动关闭
                             });
-                            setTimeout(function () {
-                                layer.closeAll();
-                                location.href = 'scanLogin.html'
-                            }, 3000)
+                            return;
                         }
+
                     }
                 });
+
+                if (typeof WeixinJSBridge == "undefined") {
+                    if (document.addEventListener) {
+                        document.addEventListener('WeixinJSBridgeReady', onBridgeReady, false);
+                    } else if (document.attachEvent) {
+                        document.attachEvent('WeixinJSBridgeReady', onBridgeReady);
+                        document.attachEvent('onWeixinJSBridgeReady', onBridgeReady);
+                    }
+                } else {
+                    wx.config({
+                        debug: false, // 开启调试模式,调用的所有api的返回值会在客户端alert出来，若要查看传入的参数，可以在pc端打开，参数信息会通过log打出，仅在pc端时才会打印。
+                        appId: appId, // 必填，公众号的唯一标识
+                        timestamp: timestamp, // 必填，生成签名的时间戳
+                        nonceStr: nonce_str, // 必填，生成签名的随机串
+                        signature: paySign,// 必填，签名
+                        jsApiList: ['chooseWXPay'] // 必填，需要使用的JS接口列表
+                    });
+
+                    // 调起微信支付
+                    wx.ready(function () {　　　　// 调用支付函数
+                        layer.closeAll();
+                        $('.opt').hide();
+                        wx.chooseWXPay({
+                            timestamp: timestamp, // 支付签名时间戳，注意微信jssdk中的所有使用timestamp字段均为小写。但最新版的支付后台生成签名使用的timeStamp字段名需大写其中的S字符
+                            nonceStr: nonce_str, // 支付签名随机串，不长于 32 位
+                            package: "prepay_id=" + prepay_id, // 统一支付接口返回的prepay_id参数值，提交格式如：prepay_id=***）
+                            signType: 'MD5', // 签名方式，默认为'SHA1'，使用新版支付需传入'MD5'
+                            paySign: paySign, // 支付签名
+                            success: function (res) {
+                                localStorage.removeItem('payCount');
+                                // 支付成功后的回调函数
+                                window.location.href = 'scanPaySuccess.html';
+
+                            },
+                            cancel: function (res) {　　　　　　　　　　　　// 支付取消回调函数
+
+                                localStorage.removeItem('payCount');
+                                if (localStorage.noAccount == 1) {
+                                    window.location.href = localStorage.scanLoginHref;
+                                } else {
+                                    window.location.href = localStorage.scanLoginHref;
+                                }
+
+                            },
+                            fail: function (res) {
+                                localStorage.removeItem('payCount');　　　　　　　　　　　　// 支付失败回调函数
+                                if (localStorage.noAccount == 1) {
+                                    window.location.href = localStorage.scanLoginHref;
+                                } else {
+                                    window.location.href = localStorage.scanLoginHref;
+                                }
+                            }
+                        });
+                    });// js-sdk调用异常回调函数
+                    wx.error(function (res) {
+                        localStorage.removeItem('payCount');
+                        layer.open({
+                            content: res.err_msg
+                            , skin: 'msg'
+                            , time: 2 //2秒后自动关闭
+                        });
+
+                        window.location.href = 'scanPay.html';
+                    });
+                }
 
 
             } else { // 普通支付
@@ -465,9 +979,9 @@
                 params.number = localStorage.payCount;
 
                 //alert('productId: ' + params.productId)
-               // alert('shopId: ' + params.shopId)
-               // alert('token: ' + params.token)
-               // alert('payCount: ' + params.number)
+                // alert('shopId: ' + params.shopId)
+                // alert('token: ' + params.token)
+                // alert('payCount: ' + params.number)
 
                 $.ajax({
                     type: "post",
@@ -478,7 +992,7 @@
                         alert('insertOrderbyQrcode err: ' + err)
                     },
                     success: function (res) {
-                       // alert('orderId' + res.data)
+                        // alert('orderId' + res.data)
                         if (res.code == 200) {
                             console.log(res.data);
                             orderId = res.data;
@@ -489,7 +1003,7 @@
                                 url: ajaxUrl + '/WxGzh/pay',
                                 data: {openId: localStorage.userOpenId, orderId: localStorage.wxOrderId},
                                 success: function (res) {
-                                  //  alert('insert OrderId: ' + res.code)
+                                    //  alert('insert OrderId: ' + res.code)
                                     if (res.code == 200) {
                                         appId = res.data.appId;
                                         timestamp = res.data.timeStamp + '';
@@ -694,38 +1208,38 @@
 
     function getMianMo(token, callback) {
 
-       /* var mockData = {
-            "msg": "查看成功",
-            "code": 200,
-            "data": [
-                {
-                    "productId": 1,
-                    "name": "面膜(半年）",
-                    "fxparam": 1,
-                    "productEdian": 1,
-                    "timeSpace": 8,
-                    "state": 1,
-                    "pid": 0,
-                    "price":98
-                },
-                {
-                    "productId": 2,
-                    "name": "面膜(1年）",
-                    "fxparam": 1,
-                    "productEdian": 1,
-                    "timeSpace": 8,
-                    "state": 1,
-                    "pid": 0,
-                    "price":198
-                }
-            ]
-        }*/
+        /* var mockData = {
+         "msg": "查看成功",
+         "code": 200,
+         "data": [
+         {
+         "productId": 1,
+         "name": "面膜(半年）",
+         "fxparam": 1,
+         "productEdian": 1,
+         "timeSpace": 8,
+         "state": 1,
+         "pid": 0,
+         "price":98
+         },
+         {
+         "productId": 2,
+         "name": "面膜(1年）",
+         "fxparam": 1,
+         "productEdian": 1,
+         "timeSpace": 8,
+         "state": 1,
+         "pid": 0,
+         "price":198
+         }
+         ]
+         }*/
 //        callback(mockData)
         $.ajax({
             type: 'POST',
             async: false,
             url: ajaxUrl + '/front/MOrder/query',
-            data: {token: token},
+            data: {token: token, shopId: localStorage.shopId},
             error: function (err) {
                 alert('MOrder/query error: ' + err);
             },
@@ -736,11 +1250,11 @@
                     $('.tips-title').text(res.msg);
                     $('.buy-hide').hide();
                     /*layer.open({
-                        content: res.msg
-                        , skin: 'msg'
-                        , time: 2 //2秒后自动关闭
-                    });*/
-                   // return;
+                     content: res.msg
+                     , skin: 'msg'
+                     , time: 2 //2秒后自动关闭
+                     });*/
+                    // return;
                 }
             }
         });
@@ -765,6 +1279,9 @@
         else {
             return "";
         }
+    }
+    function is_wxxcx() {
+        return window.__wxjs_environment === 'miniprogram';
     }
 
 </script>
