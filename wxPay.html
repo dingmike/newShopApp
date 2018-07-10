@@ -342,12 +342,12 @@
     </div>-->
 
 
-    <div class=" group weui-cell weui-cell_select">
+    <div class=" group weui-cell weui-cell_select" id="mianSelect">
         <div class="weui-cell__bd">
             <select class="weui-select m-select-box" name="select1">
-                <option value="1">苹果苹果苹果苹果苹果</option>
-                <option value="2">苹果苹果苹果苹果苹果</option>
-                <option selected="selected" value="3">Email苹果苹果苹果苹果苹果</option>
+               <!-- <option value="234" data-productid="33">苹果苹果苹果苹果苹果</option>
+                <option value="122" data-productid="343">苹果苹果苹果苹果苹果</option>
+                <option selected="selected" value="3333" data-productid="343">Email苹果苹果苹果苹果苹果</option>-->
             </select>
         </div>
     </div>
@@ -454,7 +454,7 @@
 
 <script type="text/template" id="mian-box">
     {{each data as item index}}
-    <option selected="{{item.price}}==198?true:false" value="{{item.price}}" data-productId="{{item.productId}}" data-value="{{item.price}}" id='product{{item.productId}}'>{{item.name}},售价：{{item.price}}元</option>
+    <option selected="{{item.price}}==198?'selected':false" value="{{item.price}}" data-productid="{{item.productId}}" data-value="{{item.price}}" id='product{{item.productId}}'>{{item.name}},售价：{{item.price}}元</option>
     {{/each}}
 </script>
 
@@ -462,6 +462,7 @@
 </body>
 <script type="text/javascript">
     $(function () {
+
         $('#shopNameId').text(localStorage.shopName);
         $('.head-img img').attr('src', localStorage.shopLogo);
         $('#countMoneyId').text(localStorage.countMoney);
@@ -497,62 +498,76 @@
             }
         });
 
+        if (localStorage.mianmo == '2') { // 面膜支付
+            $(".pay").click(function () {
+                //微信app中隐藏支付宝支付按钮
 
-        $(".pay").click(function () {
-            //微信app中隐藏支付宝支付按钮
-
-            if (is_wxxcx()) {
-                $('#zfbBox').hide();
-            } else {
-                $('#zfbBox').show();
-            }
-            //默认余额支付选中
-//            $('.balance').addClass('pitchon1');
-            $($('.order_line')[0]).addClass('pitchon');
-
-            $(".pay_mode_bg").attr("style", "display:block");
-            $(".pay_mode").attr("style", "height:344px;transition: height 0.5s;-moz-transition: height 0.5s; -webkit-transition: height 0.5s;-o-transition: height 0.5s;");
-            // 锁定支付价格
-//            $('input[type=radio]').attr('disabled',true);
-            $('.m-select-box').attr('disabled', true);
-            //生成订单
-            var params = {};
-            params.MproductsId = localStorage.MproductsId;
-            params.shopId = localStorage.shopId;
-
-            params.token = localStorage.token;
-            // 获取选择面膜的价格
-            params.price = localStorage.mianMoPrice;
-            $.ajax({
-                type: "post",
-                url: ajaxUrl + "/front/MOrder/inset",
-                async: false,
-                data: params,
-                error: function (err) {
-                    alert('Insert  Morder err:' + err)
-                },
-                success: function (res) {
-                    if (res.code == 200) {
-                        orderId = res.data;
-                        localStorage.setItem('wxOrderId', orderId);
-                    }else {
-                        layer.open({
-                            content: res.msg
-                            , skin: 'msg'
-                            , time: 3 //2秒后自动关闭
-                        });
-                       /* setTimeout(function () {
-                            layer.closeAll();
-                            location.href = 'scanLogin.html'
-                        }, 3000)*/
-                    }
-
+                if (is_weixin()) {
+                    $('#zfbBox').hide();
+                } else {
+                    $('#zfbBox').show();
                 }
+                //默认余额支付选中
+//            $('.balance').addClass('pitchon1');
+                $($('.order_line')[0]).addClass('pitchon');
+
+                $(".pay_mode_bg").attr("style", "display:block");
+                $(".pay_mode").attr("style", "height:344px;transition: height 0.5s;-moz-transition: height 0.5s; -webkit-transition: height 0.5s;-o-transition: height 0.5s;");
+                // 锁定支付价格
+//            $('input[type=radio]').attr('disabled',true);
+                $('.m-select-box').attr('disabled', true);
+                //生成订单
+                var params = {};
+                params.MproductsId = localStorage.MproductsId;
+                params.shopId = localStorage.shopId;
+
+                params.token = localStorage.token;
+                // 获取选择面膜的价格
+                params.price = localStorage.mianMoPrice;
+
+
+//                alert('MproductsId:' + localStorage.MproductsId)
+//                alert('shopId:' + localStorage.shopId)
+//                alert('token:' + localStorage.token)
+//                alert('mianMoPrice:' + localStorage.mianMoPrice)
+                $.ajax({
+                    type: "post",
+                    url: ajaxUrl + "/front/MOrder/inset",
+                    async: false,
+                    data: params,
+                    error: function (err) {
+                        alert('Insert  Morder err:' + err)
+                    },
+                    success: function (res) {
+                        if (res.code == 200) {
+                            orderId = res.data;
+                            localStorage.setItem('wxOrderId', orderId);
+                        }else {
+                            layer.open({
+                                content: res.msg
+                                , skin: 'msg'
+                                , time: 3 //2秒后自动关闭
+                            });
+                            /* setTimeout(function () {
+                             layer.closeAll();
+                             location.href = 'scanLogin.html'
+                             }, 3000)*/
+                        }
+
+                    }
+                })
+
+
+
+            });
+        }else{ //普通扫码支付
+            $('#mianSelect').hide();
+            $('#payId').on('click', function () {
+                $(this).attr('disabled', 'disabled').css({background: '#ccc'});
+                pay();
             })
+        }
 
-
-
-        });
 
         //关闭结算层
         $(".pay_mode_tit").click(function () {
@@ -620,8 +635,8 @@
                 $keyboard.on('done.ydui.keyboard', function (ret) {
 
                     $.post(ajaxUrl + '/front/payInfo/balancePay', {
-                        token: token,
-                        orderId: comfirmOrderId,
+                        token: localStorage.token,
+                        orderId: localStorage.wxOrderId,
                         type: type,
                         payPassword: ret.password
                     }, function (r) {
@@ -707,13 +722,13 @@
                                 break;
                             case 'zfb':
 
-                                alert('zfb')
+                               // alert('zfb')
                                // $(this).attr('disabled', 'disabled').css({background: '#ccc'});
                                 pay();
 
                                 break;
                             case 'wx':
-                                alert('wx')
+                                //alert('wx')
                               //  $(this).attr('disabled', 'disabled').css({background: '#ccc'});
                                 pay();
 
@@ -752,7 +767,7 @@
                     localStorage.setItem('notRealAccount', res.data.account);
                     localStorage.setItem('notRealPas', res.data.password);
 
-                    var res = {
+                   /* var res = {
                         "msg": "成功",
                         "code": 200,
                         "data": {
@@ -762,7 +777,7 @@
                             "account": "1531124201594",
                             "token": "420ddfc63655cb44ef8120ac25aed1c0"
                         }
-                    }
+                    }*/
 debugger
 
                     if (res.data.myMoney) {
@@ -771,9 +786,9 @@ debugger
 
 
 
-//                        var allPrice = localStorage.mianMoPrice;
-                        localStorage.setItem('mianMoPrice', 198)
-                        var allPrice = 1000;
+                        var allPrice = localStorage.mianMoPrice;
+//                        localStorage.setItem('mianMoPrice', 198)
+//                        var allPrice = 1000;
 
                         if (parseFloat(res.data.myMoney) < allPrice) {
                             var sy = allPrice - res.data.myMoney;
@@ -818,18 +833,34 @@ debugger
                             $('.m-select-box').html(html);
 
                             // 默认选项
-                            $($('input[type=radio][name=mianMo]')[0]).attr('checked', 'checked');
-                            $('#countMoneyId').text($($('input[type=radio][name=mianMo]')[0]).data('value'));
-                            localStorage.setItem('mianMoPrice', $($('input[type=radio][name=mianMo]')[0]).data('value'));
-                            localStorage.setItem('MproductsId', $($('input[type=radio][name=mianMo]')[0]).attr('data-productId'));
-                            $('input[type=radio][name=mianMo]').change(function () {
+//                            $($('input[type=radio][name=mianMo]')[0]).attr('checked', 'checked');
+//                            $('#countMoneyId').text($($('input[type=radio][name=mianMo]')[0]).data('value'));
+//                            localStorage.setItem('mianMoPrice', $($('input[type=radio][name=mianMo]')[0]).data('value'));
+//                            localStorage.setItem('MproductsId', $($('input[type=radio][name=mianMo]')[0]).attr('data-productId'));
+
+                         /*   $('input[type=radio][name=mianMo]').change(function () {
                                 $('#countMoneyId').text($(this).data('value'));
                                 mianMoPrice = $(this).data('value');
                                 localStorage.setItem('mianMoPrice', $(this).data('value'))
                                 localStorage.setItem('MproductsId', $(this).attr('data-productId'))
                                 //  alert('okMproductsId: ' + $(this).attr('data-productId'))
                                 layer.closeAll();
-                            });
+                            });*/
+                         
+                            // 默认选项
+                            $('#countMoneyId').text($('.m-select-box').val());
+                            localStorage.setItem('mianMoPrice', $('.m-select-box').val());
+                            localStorage.setItem('MproductsId', $('.m-select-box').find("option:selected").data('productid'));
+                            $('.m-select-box').change(function () {
+                                debugger
+                                $('#countMoneyId').text($(this).val());
+                                mianMoPrice = $(this).val();
+                                localStorage.setItem('mianMoPrice', $(this).val());
+                                localStorage.setItem('MproductsId', $(this).find("option:selected").data('productid'));
+                                //  alert('okMproductsId: ' + $(this).attr('data-productId'))
+                                layer.closeAll();
+                            })
+                            
                             layer.closeAll();
                         })
 
@@ -1282,6 +1313,23 @@ debugger
     }
     function is_wxxcx() {
         return window.__wxjs_environment === 'miniprogram';
+    }
+    //判断是否是在微信app内部
+    function is_weixin() {
+        var ua = navigator.userAgent.toLowerCase();
+        if (ua.match(/MicroMessenger/i) == "micromessenger") {
+            return true;
+        } else {
+            return false;
+        }
+    } //判断是否是在支付宝app内部
+    function is_zfb() {
+        var ua = navigator.userAgent.toLowerCase();
+        if (ua.match(/Alipay/i) == "alipay") {
+            return true;
+        } else {
+            return false;
+        }
     }
 
 </script>
