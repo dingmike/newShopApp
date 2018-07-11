@@ -295,9 +295,9 @@
             <div class="pay_amount">
                 合计:&ensp;<span>{{data.orderAmount+data.orderExpfee}}</span>
             </div>
-            <!--<div class="deliver_e">
-                送<span></span>e点
-            </div>-->
+            <div class="deliver_e">
+                送<span></span>个广告金
+            </div>
         </div>
         <div class="pay">付款</div>
     </footer>
@@ -417,7 +417,7 @@
                 //合计总价格和总E点
                 $('.pay_amount').find('span').text("￥" + r.data.orderAmount);
                 totalAmount = r.data.orderAmount;
-//                        $('.deliver_e').find('span').text(r.data.orderEdianAll);
+                        $('.deliver_e').find('span').text(r.data.ePoint * detailFxParam * r.data.number);
                 allSend = r.data.ePoint;
                 allPrice = r.data.orderAmountAll;
 

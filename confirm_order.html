@@ -1,4 +1,5 @@
 <!DOCTYPE html>
+
 <html>
 <head>
     <meta charset="utf-8"/>
@@ -296,7 +297,7 @@
                         规格参数： {{each data.specName as d f}} {{d}} {{/each}}
                     </div>
                     <div class="e_dian" data-edian="{{data.product.productEdian}}">
-                        送{{data.product.productEdian*data.product.fxparam}}广告金
+                        送{{data.ePoint*data.product.fxparam}}广告金
                     </div>
                     <div class="pro_price" data-price="{{data.product.sellPrice}}">¥{{data.product.sellPrice}}</div>
                     <div class="pro_num" data-num="{{data.number}}">数量: x{{data.number}}</div>
@@ -459,7 +460,7 @@
                 //合计总价格和总E点
                 $('.pay_amount').find('span').text("￥" + r.data.orderAmount);
                 totalAmount = r.data.orderAmount;
-                $('.deliver_e').find('span').text(r.data.product.productEdian * detailFxParam * r.data.number);
+                $('.deliver_e').find('span').text(r.data.ePoint * detailFxParam * r.data.number);
                 allSend = r.data.ePoint;
                 allPrice = r.data.orderAmount;
 

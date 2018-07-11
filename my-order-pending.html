@@ -339,9 +339,10 @@
                     for (var i = 0; i < r.ordersList.length; i++) {
                         for (var n = 0; n < r.ordersList[i].productInfos.length; n++) {
                             console.log('sdfasdsdfdfdf');
+                            var newObj = JSON.parse(JSON.stringify(r.ordersList[i].productInfos[n]));
                             for (var j = 0; j < fxIdData.length; j++) {
                                 console.log('sdfasdf');
-                                if (r.ordersList[i].productInfos[n].fxId == fxIdData[j].id) {
+                                if (newObj.fxId == fxIdData[j].id) {
                                     r.ordersList[i].productInfos[n].fxId = fxIdData[j].mine;
                                     r.ordersList[i]['fxId'] = parseInt(fxIdData[j].mine);
 
