@@ -54,6 +54,7 @@
             text-align: center;
             padding: 14px 36px;
             background-color: #fff;
+            font-size: 14px;
         }
 
         #countMoneyId {
@@ -224,7 +225,7 @@
 
         .pitchon1 {
             background-image: url(../img/xuanzhong.png);
-            background-position: left 36px center;
+            background-position: right 36px center;
             background-repeat: no-repeat;
             background-size: 17px 17px;
         }
@@ -248,7 +249,7 @@
 
         .pitchon2 {
             background-image: url(img/weixuanzhong.png);
-            background-position: left 36px center;
+            background-position: right 36px center;
             background-repeat: no-repeat;
             background-size: 17px 17px;
         }
@@ -533,7 +534,7 @@
                                             localStorage.setItem('mianMoPrice', $('.m-select-box').val());
                                             localStorage.setItem('MproductsId', $('.m-select-box').find("option:selected").data('productid'));
                                             $('.m-select-box').change(function () {
-                                                debugger
+
                                                 $('#countMoneyId').text($(this).val());
                                                 mianMoPrice = $(this).val();
                                                 localStorage.setItem('mianMoPrice', $(this).val());
@@ -607,7 +608,7 @@
         });
 
 
-        if (localStorage.mianmo == '2') { // 面膜支付
+        if (localStorage.mianmo == '2'||localStorage.mianmo == '3') { // 面膜支付
             $(".pay").click(function () {
                 //app中隐藏微信支付按钮
 
@@ -727,7 +728,7 @@
 
             //输入密码  成功后的操作
             function payInputPassWord(type) {
-                debugger
+
                 $('.g-scrollview').css('display', 'block');
                 $keyboard.keyBoard('open');
 
@@ -858,7 +859,7 @@
     function pay() {
 
         if (localStorage.noAccount == '1') {
-            if (localStorage.mianmo == '2') { //  支付面膜
+            if (localStorage.mianmo == '2'||localStorage.mianmo == '3') { //  支付面膜
 
                 $.ajax({
                     type: 'POST',
