@@ -597,10 +597,11 @@
         //选择支付方式
 
         $(".pay-box .order_line").click(function () {
+            debugger
             var index = $(this).index();
             $(".pay_mode .order_line").removeClass("pitchon").addClass("no-choose");
             $(this).addClass("pitchon").removeClass("no-choose");
-            if (index == 3 || index == 4) {
+            if (index == 0 || index == 1) {
                 $(".balance,.integral").removeClass("pitchon1").addClass('pitchon2');
             }
         });
@@ -613,7 +614,7 @@
                 $(this).removeClass("pitchon1").addClass("pitchon2");
                 // $(this).next().removeClass('pitchon2').addClass('pitchon1');
             }
-            $(".pay_mode .order_line").eq(0).addClass("pitchon").siblings().removeClass("pitchon");
+            $(".pay_mode .order_line").eq(3).addClass("pitchon").siblings().removeClass("pitchon");
             // $(this).siblings('div').toggleClass("pitchon1");
 
         });
@@ -626,7 +627,7 @@
                 $(this).removeClass("pitchon1").addClass("pitchon2");
                 // $(this).prev().removeClass('pitchon2').addClass('pitchon1');
             }
-            $(".pay_mode .order_line").eq(0).addClass("pitchon").siblings().removeClass("pitchon");
+            $(".pay_mode .order_line").eq(3).addClass("pitchon").siblings().removeClass("pitchon");
         });
 
 
@@ -912,7 +913,7 @@
         //创建账号
         if (localStorage.noAccount == '1') {
 
-            if (localStorage.mianmo == '2') { //  支付面膜
+            if (localStorage.mianmo == '2' ||localStorage.mianmo == '3') { //  支付面膜
 
                 $.ajax({
                     type: 'POST',

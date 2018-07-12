@@ -586,13 +586,14 @@
                     $('.my-img').attr('src', r.user.headImg);
                 }
 
-                if(r.user.webType == 2){
-                    $('.store-management').show()
+                if(r.user.webType == 2||r.user.webType == 3){
+                    $('.store-management').show();
+                    localStorage.setItem('webType', r.user.webType);
                 }else{
                     $('.store-management').hide()
                 }
 
-                if(r.user.mm == 2){
+                if(r.user.mm != 1){
                     $('#mmManage').show();
                 }else{
                     $('#mmManage').hide();

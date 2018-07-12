@@ -273,7 +273,7 @@
                     localStorage.setItem("mianmo", mianmo);
                 }
                 // 2或者3面膜支付
-                if(mianmo!=2||mianmo!=3){
+                if(mianmo!=2&&mianmo!=3){
                     layer.open({
                         content: '无法购买面膜！'
                         ,skin: 'msg'
@@ -310,6 +310,7 @@
                                 case 'wx':
                                     //微信中使用微信公众号支付，外部使用h5支付
                                     if (is_weixin()) {
+//                                        window.location.href = 'wxPay.html';
                                         //微信公众号支付
                                         $.post(ajaxUrl + '/WxGzh/getCode', {}, function (res) {
                                             //alert('code wxGzh:' +res.code);

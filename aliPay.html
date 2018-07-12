@@ -186,10 +186,19 @@
         }
 
         .pitchon {
-            background-image: url(../img/gouxuan.png);
+            /*background-image: url(../img/gouxuan.png);*/
+            background-image: url(../img/choose.png);
             background-repeat: no-repeat;
             background-position: right 33px center;
-            background-size: 18px 13px;
+            /*background-size: 18px 13px;*/
+            background-size: 22px 22px;
+        }
+        .no-choose{
+            background-image: url(../img/noChoose.png);
+            background-repeat: no-repeat;
+            background-position: right 33px center;
+            /*background-size: 18px 13px;*/
+            background-size: 22px 22px;
         }
 
         .order_line img {
@@ -298,6 +307,9 @@
             white-space: nowrap;
             text-overflow: ellipsis;
         }
+        .text-float-left{
+            text-align: left;
+        }
     </style>
 </head>
 <body>
@@ -337,25 +349,28 @@
         </div>
         <div class="pay-box" style="margin:0">
 
-            <div class="order_line" data-pay="balance">
+            <div class="order_line margin10 text-float-left no-choose" id="zfbBox" data-pay="zfb">
+                <img src="img/zhifubaozhifu.png" alt=""/>支付宝支付
+            </div>
+            <div class="order_line text-float-left no-choose" data-pay="wx" id="wxBox">
+                <img src="img/weixinzhifu.png" alt=""/>微信支付
+            </div>
+
+
+            <div class="order_line text-float-left no-choose" data-pay="balance">
                 <img src="img/jinbi.png" alt=""/>余额支付
             </div>
 
-            <div class="balance pitchon2">余额：<span></span>
+            <div class="balance pitchon2 text-float-left">余额：<span></span>
                 <a class="overplus" href="javascript:void(0)"></a>
             </div>
 
-            <div class="integral pitchon2">
+            <div class="integral pitchon2 text-float-left">
                 积分：<span></span>
                 <a class="overplus_jifen" href="javascript:void(0)"></a>
             </div>
 
-            <div class="order_line margin10" id="zfbBox" data-pay="zfb">
-                <img src="img/zhifubaozhifu.png" alt=""/>支付宝支付
-            </div>
-            <div class="order_line" data-pay="wx" id="wxBox">
-                <img src="img/weixinzhifu.png" alt=""/>微信支付
-            </div>
+
             <button class="pay_yes" id="J_OpenKeyBoard">确定支付</button>
         </div>
     </div>
@@ -619,7 +634,7 @@
                 }
                 //默认余额支付选中
 //            $('.balance').addClass('pitchon1');
-                $($('.order_line')[0]).addClass('pitchon');
+                $($('.order_line')[0]).addClass('pitchon').removeClass('no-choose');;
 
                 $(".pay_mode_bg").attr("style", "display:block");
                 $(".pay_mode").attr("style", "height:344px;transition: height 0.5s;-moz-transition: height 0.5s; -webkit-transition: height 0.5s;-o-transition: height 0.5s;");
@@ -681,10 +696,11 @@
         //选择支付方式
 
         $(".pay-box .order_line").click(function () {
+            debugger
             var index = $(this).index();
-            $(".pay_mode .order_line").removeClass("pitchon");
-            $(this).addClass("pitchon");
-            if (index == 3 || index == 4) {
+            $(".pay_mode .order_line").removeClass("pitchon").addClass("no-choose");
+            $(this).addClass("pitchon").removeClass("no-choose");
+            if (index == 0 || index == 1) {
                 $(".balance,.integral").removeClass("pitchon1").addClass('pitchon2');
             }
         });
@@ -697,7 +713,7 @@
                 $(this).removeClass("pitchon1").addClass("pitchon2");
                 // $(this).next().removeClass('pitchon2').addClass('pitchon1');
             }
-            $(".pay_mode .order_line").eq(0).addClass("pitchon").siblings().removeClass("pitchon");
+            $(".pay_mode .order_line").eq(3).addClass("pitchon").siblings().removeClass("pitchon");
             // $(this).siblings('div').toggleClass("pitchon1");
 
         });
@@ -710,7 +726,7 @@
                 $(this).removeClass("pitchon1").addClass("pitchon2");
                 // $(this).prev().removeClass('pitchon2').addClass('pitchon1');
             }
-            $(".pay_mode .order_line").eq(0).addClass("pitchon").siblings().removeClass("pitchon");
+            $(".pay_mode .order_line").eq(3).addClass("pitchon").siblings().removeClass("pitchon");
         });
 
 
