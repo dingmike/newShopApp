@@ -797,7 +797,7 @@
                         }
                     }*/
 
-                    if (res.data.myMoney) {
+                    if (res.data.myMoney!=null) {
                         $('.yue-pay').show();
                         $('#yueMoney').text(res.data.myMoney.toFixed(2));
 
@@ -816,13 +816,13 @@
 
                         if (parseFloat(res.data.consumPoint) < allPrice) {
                             var sx = allPrice - res.data.consumPoint;
-                            sx = parseFloat(sx)
+                            sx = parseFloat(sx);
                             $('.overplus_jifen').addClass('no_jifen');
                             $('.overplus_jifen').html('还差¥' + sx.toFixed(2));
                         }
 
-                        $('.balance span').html(res.data.myMoney.toFixed(2));
-                        $('.integral span').html(res.data.consumPoint.toFixed(2));
+                        $('.balance span').html(res.data.myMoney!=null&&res.data.myMoney!=''?res.data.myMoney.toFixed(2): 0);
+                        $('.integral span').html(res.data.consumPoint!=null&&res.data.consumPoint!=''?res.data.consumPoint.toFixed(2):0);
 
 
 

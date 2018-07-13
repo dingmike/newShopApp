@@ -474,11 +474,9 @@
                                     // 准备插入订单
 
 
-                                    if (res.data.myMoney) {
+                                    if (res.data.myMoney!=null) {
                                         $('.yue-pay').show();
                                         $('#yueMoney').text(res.data.myMoney.toFixed(2));
-
-
 
                                         var allPrice = localStorage.mianMoPrice;
 //                        localStorage.setItem('mianMoPrice', 198)
@@ -493,15 +491,12 @@
 
                                         if (parseFloat(res.data.consumPoint) < allPrice) {
                                             var sx = allPrice - res.data.consumPoint;
-                                            sx = parseFloat(sx)
+                                            sx = parseFloat(sx);
                                             $('.overplus_jifen').addClass('no_jifen');
                                             $('.overplus_jifen').html('还差¥' + sx.toFixed(2));
                                         }
-
-                                        $('.balance span').html(res.data.myMoney.toFixed(2));
-                                        $('.integral span').html(res.data.consumPoint.toFixed(2));
-
-
+                                        $('.balance span').html(res.data.myMoney!=null&&res.data.myMoney!=''?res.data.myMoney.toFixed(2): 0);
+                                        $('.integral span').html(res.data.consumPoint!=null&&res.data.consumPoint!=''?res.data.consumPoint.toFixed(2):0);
 
 
 
@@ -520,10 +515,7 @@
 
 
                                     // 如果是购买面膜 获取面膜数据
-                                    if (localStorage.mianmo == '2') {
-
-
-
+                                    if (localStorage.mianmo == '2'||localStorage.mianmo == '3') {
 
 
                                         getMianMo(res.data.token, function (res) {
@@ -981,7 +973,7 @@
             type: 'POST',
             async: true,
             url: ajaxUrl + '/front/MOrder/query',
-            data: {token: token},
+            data: {token: token, shopId: localStorage.shopId},
             success: function (res) {
                 if (res.code == 200) {
                     callback(res)
