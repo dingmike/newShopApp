@@ -54,7 +54,7 @@
             text-align: center;
             padding: 14px 36px;
             background-color: #fff;
-            font-size: 14px;
+            font-size: 16px;
         }
 
         #countMoneyId {
@@ -365,10 +365,10 @@
                 <a class="overplus" href="javascript:void(0)"></a>
             </div>
 
-            <div class="integral pitchon2 text-float-left">
+            <!--<div class="integral pitchon2 text-float-left">
                 积分：<span></span>
                 <a class="overplus_jifen" href="javascript:void(0)"></a>
-            </div>
+            </div>-->
 
 
             <button class="pay_yes" id="J_OpenKeyBoard">确定支付</button>
@@ -424,7 +424,7 @@
 
 <script type="text/template" id="mian-box">
     {{each data as item index}}
-    <option selected="{{item.price}}==198?'selected':false" value="{{item.price}}" data-productid="{{item.productId}}" data-value="{{item.price}}" id='product{{item.productId}}'>{{item.name}},售价：{{item.price}}元</option>
+    <option value="{{item.price}}" data-productid="{{item.productId}}" data-type="{{item.type}}" data-value="{{item.price}}" id='product{{item.productId}}'>{{item.name}},售价：{{item.price}}元</option>
     {{/each}}
 </script>
 
@@ -705,7 +705,7 @@
                 $(this).removeClass("pitchon1").addClass("pitchon2");
                 // $(this).next().removeClass('pitchon2').addClass('pitchon1');
             }
-            $(".pay_mode .order_line").eq(3).addClass("pitchon").siblings().removeClass("pitchon");
+            $(".pay_mode .order_line").eq(2).removeClass('no-choose').addClass("pitchon").siblings().removeClass("pitchon").addClass('no-choose');
             // $(this).siblings('div').toggleClass("pitchon1");
 
         });
@@ -718,7 +718,7 @@
                 $(this).removeClass("pitchon1").addClass("pitchon2");
                 // $(this).prev().removeClass('pitchon2').addClass('pitchon1');
             }
-            $(".pay_mode .order_line").eq(3).addClass("pitchon").siblings().removeClass("pitchon");
+            $(".pay_mode .order_line").eq(2).removeClass('no-choose').addClass("pitchon").siblings().removeClass("pitchon").addClass('no-choose');
         });
 
 
