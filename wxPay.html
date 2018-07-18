@@ -581,10 +581,14 @@
             data: {code: code},
             success: function (res) {
                 if (res.code == 200) {
+
                     userOpenId = res.data.openId;
                     userUnionId = res.data.unionId;
+
                     localStorage.setItem('userOpenId', userOpenId);
-                    localStorage.setItem('userUnionId', userUnionId)
+                    localStorage.setItem('userUnionId', userUnionId);
+                    localStorage.setItem('nickname', res.data.nickname);
+                    localStorage.setItem('headimgurl', res.data.headimgurl);
                 } else {
                     layer.open({
                         content: res.msg
@@ -854,7 +858,7 @@
             async: false,
             cache: false,
             url: ajaxUrl + '/front/clients/createAccount',
-            data: {referPhone: localStorage.referPhone, shopId: localStorage.shopId, unionId: userUnionId},
+            data: {referPhone: localStorage.referPhone, shopId: localStorage.shopId, unionId: userUnionId, headimgurl:localStorage.getItem('headimgurl'),nickname: localStorage.getItem('nickname')},
             success: function (res) {
                 console.log('data:', res.data);
                 if (res.code == 300) {
