@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no" />
+	<link rel="stylesheet" type="text/css" href="css/index.css"/>
+	<link rel="stylesheet" href="css/hp.css" />
+	<script src="js/jquery-1.11.1.min.js" type="text/javascript" charset="utf-8"></script>
+	<script type="text/javascript" src="js/default.js" ></script>
+	<title>业绩提成</title>
+	<style type="text/css">
+		.xian-in{
+			right: 14px;
+			position: absolute;
+			width: 14px;
+			height: 14px;
+			margin-top: 18px;
+		}
+		.xian-logo{
+			height: 20px;
+			width: 20px;
+			position: absolute;
+			left: 10px;
+			top: 15px;
+		}
+	</style>
+</head>
+<body>
+<div class="container">
+	<header class="head-st">
+		<div class="sto-nav-left">
+			<img src="img/fanhui.png" onclick="location.href='my_center.html'"/>
+		</div>
+		<div class="sto-nav-sear">
+			业绩提成
+		</div>
+		<div class="nav-right" id="detailAll">
+			明细
+		</div>
+	</header>
+	<div class="content bac-cor">
+		<div class="chang-out-box">
+			<div class="curr-box">
+				<div class="curr-left">
+					<span class="curr-tit">可用/元：</span>
+					<span class="curr-num" id="canUse">0</span>
+				</div>
+				<!--<div class="curr-right">
+					<span class="curr-tit">冻结/元：</span>
+					<span id="dj-money" class="dj-num" id="freeze">0</span>
+				</div>-->
+			</div>
+			<!--<div class="sum-sy">
+				<p class="sum-sy-p">累计收益/元：</p>
+				<span id="lj-money" class="sum-sy-num">0</span>
+			</div>-->
+		</div>
+		<div class="juli"></div>
+		<div class="money-gn">
+			<a href="transfer_yewu.html">
+				<div class="pay-tit-tip">
+					<img src="img/zhuan.png" class="xian-logo"/>
+					转账
+					<img src="img/rtu.png" class="xian-in" />
+				</div>
+			</a>
+			<a href="withdrawalsYewu.html">
+				<div class="pay-tit-tip">
+					<img src="img/jiaoyi.png" class="xian-logo"/>
+					提现
+					<img src="img/rtu.png" class="xian-in" />
+				</div>
+			</a>
+			<!--<div class="pay-tit-tip">
+                <img src="img/tixian.png" class="xian-logo"/>
+                提现到公共账户
+                <img src="img/rtu.png" class="xian-in" />
+            </div>-->
+		</div>
+
+
+	</div>
+	<!--<footer>
+		<a href="recharge.html" class="a-st">
+			&lt;!&ndash;<input class="cz-ipt" style="height: 50px;" type="button" id="" value="充值" />&ndash;&gt;
+			<button class="cz-ipt" style="height: 50px;">充值</button>
+		</a>
+		<a href="withdrawals.html" class="a-st">
+			&lt;!&ndash;<input class="tx-ipt" style="height: 50px;" type="button" id="" value="提现" />&ndash;&gt;
+			<button class="tx-ipt" style="height: 50px;">提现</button>
+		</a>
+	</footer>-->
+</div>
+<script>
+
+    $(function(){
+//        getInfo("post",ajaxUrl+"/front/clients/selectAssets?token="+token,{type:0},getDetail);
+
+        getInfo("post", ajaxUrl + "/front/ClientTransfer/businessPromotion?token=" + localStorage.token, {}, getDetail);
+        function getDetail(r) { //可用余额
+            $("#canUse").html(r.fxMoney + "元");
+        }
+
+
+    });
+    /*function getDetail(r){
+        console.log(r.cashAmount);
+        $(".curr-num").html(r.cashAmount);
+        $(".dj-num").html(r.freezeAmount);
+    }
+*/
+    $("#detailAll").click(function(){
+        location.href="detail_yewuAll.html";
+    });
+</script>
+</body>
+</html>
