@@ -67,6 +67,9 @@
 			.jl{
 				display: inline-block;
 			}
+			.jl li{
+				display: inline-block;
+			}
 		</style>
 
 	</head>
@@ -84,6 +87,7 @@
 			</header>
 			<div class="mx-cheak-box">
 				<ul>
+					<li class="mx-cor" data-type="0">全部明细</li>
 					<li class="mx-cor" data-type="1">业绩明细</li>
 					<!--<li data-type="5">业绩明细</li>-->
 					<!--<li data-type="5">冻结</li>-->
@@ -219,31 +223,40 @@
 				html += "<img src = 'img/icon-jiazaipng.png' />";
 				html += "<p > 没有了！！！ </p>";
 				html += "</div> </div>";
-				var length = r.xtRecord.length;
-				if(length != 0 && show.page[show.dataType] == 1) {
-					var html1 = template("detail-con", r);
-					$(obj).html(html1);
-				} else if(length != 0 && show.page[show.dataType] != 1) {
-					var html1 = template("detail-con", r);
-					$(obj).append(html1);
-				} else if(length == 0 && show.page[show.dataType] == 1) {
-					$(obj).append(html);
-					show.page[show.dataType] = 0;
-				} else {
-					listLoadingLock = true;
-					show.page[show.dataType] = 0;
-					$(obj).append(html);
-				}
+
+				if(r.xtRecord){
+                    var length = r.xtRecord.length;
+                    if(length != 0 && show.page[show.dataType] == 1) {
+                        var html1 = template("detail-con", r);
+                        $(obj).html(html1);
+                    } else if(length != 0 && show.page[show.dataType] != 1) {
+                        var html1 = template("detail-con", r);
+                        $(obj).append(html1);
+                    } else if(length == 0 && show.page[show.dataType] == 1) {
+                        $(obj).append(html);
+                        show.page[show.dataType] = 0;
+                    } else {
+                        listLoadingLock = true;
+                        show.page[show.dataType] = 0;
+                        $(obj).append(html);
+                    }
+				}else {
+                    listLoadingLock = true;
+                    show.page[show.dataType] = 0;
+                    $(obj).append(html);
+                }
+
 			}
 
 			//滚动加载数据
 			$(".content").scroll(function() {
+			    debugger
 				if(show.page[show.dataType] != 0) {
 					totleHeight = $(".content").height() + $(".content").scrollTop();
 					if(($(".content")[0].scrollHeight == totleHeight) && !listLoading) {
 						show.page[show.dataType] += 1;
 						params.pageNo=show.page[show.dataType];
-						getList("#" + show.typeId, "post", ajaxUrl+"/front/XtWalletControllerFront/selectDetails?token=" + token, params, detailReq);
+						getList("#" + show.typeId, "post", ajaxUrl+"/front/ClientTransfer/detailedPerformance?token=" + token, params, detailReq);
 					}
 				}
 			});

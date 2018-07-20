@@ -2500,13 +2500,13 @@ footer div {
     float: left;
     /*height: 58px;*/
     padding: 10px 0;
-    width: 80%;
+    width: 270px;
     white-space: normal;
 }
 
 .chang-go-rgt {
     float: right;
-    height: 50px;
+    /*height: 50px;*/
     text-align: end;
     margin-right: 6px;
     padding: 6px 0;
