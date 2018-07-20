@@ -208,38 +208,43 @@
 			<div class="order_details-box"></div>
 
 			<script type="text/template" id="order_details-box">
-				{{each data.orderList as k i}}
 				<div class="order_details">
-					<div class="order_tit">{{k.shopName}}</div>
-					{{each k.orderProduct as j c}}
+					<div class="order_tit">{{data.shopName}}</div>
 					<div class="merchandise">
 						<div class="order_img">
-							<img src="{{j.productInfo.productImg}}" alt="" />
+							<img src="{{data.product.productImg}}" alt=""/>
 						</div>
 						<div class="order_cot">
-							<div class="pro_tit">{{j.productInfo.productName}}</div>
+							<div class="pro_tit">{{data.product.productName}}</div>
 							<div class="pro_par">
-								参数： {{each j.specName as d f}} {{d}} {{/each}}
+								规格参数： {{each data.specName as d f}} {{d}} {{/each}}
 							</div>
-							<div class="e_dian" data-edian="{{j.productInfo.productEdian}}">送{{j.productEdian*10}}广告金</div>
-							<div class="pro_price" data-price="{{j.productInfo.sellPrice}}">¥{{j.productPrice}}</div>
-							<div class="pro_num" data-num="{{j.productCount}}">数量: x{{j.productCount}}</div>
+							<div class="e_dian" data-edian="{{data.product.productEdian}}">
+								送{{data.ePoint*data.product.fxparam}}广告金
+							</div>
+							<div class="pro_price" data-price="{{data.product.sellPrice}}">¥{{data.product.sellPrice}}</div>
+							<div class="pro_num" data-num="{{data.number}}">数量: x{{data.number}}</div>
 						</div>
-						<div class="sum-edian" data-sume="{{j.productEdian}}"></div>
-						<div class="sum-price" data-sump="{{j.productPrice}}"></div>
+						<div class="sum-price" data-sump="{{data.product.sellPrice}}"></div>
 					</div>
-					{{/each}}
-					<div class="order_tit">快递邮费 {{if k.orderExpfee===0}}
+					<div class="order_tit">快递邮费
+						{{if data.orderExpfee===0}}
 						<div class="postage">卖家包邮</div>
-						{{/if}} {{if k.orderExpfee!==0}}
-						<div class="postage">{{k.orderExpfee}}</div>
+						{{/if}}
+						{{if data.orderExpfee!==0}}
+						<div class="postage">￥{{data.orderExpfee}}</div>
 						{{/if}}
 					</div>
-					<div class="order_tit">店铺优惠
-						<div class="discount">￥{{ k.CouponAll }}</div>
+					<div class="order_tit">活动优惠
+						{{if data.activity===0}}
+						<div class="postage">暂无优惠</div>
+						{{/if}}
+						{{if data.activity!==0}}
+						<div class="postage">￥{{data.activity}}</div>
+						{{/if}}
 					</div>
 					<div class="order_tit">索要发票
-						<div class="postage has-bg" id="forinvoValue" data-type = "0">索要发票</div>
+						<div class="postage has-bg" id="forinvoValue" data-type="0">索要发票</div>
 					</div>
 					<div class="order_tit">
 						<span>备注说明</span>
@@ -249,12 +254,10 @@
 						<div class="smal-sum">
 							<span class="sm-x">小计：</span>
 							<em>￥</em>
-							<span class="sum-11">{{ k.orderAmount }}</span>
+							<span class="sum-11">{{ data.orderAmount }}</span>
 						</div>
-						<span class="send-50"></span>
 					</div>
 				</div>
-				{{/each}}
 			</script>
 
 		</div>
@@ -333,17 +336,119 @@
 
 		<script type="text/javascript">
 			$(function() {
-			    var totalAmount = '';
+			   // var totalAmount = '';
 				var carIds = GetUrlString('sureArr').split(",");
 				for(var i = 0; i < carIds.length; i++) {
 					carIds[i] = parseInt(carIds[i]);
 				}
+
+                // 获取分销ID和值
+                var fxIdData;
+                getFxId(function(res){
+                    fxIdData = res;
+                });
+                var detailFxParam;
+
+                var totalAmount = '';
+
+
 				var allSend = 0; //所有店铺合计的赠送e点
 				var allPrice = 0;
 
-				$.ajax({
+                // 进入页面加载 确认订单数据
+                var productId = '', productSpec = '', counts = '';
+                var buyNowOrderParams = {
+                    productId: GetQueryString('productId'),
+                    productSpec: GetUrlString('productSpec'),
+                    number: GetQueryString('number'),
+					type:1 // 1单买
+                };
+
+                if (localStorage.getItem('buyNowOrderParams') === 'null' || localStorage.getItem('buyNowOrderParams') === undefined || localStorage.getItem('buyNowOrderParams') === null) {
+                    localStorage.setItem('buyNowOrderParams', JSON.stringify(buyNowOrderParams));
+                }
+                getInfo("post", ajaxUrl + "/front/ordersCollage/showCollageBuyNow?token=" + localStorage.token, JSON.parse(localStorage.getItem('buyNowOrderParams')), function (r) {
+                    if (r.code == 200) {
+                        debugger
+                        // 显示广告金
+                        var newObj = JSON.parse(JSON.stringify(r.data.product));
+                        for(var j = 0; j< fxIdData.length; j++){
+                            if(newObj.fxparam == fxIdData[j].id){
+                                r.data.product.fxparam =fxIdData[j].mine;
+                                detailFxParam= fxIdData[j].mine
+                            }
+                        }
+
+                        productId = r.data.product.productId;
+                        productSpec = JSON.parse(localStorage.getItem('buyNowOrderParams')).productSpec;
+                        counts = r.data.number;
+                        var html1 = template('userinfo', r);
+                        $('.userinfo').html(html1);
+
+                        var html2 = template('order_details-box', r);
+                        $('.order_details-box').html(html2);
+
+                        //合计总价格和总E点
+                        $('.pay_amount').find('span').text("￥" + r.data.orderAmount);
+                        totalAmount = r.data.orderAmount;
+                        $('.deliver_e').find('span').text(r.data.ePoint * detailFxParam * r.data.number);
+                        allSend = r.data.ePoint;
+                        allPrice = r.data.orderAmount;
+
+                        $('.order_details').each(function () {
+                            //sum-edian
+                            var sumEdian = 0; //赠送总e点数
+
+                            $(this).find('.sum-edian').each(function () {
+                                sumEdian += parseInt($(this).attr('data-sume'));
+                            });
+
+                            var sumPrice = 0; //单个店铺里面的商品价格合计
+                            $(this).find('.sum-price').each(function () {
+                                sumPrice += parseInt($(this).attr('data-sump'));
+                            });
+
+                            $(this).find('.send-50').text("送" + sumEdian * detailFxParam + "广告金"); //每个店铺里面的所有商品赠送的总E点数
+//								$(this).find('.sum-11').text(r.data.orderAmount); //每个店铺里面的所有商品的合计价格
+
+                        });
+                        $('.has-bg').click(function () {
+                            $('.syfp-alert').css('display', 'block');
+                            $('.alert-op').css('opacity', '0.45');
+                            $('.alert-choose ul li').click(function () {
+                                $(this).addClass('add-li-css').siblings().removeClass('add-li-css')
+                            });
+                        });
+                        //确定索要
+                        $("#forinvoBtn").click(function () {
+                            $(".alert-choose ul li").each(function () {
+                                var forinvoValue = $(this).data('type');
+                                console.log(forinvoValue)
+                                if ($(this).hasClass('add-li-css')) {
+                                    $("#forinvoValue").html($(this).html());
+                                    $("#forinvoValue").attr('data-type', forinvoValue);
+                                }
+                                $('.syfp-alert').css('display', 'none');
+                                $('.alert-op').css('opacity', '1');
+                            })
+                        });
+
+                        //选择收货地址
+                        var aid = $('.user_tit').attr('data-aid');
+                        console.log('aid' + aid)
+                        $(".userinfo").click(function () {
+                            location.href = "select_site.html?sureArr=" + carIds + '&&aid=' + aid;
+                        })
+                    } else {
+                        window.location.href = "index.html";
+                    }
+
+                })
+
+
+             /*   $.ajax({
 					type: "post",
-					url: ajaxUrl + "/front/orders//showOrderBuyCar?token=" + token,
+					url: ajaxUrl + "/front/ordersCollage/showCollageBuyNow?token=" + token,
 					async: true,
 					dataType: "json",
 					traditional: true,
@@ -415,7 +520,7 @@
 						}
 					}
 
-				});
+				});*/
 
 				//显示结算层
                 var comfirmOrderId;
@@ -464,7 +569,7 @@
 						//生成订单
 						$.ajax({
 							type: "post",
-							url: ajaxUrl + "/front/orders/insertOrderBuyCar",
+							url: ajaxUrl + "/front/ordersCollage/underLinePurchase",
 							async: true,
 							traditional: true,
 							data: {

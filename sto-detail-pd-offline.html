@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="renderer" content="webkit">
-    <meta content="yes" name="apple-mobile-web-app-capable" />
+    <meta content="yes" name="apple-mobile-web-app-capable"/>
     <meta content="black" name="apple-mobile-web-app-status-bar-style" />
     <meta content="telephone=no" name="format-detection"/>
     <meta name="viewport"
@@ -911,9 +911,9 @@
 
         });
 
-        //从上一个页面进来的商品接口
+        //从上一个页面进来的商品接口/shop/productOffline/shopProductInfo
 
-        getInfo('post', ajaxUrl + '/productsInfo/productDetails', {
+        getInfo('post', ajaxUrl + '/productOffline/shopProductInfo', {
             token: token,
             productId: product_id
         }, setProductHtml);
@@ -1116,7 +1116,7 @@
             specName = [];
             specNameId = "";
             productId = '';
-            goBuyId = $(this).data("id");
+            goBuyId = $(this).data("id"); // 1:拼单，2 单买
             typeId = $(this).data('type');
 
             //请求商品信息
@@ -1223,7 +1223,7 @@
                 });
 
                 $("#confirm").click(function () {
-                    if (!token) {
+                    if (!localStorage.token) {
                         location.href = 'login.html';
                     } else {
                         getDetails(productId, specName.length, specNameId, goBuyId, typeLength);
@@ -1433,7 +1433,7 @@
                     $('.pay-tc').hide(300);
 
                     // 跳转到确认订单页面
-                    window.location.href = "confirm_order_pd.html?productSpec=" + params.productSpec + "&productId=" + params.productId + "&number=" + params.number + "&type=" + params.type;
+                    window.location.href = "confirm_order_pd_off.html?productSpec=" + params.productSpec + "&productId=" + params.productId + "&number=" + params.number + "&type=" + params.type;
 
                     /* getInfo("post", ajaxUrl + "/front/clientCart/userCart?token=" + token, params, function(r) {
                      tip.flag('添加购物车成功！', 'success');
@@ -1455,7 +1455,7 @@
                     $('.pay-tc').hide(300);
 
                     // 跳转到确认订单页面
-                    window.location.href = "confirm_order.html?productSpec=" + params.productSpec + "&productId=" + params.productId + "&number=" + params.number;
+                    window.location.href = "confirm_offLineOrder.html?productSpec=" + params.productSpec + "&productId=" + params.productId + "&number=" + params.number;
 
 
                     //单独购买或者立即购买

@@ -1336,7 +1336,6 @@
             </script>
         </div>
 
-
         <!--koudai--start-->
         <!-- <div class="item1">
              <div class="kodai">
@@ -1390,7 +1389,7 @@
                 </a>
             </div>
             <div>
-                <a href="off_line.html">
+                <a href="offlineStore.html">
                     <img src="img/fuli.png" data-img="xianxia"/>
                     <span class="hp-fot-st">线下</span>
                 </a>
@@ -1458,6 +1457,19 @@
 
 
     $(function () {
+
+
+        //手机版本号（version）和项目平台(phoneType) 1 android 2苹果 3网页
+        var versions = '2.0.06';
+        var phoneType = 1;
+
+        updateVersion(versions,phoneType);
+       /* if(localStorage.mark === undefined){
+        updateVersion(versions,phoneType);
+        }
+*/
+
+
         // 获取分销ID和值
         var fxIdData;
          getFxId(function(res){
@@ -1724,6 +1736,55 @@
 
 
     });
+
+    function updateVersion(versions, phoneType) {
+        $.ajax({
+            type: 'post',
+            url: ajaxUrl + '/front/clients/updateVersionInfo',
+            async: false,
+            data:{
+                version: versions,
+                type: phoneType
+            },
+            success: function (r) {
+                // localStorage.setItem('mark', 1);
+                if (r.code == 3011) { // 强制更新app版本
+                    layer.open({
+                        content: r.msg
+                        , btn: '去更新'
+                        , yes: function () {
+                            window.location.href = r.url;
+                        },
+                        shadeClose: false
+                    });
+                }else if(r.code== 3012){
+                    // 不强制更新
+                    layer.open({
+                        content: '是否去更新?'
+                        ,btn: ['更新', '不更']
+                        , yes: function () {
+                            window.location.href = r.url;
+                        }
+                    });
+                }else if(r.code == 3013){
+                    // 显示更新信息
+                    layer.open({
+                        content: r.msg
+                        , btn: ['去查看', '取消']
+                        , yes: function () {
+                            window.location.href = r.url;
+                        }
+                    });
+                }
+
+
+            },
+            error: function (err) {
+                tip.flag(err, 'error');
+            }
+
+        })
+    }
     //拼单购买
     function goBuyPd(productId) {
         window.location.href = "sto-detail-pd.html?id=" + productId;

@@ -288,6 +288,12 @@
                             <span class="jt-num xjye">0</span>
                         </li>
                     </a>
+                    <a href="money-yewu.html">
+                        <li>
+                            <p class="zic-tit">业务提成</p>
+                            <span class="jt-num ywtc">0</span>
+                        </li>
+                    </a>
                     <a href="#">
                         <li>
                             <p class="zic-tit">广告金</p>
@@ -307,12 +313,7 @@
                             <span class="jt-num xfjf">0</span>
                         </li>
                     </a>
-                    <a href="transfer_yewu.html">
-                        <li>
-                            <p class="zic-tit">业务提成</p>
-                            <span class="jt-num ywtc">0</span>
-                        </li>
-                    </a>
+
                     <!--<a href="devote.html">
                                                     <li>
                                                         <p class="zic-tit">贡献值</p>
@@ -403,7 +404,7 @@
                 </a>
             </div>
             <div>
-                <a href="off_line.html">
+                <a href="offlineStore.html">
                     <img src="img/fuli.png" data-img="xianxia"/>
                     <span class="hp-fot-st">线下</span>
                 </a>
@@ -809,10 +810,12 @@
 // 是否注册店铺，0 未注册，1 资料待完善，2 已注册待审核，3 审核通过注册完成。
             switch (localStorage.shopRegData) {
                 case "0":
-                    location.href = 'store_login.html';
+                    judgeLogin();
+                   // location.href = 'store_login.html';
                     break;
                 case null:
-                    location.href = 'store_login.html';
+                    judgeLogin();
+                  // location.href = 'store_login.html';
                     break;
                 case '1':
                     location.href = 'store_wait.html?newReg=1';
@@ -830,6 +833,25 @@
         })
 
     });
+
+    //店铺入住流程判断
+    function judgeLogin(){
+        $.post(ajaxUrl + '/front/clients/login1', {token: localStorage.token}, function (r) {
+            console.log(r);
+            if (r.code == 200) {
+                if (r.type == 1) {  //正常
+                    window.location.href = 'store_perfect.html';
+                } else if (r.type == 2) {
+                    window.location.href = 'store_inspect.html';
+                } else if (r.type == 3) {
+                    window.location.href = 'store_submit.html';
+                }
+            } else {
+                tip.flag(r.msg, 'error');
+                return false;
+            }
+        });
+    }
     //推荐注册二维码
     function recommond() {
         var account = recommonder;

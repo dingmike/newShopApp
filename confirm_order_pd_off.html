@@ -193,9 +193,6 @@
 			<header>
 				<img class="nav-left" src="img/fanhui.png" alt="" onclick="javascript:history.back(-1);" /> 确认订单
 			</header>
-			<div class="header_box">
-
-			</div>
 			<div class="userinfo"></div>
 			<script type="text/template" id="userinfo">
 				<div class="user_tit" data-aid="{{data.address.aid}}">
@@ -343,12 +340,6 @@
 				}
 
 				getInfo("post", ajaxUrl + "/front/ordersCollage/showCollageBuyNow?token=" + token, JSON.parse(localStorage.getItem('orderParams')), function(r) {
-                    layer.open({
-                        content: '生成拼单订单成功!'
-                        ,skin: 'msg'
-                        ,time: 2 //2秒后自动关闭
-                    });
-
                     if(r.code == 200) {
                         productId = r.data.product.productId;
                         productSpec = JSON.parse(localStorage.getItem('orderParams')).productSpec;
@@ -670,79 +661,67 @@
 												function alPayReq(r) {
 //                                                    $('#aliId').html(r.data.sign); // h5支付
 													//调用支付原生
-													setupWebViewJavascriptBridge(function(bridge) {
-														bridge.callHandler('loadThreePay', {
-															'pay': 'Alipay',
-															'data': r.data.sign
-														}, function(resp) {
-															var r = JSON.parse(resp);
-															if(r.respCode === 0) {
-																tip.flag('支付成功', 'success');
+													 setupWebViewJavascriptBridge(function (bridge) {
+													 bridge.callHandler('loadThreePay', {
+													 'pay': 'Alipay',
+													 'data': r.data.sign
+													 }, function (resp) {
+													 var r = JSON.parse(resp);
+													 if (r.respCode === 0) {
+													 //tip.flag('支付成功', 'success');
+													 layer.open({
+													 content: '支付成功!'
+													 , skin: 'msg'
+													 , time: 2 //2秒后自动关闭
+													 });
+													 setTimeout(function () {
+													 window.location.href = 'pay_ok.html?allSend=' + allSend;
+													 }, 1500);
+													 } else if (r.respCode !== 0) {
+													 tip.flag(r.respMsg, 'error');
+													 setTimeout(function () {
+													 window.location.href = 'my-order-pending.html?typeid=1';
+													 }, 1500);
+													 }
 
-																//支付成功后清除订单数据
-                                                               /* window.localStorage.removeItem('productId'); //防止返回订单数据消失
-                                                                window.localStorage.removeItem('productSpec'); //防止返回订单数据消失
-                                                                window.localStorage.removeItem('number'); //防止返回订单数据消失
-                                                                window.localStorage.removeItem('type'); //防止返回订单数据消失*/
-
-                                                               window.localStorage.removeItem('orderParams')
-
-																setTimeout(function() {
-																	window.location.href = 'pay_ok.html?allSend=' + allSend;
-																}, 1500);
-															} else if(r.respCode !== 0) {
-																tip.flag(r.respMsg, 'error');
-																setTimeout(function() {
-																	window.location.href = 'my-order-pd.html?typeid=1';
-																}, 1500);
-															}
-
-														});
-													});
+													 });
+													 });
 												}
 
 												break;
 											case 'wx':
 
                                                 // 调用支付原生api
-												getInfo("post", ajaxUrl + "/front/payInfo/wxPay?token=" + token, {
-													money: totalAmount,
-													type: 2,
-													orderId: comfirmOrderId
-												}, wxPayReq);
+												 getInfo("post", ajaxUrl + "/front/payInfo/wxPay?token=" + token, {
+												 money: totalAmount,
+												 type: 2,
+												 orderId: comfirmOrderId
+												 }, wxPayReq);
 
-												function wxPayReq(r) {
+												 function wxPayReq(r) {
 
-													//调用支付原生
-													console.log(r.data.sign);
-													setupWebViewJavascriptBridge(function(bridge) {
-														bridge.callHandler('loadThreePay', {
-															'pay': 'WeChat',
-															'data': r.data.sign
-														}, function(resp) {
-															var r = JSON.parse(resp);
-															if(r.respCode === 0) {
-																tip.flag('支付成功', 'success');
-												 //支付成功后清除订单数据
-												 //支付成功后清除订单数据
-												// window.localStorage.removeItem('productId'); //防止返回订单数据消失
-												// window.localStorage.removeItem('productSpec'); //防止返回订单数据消失
-												// window.localStorage.removeItem('number'); //防止返回订单数据消失
-												// window.localStorage.removeItem('type'); //防止返回订单数据消失
-													 window.localStorage.removeItem('orderParams');
-																setTimeout(function() {
-																	window.location.href = 'pay_ok.html?allSend=' + allSend;
-																}, 1500);
-															} else if(r.respCode !== 0) {
-																tip.flag(r.respMsg, 'error');
-																setTimeout(function() {
-																	window.location.href = 'my-order-pd.html?typeid=1';
-																}, 1500);
-															}
-
-														});
-													});
-												}
+												 //调用支付原生
+												 console.log(r.data.sign);
+												 setupWebViewJavascriptBridge(function (bridge) {
+												 bridge.callHandler('loadThreePay', {
+												 'pay': 'WeChat',
+												 'data': r.data.sign
+												 }, function (resp) {
+												 var r = JSON.parse(resp);
+												 if (r.respCode === 0) {
+												 tip.flag('支付成功', 'success');
+												 setTimeout(function () {
+												 window.location.href = 'pay_ok.html?allSend=' + allSend;
+												 }, 1500);
+												 } else if (r.respCode !== 0) {
+												 tip.flag(r.respMsg, 'error');
+												 setTimeout(function () {
+												 window.location.href = 'my-order-pending.html?typeid=1';
+												 }, 1500);
+												 }
+												 });
+												 });
+												 }
 /*
                                                 if (window.__wxjs_environment === 'miniprogram') {
                                                     // 小程序支付

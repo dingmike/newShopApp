@@ -26,7 +26,7 @@
 		<!--忘记密码-->
 		<div class="input_box">
 				<span class="notes-span1">
-		      		昵称修改
+		      		昵称修改：
 		    </span>
 		    <div class="input_box-div">
 		        <input class="input_box-input setwer" type="text" size="22" />
@@ -38,10 +38,16 @@
 	    </div>
 	<script>
 		$(function(){
-			var arul = location.search;
-			var user =decodeURI(arul.split('=')[1]); 
-			$('.setwer').val(user);
-			console.log(user)
+debugger
+		    var type = GetUrlParam('type');
+		    if(type==1){
+		        $('.notes-span1').text('设置昵称：');
+		        $('.setwer').val('');
+			}else{
+                var arul = location.search;
+                var user =decodeURI(arul.split('=')[1]);
+                $('.setwer').val(user);
+			}
 			$('.click').click(function(){
 				var user = $('.setwer').val();
 				$.post(ajaxUrl+'/front/clients/ModifyUserInfo',{token:token,niceName:user},function(r){

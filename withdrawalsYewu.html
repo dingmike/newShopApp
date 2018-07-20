@@ -14,7 +14,7 @@
     <script src="js/template.js"></script>
     <script src="js/template-helper.js"></script>
     <script type="text/javascript" src="./lib/layer_mobile/layer.js"></script>
-    <title>提现</title>
+    <title>业绩提现</title>
     <style type="text/css">
         .pay_mode {
             height: 350px;
@@ -67,7 +67,7 @@
 <div class="container">
     <header class="bod-show">
         <img class="nav-left" src="img/fanhui.png" onclick="javascript:history.back(-1)"/>
-        提现
+        业绩提现
     </header>
 
     <div class="content">
@@ -111,15 +111,15 @@
         </div>
         <div class="change-mon">
             <div class="sur">
-                <span class="sur-left">剩余余额:<strong class="balance_money"></strong>元</span>
+                <span class="sur-left">业绩: <strong class="balance_money"></strong>元</span>
                 <!--<span class="sur-rgt">全部提现</span>-->
-                <span class="sur-rgt-place">请输入10的倍数,最低100可提现</span>
+                <span class="sur-rgt-place">请输入10的倍数,最低50可提现</span>
             </div>
             <p class="use-tit">提现总额/元：</p>
             <input type="text" class="e-num ipt checkTen" name="" onkeyup="if(this.value.length==1){this.value=this.value.replace(/[^1-9]/g,'')}else{this.value=this.value.replace(/\D/g,'')}" onafterpaste="if(this.value.length==1){this.value=this.value.replace(/[^1-9]/g,'')}else{this.value=this.value.replace(/\D/g,'')}" id="txje" placeholder="0.00" value="" />
             <!--<input type="text" class="e-num ipt checkTen" name="" onafterpaste="if (!/^([\d]|[1-9]\d*0)$/g.test(this.value))this.value=''" id="txje" placeholder="0" value=""/>-->
             <div class="bottom"></div>
-            <div class="sur">
+         <!--   <div class="sur">
 						<span class="sur-left" >
                             提现金额:&nbsp;&nbsp;<span id="withMoneyId" style="color: #ff8b1a;">0.00</span>
                             &nbsp;&nbsp;消费积分:&nbsp;&nbsp;<span id="sellCoinsId" style="color: #ff8b1a;">0.00</span>
@@ -130,7 +130,7 @@
 							实得金额:&nbsp;&nbsp;<span class="yel">0.00</span>
 							&nbsp税收:&nbsp;&nbsp;<span class="sui">0.00</span><span class="blue">&nbsp;&nbsp;(个人, 增值, 附加税)</span>
 						</span>
-            </div>
+            </div>-->
         </div>
         <div class="qr-btn ma-top">
         <button class="qr-cge">确认提现</button>
@@ -166,8 +166,18 @@
 </div>
 <script>
     $(function () {
+
+        getInfo("post", ajaxUrl + "/front/ClientTransfer/businessPromotion?token=" + token, {}, getDetail);
+        function getDetail(r) { //可用余额
+
+           // params.canUse = r.fxMoney;
+            $(".balance_money").html(r.fxMoney);
+
+        }
+
+
 //				监听输入框变化
-        $('#txje').bind('input propertychange', function () {
+       /* $('#txje').bind('input propertychange', function () {
             var price = $("#txje").val();
 
             $('#withMoneyId').text(parseInt(price/2));
@@ -187,7 +197,7 @@
                 $('.yel').text(0.00);
                 $('.sui').text(0.00);
             }
-        });
+        });*/
 
         $('.sk-rgt').click(function () {
             $(".pay_mode_bg").attr("style", "display:block");
@@ -220,17 +230,17 @@
             $('.zfb_id').text(r.zfb);
             $('.wx_id').text(r.wx);
             $('.yzf_id').text(r.bank);
-            $('.balance_money').text(r.balance)
-        }, 'json');
+//            $('.balance_money').text(r.balance)
+        });
         // 全部提现按钮
         $('.sur-rgt').click(function () {
             $('.e-num').val($.trim($('.balance_money').text()));
         });
         // 提现接口
         function comeMoney(amount, account, accountType) {
-            $.post(ajaxUrl + '/front/XtWithdrawControllerFront/confirmWithdraw', {
+            $.post(ajaxUrl + '/front/ClientTransfer/performanceTransfer', {
                 token: token,
-                amount: amount,
+                money: amount,
                 account: account,
                 accountType: accountType
 
@@ -253,16 +263,15 @@
         $('.checkTen').blur(function () {
             var price = $(this).val();
             if (!/^([\d]|[1-9]\d*0)$/g.test(price)){
-              //  $('.qr-cge').css('background-color', '#ccc').attr('disabled','disabled');
+               // $('.qr-cge').css('background-color', '#ccc').attr('disabled','disabled');
                 layer.open({
                     content: '请输入10的倍数！'
                     ,skin: 'msg'
                     ,time: 2 //2秒后自动关闭
                 });
-debugger
-                if(price<100){
+                if(price<50){
                     layer.open({
-                        content: '输入金额必须大于100！'
+                        content: '输入金额必须大于等于50！'
                         ,skin: 'msg'
                         ,time: 2 //2秒后自动关闭
                     });
@@ -271,7 +280,7 @@ debugger
             }else{
                 $('.qr-cge').css('background-color', '#ff5a3a').attr('disabled',false);
             }
-            if (parseInt(price)!= 0) {
+           /* if (parseInt(price)!= 0) {
                 $.post(ajaxUrl + '/front/XtWithdrawControllerFront/revenue', {
                     token: token,
                     amount: parseInt(price/2)
@@ -284,16 +293,15 @@ debugger
             } else {
                 $('.yel').text(0.00);
                 $('.sui').text(0.00);
-            }
+            }*/
     });
 
     $('.qr-cge').click(function () {
         var payMoney = parseFloat($('.e-num').val());
 
-
         var price = payMoney;
         if (!/^([\d]|[1-9]\d*0)$/g.test(price)){
-          //  $('.qr-cge').css('background-color', '#ccc').attr('disabled','disabled');
+            // $('.qr-cge').css('background-color', '#ccc').attr('disabled','disabled');
             layer.open({
                 content: '请输入10的倍数！'
                 ,skin: 'msg'
@@ -301,7 +309,7 @@ debugger
             });
             if(price<100){
                 layer.open({
-                    content: '输入金额必须大于等于100！'
+                    content: '输入金额必须大于100！'
                     ,skin: 'msg'
                     ,time: 2 //2秒后自动关闭
                 });
@@ -311,17 +319,16 @@ debugger
             $('.qr-cge').css('background-color', '#ff5a3a').attr('disabled',false);
         }
 
-
-
         if (!payMoney) {
             tip.flag('请输入充值金额', 'error');
         } else if (payMoney > parseFloat($.trim($('.balance_money').text()))) {
             tip.flag('余额不足', 'error');
         } else {
             $('.account-box ul li').each(function () {
+
                 if ($(this).attr('data-sure') == 'yes') {
                     var way = $(this).attr('class');
-                    var amount = payMoney/2;//申请提现金额
+                    var amount = payMoney;//申请提现金额
                     var account = $.trim($(this).find('p').eq(1).text());
                     console.log(account);
                     switch (way) {

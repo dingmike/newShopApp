@@ -121,6 +121,12 @@
             white-space: nowrap;
             text-overflow: ellipsis;
         }
+        .detail-btn{
+            padding: 10px;
+            background-color: #ff5a3a;
+            color: #fff;
+            cursor: pointer;
+        }
     </style>
 
 </head>
@@ -133,7 +139,7 @@
             <img src="img/fanhui.png" onclick="location.href='my_center.html'"/>
         </div>
         <div class="sto-nav-sear">
-            业务提成转账
+            业绩转账
         </div>
         <div class="nav-right" id="detailAll">
             明细
@@ -147,7 +153,7 @@
             <div class="bottom"></div>
             <div class="sur bod-no">
 						<span class="sur-left">
-							你当前可用业务提成余额：<span class="yel" id="canUse">0</span>
+							你当前可用业绩提成余额：<span class="yel" id="canUse">0</span>
 						</span>
             </div>
         </div>
@@ -155,6 +161,12 @@
             <!--<input type="button" class="qr-cge" id="confirmZ" value="确认转账"/>-->
         <button class="qr-cge" id="confirmZ">确认转账</button>
         </div>
+        <!--<div class="qr-btn ma-top">
+            <button id="detailAll" class="detail-btn" style="width: 50%;">
+                查看转账明细
+            </button>
+            <button id="chakanYeId" class="detail-btn" style="width: 48%;">查看业绩明细</button>
+        </div>-->
 
     </div>
     <!--支付密码-->
@@ -204,6 +216,12 @@
             <!-- 自定义内容区域 -->
         </div>
     </section>
+    <!--<footer>
+        <a href="withdrawalsYewu.html" class="a-st">
+            &lt;!&ndash;<input class="tx-ipt" style="height: 50px;" type="button" id="" value="提现" />&ndash;&gt;
+            <button class="tx-ipt" style="height: 50px;">去提现</button>
+        </a>
+    </footer>-->
 </div>
 <script type="text/javascript">
     var params = {
@@ -224,7 +242,6 @@
 
         getInfo("post", ajaxUrl + "/front/ClientTransfer/businessPromotion?token=" + token, {}, getDetail);
         function getDetail(r) { //可用余额
-            debugger
             params.canUse = r.fxMoney;
             $("#canUse").html(r.fxMoney + "元");
 
@@ -232,13 +249,11 @@
 
         var transNum = document.getElementById("txje"); //转账数量
         transNum.oninput = function () {
-            debugger
             transNum.value = parseInt(transNum.value);
             var num = transNum.value;
             if (num > 0 && (num < params.canUse)) {
                 params.realMoney = true;
             } else if (num > params.canUse) {
-                debugger
                 tip.flag('你没有那么多！', 'error');
                 transNum.value = "";
                 params.realMoney = false;
@@ -335,7 +350,7 @@
 
 
                 });
-            };
+            }
             // 打开键盘
             $("#confirmZ").click(function () {
                 if($('.qr-cge').hasClass("canSent")){
@@ -344,6 +359,11 @@
             });
 
         }(jQuery, YDUI);
+
+
+        $('#chakanYeId').click(function () {
+            location.href = 'detail_yewuAll.html';
+        })
 
     });
 

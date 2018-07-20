@@ -75,6 +75,11 @@
             /* width: 49px; */
             display: block;
             margin: auto;
+            height: 90px;
+        }
+        .bank-card{
+            display: block;
+            height: 88px;
         }
     </style>
 </head>
@@ -159,7 +164,7 @@
                     </div>
                     <div class="bd-box">
 
-                        <a href="bind_zfb.html">
+                        <a href="bind_zfb.html" class="bank-card">
                             <div class="data-bd-hide float-rgt" id="zhifu">
                                 <img class="no-bd-img" src="img/no-z.png"/>
                                 <span class="no-bd-gn">绑定支付宝账号</span>
@@ -172,7 +177,7 @@
                 <div class="data-bd ma-top">
                     <div class="bd-box">
 
-                        <a href="bank-card.html">
+                        <a href="bank-card.html" class="bank-card">
                             <div class="data-bd-hide" id="yinhang">
                                 <img class="no-bd-img" src="img/bd-yh.png"/>
                                 <span class="no-bd-gn">绑定银行账号</span>
@@ -199,7 +204,7 @@
                     <div class="bd-box">
 
                         {{if user.userBank!=null}}
-                        <a href="hasbd-bank-card.html">
+                        <a href="hasbd-bank-card.html" class="bank-card">
                             <div class="data-yh-let">
                                 <img class="bd-img" src="img/bd-yh.png"/>
                                 <span class="bd-tit">绑定银行卡</span>
@@ -208,7 +213,7 @@
                             </div>
                         </a>
                         {{/if}} {{if user.userBank==null}}
-                        <a href="bank-card.html">
+                        <a href="bank-card.html" class="bank-card">
                             <div class="data-bd-hide" id="yinhang">
                                 <img class="no-bd-img" src="img/bd-yh.png"/>
                                 <span class="no-bd-gn">绑定银行账号</span>
@@ -219,15 +224,15 @@
 
                     </div>
                     <div class="bd-box">
-                        {{if user.unionId!=null&& user.unionId!=null}}
+                        {{if user.unionId!=null&&user.openId!=null}}
                         <div class="data-yz-rgt wechat-img-data" style="background-color: green;">
                             <img class="bd-img" src="img/weixin.png" />
                             <span class="bd-tit" id="wxBinged">已绑定微信账号</span>
                             <span class="bd-nr"></span>
                         </div>
-                        {{/if}} {{if user.unionId==null&& user.unionId==null}}
+                        {{/if}} {{if user.unionId==null||user.openId==null}}
                         <div>
-                            <div class="data-bd-hide float-rgt" onclick="goBindWx()">
+                            <div class="data-bd-hide float-rgt wechat-img-data" onclick="goBindWx()">
                                 <img class="no-bd-img" src="img/weixin.png" />
                                 <span class="no-bd-gn">绑定微信账号</span>
                             </div>
@@ -391,6 +396,10 @@
             } else {
                 $('.nick').html(r.user.niceName);
                 $('.huiyuan').html(r.user.memberName);
+
+//                alert('openId: ' + r.user.openId);
+//                alert('unionId: ' + r.user.unionId);
+
                 if(r.user.account.length==11){
                     $('#parterId').text(r.user.account).parent().parent().attr('href','javascript:;');
                 }else{
@@ -415,6 +424,7 @@
                 if (r.user.payNum != null) {
                     $('.zfbId').html(r.user.payNum.substr(0, 3) + '****' + r.user.payNum.substr(8, 4)); //姓名
                 }
+
             }
 
         });
@@ -642,6 +652,7 @@
                                     ,skin: 'msg'
                                     ,time: 3 //2秒后自动关闭
                                 });
+                                window.location.reload();
                             } else {
                                 layer.open({
                                     content: response.msg
