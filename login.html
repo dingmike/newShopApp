@@ -196,7 +196,7 @@
                     if (res.code == 0) {
                         $.ajax({
                             type: "POST",
-                            url: ajaxUrl + '/front/clients/verAccount?unionId=' + res.data.unionid + '&type=1' +'&version='+version + '&tType=' + phoneType,  // tType代表终端类型1，Android，2：ios, 3: h5
+                            url: ajaxUrl + '/front/clients/verAccount?unionId=' + res.data.unionid + '&type=1',  // Type代表类型1，微信，2：支付宝
                             async: false,
                             success: function (response) {
                                 if (response.code == 200) {
@@ -264,7 +264,7 @@
                                     var user_id = GetQueryString2('user_id', res.data);
                                     $.ajax({
                                         type: "POST",
-                                        url: ajaxUrl + '/front/clients/verAccount?unionId=' + user_id + '&type=2' + '&version='+version + '&tType=' + phoneType, // tType代表终端类型1，Android，2：ios, 3: h5
+                                        url: ajaxUrl + '/front/clients/verAccount?unionId=' + user_id + '&type=2', // Type代表类型1，微信，2：支付宝
                                         async: false,
                                         success: function (response) {
                                             if (response.code == 200) {
