@@ -645,6 +645,7 @@
                     data: params,
                     error: function (err) {
                         alert('Insert  Morder err:' + err)
+                        return;
                     },
                     success: function (res) {
                         if (res.code == 200) {
@@ -660,6 +661,7 @@
                              layer.closeAll();
                              location.href = 'scanLogin.html'
                              }, 3000)*/
+                            return;
                         }
 
                     }
@@ -688,7 +690,6 @@
         //选择支付方式
 
         $(".pay-box .order_line").click(function () {
-            debugger
             var index = $(this).index();
             $(".pay_mode .order_line").removeClass("pitchon").addClass("no-choose");
             $(this).addClass("pitchon").removeClass("no-choose");
@@ -872,10 +873,11 @@
                 } else if (res.code == 200) {
                     localStorage.removeItem('token');
                     localStorage.setItem("token", res.data.token);
-//                    localStorage.setItem("token", 'f20df758ae4db7356782d75b7b8709b4');
+//                  localStorage.setItem("token", 'f20df758ae4db7356782d75b7b8709b4');
                     localStorage.setItem('notRealAccount', res.data.account);
                     localStorage.setItem('notRealPas', res.data.password);
-
+                    var myMoney = res.data.myMoney;
+                    var consumPoint = res.data.consumPoint;
                  /*   var res = {
                         "msg": "成功",
                         "code": 200,
@@ -888,49 +890,7 @@
                         }
                     }*/
 
-                    if (res.data.myMoney!=null) {
-                        $('.yue-pay').show();
-                        $('#yueMoney').text(res.data.myMoney.toFixed(2));
 
-
-
-                        var allPrice = localStorage.mianMoPrice;
-//                        localStorage.setItem('mianMoPrice', 198)
-//                        var allPrice = 1000;
-
-                        if (parseFloat(res.data.myMoney) < allPrice) {
-                            var sy = allPrice - res.data.myMoney;
-                            sy = parseFloat(sy);
-                            $('.overplus').addClass('no_money');
-                            $('.overplus').html('还差¥' + sy.toFixed(2) + ',充值再买');
-                        }
-
-                        if (parseFloat(res.data.consumPoint) < allPrice) {
-                            var sx = allPrice - res.data.consumPoint;
-                            sx = parseFloat(sx);
-                            $('.overplus_jifen').addClass('no_jifen');
-                            $('.overplus_jifen').html('还差¥' + sx.toFixed(2));
-                        }
-
-                        $('.balance span').html(res.data.myMoney!=null&&res.data.myMoney!=''?res.data.myMoney.toFixed(2): 0);
-                        $('.integral span').html(res.data.consumPoint!=null&&res.data.consumPoint!=''?res.data.consumPoint.toFixed(2):0);
-
-
-
-
-
-                        $('#yuePayId').change(function () {
-                            if ($(this).prop('checked')) {
-                                // 选中余额支付
-                                alert('yued')
-                            }
-                        })
-
-
-
-                    } else {
-                        $('.yue-pay').hide();
-                    }
 
 
                     // 购买面膜获取面膜数据
@@ -939,26 +899,72 @@
                             // 面膜列表
                             var html = template('mian-box', res);
                             $('.m-select-box').html(html);
-
-                            // 默认选项
-//                            $($('input[type=radio][name=mianMo]')[0]).attr('checked', 'checked');
-//                            $('#countMoneyId').text($($('input[type=radio][name=mianMo]')[0]).data('value'));
-//                            localStorage.setItem('mianMoPrice', $($('input[type=radio][name=mianMo]')[0]).data('value'));
-//                            localStorage.setItem('MproductsId', $($('input[type=radio][name=mianMo]')[0]).attr('data-productId'));
-
-                         /*   $('input[type=radio][name=mianMo]').change(function () {
-                                $('#countMoneyId').text($(this).data('value'));
-                                mianMoPrice = $(this).data('value');
-                                localStorage.setItem('mianMoPrice', $(this).data('value'))
-                                localStorage.setItem('MproductsId', $(this).attr('data-productId'))
-                                //  alert('okMproductsId: ' + $(this).attr('data-productId'))
-                                layer.closeAll();
-                            });*/
                          
                             // 默认选项
                             $('#countMoneyId').text($('.m-select-box').val());
                             localStorage.setItem('mianMoPrice', $('.m-select-box').val());
                             localStorage.setItem('MproductsId', $('.m-select-box').find("option:selected").data('productid'));
+                            judgeMoney(myMoney, consumPoint);
+                            // 选中type=3的面膜需要填写收货信息
+                            if($('.m-select-box').find("option:selected").data('type')==3){
+                                $('#addressBox').show();
+                                $('#payId').hide();
+                                $('#saveAddrssId').click(function(){
+                                    var myreg = /^[1][3,4,5,7,8][0-9]{9}$/;
+                                    var nameStr = $('#nameId').val();
+                                    var phoneStr = $('#phoneId').val();
+                                    var addressStr = $('#value1').val();
+                                    var addressDetailStr = $('#detailAddressId').val();
+
+                                    if (nameStr == '') {
+                                        layer.open({
+                                            content: '请输入用户名'
+                                            ,skin: 'msg'
+                                            ,time: 2 //2秒后自动关闭
+                                        });
+                                    } else if (phoneStr == '') {
+
+                                        layer.open({
+                                            content: '请输入电话号码'
+                                            ,skin: 'msg'
+                                            ,time: 2 //2秒后自动关闭
+                                        });
+                                    } else if (!myreg.test(phoneStr)) {
+                                        layer.open({
+                                            content: '电话号码格式错误'
+                                            ,skin: 'msg'
+                                            ,time: 2 //2秒后自动关闭
+                                        });
+                                    } else if (addressStr == '') {
+                                        layer.open({
+                                            content: '请选择省市区'
+                                            ,skin: 'msg'
+                                            ,time: 2 //2秒后自动关闭
+                                        });
+                                    } else if (addressDetailStr == '') {
+                                        layer.open({
+                                            content: '请输入详细地址'
+                                            ,skin: 'msg'
+                                            ,time: 2 //2秒后自动关闭
+                                        });
+                                    }else{
+                                        var addressAll = ''+ nameStr+","+ phoneStr+ ','+addressStr+ addressDetailStr;
+                                        localStorage.setItem('addressAll', addressAll);
+                                        $('#addressBox').hide();
+                                        $('#payId').show();
+                                    }
+
+                                })
+                            }else{
+                                $('#nameId').val('');
+                                $('#phoneId').val('');
+                                $('#value1').val('');
+                                $('#detailAddressId').val('');
+                                localStorage.removeItem('addressAll');
+                                $('#addressBox').hide();
+                                $('#payId').show();
+                            }
+
                             $('.m-select-box').change(function () {
                                 $('#countMoneyId').text($(this).val());
                                 mianMoPrice = $(this).val();
@@ -1026,6 +1032,10 @@
                                     $('#payId').show();
 
                                 }
+
+
+                                // 处理选择的余额值
+                                judgeMoney(myMoney, consumPoint);
 
                             })
                             
@@ -1451,7 +1461,6 @@
                     $('#mianSelect').hide();
 
                     // 显示时间
-
                     /*layer.open({
                      content: res.msg
                      , skin: 'msg'
@@ -1501,6 +1510,46 @@
             return true;
         } else {
             return false;
+        }
+    }
+    function judgeMoney(myMoney, consumPoint) {
+        if (myMoney!=null) {
+            $('.yue-pay').show();
+            $('#yueMoney').text(myMoney.toFixed(2));
+
+            var allPrice = localStorage.mianMoPrice;
+//                        localStorage.setItem('mianMoPrice', 198)
+//                        var allPrice = 1000;
+
+            if (parseFloat(myMoney) < allPrice) {
+                var sy = allPrice - myMoney;
+                sy = parseFloat(sy);
+                $('.overplus').addClass('no_money');
+                $('.overplus').html('还差¥' + sy.toFixed(2) + ',充值再买');
+            }
+
+            if (parseFloat(consumPoint) < allPrice) {
+                var sx = allPrice - consumPoint;
+                sx = parseFloat(sx);
+                $('.overplus_jifen').addClass('no_jifen');
+                $('.overplus_jifen').html('还差¥' + sx.toFixed(2));
+            }
+            $('.balance span').html(myMoney!=null&&myMoney!=''?myMoney.toFixed(2): 0);
+            $('.integral span').html(consumPoint!=null&&consumPoint!=''?consumPoint.toFixed(2):0);
+
+
+
+            $('#yuePayId').change(function () {
+                if ($(this).prop('checked')) {
+                    // 选中余额支付
+                    // alert('yue')
+                }
+            })
+
+
+
+        } else {
+            $('.yue-pay').hide();
         }
     }
 

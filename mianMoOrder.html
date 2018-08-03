@@ -179,7 +179,11 @@
                             $dateShow1.find(".m").html(d.m);
                             $dateShow1.find(".s").html(d.s);
                         }else{
-                            alert('结束')
+                            layer.open({
+                                content: r.data.tiemMsg
+                                ,skin: 'msg'
+                                ,time: 2 //2秒后自动关闭
+                            });
                         }
                     });
                 }

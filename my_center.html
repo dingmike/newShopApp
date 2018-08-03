@@ -379,12 +379,17 @@
                 <span class="team-tit">管理面膜</span>
                 <img class="rgt-img" src="img/rtu.png"/>
             </div>
+            <div class="form-tit erweima-m"  onclick="location.href='qrcodeCheck.html'">
+                <img class="ewm-img" src="img/miamguli.png"/>
+                <span class="team-tit">店铺二维码</span>
+                <img class="rgt-img" src="img/rtu.png"/>
+            </div>
         </div>
     <!--    <div class="cet-img-box" >
             <img src="img/offLineEnter.png">
         </div>-->
         <div class="cet-img-box" >
-            <a href="storeManagement.html" class="store-management"><img src="img/offLineEnter.png" style="margin-bottom: 12px;"></a>
+            <!--<a href="storeManagement.html" class="store-management"><img src="img/offLineEnter.png" style="margin-bottom: 12px;"></a>-->
             <img src="img/qf.png" id="goStoreLogin">
         </div>
     </div>
@@ -589,9 +594,11 @@
 
                 if(r.user.webType == 2||r.user.webType == 3){
                     $('.store-management').show();
+                    $('.erweima-m').show();
                     localStorage.setItem('webType', r.user.webType);
                 }else{
-                    $('.store-management').hide()
+                    $('.store-management').hide();
+                    $('.erweima-m').hide();
                 }
 
                 if(r.user.mm != 1){
