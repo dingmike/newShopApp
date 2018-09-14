@@ -152,7 +152,9 @@
             </div>-->
 
             <div class="data-bd-box wbdxx">
-                <div class="data-bd">
+
+
+                <!--<div class="data-bd">-->
                     <div class="bd-box">
 
                         <a href="bank-card.html">
@@ -172,10 +174,23 @@
                         </a>
 
                     </div>
-                </div>
+                <!--</div>-->
 
-                <div class="data-bd ma-top">
-                    <div class="bd-box">
+                <!--<div class="data-bd ma-top">-->
+
+
+                    <a href="reset_pay_password.html">
+                        <div class="set-box">
+							<span class="set-nam">
+								绑定银行账号
+							</span>
+                            <span class="set-rtn">
+								<img src="img/rtu.png"/>
+							</span>
+                        </div>
+                    </a>
+
+                    <!--<div class="bd-box">
 
                         <a href="bank-card.html" class="bank-card">
                             <div class="data-bd-hide" id="yinhang">
@@ -183,25 +198,74 @@
                                 <span class="no-bd-gn">绑定银行账号</span>
                             </div>
                         </a>
-                    </div>
-                    <!--<div class="bd-box">
-                        <a href="yizhifu.html">
-                            <div class="data-bd-hide float-rgt" id="yizhi">
-                                <img class="no-bd-img" src="img/no-y.png" />
-                                <span class="no-bd-gn">绑定翼支付账号</span>
-                            </div>
-                        </a>
                     </div>-->
-                </div>
+                <!--</div>-->
             </div>
-            <div class="data-bd-box">
+            <div class="data-bd-box2">
 
             </div>
             <script type="text/template" id="data-bd-box">
 
-                <div class="data-bd">
+                <!--<div class="data-bd">-->
 
-                    <div class="bd-box">
+
+                    <!--new start-->
+                    <div class="data-set-box">
+                        {{if user.userBank!=null}}
+                        <a href="hasbd-bank-card.html">
+                            <div class="set-box">
+							<span class="set-nam">
+								<span style="display: block;float: left;">绑定银行卡:&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="set-nam bankID"></span>
+							</span>
+                                <span class="set-rtn">
+								<img src="img/rtu.png"/>
+							</span>
+                            </div>
+                        </a>
+                        {{/if}} {{if user.userBank==null}}
+                        <a href="bank-card.html">
+                            <div class="set-box">
+							<span class="set-nam">
+								绑定银行账号
+							</span>
+                                <span class="set-rtn">
+								<img src="img/rtu.png"/>
+							</span>
+                            </div>
+                        </a>
+                        {{/if}}
+                    </div>
+
+                    <div class="data-set-box">
+                        {{if user.unionId!=null&&user.openId!=null}}
+                        <a href="javascript:;">
+                            <div class="set-box">
+							<span class="set-nam">
+								已绑定微信账号
+							</span>
+                                <span class="set-rtn">
+								<img src="img/rtu.png"/>
+							</span>
+                            </div>
+                        </a>
+                        {{/if}} {{if user.unionId==null||user.openId==null}}
+                        <a href="javascript:;">
+                            <div class="set-box" onclick="goBindWx()">
+							<span class="set-nam">
+								绑定微信账号
+							</span>
+                                <span class="set-rtn">
+								<img src="img/rtu.png"/>
+							</span>
+                            </div>
+                        </a>
+                        {{/if}}
+                    </div>
+                    <!--new end-->
+
+
+                    <!--old start-->
+                   <!-- <div class="bd-box">
 
                         {{if user.userBank!=null}}
                         <a href="hasbd-bank-card.html" class="bank-card">
@@ -236,52 +300,82 @@
                                 <img class="no-bd-img" src="img/weixin.png" />
                                 <span class="no-bd-gn">绑定微信账号</span>
                             </div>
-                        </div>
+                        </div>-->
                         {{/if}}
                     </div>
-                    <!--<div class="bd-box">
-                        <div class="data-yz-rgt">
-                            <img class="bd-img" src="img/bd-z.png" />
-                            <span class="bd-tit">翼支付绑定</span>
-                            <img class="bd-rtu-img" src="img/bd-y.png" />
-                            <span class="bd-nr">6217****003</span>
-                        </div>
-                        <a href="yizhifu.html">
-                            <div class="data-bd-hide float-rgt" id="yizhi">
-                                <img class="no-bd-img" src="img/no-y.png" />
-                                <span class="no-bd-gn">绑定翼支付账号</span>
+                    <!--old end-->
+
+                <!--</div>-->
+
+                <!--<div class="data-bd ma-top">-->
+
+                    <!--new start-->
+                    <div class="data-set-box">
+                        {{if user.aliId!=null}}
+                        <a href="javascript:;">
+                            <div class="set-box">
+							<span class="set-nam">
+								<span style="display: block;float: left;">快捷登录支付宝账号:&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="set-nam zfbId"></span>
+							</span>
+                                <span class="set-rtn">
+								<img src="img/rtu.png"/>
+							</span>
                             </div>
                         </a>
-                    </div>-->
-                </div>
-
-                <div class="data-bd ma-top">
-                  <!--  <div class="bd-box">
-
-                        {{if user.idCard!=null}}
-                        <a href="attestation.html">
-                            <div class="data-bd-let">
-                                <img class="bd-img" src="img/bd-zl.png"/>
-                                <span class="bd-tit">实名认证</span>
-                                <span class="bd-nr tureName"></span>
-                            </div>
-                        </a>
-                        {{/if}} {{if user.idCard==null}}
-                        <a href="bank-card.html">
-                            <div class="data-bd-hide" id="shenfen">
-                                <img class="no-bd-img" src="img/no-gr.png"/>
-                                <span class="no-bd-gn">认证身份信息</span>
+                        {{/if}} {{if user.aliId==null}}
+                        <a href="javascript:;">
+                            <div class="set-box" onclick="goBindAli()">
+							<span class="set-nam">
+								绑定支付宝账号
+							</span>
+                                <span class="set-rtn">
+								<img src="img/rtu.png"/>
+							</span>
                             </div>
                         </a>
                         {{/if}}
-                    </div>-->
-                    <div class="bd-box">
+                    </div>
+
+                    <div class="data-set-box">
+                        {{if user.payNum!=null}}
+                        <a href="has_bind_zfb.html">
+                            <div class="set-box">
+							<span class="set-nam">
+								<span style="display: block;float: left;">提现的支付宝: &nbsp;&nbsp;&nbsp;&nbsp;</span><span class="set-nam zfbId"></span>
+							</span>
+                                <span class="set-rtn">
+								<img src="img/rtu.png"/>
+							</span>
+                            </div>
+                        </a>
+                        {{/if}} {{if user.payNum==null}}
+                        <a href="bind_zfb.html">
+                            <div class="set-box">
+							<span class="set-nam">
+								填写提现支付宝账号
+							</span>
+                                <span class="set-rtn">
+								<img src="img/rtu.png"/>
+							</span>
+                            </div>
+                        </a>
+                        {{/if}}
+                    </div>
+                    <!--new end-->
+
+
+
+
+
+
+                    <!--old  start-->
+                   <!-- <div class="bd-box">
 
                         {{if user.aliId!=null}}
 
                             <div class="data-bd-rgt">
                                 <img class="bd-img" src="img/bd-z.png"/>
-                                <span class="bd-tit">已绑定支付宝账号</span>
+                                <span class="bd-tit">快捷登录支付宝账号</span>
                                 <img class="bd-rtu-img" src="img/bd-rt.png"/>
                                 <span class="bd-nr zfbId"></span>
                             </div>
@@ -316,8 +410,9 @@
                             </div>
                         </a>
                         {{/if}}
-                    </div>
-                </div>
+                    </div>-->
+                    <!--old  end-->
+                <!--</div>-->
 
 
             </script>
@@ -413,7 +508,7 @@
                     $('.data-tx').attr('src', r.user.headImg);
                 }
                 var html = template('data-bd-box', r);
-                $('.data-bd-box').html(html);
+                $('.data-bd-box2').html(html);
 
                 if (r.user.relName != null) {
                     $('.tureName').html('**' + r.user.relName.substr(1)); //姓名

@@ -62,11 +62,15 @@
 			<img class="sm-img" src="img/shiming.png"/>
 			<input class="sm-span zfbName" type="text" value="" placeholder="名字"/>
 		</div>
-		<div class="shiming">
+		<div class="shiming head-st">
 			<img class="sm-img" src="img/shenfen.png"/>
-			<input class="sm-span payNun" value="" placeholder="支付宝账号" style="width: 70%;"/>
+			<input class="sm-span payNun" value="" type="text" placeholder="支付宝账号" style="width: 70%;"/>
 		</div>
-		<div style="color: red;font-size: 12px">此账号用于提现转账!</div>
+		<div class="shiming head-st">
+			<img class="sm-img" src="img/mima.png"/>
+			<input class="sm-span payPassword" value="" type="password"  size="22" placeholder="购一购支付密码" style="width: 70%;"/>
+		</div>
+		<div style="color: red;font-size: 12px;padding: 2px 10px;">此账号用于提现转账!</div>
 		<div class="click">确定</div>
 	</div>
 </div>
@@ -75,12 +79,13 @@
         $('.click').click(function(){
             var zfbName = $('.zfbName').val();
             var payNun = $('.payNun').val();
+            var payPassword = $('.payPassword').val();
             if(!zfbName){
                 tip.flag('请填写名字','error');
             }else if(!payNun){
                 tip.flag('请填写支付宝账号','error');
             }else{
-                $.post(ajaxUrl+'/front/XtUserInfo/bindingZfb',{token:token,zfbName:zfbName,payNun:payNun},function(r){
+                $.post(ajaxUrl+'/front/XtUserInfo/bindingZfb',{token:token,zfbName:zfbName,payNun:payNun,payPassWord: payPassword},function(r){
                     if(r.code==300){
                         //提示
                         layer.open({
@@ -95,6 +100,7 @@
                             ,skin: 'msg'
                             ,time: 2 //2秒后自动关闭
                         });
+                        location.href='personal-data.html';
                     }
                 })
             }

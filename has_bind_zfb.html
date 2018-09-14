@@ -60,11 +60,14 @@
 					<img class="sm-img" src="img/shiming.png"/>
 					<input class="sm-span zfbName" type="text" value="" />
 				</div>
-				<div class="shiming">
+				<div class="shiming head-st">
 					<img class="sm-img" src="img/shenfen.png"/>
 					<input class="sm-span payNun"type="text" value="" />
 				</div>
-			
+				<div class="shiming head-st">
+					<img class="sm-img" src="img/mima.png"/>
+					<input class="sm-span payPassword" value="" type="password"  size="22" placeholder="购一购支付密码" style="width: 70%;"/>
+				</div>
 				<div class="click">确定绑定</div>
 			</div>
 		</div>
@@ -74,7 +77,7 @@
 				$.post(ajaxUrl+'/front/clients/userInfo',{token:token},function(r){
 					$('.payNun').val(r.user.payNum);
 					$('.zfbName').val(r.user.zfbName);
-					
+
 				},'json');
 					
 					
@@ -82,18 +85,20 @@
 				$('.click').click(function(){
 					var zfbName = $('.zfbName').val();
 					var payNun = $('.payNun').val();
+                    var payPassword = $('.payPassword').val();
 					if(!zfbName){
 						tip.flag('请填写名字','error');
 					}else if(!payNun){
 						tip.flag('请填写支付宝账号','error');
 					}else{
-						$.post(ajaxUrl+'/front/XtUserInfo/bindingZfb',{token:token,zfbName:zfbName,payNun:payNun},function(r){
+						$.post(ajaxUrl+'/front/XtUserInfo/bindingZfb',{token:token,zfbName:zfbName,payNun:payNun,payPassWord:payPassword},function(r){
 							if(r.code==300){
 								tip.flag(r.msg,'error');
 							}else{
 								tip.flag(r.msg,'success');
+								location.href='personal-data.html';
 							}
-						},'json')
+						})
 					}
 				});
 				

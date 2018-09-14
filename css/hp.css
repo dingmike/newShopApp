@@ -6668,7 +6668,7 @@ i.li-bottom {
     margin-top: 10px;
     background-color: white;
     overflow: hidden;
-    padding-bottom: 30px;
+    /*padding-bottom: 30px;*/
 }
 
 .set-box {

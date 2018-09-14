@@ -590,15 +590,11 @@
 			}, setSpecialHtml);
 
 			function setSpecialHtml(r) {
-				console.log(r)
 				var html = template('shop_nav', r);
-
 				$('#shopNav').html(html);
-
 				$("#shopNav ul li").eq(0).addClass('on');
 				// 点击不同的导航请求不同的数据
 				$("#shopNav ul li").click(function() {
-				    debugger
 					var catId = $(this).data('id');
 					/*listLoading = false;
 					listLoadingLock = false; // 初始化页面没有被锁定，，可以滚动
@@ -624,10 +620,6 @@
 				});
 
 			}
-
-
-
-
            // http://yangxiao.tunnel.qydev.com/shop/shopProductCategory/selectShopProductCategoryByCId?CategoryId=34
 			function setNavTwo(r) {
                 var html = template('shop_nav2', r);
@@ -664,7 +656,7 @@
 
 				if(r.Product.length === 0 && currentpage === 1) {
 					$(obj).html('<div class="_nodata" style="font-size: 14px; text-align: center;">暂无数据</div>');
-				} else if(r.Product.length !== 0) {
+				} else if(r.Product.length !== 0&&r.Product[0].productId!=null) {
 
                     // 显示广告金
                     for(var i=0; i<r.Product.length; i++){
@@ -677,19 +669,12 @@
                         console.log(r.Product[i])
                     }
 
-
-
-
 					var html = template('goods_box1', r);
-
-
                     var countDownArr=[];
                     $.each(r.Product, function (key, val) {
 
                         countDownArr.push('countdown' + val.productId);
                     });
-
-
 					if(currentpage === 1) {
 						$(obj).html(html);
                         //倒计时
@@ -700,7 +685,10 @@
                         countDownEvent(countDownArr);
 					}
                     $('.buy-load').remove();
-				} else {
+				} else if(r.Product.length ==1 && r.Product[0].productId==null) {
+				    if(currentpage == 1){
+				        $('.goods_box1').empty();
+					}
 					listLoadingLock = true;
 					if( $('.buy-load')){
                         $('.buy-load').remove();
@@ -709,12 +697,9 @@
 				}
 			}
 
-
             // 倒计时
             function countDownEvent(counmtDomArr) {
-
                 for(var i=0; i<counmtDomArr.length; i++){
-
                     $('.' + counmtDomArr[i]).downCount({
 //                    date: '3/15/2018 00:00:00',
                         offset: +8,  //+10
@@ -723,11 +708,7 @@
                         // alert('倒计时结束!');
                     });
                 }
-
-
-
             }
-
 
             $('.content').scroll(function() {
 				totleHeight = parseFloat($(window).height() ) + parseFloat($(window).scrollTop());

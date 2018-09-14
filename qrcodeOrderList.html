@@ -1,0 +1,105 @@
+
+
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta charset="UTF-8">
+    <meta content="yes" name="apple-mobile-web-app-capable"/>
+    <meta content="black" name="apple-mobile-web-app-status-bar-style"/>
+    <!-- 引入样式 -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <link rel="stylesheet" href="https://unpkg.com/vant/lib/vant-css/index.css">
+    <link rel="stylesheet" type="text/css" href="css/index.css"/>
+    <link rel="stylesheet" href="css/hp.css"/>
+    <style>
+        .nav-left-new {
+            height: 20px;
+            width: 18px;
+            position: absolute;
+            left: 10px;
+            top: 12px;
+        }
+    </style>
+</head>
+<body>
+<div id="app">
+    <div class="container alert-op">
+        <header>
+            <img class="nav-left-new" src="img/fanhui.png" alt="" onclick="javascript:history.back(-1);"/> 确认订单
+        </header>
+        <div style="margin-top: 40px">
+            <van-cell>afdsfasdfasdfas</van-cell>
+            <van-list
+                    v-model="loading"
+                    :finished="finished"
+                    @load="onLoad"
+            >
+                <van-cell v-for="item in list" :key="item" :title="item + ''" />
+            </van-list>
+    </div>
+
+</div>
+
+
+</div>
+</body>
+<!-- 先引入 Vue -->
+<!--<script src="https://unpkg.com/vue/dist/vue.js"></script>-->
+<!-- 引入组件 -->
+<script src="https://unpkg.com/vue/dist/vue.min.js"></script>
+<script src="https://unpkg.com/vant/lib/vant.min.js"></script>
+<!--<script src="js/vant.min.js"></script>-->
+<!-- **引入你写的组件库** -->
+<script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+<!--<script src="/js/axios.min.js"></script>-->
+<script>
+    //    axios.defaults.headers.post['Content-Type'] = 'application/x-www-form-urlencoded';
+    new Vue({
+        el: '#app',
+        data: function () {
+            return {
+                list: [1,2],
+                loading: false,
+                finished: false,
+                visible: false,
+                tableKey: 0,
+                total: null,
+                listLoading: true,
+                orderAmount:0,
+                allSettlement:0,
+                listQuery: {
+                    shopId: localStorage.shopId,
+                    type: '',  // type=1为今日的
+                    page: 1,
+                    size: 10
+                },
+            }
+        },
+        methods: {
+            onClickLeft() {
+               history.back(-1);
+            },
+            onClickRight() {
+//                Toast('按钮');
+            },
+            onLoad() {
+                debugger
+                let that =this;
+                setTimeout(() => {
+                    for (let i = 0; i < 10; i++) {
+                        that.list.push(that.list.length + 1);
+                    }
+                    that.loading = false;
+
+                    if (this.list.length >= 40) {
+                        that.finished = true;
+                    }
+                }, 500);
+            }
+        }
+
+    })
+</script>
+</html>

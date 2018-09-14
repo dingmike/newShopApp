@@ -92,7 +92,7 @@
 					<img src="img/fanhui.png" onclick="javascript:history.back(-1)" />
 				</div>
 				<div class="mx-nav">
-					<span>全部明细</span>
+					<span>扫码订单明细</span>
 					<img class="sanjiao" src="img/sanjiao1.png" />
 				</div>
 			</header>
@@ -107,11 +107,22 @@
 				</ul>
 			</div>
 			<div class="head-box-new">
-				<div>
-					结算金额：<span id="allSettlement"></span>
+				<div style="float: left; width: 50%;">
+					<div>
+						结算金额：<span id="allSettlement"></span>
+					</div>
+					<div>
+						总金额：<span id="orderAmount"></span>
+					</div>
 				</div>
+
 				<div>
-					总金额：<span id="orderAmount"></span>
+					<div>
+						今日结算金额：<span id="allSettlementOne"></span>
+					</div>
+					<div>
+						今日总金额：<span id="orderAmountOne"></span>
+					</div>
 				</div>
 				<div>
 					<button class="new-btn" id="allBtn">查看全部</button>
@@ -151,11 +162,14 @@
 		</div>
 		<script type="text/template" id="detail-con">
 			{{each olist as list i}}
-			<li style="height: 58px;
+			<li style="height: 80px;
     border-bottom: 1px solid #ccc;">
 				<div class="chang-go-left ma-zero" style="width:249px;">
-					<div class="chang-state">
+					<div class="chang-state" style=" color: #a8a3a3">
 						{{list.orderId}}
+					</div>
+					<div class="chang-state">
+						支付对象：{{list.telNumber}}
 					</div>
 					<span class="chang-time">时间：{{list.createTime | dateFormat:'yyyy-MM-dd h:m:s'}}</span>
 				</div>
@@ -163,7 +177,7 @@
 					<!--<div class="chang-one">
 					{{if list.inOrout==1||list.inOrout==4}}-{{else}}+{{/if}}{{list.money}}
 					</div>-->
-					<span class="chang-time">支付金额：{{list.payMoney}}</span>
+					<span class="chang-time" style="margin-top: 6px;">订单金额：{{list.orderAmount}}</span>
 				</div>
 			</li>
 			{{/each}}
@@ -171,42 +185,105 @@
 		<script type="text/javascript" src="js/template.js"></script>
 		<script type="text/javascript" src="js/template-helper.js"></script>
 		<script type="text/javascript">
-			var show = {
-				dataType: '',
-				typeId: '',
-				page: []
-			}
-			var flag=false;
-			var params = {
-			    type:'',
-				type2:'',
-				shopId: localStorage.shopId,
+            $.ajax({
+                type: "get",
+                url: ajaxUrl+"/front/shop/queryQRproduct?token=" +localStorage.token,
+                async: false,
+                traditional: true,
+                success: function (res) {
+                    if (res.code == 200) {
+                        localStorage.setItem('shopId',res.ProductsInfo.shopId);
+                    }else{
+                        layer.open({
+                            content: res.msg
+                            ,skin: 'msg'
+                            ,time: 2 //2秒后自动关闭
+                        });
+                    }
+                }
+            });
+
+            var show = {
+                dataType: '',
+                typeId: '',
+                page: []
+            }
+            var flag=false;
+            var params = {
+                type:'',
+                type2:'',
+                shopId: localStorage.shopId,
                 page: 1,
                 size: 10
-			}
+            }
 			$(function() {
 
+			    // 获取shopId
+//                front/shop/queryQRproduct
+
+               /* getInfo('get', ajaxUrl+"/front/shop/queryQRproduct",{token: localStorage.token},function (res) {
+                    debugger
+                    localStorage.setItem('shopId',res.ProductsInfo.shopId);
+                })*/
+
+			    // 获取全部金额信息
+                getInfo('get', ajaxUrl+"/shop/starMoney",{shopId: localStorage.shopId, type:''},function (res) {
+                    $('#allSettlement').text(res.allSettlement);
+                    $('#orderAmount').text(res.orderAmount);
+                })
+
+				// 获取今日金额
+                getInfo('get', ajaxUrl+"/shop/starMoney",{shopId: localStorage.shopId, type:1},function (res) {
+
+                    $('#allSettlementOne').text(res.allSettlement);
+                    $('#orderAmountOne').text(res.orderAmount);
+                })
 			    $('#allBtn').click(function () {
-			        debugger
+
                     $('.footer_box ').remove();
-                    var params = {
+                     params = {
                         shopId: localStorage.shopId,
                  		type:'',
                         size: 10,
                         page: 1
                     }
+                    show = {
+                        dataType: '',
+                        typeId: '',
+                        page: []
+                    }
+                    show.page.push(1);
+                    show.dataType = 0;
+                    $("#con-list ul").each(function() {
+                        if($(this).data("type") == show.dataType) {
+                            show.typeId = $(this).attr("id");
+                        }
+                    });
                     getList("#" + show.typeId, "post", ajaxUrl+"/shop/orderFlow?token=" + token, params, detailReq);
 //                    connectDisplay(".jl", "data-type", show.dataType);
                 })
 
                 $('#oneDayBtn').click(function () {
+                    debugger
                     flag=true;
-                    var params = {
+                     params = {
                         shopId: localStorage.shopId,
 						type:1,
                         page: 1,
                         size: 10
                     }
+                     show = {
+                        dataType: '',
+                        typeId: '',
+                        page: []
+                    }
+                    show.page.push(1);
+                    show.dataType = 0;
+                    $("#con-list ul").each(function() {
+                        if($(this).data("type") == show.dataType) {
+                            show.typeId = $(this).attr("id");
+                        }
+                    });
                     getList("#" + show.typeId, "post", ajaxUrl+"/shop/orderFlow?token=" + token, params, detailReq);
 //                    connectDisplay(".jl", "data-type", show.dataType);
                 })
@@ -305,8 +382,6 @@
 				html += "<p > 没有了！！！ </p>";
 				html += "</div> </div>";
 
-				$('#allSettlement').text(r.allSettlement);
-				$('#orderAmount').text(r.orderAmount);
 				var length = r.olist.length;
 				if(length != 0 && show.page[show.dataType] == 1) {
 					var html1 = template("detail-con", r);
