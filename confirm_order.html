@@ -187,6 +187,80 @@
             background-repeat: no-repeat;
             background-size: 17px 17px;
         }
+
+
+
+
+
+
+
+
+
+        /**
+         * Checkbox Three
+         */
+        .checkboxThree {
+            width: 69px;
+            height: 30px;
+            background: #333;
+            /* margin: 20px 60px; */
+            border-radius: 50px;
+            position: relative;
+            top: -28px;
+        }
+        /**
+  * Create the text for the On position
+  */
+        .checkboxThree:before {
+            content: '是';
+            position: absolute;
+            top: 8px;
+            left: 14px;
+            height: 2px;
+            color: #ff5e3f;
+            font-size: 12px;
+        }
+        /**
+         * Create the label for the off position
+         */
+        .checkboxThree:after {
+            content: '否';
+            position: absolute;
+            top: 8px;
+            left: 41px;
+            height: 2px;
+            color: #ddd;
+            font-size: 12px;
+        }
+        /**
+   * Create the pill to click
+   */
+        .checkboxThree label {
+            display: block;
+            width: 27px;
+            height: 16px;
+            border-radius: 50px;
+
+            -webkit-transition: all .5s ease;
+            -moz-transition: all .5s ease;
+            -o-transition: all .5s ease;
+            -ms-transition: all .5s ease;
+            transition: all .5s ease;
+            cursor: pointer;
+            position: absolute;
+            top: 7px;
+            z-index: 1;
+            left: 34px;
+            background: #ddd;
+        }
+
+        /**
+         * Create the checkbox event for the label
+         */
+        .checkboxThree input[type=checkbox]:checked + label {
+            left: 10px;
+            background: #ff5e3f;
+        }
     </style>
 
 </head>
@@ -360,6 +434,21 @@
         <div class="pay_mode_tit">
             选择支付方式<img src="img/guanbi.png" alt=""/>
         </div>
+
+        <div class="pay-box" style="display: inline-block;
+    padding: 0px 30px;">
+
+            <div class="radio-box">
+                <h3 style="width: 295px;height: 30px;font-size: 12px;
+    line-height: 30px;">是否使用广告金抵扣</h3>
+                <div class="checkboxThree" style="float: right;">
+                    <input type="checkbox" value="1" id="checkboxThreeInput" name="" />
+                    <label for="checkboxThreeInput"></label>
+                </div>
+            </div>
+
+        </div>
+
         <div class="pay-box">
 
             <div class="order_line" data-pay="balance">
@@ -544,7 +633,7 @@
                 });
             } else {
                 $(".pay_mode_bg").attr("style", "display:block");
-                $(".pay_mode").attr("style", "height:344px;transition: height 0.5s;-moz-transition: height 0.5s; -webkit-transition: height 0.5s;-o-transition: height 0.5s;");
+                $(".pay_mode").attr("style", "height: 402px; transition: height 0.5s;-moz-transition: height 0.5s; -webkit-transition: height 0.5s;-o-transition: height 0.5s;");
                 $.ajax({
                     type: "post",
                     url: ajaxUrl + "/front/clients/checkBalance",
@@ -608,7 +697,7 @@
             });
 
             //输入密码  成功后的操作
-            function payInputPassWord(type) {
+            function payInputPassWord(type,status) {
                 $('.g-scrollview').css('display', 'block');
                 $keyboard.keyBoard('open');
 
@@ -619,7 +708,8 @@
                         token: token,
                         orderId: comfirmOrderId,
                         type: type,
-                        payPassword: ret.password
+                        payPassword: ret.password,
+                        status:status
                     }, function (r) {
                         $('.m-loading').css('display', 'flex');
                         if (r.code == 300) {
@@ -653,6 +743,12 @@
                 $(".pay-box .order_line").each(function () {
                     if ($(this).hasClass('pitchon')) {
                         var dataPay = $(this).attr('data-pay');
+                        if($('#checkboxThreeInput').is(':checked')){
+                            var status = 0;
+                        }else{
+                            var status = 1;
+                        }
+
                         switch (dataPay) {
                             case 'balance':
                                 if ($('.balance').hasClass('pitchon1') && (!$('.integral').hasClass('pitchon1'))) { //余额支付
@@ -665,7 +761,8 @@
                                             , time: 2 //2秒后自动关闭
                                         });
                                     } else {
-                                        payInputPassWord(0);
+                                        //status
+                                        payInputPassWord(0, status);
                                     }
 
                                 } else if ((!$('.balance').hasClass('pitchon1')) && ($('.integral').hasClass('pitchon1'))) {
@@ -679,14 +776,13 @@
                                             , time: 2 //2秒后自动关闭
                                         });
                                     } else {
-                                        payInputPassWord(1);
+                                        payInputPassWord(1, status);
                                     }
 
                                 } else if ($('.balance').hasClass('pitchon1') && ($('.integral').hasClass('pitchon1'))) {
                                     console.log('一起支付');
                                     var yuer = parseFloat($.trim($('.balance span').text()));
                                     var jifen = parseFloat($.trim($('.integral span').text()));
-
                                     if ((yuer + jifen) < allPrice) {
 //														tip.flag('都不够', 'error')
                                         layer.open({
@@ -695,7 +791,7 @@
                                             , time: 2 //2秒后自动关闭
                                         });
                                     } else {
-                                        payInputPassWord(2);
+                                        payInputPassWord(2, status);
 
                                     }
                                 }
@@ -704,13 +800,14 @@
                                 getInfo("post", ajaxUrl + alipayApp + '' + token, {
                                     money: totalAmount,
                                     type: 1,
-                                    orderId: comfirmOrderId
+                                    orderId: comfirmOrderId,
+                                    status: status
                                 }, alPayReq);
 
                             function alPayReq(r) {
-                               $('#aliId').html(r.data.sign); // h5支付
+//                               $('#aliId').html(r.data.sign); // h5支付
                                 //调用支付原生
-                               /* setupWebViewJavascriptBridge(function (bridge) {
+                                setupWebViewJavascriptBridge(function (bridge) {
                                  bridge.callHandler('loadThreePay', {
                                  'pay': 'Alipay',
                                  'data': r.data.sign
@@ -734,7 +831,7 @@
                                  }
 
                                  });
-                                 });*/
+                                 });
                             }
 
                                 break;
@@ -742,10 +839,11 @@
 
 
                                 // 调用支付原生api
-                                /* getInfo("post", ajaxUrl + "/front/payInfo/wxPay?token=" + token, {
+                                 getInfo("post", ajaxUrl + "/front/payInfo/wxPay?token=" + token, {
                                  money: totalAmount,
                                  type: 2,
-                                 orderId: comfirmOrderId
+                                 orderId: comfirmOrderId,
+                                 status: status
                                  }, wxPayReq);
 
                                  function wxPayReq(r) {
@@ -772,8 +870,7 @@
                                  });
                                  });
                                  }
-*/
-                                if (window.__wxjs_environment === 'miniprogram') {
+                               /* if (window.__wxjs_environment === 'miniprogram') {
 
                                     // 小程序支付
                                     var backUrl = location.href;
@@ -797,7 +894,7 @@
                                             }
                                         })
                                     }
-                                }
+                                }*/
 
 
                                 break;

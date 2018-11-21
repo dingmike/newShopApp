@@ -384,6 +384,12 @@
                 <span class="team-tit">店铺二维码</span>
                 <img class="rgt-img" src="img/rtu.png"/>
             </div>
+
+            <div class="form-tit" id="enterLy">
+                <img class="ewm-img" src="img/erwm.png"/>
+                <span class="team-tit">一键加入乐e助</span>
+                <img class="rgt-img" src="img/rtu.png"/>
+            </div>
         </div>
         <!--<div class="cet-img-box" >
             <img src="img/offLineEnter.png">
@@ -525,6 +531,39 @@
 
     $(function () {
 
+        // 加入乐e助手
+        $('#enterLy').on('click',function () {
+            var params={
+                channel_code:'891d90ed4e54406581463fd110c651a3',
+                phone: $('.my-phone').text(),
+                signType:'MD5',
+                sign:'14615151af554c83b383d84f312d7e90',
+            }
+            layer.open({
+                content: '确定要一键加入乐e助吗？'
+                ,btn: ['确定', '取消']
+                ,yes: function(index){
+                    $.post('https://mzap.elive.vip/api/common/thirdPartUserRegister', params, function (r) {
+                        if(r.code==200){
+                            layer.open({
+                                content: '已加入乐e助'
+                                ,skin: 'msg'
+                                ,time: 2, //2秒后自动关闭
+                                end: function(layero, index){
+                                    layer.closeAll();
+                                    location.href= 'https://www.elive.vip/';
+                                }
+                            });
+
+                        }
+
+                    })
+
+                }
+            });
+
+        })
+
        // 是否拥有面膜订单
 
 //        myMianMo
@@ -537,8 +576,6 @@
               }
           }
         })
-
-
 
         run(0);
         var links;

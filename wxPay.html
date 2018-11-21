@@ -26,7 +26,7 @@
         .pay-box {
             width: 100%;
             text-align: center;
-            margin: 44px 0;
+            margin: 11px 0;
         }
 
         .page-container {
@@ -171,7 +171,7 @@
             background-color: #FFFFFF;
             border-radius: 10px 10px 0 0;
             position: fixed;
-            bottom: 0;
+            bottom: 17px;
             left: 0;
             z-index: 3;
         }
@@ -346,6 +346,74 @@
             right: 15px;
             margin-top: -3px;
         }
+
+
+
+
+        /**
+         * Checkbox Three
+         */
+        .checkboxThree {
+            width: 69px;
+            height: 30px;
+            background: #000;
+            /* margin: 20px 60px; */
+            border-radius: 50px;
+            position: relative;
+            top: -28px;
+        }
+        /**
+  * Create the text for the On position
+  */
+        .checkboxThree:before {
+            content: '是';
+            position: absolute;
+            top: 8px;
+            left: 14px;
+            height: 2px;
+            color: #ff5e3f;
+            font-size: 12px;
+        }
+        /**
+         * Create the label for the off position
+         */
+        .checkboxThree:after {
+            content: '否';
+            position: absolute;
+            top: 8px;
+            left: 41px;
+            height: 2px;
+            color: #ddd;
+            font-size: 12px;
+        }
+        /**
+   * Create the pill to click
+   */
+        .checkboxThree label {
+            display: block;
+            width: 27px;
+            height: 16px;
+            border-radius: 50px;
+            -webkit-transition: all .5s ease;
+            -moz-transition: all .5s ease;
+            -o-transition: all .5s ease;
+            -ms-transition: all .5s ease;
+            transition: all .5s ease;
+            cursor: pointer;
+            position: absolute;
+            top: 7px;
+            z-index: 1;
+            left: 34px;
+            background: #ddd;
+        }
+
+        /**
+         * Create the checkbox event for the label
+         */
+        .checkboxThree input[type=checkbox]:checked + label {
+            left: 10px;
+            background: #ff5e3f;
+        }
     </style>
 </head>
 <body>
@@ -418,6 +486,18 @@
         <div class="pay_mode_tit">
             选择支付方式<img src="img/guanbi.png" alt=""/>
         </div>
+     <!--   <div class="pay-box" style="display: inline-block;
+    padding: 0px 30px;">
+
+            <div class="radio-box">
+                <h3 style="width: 295px;height: 30px;font-size: 12px;
+    line-height: 30px; text-align: left;">是否使用广告金抵扣</h3>
+                <div class="checkboxThree" style="float: right;">
+                    <input type="checkbox" value="1" id="checkboxThreeInput" name="" />
+                    <label for="checkboxThreeInput"></label>
+                </div>
+            </div>
+        </div>-->
         <div class="pay-box" style="margin:0">
             <div class="order_line text-float-left no-choose" data-pay="wx" id="wxBox">
                 <img src="img/weixinzhifu.png" alt=""/>微信支付
@@ -473,8 +553,20 @@
         </div>
     </section>
 
+    <div class="pay-box" style="display: inline-block;
+    padding: 0px 30px;">
 
+        <div class="radio-box">
+            <h3 style="width: 295px;height: 30px;font-size: 12px;
+    line-height: 30px; text-align: left;">是否使用广告金抵扣</h3>
+            <div class="checkboxThree" style="float: right;">
+                <input type="checkbox" value="1" id="checkboxThreeInput" name="" />
+                <label for="checkboxThreeInput"></label>
+            </div>
+        </div>
+    </div>
     <div class="pay-box">
+
         <button id="payId" class="buy-hide pay">立即支付</button>
     </div>
 
@@ -738,6 +830,11 @@
             //输入密码  成功后的操作
             function payInputPassWord(type) {
 
+                if($('#checkboxThreeInput').is(':checked')){
+                    var status = 0;
+                }else{
+                    var status = 1;
+                }
                 $('.g-scrollview').css('display', 'block');
                 $keyboard.keyBoard('open');
 
@@ -748,7 +845,8 @@
                         token: localStorage.token,
                         orderId: localStorage.wxOrderId,
                         type: type,
-                        payPassword: ret.password
+                        payPassword: ret.password,
+                        status:status
                     }, function (r) {
                         $('.m-loading').css('display', 'flex');
                         if (r.code == 300) {
@@ -1071,7 +1169,11 @@
     var paySign;
 
     function pay() {
-
+        if($('#checkboxThreeInput').is(':checked')){
+            var status = 0;
+        }else{
+            var status = 1;
+        }
         //创建账号
         if (localStorage.noAccount == '1') {
 
@@ -1081,7 +1183,7 @@
                     type: 'POST',
                     async: false,
                     url: ajaxUrl + '/WxGzh/pay',
-                    data: {openId: localStorage.userOpenId, orderId: localStorage.wxOrderId},
+                    data: {openId: localStorage.userOpenId, orderId: localStorage.wxOrderId,status:status},
                     error: function (err) {
                         alert('WxGzh/pay: ' + err)
                     },
@@ -1206,11 +1308,14 @@
                             console.log(res.data);
                             orderId = res.data;
                             localStorage.setItem('wxOrderId', orderId);
+
+
+
                             $.ajax({
                                 type: 'POST',
                                 async: false,
                                 url: ajaxUrl + '/WxGzh/pay',
-                                data: {openId: localStorage.userOpenId, orderId: localStorage.wxOrderId},
+                                data: {openId: localStorage.userOpenId, orderId: localStorage.wxOrderId,status:status},
                                 success: function (res) {
                                     //  alert('insert OrderId: ' + res.code)
                                     if (res.code == 200) {
@@ -1320,7 +1425,7 @@
                 type: 'POST',
                 async: false,
                 url: ajaxUrl + '/WxGzh/pay',
-                data: {openId: localStorage.userOpenId, orderId: localStorage.wxOrderId},
+                data: {openId: localStorage.userOpenId, orderId: localStorage.wxOrderId,status:status},
                 success: function (res) {
                     if (res.code == 200) {
                         appId = res.data.appId;

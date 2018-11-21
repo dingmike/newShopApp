@@ -667,10 +667,16 @@
 
                     function shouReq(r) {
                         tip.flag('确认收货成功！', 'success');
-                        setTimeout(function() {
+                        if(r.direct){
+                            setTimeout(function() {
 //                            window.location.href = "my-order-pd.html?typeid=" + 4;
-                            window.location.href = "guangGao.html"
-                        }, 800)
+                                window.location.href = "guangGao.html";
+                            }, 800)
+                        }else{
+                            setTimeout(function() {
+                                window.location.href = "my-order-pd.html?typeid=" + 4;
+                            }, 800)
+                        }
                     }
                         break;
                     case '6': //店铺

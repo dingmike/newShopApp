@@ -402,20 +402,23 @@
                         window.location.href = "extended-delivery.html?id=" + id;
                         break;
                     case '5': //确认收货
-                        debugger
                         getInfo('post', ajaxUrl + '/front/orders/Receive?token=' + token, {
                             orderId: id
                         }, shouReq);
 
                     function shouReq(r) {
                         tip.flag(r.msg, 'success');
-                        debugger
-                        setTimeout(function () {
-//                            window.location.href = "my-order-pending.html?typeid=" + 4;
-                            window.location.href = "guangGao.html"
-                        }, 800)
+                        if(r.direct){
+                            setTimeout(function() {
+//                            window.location.href = "my-order-pd.html?typeid=" + 4;
+                                window.location.href = "guangGao.html";
+                            }, 800)
+                        }else{
+                            setTimeout(function() {
+                                window.location.href = "my-order-pending.html?typeid=" + 4;
+                            }, 800)
+                        }
                     }
-
                         break;
                     case '6': //店铺
                         window.location.href = "shop_details.html?id=" + id;

@@ -847,7 +847,7 @@
 
                 // 六位密码输入完毕后执行
                 $keyboard.on('done.ydui.keyboard', function (ret) {
-
+                    alert('balancePay')
                     $.post(ajaxUrl + '/front/payInfo/balancePay', {
                         token: localStorage.token,
                         orderId: localStorage.wxOrderId,
