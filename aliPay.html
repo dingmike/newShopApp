@@ -333,22 +333,22 @@
 
 
 
-
-        /**
+/*
+        !**
          * Checkbox Three
-         */
+         *!
         .checkboxThree {
             width: 69px;
             height: 30px;
             background: #716b6b;
-            /* margin: 20px 60px; */
+            !* margin: 20px 60px; *!
             border-radius: 50px;
             position: relative;
             top: -28px;
         }
-        /**
+        !**
   * Create the text for the On position
-  */
+  *!
         .checkboxThree:before {
             content: '是';
             position: absolute;
@@ -358,9 +358,9 @@
             color: #ff5e3f;
             font-size: 12px;
         }
-        /**
+        !**
          * Create the label for the off position
-         */
+         *!
         .checkboxThree:after {
             content: '否';
             position: absolute;
@@ -370,9 +370,9 @@
             color: #ddd;
             font-size: 12px;
         }
-        /**
+        !**
    * Create the pill to click
-   */
+   *!
         .checkboxThree label {
             display: block;
             width: 27px;
@@ -392,13 +392,58 @@
             background: #ddd;
         }
 
-        /**
+        !**
          * Create the checkbox event for the label
-         */
+         *!
         .checkboxThree input[type=checkbox]:checked + label {
             left: 10px;
             background: #ff5e3f;
+        }*/
+
+
+
+        /*xin jia*/
+        .checkbox-now {
+            display: none;
         }
+        .switch {
+            width: 50px;
+            height: 31px;
+            background: #56ACFE;
+            border-radius: 20px;
+            padding: 1px;
+            box-sizing: border-box;
+            display: inline-block;
+            /* margin-top: 15px; */
+        }
+        .switch:after {
+            content: '';
+            box-shadow: 0 3px 8px 0 rgba(0,0,0,0.15), 0 1px 1px 0 rgba(0,0,0,0.16), 0 3px 1px 0 rgba(0,0,0,0.10);
+            width: 28px;
+            height: 28px;
+            background: #fff;
+            border-radius: 50%;
+            display: block;
+            margin-left: 1px;
+            float: left;
+            transition: all 0.5s;
+        }
+        .checkbox-now:checked+.switch:after {
+            margin-left: 20px;
+        }
+        .checkbox-now:checked+.switch {
+            background: #ccc;
+        }
+
+        .lable-radio-box{
+            width: 160px;
+            height: 30px;
+            font-size: 12px;
+            line-height: 30px;
+            display: block;
+            float: left;
+        }
+
     </style>
 </head>
 <body>
@@ -510,11 +555,12 @@
     padding: 0px 30px;">
 
         <div class="radio-box">
-            <h3 style="width: 295px;height: 30px;font-size: 12px;
-    line-height: 30px; text-align: left;">是否使用广告金抵扣</h3>
+            <h3 class="lable-radio-box">是否使用广告金抵扣</h3>
             <div class="checkboxThree" style="float: right;">
-                <input type="checkbox" value="1" id="checkboxThreeInput" name="" />
-                <label for="checkboxThreeInput"></label>
+                <!-- <input type="checkbox" value="1" id="checkboxThreeInput" name="" />
+                 <label for="checkboxThreeInput"></label>-->
+                <input type="checkbox" value="1" id="checkboxThreeInput" class="checkbox-now">
+                <label class="switch" for="checkboxThreeInput"></label>
             </div>
         </div>
     </div>
