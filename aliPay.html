@@ -1004,7 +1004,6 @@
         //选择支付方式
 
         $(".pay-box .order_line").click(function () {
-            debugger
             var index = $(this).index();
             $(".pay_mode .order_line").removeClass("pitchon").addClass("no-choose");
             $(this).addClass("pitchon").removeClass("no-choose");
@@ -1072,7 +1071,6 @@
                     }, function (r) {
                         $('.m-loading').css('display', 'flex');
                         if (r.code == 300) {
-
                             // 模拟AJAX校验密码
                             setTimeout(function () {
                                 // 关闭请求中提示框
@@ -1185,6 +1183,7 @@
 
 
 
+    //微信和支付宝支付函数
     function pay() {
         if($('#checkboxThreeInput').is(':checked')){
             var status = 0;
