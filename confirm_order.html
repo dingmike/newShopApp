@@ -743,6 +743,7 @@
                 $(".pay-box .order_line").each(function () {
                     if ($(this).hasClass('pitchon')) {
                         var dataPay = $(this).attr('data-pay');
+                        //是否抵扣广告金参数
                         if($('#checkboxThreeInput').is(':checked')){
                             var status = 0;
                         }else{

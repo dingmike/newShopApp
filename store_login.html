@@ -593,7 +593,6 @@
 
 
         $.post(ajaxUrl + '/front/clients/login1', {token: localStorage.token}, function (r) {
-            debugger
             console.log(r);
             if (r.code == 200) {
                 if (r.type == 1) {  //正常
